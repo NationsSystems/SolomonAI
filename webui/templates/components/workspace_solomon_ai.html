@@ -1,0 +1,850 @@
+<!-- -------------------------------------------------------------------
+     FILE: workspace_solomon_ai.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set solomon_session = solomon_workspace_session|default({}) %}
+{% set solomon_sources = solomon_workspace_sources|default([]) %}
+{% set solomon_messages = solomon_workspace_messages|default(solomon_session.get('messages') or []) %}
+{% set solomon_history = solomon_workspace_history|default([]) %}
+{% set conversation_id = solomon_session.get('conversation_id') or solomon_session.get('session_id') or '' %}
+{% set source_membership_contract = solomon_session.get('source_membership_contract') or 'solomon_ai_conversation_source_membership_v1' %}
+{% set public_web_selected = solomon_session.get('public_web_selected') is sameas true %}
+{% set has_sources = solomon_sources|length > 0 %}
+{% set source_count = solomon_sources|length %}
+{% set has_messages = solomon_messages|length > 0 %}
+
+<section class="solomon-ai-workspace solomon-ai-workspace--page"
+         aria-label="SolomonAI workspace"
+         data-solomon-ai-workspace
+         data-solomon-ai-conversation-id="{{ conversation_id }}"
+         data-solomon-ai-source-contract="{{ source_membership_contract }}"
+         data-solomon-ai-sources-endpoint="{% if conversation_id %}{{ url_for('solomon_conversations_bp.list_solomon_ai_conversation_sources', conversation_id=conversation_id) }}{% endif %}"
+         data-solomon-ai-source-catalog-endpoint="{% if conversation_id %}{{ url_for('solomon_conversations_bp.list_solomon_ai_available_files', conversation_id=conversation_id) }}{% endif %}"
+         data-solomon-ai-source-attach-endpoint="{% if conversation_id %}{{ url_for('solomon_conversations_bp.add_solomon_ai_conversation_sources', conversation_id=conversation_id) }}{% endif %}"
+         data-solomon-ai-public-web-endpoint="{% if conversation_id %}{{ url_for('solomon_conversations_bp.update_solomon_ai_conversation_public_web', conversation_id=conversation_id) }}{% endif %}"
+         data-solomon-ai-public-web-selected="{% if public_web_selected %}true{% else %}false{% endif %}"
+         data-solomon-ai-upload-endpoint="{{ url_for('files.upload_file_api') }}"
+         data-solomon-ai-new-conversation-endpoint="{{ url_for('document_operations_bp.create_solomon_ai_conversation') }}"
+         data-solomon-ai-source-count="{{ source_count }}"
+         data-solomon-ai-source-state="{% if has_sources %}ready{% else %}empty{% endif %}"
+         data-solomon-ai-message-count="{{ solomon_messages|length }}">
+
+    <div class="solomon-ai-workspace__layout">
+        <aside class="solomon-ai-sources"
+               aria-label="Sources and conversation history">
+            <div class="solomon-ai-sources__tabs"
+                 role="tablist"
+                 aria-label="Chat navigation">
+                <button type="button"
+                        id="solomonAiSourcesTab"
+                        class="solomon-ai-sources__tab is-active"
+                        data-solomon-ai-tab="sources"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="solomonAiSourcesPanel">
+                    Sources{% if source_count %} ({{ source_count }}){% endif %}
+                </button>
+
+                <button type="button"
+                        id="solomonAiHistoryTab"
+                        class="solomon-ai-sources__tab"
+                        data-solomon-ai-tab="history"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="solomonAiHistoryPanel"
+                        tabindex="-1">
+                    History
+                </button>
+            </div>
+
+            <section id="solomonAiSourcesPanel"
+                     class="solomon-ai-sources__panel"
+                     data-solomon-ai-panel="sources"
+                     role="tabpanel"
+                     aria-labelledby="solomonAiSourcesTab">
+                <div class="solomon-ai-sources__toolbar"
+                     {% if not has_sources %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                    <button type="button"
+                            class="solomon-ai-sources__add"
+                            data-solomon-ai-add-sources>
+                        <span class="icon"
+                              aria-hidden="true">
+                            add
+                        </span>
+
+                        <span>Add sources</span>
+                    </button>
+                </div>
+
+                <div class="solomon-ai-source-list"
+                     data-solomon-ai-source-list
+                     {% if not has_sources %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                    {% for source in solomon_sources %}
+                        {% set source_id = source.get('document_id') or source.get('random_name') or '' %}
+                        {% set source_name = source.get('original_name') or source.get('filename') or source_id %}
+                        {% set source_reader_url = source.get('reader_url') or source.get('workspace_reader_url') or '' %}
+
+                        <article class="solomon-ai-source-item"
+                                 data-solomon-ai-source
+                                 data-solomon-ai-source-id="{{ source_id }}"
+                                 data-solomon-ai-source-state="attached"
+                                 data-document-id="{{ source_id }}">
+                            <span class="solomon-ai-source-item__icon icon"
+                                  aria-hidden="true">
+                                picture_as_pdf
+                            </span>
+
+                            <div class="solomon-ai-source-item__copy">
+                                <strong title="{{ source_name }}">
+                                    {{ source_name }}
+                                </strong>
+
+                                <span>
+                                    Added to this chat
+                                </span>
+                            </div>
+
+                            {% if source_reader_url %}
+                                <a class="solomon-ai-source-item__open"
+                                   href="{{ source_reader_url }}"
+                                   aria-label="Open {{ source_name }} in Reader"
+                                   title="Open in Reader">
+                                    <span class="icon"
+                                          aria-hidden="true">
+                                        open_in_new
+                                    </span>
+                                </a>
+                            {% endif %}
+
+                            <button type="button"
+                                    class="solomon-ai-source-item__remove"
+                                    data-solomon-ai-source-remove
+                                    data-document-id="{{ source_id }}"
+                                    data-solomon-ai-source-remove-url="{% if conversation_id %}{{ url_for('solomon_conversations_bp.remove_solomon_ai_conversation_source', conversation_id=conversation_id, document_id=source_id) }}{% endif %}"
+                                    aria-label="Remove {{ source_name }} from this chat"
+                                    title="Remove source">
+                                <span class="icon"
+                                      aria-hidden="true">
+                                    close
+                                </span>
+                            </button>
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <div class="solomon-ai-sources__empty"
+                     data-solomon-ai-sources-empty
+                     {% if has_sources %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                    <span class="solomon-ai-sources__empty-icon icon"
+                          aria-hidden="true">
+                        folder_open
+                    </span>
+
+                    <strong>
+                        Add sources
+                    </strong>
+
+                    <p>
+                        Choose existing Solomon files to focus this chat.
+                    </p>
+
+                    <button type="button"
+                            class="solomon-ai-sources__empty-action"
+                            data-solomon-ai-add-sources>
+                        <span class="icon"
+                              aria-hidden="true">
+                            add
+                        </span>
+
+                        <span>Add sources</span>
+                    </button>
+                </div>
+
+                <div class="solomon-ai-external-sources"
+                     data-solomon-ai-external-sources>
+                    <div class="solomon-ai-external-sources__heading">
+                        <span>Search for more sources</span>
+                    </div>
+
+                    <label class="solomon-ai-external-source-option">
+                        <span class="solomon-ai-external-source-option__icon icon"
+                              aria-hidden="true">
+                            public
+                        </span>
+
+                        <span class="solomon-ai-external-source-option__copy">
+                            <strong>Public web</strong>
+                            <span>
+                                Allow current public information when Solomon determines it is required.
+                            </span>
+                        </span>
+
+                        <input type="checkbox"
+                               class="solomon-ai-external-source-option__input"
+                               data-solomon-ai-public-web-toggle
+                               {% if public_web_selected %}checked{% endif %}
+                               aria-label="Allow Public Web as a source for this chat">
+
+                        <span class="solomon-ai-external-source-option__switch"
+                              aria-hidden="true"></span>
+                    </label>
+
+                    <p class="solomon-ai-external-sources__status"
+                       data-solomon-ai-public-web-status
+                       role="status"
+                       aria-live="polite"
+                       hidden></p>
+                </div>
+            </section>
+
+            <section id="solomonAiHistoryPanel"
+                     class="solomon-ai-sources__panel"
+                     data-solomon-ai-panel="history"
+                     role="tabpanel"
+                     aria-labelledby="solomonAiHistoryTab"
+                     hidden>
+                {% if solomon_history %}
+                    <div class="solomon-ai-history"
+                         data-solomon-ai-history
+                         role="list"
+                         aria-label="SolomonAI conversations">
+                        {% for conversation in solomon_history %}
+                            {% set history_conversation_id = conversation.get('conversation_id') or '' %}
+                            {% set history_title = conversation.get('title') or 'SolomonAI conversation' %}
+                            {% set history_date_label = conversation.get('updated_label') or conversation.get('created_label') or '' %}
+                            {% set is_active_conversation = history_conversation_id == conversation_id %}
+                            {% set history_rename_url = url_for('solomon_conversations_bp.rename_solomon_ai_conversation', conversation_id=history_conversation_id) %}
+                            {% set history_delete_url = url_for('solomon_conversations_bp.delete_solomon_ai_conversation', conversation_id=history_conversation_id) %}
+                            {% set history_menu_id = 'solomonAiHistoryMenu' ~ loop.index %}
+                            {% set history_editor_id = 'solomonAiHistoryRenameEditor' ~ loop.index %}
+                            {% set history_input_id = 'solomonAiHistoryRenameInput' ~ loop.index %}
+
+                            <article class="solomon-ai-history__row{% if is_active_conversation %} is-active{% endif %}"
+                                     data-solomon-ai-history-row
+                                     data-conversation-id="{{ history_conversation_id }}"
+                                     data-conversation-title="{{ history_title }}"
+                                     data-solomon-ai-conversation-management-url="{{ history_rename_url }}"
+                                     data-solomon-ai-conversation-rename-url="{{ history_rename_url }}"
+                                     data-solomon-ai-conversation-delete-url="{{ history_delete_url }}"
+                                     role="listitem">
+                                <button type="button"
+                                        class="solomon-ai-history__item{% if is_active_conversation %} is-active{% endif %}"
+                                        data-solomon-ai-history-item
+                                        data-conversation-id="{{ history_conversation_id }}"
+                                        data-conversation-title="{{ history_title }}"
+                                        data-solomon-ai-conversation-management-url="{{ history_rename_url }}"
+                                        data-solomon-ai-conversation-rename-url="{{ history_rename_url }}"
+                                        data-solomon-ai-conversation-delete-url="{{ history_delete_url }}"
+                                        aria-label="Open {{ history_title }}"
+                                        title="{{ history_title }}"
+                                        {% if is_active_conversation %}aria-current="page"{% endif %}>
+                                    <span class="solomon-ai-history__icon icon"
+                                          aria-hidden="true">
+                                        chat_bubble_outline
+                                    </span>
+
+                                    <span class="solomon-ai-history__copy">
+                                        <strong data-solomon-ai-history-item-title>
+                                            {{ history_title }}
+                                        </strong>
+
+                                        <span>
+                                            {{ history_date_label }}
+                                        </span>
+                                    </span>
+                                </button>
+
+                                <button type="button"
+                                        class="solomon-ai-history__options"
+                                        data-solomon-ai-history-options
+                                        data-conversation-id="{{ history_conversation_id }}"
+                                        aria-label="More options for {{ history_title }}"
+                                        aria-haspopup="menu"
+                                        aria-expanded="false"
+                                        aria-controls="{{ history_menu_id }}"
+                                        title="More options">
+                                    <span class="icon"
+                                          aria-hidden="true">
+                                        more_vert
+                                    </span>
+                                </button>
+
+                                <div id="{{ history_menu_id }}"
+                                     class="solomon-ai-history__menu"
+                                     data-solomon-ai-history-menu
+                                     role="menu"
+                                     aria-label="Options for {{ history_title }}"
+                                     hidden>
+                                    <button type="button"
+                                            class="solomon-ai-history__menu-item"
+                                            data-solomon-ai-history-rename
+                                            data-conversation-id="{{ history_conversation_id }}"
+                                            data-solomon-ai-conversation-rename-url="{{ history_rename_url }}"
+                                            aria-controls="{{ history_editor_id }}"
+                                            role="menuitem">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            edit
+                                        </span>
+
+                                        <span>Rename</span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="solomon-ai-history__menu-item solomon-ai-history__menu-item--danger"
+                                            data-solomon-ai-history-delete
+                                            data-conversation-id="{{ history_conversation_id }}"
+                                            data-solomon-ai-conversation-delete-url="{{ history_delete_url }}"
+                                            role="menuitem">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            delete_outline
+                                        </span>
+
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+
+                                <form id="{{ history_editor_id }}"
+                                      class="solomon-ai-history__rename-editor"
+                                      data-solomon-ai-history-rename-editor
+                                      data-conversation-id="{{ history_conversation_id }}"
+                                      data-conversation-title="{{ history_title }}"
+                                      data-solomon-ai-conversation-management-url="{{ history_rename_url }}"
+                                      data-solomon-ai-conversation-rename-url="{{ history_rename_url }}"
+                                      autocomplete="off"
+                                      aria-label="Rename {{ history_title }}"
+                                      hidden>
+                                    <span class="solomon-ai-history__rename-icon icon"
+                                          aria-hidden="true">
+                                        chat_bubble_outline
+                                    </span>
+
+                                    <span class="solomon-ai-history__rename-copy">
+                                        <label class="visually-hidden"
+                                               for="{{ history_input_id }}">
+                                            Conversation name
+                                        </label>
+
+                                        <input id="{{ history_input_id }}"
+                                               type="text"
+                                               name="title"
+                                               value="{{ history_title }}"
+                                               maxlength="96"
+                                               data-solomon-ai-history-rename-input
+                                               autocomplete="off"
+                                               spellcheck="false">
+
+                                        <span class="solomon-ai-history__rename-date">
+                                            {{ history_date_label }}
+                                        </span>
+                                    </span>
+
+                                    <span class="solomon-ai-history__rename-actions">
+                                        <button type="submit"
+                                                class="solomon-ai-history__rename-save"
+                                                data-solomon-ai-history-rename-save
+                                                aria-label="Save conversation name"
+                                                title="Save">
+                                            <span class="icon"
+                                                  aria-hidden="true">
+                                                check
+                                            </span>
+                                        </button>
+
+                                        <button type="button"
+                                                class="solomon-ai-history__rename-cancel"
+                                                data-solomon-ai-history-rename-cancel
+                                                aria-label="Cancel renaming"
+                                                title="Cancel">
+                                            <span class="icon"
+                                                  aria-hidden="true">
+                                                close
+                                            </span>
+                                        </button>
+                                    </span>
+                                </form>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    <p class="visually-hidden"
+                       data-solomon-ai-history-management-status
+                       role="status"
+                       aria-live="polite"></p>
+                {% else %}
+                    <div class="solomon-ai-history__empty">
+                        <span class="icon"
+                              aria-hidden="true">
+                            history
+                        </span>
+
+                        <strong>
+                            No conversations yet
+                        </strong>
+
+                        <p>
+                            Your conversations will appear here.
+                        </p>
+                    </div>
+                {% endif %}
+            </section>
+
+            <div class="solomon-ai-sources__actions">
+                <button type="button"
+                        class="solomon-ai-sources__new-chat"
+                        data-solomon-ai-new-chat>
+                    <span class="icon"
+                          aria-hidden="true">
+                        add_comment
+                    </span>
+
+                    <span>New chat</span>
+                </button>
+
+                <span class="visually-hidden"
+                      data-solomon-ai-new-chat-status
+                      role="status"
+                      aria-live="polite"></span>
+            </div>
+        </aside>
+
+        <section class="solomon-ai-conversation"
+                 aria-label="SolomonAI conversation">
+            <div class="solomon-ai-conversation__scroll"
+                 data-solomon-ai-conversation-scroll>
+                <div class="solomon-ai-conversation__thread"
+                     data-solomon-ai-thread
+                     data-solomon-ai-thread-state="{% if has_messages %}active{% else %}empty{% endif %}"
+                     aria-live="polite">
+                    {% if has_messages %}
+                        {% for message in solomon_messages %}
+                            {% set message_role = 'user' if message.get('role') == 'user' else 'assistant' %}
+                            {% set message_content = message.get('content') or '' %}
+                            {% set message_bridge = message.get('bridge') or '' %}
+                            {% set message_suggestions = message.get('suggestions') or [] %}
+                            {% set message_created_at = message.get('created_at') or message.get('created_at_iso') or message.get('timestamp') or '' %}
+
+                            <div class="solomon-ai-conversation__date-divider"
+                                 data-solomon-ai-date-divider
+                                 data-solomon-ai-message-created-at="{{ message_created_at }}"
+                                 aria-hidden="true"
+                                 hidden>
+                                <span data-solomon-ai-date-divider-label></span>
+                            </div>
+
+                            <article class="solomon-ai-message solomon-ai-message--{{ message_role }}"
+                                     data-solomon-ai-message
+                                     data-solomon-ai-message-role="{{ message_role }}"
+                                     data-solomon-ai-message-id="{{ message.get('message_id') or '' }}"
+                                     data-solomon-ai-message-order="{{ message.get('message_order') or '' }}"
+                                     data-solomon-ai-message-created-at="{{ message_created_at }}"
+                                     data-solomon-ai-message-state="{{ message.get('status') or 'complete' }}">
+                                <time class="solomon-ai-message__time"
+                                      data-solomon-ai-message-time
+                                      datetime="{{ message_created_at }}"
+                                      aria-label=""
+                                      hidden></time>
+
+                                <div class="solomon-ai-message__body"
+                                     data-solomon-ai-persisted-content="{{ message_content|tojson|forceescape }}"
+                                     data-solomon-ai-content-rendered="true">
+                                    <p>{{ message_content }}</p>
+
+                                    {% if message_role == 'assistant' and (message_bridge or message_suggestions) %}
+                                        <section class="solomon-ai-message__continuation"
+                                                 data-solomon-ai-message-continuation>
+                                            {% if message_bridge %}
+                                                <p class="solomon-ai-message__bridge"
+                                                   data-solomon-ai-message-bridge>
+                                                    {{ message_bridge }}
+                                                </p>
+                                            {% endif %}
+
+                                            {% if message_suggestions %}
+                                                <div class="solomon-ai-message__suggestions"
+                                                     data-solomon-ai-message-suggestions
+                                                     aria-label="Suggested follow-up prompts">
+                                                    {% for suggestion in message_suggestions %}
+                                                        {% if suggestion %}
+                                                            <button type="button"
+                                                                    class="solomon-ai-suggestion solomon-ai-message__suggestion"
+                                                                    data-solomon-ai-suggestion
+                                                                    data-solomon-ai-response-suggestion
+                                                                    data-solomon-ai-prompt="{{ suggestion }}">
+                                                                {{ suggestion }}
+                                                            </button>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </section>
+                                    {% endif %}
+                                </div>
+                            </article>
+                        {% endfor %}
+                    {% else %}
+                        <section class="solomon-ai-conversation__welcome"
+                                 data-solomon-ai-welcome>
+                            <span class="solomon-ai-conversation__welcome-mark"
+                                  aria-hidden="true">
+                                <img src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                                     alt="">
+                            </span>
+
+                            {% if has_sources %}
+                                <p class="solomon-ai-conversation__kicker">
+                                    {% if source_count == 1 %}1 file added{% else %}{{ source_count }} files added{% endif %}
+                                </p>
+
+                                <h2>
+                                    {% if source_count == 1 %}
+                                        Ask questions about this file
+                                    {% else %}
+                                        Ask questions about your files
+                                    {% endif %}
+                                </h2>
+
+                                <p class="solomon-ai-conversation__welcome-copy">
+                                    {% if source_count == 1 %}
+                                        Summarize it, find details, or ask about anything inside.
+                                    {% else %}
+                                        Compare them, find details, or ask about anything inside.
+                                    {% endif %}
+                                </p>
+                            {% else %}
+                                <h2>
+                                    What can I help with?
+                                </h2>
+
+                                <p class="solomon-ai-conversation__welcome-copy">
+                                    Ask a question or add sources to focus this chat.
+                                </p>
+                            {% endif %}
+
+                            <div class="solomon-ai-conversation__suggestions"
+                                 data-solomon-ai-suggestions>
+                                {% if has_sources %}
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-prompt="{% if source_count == 1 %}Summarize this document and explain its main points.{% else %}Summarize the attached files and explain their main points.{% endif %}">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            summarize
+                                        </span>
+
+                                        <span>
+                                            {% if source_count == 1 %}
+                                                Summarize this document
+                                            {% else %}
+                                                Summarize attached files
+                                            {% endif %}
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-prompt="{% if source_count == 1 %}Identify the key facts, dates, obligations, risks, and open questions in this document.{% else %}Identify the key facts, dates, obligations, risks, and open questions across the attached files.{% endif %}">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            fact_check
+                                        </span>
+
+                                        <span>
+                                            Identify key details
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-multi-source-suggestion
+                                            data-solomon-ai-prompt="Compare the attached files and explain their most important differences."
+                                            {% if source_count < 2 %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            compare_arrows
+                                        </span>
+
+                                        <span>
+                                            Compare attached files
+                                        </span>
+                                    </button>
+                                {% else %}
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-prompt="Summarize a file and explain the main points.">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            summarize
+                                        </span>
+
+                                        <span>
+                                            Summarize a file
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-prompt="Compare documents and explain the important differences.">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            compare_arrows
+                                        </span>
+
+                                        <span>
+                                            Compare documents
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            data-solomon-ai-suggestion
+                                            data-solomon-ai-prompt="Help me organize this information clearly.">
+                                        <span class="icon"
+                                              aria-hidden="true">
+                                            checklist
+                                        </span>
+
+                                        <span>
+                                            Organize information
+                                        </span>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </section>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="solomon-ai-composer-shell">
+                <div class="solomon-ai-composer__readiness"
+                     data-solomon-ai-intelligence-status
+                     data-solomon-ai-intelligence-status-variant="checking"
+                     role="status"
+                     aria-live="polite"
+                     aria-atomic="true">
+                    Checking Solomon availability…
+                </div>
+
+                <form class="solomon-ai-composer"
+                      data-solomon-ai-composer
+                      data-solomon-ai-intelligence-state="checking"
+                      data-solomon-ai-composer-availability="disabled"
+                      aria-disabled="true"
+                      autocomplete="off">
+                    <label class="visually-hidden"
+                           for="solomonAiWorkspaceInput">
+                        Ask about your work
+                    </label>
+
+                    <button type="button"
+                            class="solomon-ai-composer__source"
+                            data-solomon-ai-upload-files
+                            disabled
+                            aria-label="Upload file"
+                            title="Upload file">
+                        <span class="icon"
+                              aria-hidden="true">
+                            add
+                        </span>
+                    </button>
+
+                    <textarea id="solomonAiWorkspaceInput"
+                              class="solomon-ai-composer__input"
+                              data-solomon-ai-input
+                              name="message"
+                              rows="1"
+                              placeholder="{% if has_sources %}{% if source_count == 1 %}Ask about this file{% else %}Ask about the attached files{% endif %}{% else %}Ask about your work{% endif %}"
+                              autocomplete="off"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                              disabled></textarea>
+
+                    <button type="submit"
+                            class="solomon-ai-composer__submit"
+                            data-solomon-ai-submit
+                            disabled
+                            aria-label="Send message to SolomonAI"
+                            title="Send message to SolomonAI">
+                        <span class="icon"
+                              aria-hidden="true">
+                            arrow_upward
+                        </span>
+                    </button>
+
+                    <span class="visually-hidden solomon-ai-composer__source-state"
+                          data-solomon-ai-composer-source-state
+                          aria-live="polite">
+                        {% if has_sources %}
+                            {{ source_count }}
+                            {% if source_count == 1 %}source{% else %}sources{% endif %}
+                        {% else %}
+                            No sources
+                        {% endif %}
+                    </span>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <div class="solomon-ai-file-picker"
+         data-solomon-ai-source-picker
+         aria-hidden="true"
+         hidden>
+        <button type="button"
+                class="solomon-ai-file-picker__backdrop"
+                data-solomon-ai-source-picker-close
+                aria-label="Close source picker"
+                tabindex="-1"></button>
+
+        <section class="solomon-ai-file-picker__dialog"
+                 data-solomon-ai-source-picker-dialog
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="solomonAiFilePickerTitle"
+                 aria-describedby="solomonAiFilePickerDescription"
+                 tabindex="-1">
+            <header class="solomon-ai-file-picker__header">
+                <div class="solomon-ai-file-picker__heading">
+                    <h2 id="solomonAiFilePickerTitle">
+                        Add sources to this chat
+                    </h2>
+
+                    <p id="solomonAiFilePickerDescription">
+                        Choose existing files you are authorized to use.
+                    </p>
+                </div>
+
+                <button type="button"
+                        class="solomon-ai-file-picker__close"
+                        data-solomon-ai-source-picker-close
+                        aria-label="Close source picker"
+                        title="Close">
+                    <span class="icon"
+                          aria-hidden="true">
+                        close
+                    </span>
+                </button>
+            </header>
+
+            <div class="solomon-ai-file-picker__controls">
+                <div class="solomon-ai-file-picker__scopes"
+                     role="tablist"
+                     aria-label="Source collections">
+                    <button type="button"
+                            class="solomon-ai-file-picker__scope is-active"
+                            data-solomon-ai-source-picker-scope=""
+                            role="tab"
+                            aria-selected="true">
+                        Recent
+                    </button>
+
+                    <button type="button"
+                            class="solomon-ai-file-picker__scope"
+                            data-solomon-ai-source-picker-scope="my_files"
+                            role="tab"
+                            aria-selected="false"
+                            tabindex="-1">
+                        My Files
+                    </button>
+
+                    <button type="button"
+                            class="solomon-ai-file-picker__scope"
+                            data-solomon-ai-source-picker-scope="group_library"
+                            role="tab"
+                            aria-selected="false"
+                            tabindex="-1">
+                        Group Library
+                    </button>
+
+                    <button type="button"
+                            class="solomon-ai-file-picker__scope"
+                            data-solomon-ai-source-picker-scope="shared_with_me"
+                            role="tab"
+                            aria-selected="false"
+                            tabindex="-1">
+                        Shared with me
+                    </button>
+                </div>
+
+                <label class="solomon-ai-file-picker__search"
+                       for="solomonAiFilePickerSearch">
+                    <span class="icon"
+                          aria-hidden="true">
+                        search
+                    </span>
+
+                    <span class="visually-hidden">
+                        Search existing sources
+                    </span>
+
+                    <input id="solomonAiFilePickerSearch"
+                           type="search"
+                           data-solomon-ai-source-picker-search
+                           placeholder="Search sources"
+                           autocomplete="off"
+                           autocorrect="off"
+                           autocapitalize="off"
+                           spellcheck="false">
+                </label>
+            </div>
+
+            <div class="solomon-ai-file-picker__body">
+                <div class="solomon-ai-file-picker__status"
+                     data-solomon-ai-source-picker-status
+                     role="status"
+                     aria-live="polite">
+                    Choose a file collection.
+                </div>
+
+                <div class="solomon-ai-file-picker__list"
+                     data-solomon-ai-source-picker-list
+                     role="listbox"
+                     aria-label="Available sources"
+                     aria-multiselectable="true"></div>
+
+                <div class="solomon-ai-file-picker__empty"
+                     data-solomon-ai-source-picker-empty
+                     hidden
+                     aria-hidden="true">
+                    <span class="icon"
+                          aria-hidden="true">
+                        folder_open
+                    </span>
+
+                    <strong>
+                        No sources found
+                    </strong>
+
+                    <p data-solomon-ai-source-picker-empty-message>
+                        Try another collection or search.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="solomon-ai-file-picker__footer">
+                <span class="solomon-ai-file-picker__selection"
+                      data-solomon-ai-source-picker-selection
+                      aria-live="polite">
+                    No sources selected
+                </span>
+
+                <div class="solomon-ai-file-picker__actions">
+                    <button type="button"
+                            class="solomon-ai-file-picker__cancel"
+                            data-solomon-ai-source-picker-close>
+                        Cancel
+                    </button>
+
+                    <button type="button"
+                            class="solomon-ai-file-picker__attach"
+                            data-solomon-ai-source-picker-attach
+                            disabled>
+                        Add sources
+                    </button>
+                </div>
+            </footer>
+        </section>
+    </div>
+</section>

@@ -1,0 +1,41 @@
+<!-- ------------------------------------------------------------------
+FILE: webui/templates/web_summary.html
+------------------------------------------------------------------- -->
+
+<div class="web-summary">
+
+    <div class="web-summary-title">
+        {{ category.replace("_", " ").title() }}
+    </div>
+
+    <div class="web-summary-body">
+        {{ content }}
+    </div>
+
+    {% if sections %}
+        {% for section in sections %}
+            <div class="web-summary-section">{{ section.title }}</div>
+            <ol class="web-summary-points">
+                {% for item in section["items"] %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ol>
+        {% endfor %}
+    {% elif points %}
+        <ol class="web-summary-points">
+            {% for point in points %}
+                <li>{{ point }}</li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if sources %}
+        <div class="web-summary-section">Sources</div>
+        <ul class="web-summary-sources">
+            {% for src in sources %}
+                <li>{{ src }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</div>

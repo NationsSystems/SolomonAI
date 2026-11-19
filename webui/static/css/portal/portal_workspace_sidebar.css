@@ -1,0 +1,18 @@
+/* ==========================================================================
+   FILE: portal_workspace_sidebar.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   COMMAND SIDEBAR / TASKBAR CSS ENTRYPOINT
+   --------------------------------------------------------------------------
+   This file only imports focused taskbar/sidebar component styles.
+   Active Home rail sizing is owned by portal_workspace_shell.css and
+   portal_workspace_navbar.css.
+   ========================================================================== */
+
+@import url("./portal_workspace_sidebar_shell.css");
+@import url("./portal_workspace_sidebar_solomon.css");
+@import url("./portal_workspace_sidebar_response.css");
+@import url("./portal_workspace_sidebar_navigation.css");
+@import url("./portal_workspace_sidebar_responsive.css");

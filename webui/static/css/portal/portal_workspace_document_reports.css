@@ -1,0 +1,584 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_reports.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMONAI DOCUMENT REPORT SURFACES
+   --------------------------------------------------------------------------
+   Report loading, saved-report display, and app-shell report fallback styles.
+   The completed report fragment must read as part of the file-details content
+   panel, not as a nested standalone page.
+   ========================================================================== */
+
+.workspace-report-page {
+    background:
+        radial-gradient(circle at 18% 12%, rgba(34, 211, 238, 0.10), transparent 28%),
+        radial-gradient(circle at 78% 0%, rgba(59, 130, 246, 0.08), transparent 24%),
+        linear-gradient(135deg, #050b14 0%, #07111f 46%, #0b1220 100%);
+    color: rgba(248, 250, 252, 0.96);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.workspace-report-document,
+.workspace-report-preparation {
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1180px;
+    min-height: 100vh;
+    padding: 28px;
+}
+
+.workspace-report-document--start {
+    max-width: 860px;
+}
+
+.workspace-report-document--artifact {
+    max-width: 1120px;
+}
+
+/* --------------------------------------------------------------------------
+   Content-panel breadcrumb
+   -------------------------------------------------------------------------- */
+
+.workspace-document-breadcrumb {
+    align-items: center;
+    color: rgba(203, 213, 225, 0.72);
+    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 9px;
+    letter-spacing: 0.08em;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+}
+
+.workspace-document-breadcrumb-link {
+    color: rgba(125, 211, 252, 0.94);
+    text-decoration: none;
+}
+
+.workspace-document-breadcrumb-link:hover {
+    color: #e0f2fe;
+}
+
+.workspace-document-breadcrumb-current {
+    color: rgba(248, 250, 252, 0.88);
+}
+
+.workspace-document-breadcrumb-separator {
+    color: rgba(148, 163, 184, 0.54);
+}
+
+/* --------------------------------------------------------------------------
+   Background report preparation state
+   -------------------------------------------------------------------------- */
+
+.workspace-report-preparation-card,
+.workspace-document-inspector-body--operation {
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(8, 15, 28, 0.98));
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 24px;
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+    box-sizing: border-box;
+}
+
+.workspace-document-inspector-body--operation {
+    display: grid;
+    gap: 22px;
+    padding: 26px;
+}
+
+.workspace-report-preparation-card {
+    display: grid;
+    gap: 24px;
+    margin: 0 auto;
+    max-width: 840px;
+    min-height: 610px;
+    padding: 34px;
+    place-items: center;
+    text-align: center;
+}
+
+.workspace-report-preparation-header {
+    display: grid;
+    gap: 8px;
+    max-width: 680px;
+}
+
+.workspace-report-preparation-header h1,
+.workspace-document-panel-title {
+    color: #f8fafc;
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 780;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    margin: 0;
+}
+
+.workspace-document-panel-heading {
+    display: grid;
+    gap: 8px;
+}
+
+.workspace-document-panel-eyebrow {
+    color: rgba(125, 211, 252, 0.94);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.workspace-document-panel-subtitle,
+.workspace-report-preparation-header p {
+    color: rgba(203, 213, 225, 0.82);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.workspace-report-preparation-loader {
+    align-items: center;
+    display: grid;
+    gap: 24px;
+    justify-items: center;
+    padding: 8px 0 4px;
+}
+
+.workspace-report-preparation-orbit {
+    align-items: center;
+    display: grid;
+    height: 210px;
+    justify-items: center;
+    position: relative;
+    width: 210px;
+}
+
+.workspace-report-preparation-ring {
+    border-radius: 999px;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.workspace-report-preparation-ring--outer {
+    animation: solomon-report-spin 1.6s linear infinite;
+    border: 4px solid rgba(125, 211, 252, 0.14);
+    border-top-color: rgba(34, 211, 238, 0.96);
+    height: 198px;
+    width: 198px;
+}
+
+.workspace-report-preparation-ring--middle {
+    animation: solomon-report-spin-reverse 2.35s linear infinite;
+    border: 3px solid rgba(59, 130, 246, 0.14);
+    border-right-color: rgba(96, 165, 250, 0.92);
+    height: 154px;
+    width: 154px;
+}
+
+.workspace-report-preparation-ring--inner {
+    animation: solomon-report-pulse 1.4s ease-in-out infinite;
+    background:
+        radial-gradient(circle, rgba(34, 211, 238, 0.18), rgba(15, 23, 42, 0.20) 58%, transparent 70%);
+    border: 1px solid rgba(125, 211, 252, 0.22);
+    height: 112px;
+    width: 112px;
+}
+
+.workspace-report-preparation-core {
+    align-items: center;
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 8, 23, 0.96));
+    border: 1px solid rgba(125, 211, 252, 0.34);
+    border-radius: 999px;
+    box-shadow:
+        0 0 38px rgba(34, 211, 238, 0.22),
+        0 0 0 8px rgba(34, 211, 238, 0.035);
+    color: #e0f2fe;
+    display: flex;
+    font-size: 13px;
+    font-weight: 850;
+    height: 92px;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 92px;
+    z-index: 2;
+}
+
+.workspace-report-preparation-copy {
+    display: grid;
+    gap: 8px;
+}
+
+.workspace-report-preparation-copy strong {
+    color: #f8fafc;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+}
+
+.workspace-report-preparation-copy span {
+    color: rgba(203, 213, 225, 0.78);
+    font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Shared panel notice and command styling
+   -------------------------------------------------------------------------- */
+
+.workspace-document-panel-notice {
+    align-items: start;
+    background: rgba(14, 165, 233, 0.075);
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    border-radius: 14px;
+    color: rgba(226, 232, 240, 0.88);
+    display: grid;
+    gap: 12px;
+    grid-template-columns: auto 1fr;
+    line-height: 1.55;
+    padding: 14px 16px;
+}
+
+.workspace-document-panel-notice p {
+    margin: 0;
+}
+
+.workspace-document-panel-notice .icon,
+.workspace-document-command .icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.workspace-document-inspector-actions,
+.workspace-document-report-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.workspace-document-command {
+    align-items: center;
+    background: rgba(15, 23, 42, 0.78);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: rgba(248, 250, 252, 0.94);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 13px;
+    text-decoration: none;
+}
+
+.workspace-document-command:hover {
+    background: rgba(30, 41, 59, 0.92);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #ffffff;
+}
+
+.workspace-document-command-primary {
+    background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.92), rgba(37, 99, 235, 0.92));
+    border-color: rgba(125, 211, 252, 0.40);
+    color: #ffffff;
+}
+
+.workspace-document-command-neutral {
+    background: rgba(15, 23, 42, 0.68);
+}
+
+/* --------------------------------------------------------------------------
+   Completed report fragment inside file details panel
+   -------------------------------------------------------------------------- */
+
+.workspace-document-inspector-body--report.workspace-document-inspector-body--properties {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: grid;
+    gap: 18px;
+    padding: 0;
+}
+
+.workspace-document-report-properties {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    padding-bottom: 18px;
+}
+
+.workspace-document-report-identity {
+    margin-bottom: 20px;
+}
+
+.workspace-document-report-identity .workspace-document-summary-copy {
+    max-width: 760px;
+}
+
+.workspace-document-report-identity strong {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 820;
+    letter-spacing: -0.042em;
+    line-height: 1.06;
+}
+
+.workspace-document-report-identity span {
+    color: rgba(203, 213, 225, 0.78);
+    font-size: 14px;
+}
+
+.workspace-document-report-property-list {
+    max-width: 100%;
+}
+
+.workspace-document-report-advisory {
+    margin: 0;
+}
+
+.workspace-document-report-shell {
+    display: grid;
+    gap: 0;
+}
+
+.workspace-document-report-section {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+    display: grid;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.workspace-document-report-section:first-child {
+    padding-top: 4px;
+}
+
+.workspace-document-report-section:last-child {
+    border-bottom: 0;
+    padding-bottom: 4px;
+}
+
+.workspace-document-report-section--lead {
+    background: transparent;
+    border-color: rgba(148, 163, 184, 0.13);
+}
+
+.workspace-document-report-section h2 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 16px;
+    font-weight: 820;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    margin: 0 0 2px;
+}
+
+.workspace-document-report-paragraph,
+.workspace-document-report-bullet {
+    color: rgba(226, 232, 240, 0.88);
+    font-size: 14px;
+    line-height: 1.72;
+    margin: 0;
+    max-width: 980px;
+}
+
+.workspace-document-report-bullet {
+    padding-left: 4px;
+}
+
+.workspace-document-report-actions {
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    margin-top: 0;
+    padding-top: 14px;
+}
+
+.workspace-document-report-actions .workspace-document-command-close {
+    margin-left: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Legacy/app-shell report artifact fallback
+   -------------------------------------------------------------------------- */
+
+.workspace-document-report-masthead {
+    align-items: start;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 390px);
+    padding-bottom: 18px;
+}
+
+.workspace-document-report-title-block {
+    display: grid;
+    gap: 8px;
+}
+
+.workspace-document-report-eyebrow {
+    color: rgba(125, 211, 252, 0.92);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.workspace-document-report-title {
+    color: #f8fafc;
+    font-size: clamp(28px, 3.3vw, 42px);
+    font-weight: 820;
+    letter-spacing: -0.045em;
+    line-height: 1.04;
+    margin: 0;
+}
+
+.workspace-document-report-subtitle {
+    color: rgba(203, 213, 225, 0.80);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.workspace-document-report-meta-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.workspace-document-report-meta-item {
+    background: rgba(2, 8, 23, 0.30);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 12px;
+    display: grid;
+    gap: 5px;
+    min-height: 68px;
+    padding: 11px;
+}
+
+.workspace-document-report-meta-item span {
+    color: rgba(148, 163, 184, 0.82);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
+.workspace-document-report-meta-item strong {
+    color: rgba(248, 250, 252, 0.94);
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+/* --------------------------------------------------------------------------
+   Motion and responsive rules
+   -------------------------------------------------------------------------- */
+
+@keyframes solomon-report-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes solomon-report-spin-reverse {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes solomon-report-pulse {
+    0%,
+    100% {
+        opacity: 0.62;
+        transform: scale(0.96);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+@media (max-width: 860px) {
+    .workspace-report-document,
+    .workspace-report-preparation {
+        padding: 18px;
+    }
+
+    .workspace-report-preparation-card,
+    .workspace-document-inspector-body--operation {
+        border-radius: 18px;
+        padding: 20px;
+    }
+
+    .workspace-document-report-masthead {
+        grid-template-columns: 1fr;
+    }
+
+    .workspace-document-report-meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .workspace-document-report-identity strong {
+        font-size: 28px;
+    }
+
+    .workspace-document-report-actions .workspace-document-command-close {
+        margin-left: 0;
+    }
+
+    .workspace-report-preparation-orbit {
+        height: 170px;
+        width: 170px;
+    }
+
+    .workspace-report-preparation-ring--outer {
+        height: 162px;
+        width: 162px;
+    }
+
+    .workspace-report-preparation-ring--middle {
+        height: 126px;
+        width: 126px;
+    }
+
+    .workspace-report-preparation-ring--inner {
+        height: 94px;
+        width: 94px;
+    }
+
+    .workspace-report-preparation-core {
+        height: 78px;
+        width: 78px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspace-report-preparation-ring--outer,
+    .workspace-report-preparation-ring--middle,
+    .workspace-report-preparation-ring--inner {
+        animation: none;
+    }
+}

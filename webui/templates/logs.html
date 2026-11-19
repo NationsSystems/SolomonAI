@@ -1,0 +1,68 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Task Logs · Solomon Admin{% endblock %}
+
+{% block page_header %}Task Logs{% endblock %}
+
+{% block content %}
+
+<div class="admin-section diagnostic-grid">
+
+    <!-- Logs Card -->
+    <div class="diagnostic-card" style="grid-column: 1 / -1;">
+        <h2>📝 Recent Task Logs</h2>
+
+        <div id="logs" class="logs-list">
+            <!-- Logs injected dynamically -->
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadLogs() {
+    const res = await fetch("/admin/logs/data");
+    const data = await res.json();
+
+    const container = document.getElementById("logs");
+    container.innerHTML = "";
+
+    if (!data || data.status !== "ok") {
+        container.innerHTML = "<p>Unable to load logs.</p>";
+        return;
+    }
+
+    data.recent_tasks.forEach(entry => {
+        const div = document.createElement("div");
+
+        // UPDATED → use diagnostic-pre style block
+        div.className = "log-entry diagnostic-pre";
+
+        const ts = entry.created_at || "No Timestamp";
+        const intent = entry.intent || "Unknown";
+        const resultPreview = entry.result_preview || "";
+        const success = entry.success ? "✅" : "❌";
+        const reasonSrc = entry.reasoning_source || "unknown";
+        const duration = entry.duration_ms != null ? entry.duration_ms + " ms" : "—";
+
+        div.innerHTML = `
+            <div class="timestamp">${ts}</div>
+            <div><strong>Intent:</strong> ${intent}</div>
+            <div><strong>Success:</strong> ${success}</div>
+            <div><strong>Reasoning:</strong> ${reasonSrc}</div>
+            <div><strong>Duration:</strong> ${duration}</div>
+            <div><strong>Result:</strong> ${resultPreview}</div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// Initial load + auto-refresh
+loadLogs();
+setInterval(loadLogs, 10000);
+</script>
+{% endblock %}

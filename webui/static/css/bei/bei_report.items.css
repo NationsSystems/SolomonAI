@@ -1,0 +1,198 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.items.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+/* ============================================================
+   RISK / GAP ITEMS
+============================================================ */
+
+.bei-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14px;
+    grid-template-areas:
+        "title severity"
+        "impact impact";
+    gap: 7px 14px;
+    margin-bottom: 10px;
+    padding: 14px 15px 15px;
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: var(--bei-radius-sm);
+    background: rgba(255, 255, 255, 0.010);
+}
+
+.bei-list > .bei-item {
+    margin-bottom: 10px;
+    padding-left: 15px;
+}
+
+.bei-list > .bei-item:first-child {
+    margin-top: 0;
+}
+
+.bei-list > .bei-item:last-child {
+    margin-bottom: 0;
+}
+
+.bei-list > .bei-item::before {
+    content: none;
+}
+
+.bei-item:not(:has(.bei-item-severity)) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "title"
+        "impact";
+    gap: 5px;
+    padding: 12px 14px;
+}
+
+.bei-item-title {
+    grid-area: title;
+    margin: 0;
+    padding-right: 6px;
+    color: var(--bei-text-primary);
+    font-family: var(--bei-font-report);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.004em;
+    line-height: 1.38;
+    text-shadow: none;
+}
+
+.bei-item-impact {
+    grid-area: impact;
+    margin: 0;
+    color: var(--bei-text-body);
+    font-family: var(--bei-font-report);
+    font-size: 14.5px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.58;
+    text-shadow: none;
+}
+
+.bei-item-severity {
+    grid-area: severity;
+    justify-self: end;
+    align-self: start;
+    width: 9px;
+    height: 9px;
+    min-width: 9px;
+    margin: 5px 0 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.026);
+    color: var(--bei-text-secondary);
+    font-size: 0;
+    line-height: 0;
+    text-align: right;
+    text-indent: -9999px;
+    white-space: nowrap;
+}
+
+.bei-item-severity::before {
+    content: none;
+}
+
+.bei-severity-high,
+.risk-high {
+    color: var(--bei-risk-high);
+    font-weight: 800;
+}
+
+.bei-severity-medium,
+.risk-medium {
+    color: var(--bei-risk-medium);
+    font-weight: 800;
+}
+
+.bei-severity-low,
+.risk-low {
+    color: var(--bei-risk-low);
+    font-weight: 800;
+}
+
+.bei-severity-high,
+.bei-severity-medium,
+.bei-severity-low {
+    background: currentColor;
+}
+
+/* ============================================================
+   TABLE / DOCUMENT BREAKDOWN
+============================================================ */
+
+.bei-table {
+    width: 100%;
+    margin-top: 10px;
+    overflow: visible;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.bei-table th {
+    padding: 7px 0;
+    color: var(--bei-text-primary);
+    border-bottom: 1px solid var(--bei-divider);
+    background: transparent;
+    font-family: var(--bei-font-report);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-align: left;
+    text-transform: none;
+}
+
+.bei-table td {
+    padding: 8px 12px 8px 0;
+    color: var(--bei-text-body);
+    border-bottom: 1px solid var(--bei-divider);
+    font-family: var(--bei-font-report);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.58;
+    vertical-align: top;
+}
+
+.bei-table tr:last-child td {
+    border-bottom: none;
+}
+
+.bei-table td:first-child {
+    color: var(--bei-text-primary);
+    font-weight: 600;
+}
+
+.bei-doc-wrapper {
+    margin-top: 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.bei-doc-title {
+    margin-bottom: 4px;
+    color: var(--bei-text-primary);
+    font-family: var(--bei-font-report);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.004em;
+    line-height: 1.38;
+}
+
+.bei-doc-summary {
+    color: var(--bei-text-secondary);
+    font-family: var(--bei-font-report);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+}

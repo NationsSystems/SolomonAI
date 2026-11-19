@@ -1,0 +1,170 @@
+<!-- -------------------------------------------------------------------
+FILE: portal_base.html
+DIRECTORY: webui/templates/
+------------------------------------------------------------------- -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Nations Systems{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}?v=nations-official-favicon-20260727a" sizes="any">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}?v=nations-official-favicon-20260727a">
+
+    <!-- CORE VENDOR -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+
+    <!-- GLOBAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}?v=nations-v3-shell-20260515b">
+
+    <!-- PORTAL THEME -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_theme.css') }}?v=nations-v3-shell-20260515b">
+
+    <!-- PORTAL LAYOUT -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_layout.css') }}?v=nations-v3-shell-20260515b">
+
+    <!-- PORTAL BASE / NAV / TEXT -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_base.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_nav.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_text.css') }}?v=nations-v3-shell-20260515b">
+
+    <!-- PORTAL RESULTS / MODALS / FEEDBACK -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_results.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_modal.css') }}?v=nations-confirm-modal-20260622a">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_feedback.css') }}?v=nations-feedback-20260622a">
+
+    <!-- WORKSPACE / REPORT ARTIFACT STYLE -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bei/bei_report.css') }}?v=nations-v3-shell-20260515b">
+
+    <!-- DOCUMENT WORKSPACE STATUS SURFACES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_workspace_document_upload_status.css') }}?v=nations-document-upload-status-20260606a">
+
+    {% if request.path.startswith('/admin') %}
+    <!-- ADMIN THEME -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/theme.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/layout.css') }}?v=nations-v3-shell-20260515b">
+    {% endif %}
+
+    {% block head %}{% endblock %}
+</head>
+
+{% set request_path = request.path|default('', true) %}
+{% set workspace_shell_paths = [
+    '/',
+    '/home',
+    '/preconstruction',
+    '/preconstruction/review',
+    '/ops',
+    '/field',
+    '/quality',
+    '/safety',
+    '/coord',
+    '/docs',
+    '/finance',
+    '/people'
+] %}
+{% set is_workspace_shell_route =
+    request_path in workspace_shell_paths
+    or request_path.startswith('/docs/')
+    or request_path.startswith('/preconstruction/')
+    or request_path.startswith('/people/')
+%}
+{% set suppress_portal_chrome = is_workspace_shell_route %}
+
+<body class="nations-app-theme nations-business-theme{% if suppress_portal_chrome %} nations-workspace-shell-route{% endif %}"
+      data-shell-mode="{{ 'workspace' if suppress_portal_chrome else 'portal' }}">
+
+{% if not suppress_portal_chrome %}
+{% include "components/navbar.html" %}
+{% endif %}
+
+{% set billing_status = request.args.get('billing', '') %}
+
+<div class="app-shell nations-business-shell{% if suppress_portal_chrome %} nations-workspace-shell{% endif %}">
+
+    {% if billing_status in ['success', 'pending', 'cancel'] %}
+    <section id="billing-status-region"
+             class="billing-status-region"
+             data-billing-status="{{ billing_status }}"
+             aria-live="polite">
+        {% if billing_status == 'success' %}
+            <div class="billing-status-notice billing-status-notice--success" role="status">
+                <div class="billing-status-notice__content">
+                    <h2 class="billing-status-notice__title">
+                        Your account access has been updated.
+                    </h2>
+
+                    <p class="billing-status-notice__message">
+                        Your review workspace access is active. You can now create new workspaces and manage billing from your account navigation.
+                    </p>
+                </div>
+            </div>
+        {% elif billing_status == 'pending' %}
+            <div class="billing-status-notice billing-status-notice--pending" role="status">
+                <div class="billing-status-notice__content">
+                    <h2 class="billing-status-notice__title">
+                        Your checkout was received.
+                    </h2>
+
+                    <p class="billing-status-notice__message">
+                        Stripe is still confirming your subscription. Refresh shortly or contact support if account access does not update.
+                    </p>
+                </div>
+            </div>
+        {% elif billing_status == 'cancel' %}
+            <div class="billing-status-notice billing-status-notice--cancel" role="status">
+                <div class="billing-status-notice__content">
+                    <h2 class="billing-status-notice__title">
+                        No subscription changes were made.
+                    </h2>
+
+                    <p class="billing-status-notice__message">
+                        You can return to checkout whenever you are ready to activate review workspace access.
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <main class="app-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% if not suppress_portal_chrome %}
+    <footer class="portal-footer">
+        Nations Systems © 2026
+    </footer>
+    {% endif %}
+
+</div>
+
+{% include "components/confirm_modal.html" %}
+{% include "components/feedback_layer.html" %}
+
+<!-- CORE JS -->
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
+<script src="{{ url_for('static', filename='vendor/marked/marked.min.js') }}" defer></script>
+
+<!-- SHARED UI CONTRACT -->
+<script src="{{ url_for('static', filename='js/ui/ui.confirm.js') }}?v=nations-confirm-modal-20260622a" defer></script>
+<script src="{{ url_for('static', filename='js/ui/ui_feedback.js') }}?v=nations-feedback-20260622a" defer></script>
+
+<!-- BILLING UI -->
+<script src="{{ url_for('static', filename='js/billing/billing.status.js') }}?v=nations-v3-shell-20260515b" defer></script>
+
+<!-- V3 WORKSPACE UI HELPERS -->
+<script src="{{ url_for('static', filename='js/app.ui.core.js') }}?v=nations-v3-shell-20260515b"></script>
+<script src="{{ url_for('static', filename='js/app.ui.render.js') }}?v=nations-v3-shell-20260515b"></script>
+<script src="{{ url_for('static', filename='js/app.render.response.js') }}?v=nations-v3-shell-20260601a"></script>
+
+{% block scripts %}{% endblock %}
+
+<script>
+document.addEventListener("dragover", e => e.preventDefault(), false);
+document.addEventListener("drop", e => e.preventDefault(), false);
+</script>
+
+</body>
+</html>

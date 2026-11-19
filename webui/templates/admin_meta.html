@@ -1,0 +1,125 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Meta-Cognition · Solomon Admin{% endblock %}
+
+{% block content %}
+
+<div class="admin-header">
+    <h1 class="admin-title">Meta-Cognition Diagnostics</h1>
+    <p class="subtitle">
+        Deep introspection layer — observing cognition, trends, anomalies, patterns, and meta-signals.
+    </p>
+</div>
+
+<div class="section-grid">
+
+    <!-- Meta Snapshot -->
+    <div class="card">
+        <h2>🧩 Meta Snapshot</h2>
+        <pre id="metaSnapshot" class="meta-pre">Loading...</pre>
+    </div>
+
+    <!-- Trends -->
+    <div class="card">
+        <h2>📉 Meta Trends</h2>
+        <pre id="metaTrends" class="meta-pre">Loading...</pre>
+    </div>
+
+    <!-- Pattern Classifier -->
+    <div class="card">
+        <h2>🔍 Pattern Classifier</h2>
+        <pre id="metaPatterns" class="meta-pre">Loading...</pre>
+    </div>
+
+    <!-- Anomalies -->
+    <div class="card">
+        <h2>⚠ Meta Anomalies</h2>
+        <pre id="metaAnomalies" class="meta-pre">Loading...</pre>
+    </div>
+
+    <!-- Summary -->
+    <div class="card">
+        <h2>📝 Meta Summary</h2>
+        <pre id="metaSummary" class="meta-pre">Loading...</pre>
+    </div>
+
+</div>
+
+<style>
+/* ================================
+   Phase 17 Unified Theme Enhancements
+   ================================ */
+
+.admin-header {
+    margin-bottom: 25px;
+}
+
+.admin-header .subtitle {
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+/* Preformatted diagnostic blocks */
+.meta-pre {
+    background: var(--bg-card);
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+    color: var(--text-code);
+    overflow-x: auto;
+}
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadMetaDiagnostics() {
+    try {
+        const res = await fetch("/admin/diagnostics/meta");
+        const json = await res.json();
+
+        document.getElementById("metaSnapshot").textContent =
+            JSON.stringify(json.snapshot || {}, null, 2);
+
+        document.getElementById("metaTrends").textContent =
+            JSON.stringify(json.trends || {}, null, 2);
+
+        document.getElementById("metaPatterns").textContent =
+            JSON.stringify(json.patterns || {}, null, 2);
+
+        document.getElementById("metaAnomalies").textContent =
+            JSON.stringify(json.anomalies || {}, null, 2);
+
+        document.getElementById("metaSummary").textContent =
+            JSON.stringify(json.summary || {}, null, 2);
+
+    } catch (err) {
+        const ids = [
+            "metaSnapshot",
+            "metaTrends",
+            "metaPatterns",
+            "metaAnomalies",
+            "metaSummary"
+        ];
+
+        ids.forEach(id => {
+            document.getElementById(id).textContent =
+                "Error loading meta diagnostics: " + err;
+        });
+    }
+}
+
+// Initial load + periodic refresh
+loadMetaDiagnostics();
+setInterval(loadMetaDiagnostics, 15000);
+</script>
+{% endblock %}

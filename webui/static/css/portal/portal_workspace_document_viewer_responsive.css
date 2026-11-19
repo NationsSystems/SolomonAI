@@ -1,0 +1,130 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_viewer_responsive.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   WORKSPACE DOCUMENT VIEWER RESPONSIVE SAFETY
+   ========================================================================== */
+
+.workspace-document-explorer[data-document-explorer-loading="true"] {
+    cursor: progress;
+}
+
+.workspace-document-explorer[data-document-explorer-loading="true"] .workspace-document-browser,
+.workspace-document-explorer[data-document-explorer-loading="true"] .workspace-document-inspector {
+    opacity: 0.72;
+}
+
+@media (max-width: 1180px) {
+    .workspace-command-shell,
+    .workspace-command-canvas,
+    .precon-command-desk--documents.workspace-command-canvas,
+    .precon-mode-deck.workspace-command-canvas {
+        width: min(100%, calc(100vw - 24px));
+    }
+
+    .workspace-document-explorer {
+        grid-template-areas: "collections browser";
+        grid-template-columns: minmax(210px, 0.72fr) minmax(390px, 1.7fr);
+        height: calc(100vh - 150px);
+        min-height: 520px;
+    }
+
+    .workspace-document-collections,
+    .workspace-document-browser,
+    .workspace-document-inspector {
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .precon-app-page--documents .workspace-document-explorer .workspace-document-collections {
+        min-height: 0;
+    }
+
+    .workspace-command-files-panel,
+    .workspace-command-preview-panel,
+    .workspace-command-chat-panel {
+        height: 100%;
+        min-height: 0;
+    }
+
+    .workspace-document-preview-frame {
+        min-height: 520px;
+    }
+}
+
+@media (max-width: 760px) {
+    .workspace-document-explorer {
+        grid-template-areas:
+            "collections"
+            "browser";
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        min-height: 0;
+    }
+
+    .workspace-document-collections,
+    .workspace-document-browser,
+    .workspace-document-inspector {
+        height: auto;
+        min-height: 0;
+    }
+
+    .workspace-document-browser-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .workspace-document-browser-actions,
+    .workspace-document-inspector-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .workspace-document-command {
+        width: 100%;
+    }
+
+    .solomon-stage-identity--workspace {
+        align-items: center;
+        grid-template-columns: minmax(0, 1fr);
+        text-align: center;
+    }
+
+    .solomon-stage-identity--workspace .solomon-guide-avatar {
+        justify-self: center;
+    }
+
+    .solomon-stage-identity--workspace .solomon-guide-copy {
+        text-align: center;
+    }
+
+    .solomon-guide-input--workspace {
+        border-radius: 18px;
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .workspace-document-preview-frame {
+        min-height: 460px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspace-document-collection,
+    .workspace-document-file,
+    .workspace-document-command {
+        animation: none;
+        transition: none;
+    }
+
+    .workspace-document-collection:hover,
+    .workspace-document-collection:focus-visible,
+    .workspace-document-file:hover,
+    .workspace-document-file:focus-visible,
+    .workspace-document-command:hover,
+    .workspace-document-command:focus-visible {
+        transform: none;
+    }
+}

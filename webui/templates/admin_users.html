@@ -1,0 +1,163 @@
+<!-- ==========================================================================
+     FILE: admin_users.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+{% extends "admin_base.html" %}
+
+{% block title %}User Management | Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin/admin_users.css') }}?v=nations-admin-users-email-identity-20260517a">
+{% endblock %}
+
+{% block page_header %}
+User Management
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-panel">
+    <div class="admin-panel-header">
+        <div class="admin-panel-title-group">
+            <h2 class="admin-panel-title">Registered Users</h2>
+            <p class="admin-panel-description">
+                Review user accounts by email, select users when needed, and open row actions from each account menu.
+            </p>
+        </div>
+
+        <button type="button"
+                id="refreshUsersButton"
+                class="admin-action">
+            Refresh Users
+        </button>
+    </div>
+
+    <div id="adminUsersNotice"
+         class="admin-notice"
+         role="status"
+         aria-live="polite"
+         hidden></div>
+
+    <div class="admin-user-toolbar"
+         aria-label="User selection controls">
+        <button type="button"
+                id="selectAllUsers"
+                class="admin-action">
+            Select All
+        </button>
+
+        <button type="button"
+                id="clearUserSelection"
+                class="admin-action admin-action-quiet"
+                disabled>
+            Clear Selection
+        </button>
+
+        <span id="selectedUserCount"
+              class="admin-panel-tag"
+              aria-live="polite">
+            0 Selected
+        </span>
+
+        <div class="admin-menu admin-bulk-action-menu"
+             data-admin-menu>
+            <button type="button"
+                    id="bulkActionMenuButton"
+                    class="admin-action admin-action-primary"
+                    data-menu-trigger
+                    disabled>
+                Selected Actions
+            </button>
+
+            <div class="admin-menu-list"
+                 role="menu"
+                 aria-labelledby="bulkActionMenuButton">
+                <button type="button"
+                        class="admin-menu-item"
+                        data-bulk-action="toggle-admin">
+                    Toggle Admin Role
+                </button>
+
+                <button type="button"
+                        class="admin-menu-item"
+                        data-bulk-action="toggle-active">
+                    Enable / Disable Account
+                </button>
+
+                <button type="button"
+                        class="admin-menu-item"
+                        data-bulk-action="reset-password">
+                    Reset Password
+                </button>
+
+                <button type="button"
+                        class="admin-menu-item admin-menu-item-danger"
+                        data-bulk-action="delete">
+                    Delete User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-table-wrap">
+        <table class="admin-table admin-users-table" id="usersTable">
+            <thead>
+                <tr>
+                    <th class="admin-select-col">
+                        <span class="visually-hidden">Select</span>
+                    </th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="usersTableBody">
+                <tr>
+                    <td colspan="7">Loading users…</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="temporaryPasswordPanel"
+         class="admin-panel admin-temporary-password-output"
+         aria-live="polite"
+         hidden>
+    <div class="admin-panel-header">
+        <div class="admin-panel-title-group">
+            <h2 class="admin-panel-title">Temporary Password</h2>
+            <p class="admin-panel-description">
+                This password is shown once. Copy it now and give it to the user securely.
+            </p>
+        </div>
+    </div>
+
+    <pre id="tempPasswordOutput" class="diagnostic-pre"></pre>
+
+    <div class="admin-action-row">
+        <button type="button"
+                id="copyTemporaryPassword"
+                class="admin-action admin-action-primary">
+            Copy Password
+        </button>
+
+        <button type="button"
+                id="dismissTemporaryPassword"
+                class="admin-action">
+            Dismiss
+        </button>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin/admin_users.js') }}?v=nations-admin-users-email-identity-20260517a" defer></script>
+{% endblock %}

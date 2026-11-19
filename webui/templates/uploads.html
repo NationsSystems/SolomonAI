@@ -1,0 +1,66 @@
+{% extends "admin_base.html" %}
+{% block title %}Solomon Admin · Uploads{% endblock %}
+
+{% block page_header %}
+Uploaded Files
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-section">
+
+    <div class="card">
+        <h2>📁 Registered Uploads</h2>
+
+        <table class="admin-table" id="uploadTable">
+            <thead>
+                <tr>
+                    <th>Filename</th>
+                    <th>Stored Path</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadUploads() {
+    try {
+        const res = await fetch("/admin/uploads/list");
+        const data = await res.json();
+
+        const tbody = document.querySelector("#uploadTable tbody");
+        tbody.innerHTML = "";
+
+        if (!data || data.status !== "ok") {
+            tbody.innerHTML = `<tr>
+                <td colspan="3" style="text-align:center;">Unable to load uploads.</td>
+            </tr>`;
+            return;
+        }
+
+        data.uploads.forEach(file => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${file.original_name || "---"}</td>
+                <td>${file.path || "---"}</td>
+                <td>${file.size_bytes ? file.size_bytes + " bytes" : "---"}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error("Failed to load uploads:", err);
+    }
+}
+
+loadUploads();
+setInterval(loadUploads, 10000);
+</script>
+{% endblock %}

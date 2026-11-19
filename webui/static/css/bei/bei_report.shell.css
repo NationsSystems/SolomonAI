@@ -1,0 +1,114 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.shell.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+/* ============================================================
+   REPORT CONTAINER
+============================================================ */
+
+.bei-report {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 28px 30px 30px;
+    color: var(--bei-text-primary);
+    border: 1px solid var(--brand-border-soft, var(--bei-divider));
+    border-radius: var(--bei-radius-lg);
+    background: var(--bei-surface);
+    box-shadow: var(--shadow-card, none);
+    font-family: var(--bei-font-report);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.66;
+    text-align: left;
+    text-shadow: none;
+}
+
+.bei-report *,
+.bei-report p,
+.bei-report div,
+.bei-report li,
+.bei-report td {
+    font-family: var(--bei-font-report);
+    text-rendering: optimizeLegibility;
+}
+
+.bei-report::before,
+.bei-report::after {
+    content: none;
+}
+
+.bei-report > * {
+    position: relative;
+}
+
+/* ============================================================
+   REPORT HEADER
+============================================================ */
+
+.bei-header,
+.bei-report-header {
+    position: relative;
+    min-height: 38px;
+    display: block;
+    margin-bottom: 28px;
+    padding: 0 116px 18px 0;
+    border-bottom: 1px solid var(--bei-divider-strong);
+    background: transparent;
+}
+
+.bei-header::after,
+.bei-report-header::after {
+    content: none;
+}
+
+.bei-title {
+    margin: 0 0 13px;
+    padding: 0;
+    color: var(--bei-text-primary);
+    font-family: var(--bei-font-report);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+    text-align: left;
+    text-shadow: none;
+}
+
+.bei-header .bei-meta-line,
+.bei-report-header .bei-meta-line {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    color: var(--bei-text-secondary);
+    font-family: var(--bei-font-report);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.bei-header .bei-meta-line + .bei-meta-line,
+.bei-report-header .bei-meta-line + .bei-meta-line {
+    margin-top: 4px;
+}
+
+.bei-header .bei-label,
+.bei-report-header .bei-label {
+    color: var(--bei-text-secondary);
+    font-family: var(--bei-font-report);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.bei-header .bei-value,
+.bei-report-header .bei-value {
+    margin-left: 0;
+    color: var(--bei-text-body);
+    font-family: var(--bei-font-report);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+}

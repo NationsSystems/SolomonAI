@@ -1,0 +1,126 @@
+/* ==========================================================================
+   FILE: portal_workspace_console_actions.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SHARED CONSOLE ACTIONS
+   ========================================================================== */
+
+.command-view-link,
+.command-secondary-button,
+.command-starter-link {
+    align-items: center;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    text-decoration: none;
+}
+
+.command-view-link {
+    color: rgba(170, 184, 210, 0.78);
+    font-size: 0.78rem;
+    font-weight: 650;
+    gap: 4px;
+    justify-content: flex-end;
+    white-space: nowrap;
+}
+
+.command-secondary-button,
+.command-starter-link {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+        linear-gradient(135deg, var(--widget-accent-soft), transparent 72%);
+    border: 1px solid var(--widget-accent-border);
+    border-radius: var(--radius-control);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+    color: rgba(239, 245, 255, 0.88);
+    font-size: 0.78rem;
+    font-weight: 720;
+    gap: 8px;
+    padding: 7px 10px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        color 0.14s ease;
+    white-space: nowrap;
+}
+
+.command-starter-link {
+    min-height: 34px;
+    padding: 7px 11px;
+}
+
+.command-secondary-button:hover,
+.command-secondary-button:focus-visible,
+.command-starter-link:hover,
+.command-starter-link:focus-visible {
+    border-color: color-mix(in srgb, var(--widget-accent) 70%, #ffffff);
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--widget-accent) 18%, transparent) inset,
+        0 10px 24px color-mix(in srgb, var(--widget-accent) 16%, transparent);
+    color: #ffffff;
+    outline: none;
+}
+
+/* ==========================================================================
+   OPERATIONS CONSOLE FOOTER
+   ========================================================================== */
+
+.operations-console-footer {
+    align-items: center;
+    border-top: 0;
+    box-sizing: border-box;
+    color: rgba(160, 174, 202, 0.64);
+    display: flex;
+    flex-wrap: wrap;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 520;
+    gap: 0.48rem;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    line-height: 1.35;
+    margin: clamp(14px, 2vh, 22px) auto 0;
+    max-width: min(1120px, calc(100vw - 48px));
+    min-height: 20px;
+    padding: 0 0 clamp(12px, 2vh, 22px);
+    text-align: center;
+    text-rendering: geometricPrecision;
+    text-transform: none;
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] ~ .operations-console-footer {
+    display: none;
+}
+
+.operations-console-footer__copyright,
+.operations-console-footer__link,
+.operations-console-footer__link:visited {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    display: inline-flex;
+    font: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    text-transform: none;
+}
+
+.operations-console-footer__link {
+    cursor: pointer;
+}
+
+.operations-console-footer__link:hover,
+.operations-console-footer__link:focus-visible {
+    color: rgba(196, 209, 235, 0.90);
+    outline: none;
+    text-decoration: none;
+}

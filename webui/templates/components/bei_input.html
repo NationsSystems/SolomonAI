@@ -1,0 +1,34 @@
+<!-- -------------------------------------------------------------------
+     FILE: bei_input.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+<div class="bei-card">
+
+    <div class="bei-tabs">
+        <button id="tab-upload" class="bei-tab active">Upload Files</button>
+        <button id="tab-paste" class="bei-tab">Paste Text</button>
+    </div>
+
+    <div id="drop-zone" class="bei-dropzone">
+        <div class="bei-dropzone-text">Drag & drop your files here</div>
+        <div class="bei-dropzone-subtext">or click to browse</div>
+        <input type="file" id="bei-files" multiple class="bei-file-input" />
+    </div>
+
+    <div id="bei-file-list" class="bei-file-list"></div>
+
+    <textarea id="bei-input"
+              class="bei-textarea"
+              style="display:none;"
+              placeholder="Paste document text, notes, requirements, terms, or source material here..."></textarea>
+
+    {% include "components/bei_progress.html" %}
+
+    <button id="bei-analyze-btn" class="bei-cta" disabled>
+        ✨ Analyze Documents
+    </button>
+
+    <div id="bei-results" class="bei-results" style="display:none;"></div>
+
+</div>

@@ -1,0 +1,930 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_viewer_chat.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMONAI WORKSPACE DOCUMENT CHAT
+   --------------------------------------------------------------------------
+   Scope:
+   - Owns the full-canvas SolomonAI chat presentation inside Documents.
+   - Does not own file-manager layout, preview layout, reader layout, uploads,
+     navigation, or document actions.
+   - Pending/thinking is a chat substate and must not change canvas geometry.
+
+   Contract:
+   - data-workspace-view="files" shows the file manager.
+   - data-workspace-view="chat" shows the full SolomonAI chat canvas.
+   - data-workspace-view="preview" remains owned by preview CSS.
+
+   Refactor note:
+   - This file intentionally remains a single runtime file.
+   - Repeated override rules have been consolidated into scoped foundations.
+   - Remaining !important declarations are retained only where this chat surface
+     must win against older workspace/assistant shell styles.
+   ========================================================================== */
+
+/* ==========================================================================
+   01. CHAT TOKENS
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] {
+    --solomon-chat-cyan: rgba(34, 211, 238, 0.95);
+    --solomon-chat-cyan-soft: rgba(22, 191, 216, 0.26);
+    --solomon-chat-cyan-focus: rgba(34, 211, 238, 0.44);
+    --solomon-chat-text-strong: rgba(248, 250, 252, 0.98);
+    --solomon-chat-text: rgba(235, 241, 250, 0.95);
+    --solomon-chat-text-muted: rgba(190, 201, 218, 0.74);
+    --solomon-chat-text-subtle: rgba(148, 163, 184, 0.58);
+    --solomon-chat-canvas: rgba(3, 8, 18, 0.92);
+    --solomon-chat-user-surface: rgba(38, 48, 63, 0.88);
+    --solomon-chat-edge-pad: clamp(16px, 3.5vw, 44px);
+    --solomon-chat-panel-pad: clamp(12px, 1.8vw, 22px);
+    --solomon-chat-panel-radius: 14px;
+    --solomon-chat-control-radius: 999px;
+    --solomon-chat-transcript-width: 760px;
+    --solomon-chat-composer-width: 760px;
+    --solomon-chat-user-width: 560px;
+    --solomon-chat-turn-gap: clamp(30px, 4vh, 44px);
+}
+
+/* ==========================================================================
+   02. WORKSPACE VIEW SWITCHING
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="files"] .workspace-command-files-panel {
+    display: grid !important;
+}
+
+.workspace-document-explorer[data-workspace-view="files"] .workspace-command-chat-panel,
+.workspace-document-explorer[data-workspace-view="files"] .workspace-command-preview-panel,
+.workspace-document-explorer[data-workspace-view="chat"] .workspace-command-files-panel,
+.workspace-document-explorer[data-workspace-view="chat"] .workspace-command-preview-panel,
+.workspace-command-chat-panel[hidden],
+.workspace-command-chat-panel[aria-hidden="true"] {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .workspace-command-chat-panel {
+    align-self: stretch !important;
+    display: grid !important;
+    height: 100% !important;
+    justify-self: stretch !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+/* ==========================================================================
+   03. CHAT MOTION PRIMITIVES
+   ========================================================================== */
+
+@keyframes solomonWorkspaceThinkingDot {
+    0%,
+    80%,
+    100% {
+        opacity: 0.28;
+        transform: translateY(0) scale(0.88);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1);
+    }
+}
+
+@keyframes solomonWorkspaceSendDots {
+    0%,
+    100% {
+        opacity: 0.42;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   04. LAYOUT FOUNDATIONS
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] :is(
+    .workspace-command-chat-panel,
+    #solomonWorkspaceAssistantPanel,
+    .solomon-stage-shell--workspace,
+    .solomon-stage-shell--workspace > *,
+    .solomon-stage-identity--workspace,
+    .solomon-stage-identity--workspace .solomon-guide-copy,
+    #solomonWorkspaceConversationMessages,
+    .solomon-guide-message--thinking,
+    .solomon-workspace-conversation-message,
+    .solomon-workspace-conversation-message-content,
+    .solomon-workspace-conversation-message-heading,
+    .solomon-workspace-conversation-message-text,
+    .solomon-workspace-conversation-message-paragraph,
+    .solomon-workspace-conversation-message-list,
+    .solomon-workspace-conversation-message-prompts,
+    #solomonWorkspaceConversationForm,
+    #solomonWorkspaceConversationInput
+) {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] :is(
+    #solomonWorkspaceAssistantPanel,
+    .solomon-stage-shell--workspace,
+    .workspace-command-chat-panel
+) {
+    align-self: stretch !important;
+    justify-self: stretch !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] :is(
+    #solomonWorkspaceAssistantPanel,
+    .solomon-stage-shell--workspace
+) {
+    display: grid !important;
+    height: 100% !important;
+    justify-content: stretch !important;
+    justify-items: stretch !important;
+}
+
+/* ==========================================================================
+   05. CHAT CANVAS SHELL
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceAssistantPanel {
+    align-items: stretch !important;
+    background: var(--solomon-chat-canvas) !important;
+    border: 0 !important;
+    border-radius: var(--solomon-chat-panel-radius) !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    position: relative !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceAssistantPanel::before {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-shell--workspace {
+    align-content: stretch !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    margin: 0 !important;
+    max-height: none !important;
+    max-width: none !important;
+    padding: 0 !important;
+}
+
+/* ==========================================================================
+   06. SOURCE CONTEXT CONTRACT
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract {
+    align-self: start !important;
+    background:
+        linear-gradient(135deg, rgba(10, 18, 32, 0.62), rgba(4, 9, 18, 0.44)) !important;
+    border: 1px solid rgba(105, 128, 157, 0.14) !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    gap: 10px !important;
+    justify-self: stretch !important;
+    min-width: 0 !important;
+    padding: 12px !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract[data-solomon-source-state="attached"] {
+    background:
+        radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.075), transparent 34%),
+        linear-gradient(135deg, rgba(9, 25, 38, 0.66), rgba(4, 9, 18, 0.46)) !important;
+    border-color: rgba(34, 211, 238, 0.18) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-header {
+    align-items: start !important;
+    display: grid !important;
+    gap: 10px !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    min-width: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-header > .icon {
+    align-items: center !important;
+    background: rgba(22, 191, 216, 0.08) !important;
+    border: 1px solid rgba(22, 191, 216, 0.14) !important;
+    border-radius: 10px !important;
+    color: rgba(125, 211, 252, 0.86) !important;
+    display: inline-flex !important;
+    font-size: 18px !important;
+    height: 34px !important;
+    justify-content: center !important;
+    width: 34px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract[data-solomon-source-state="empty"] .solomon-workspace-source-contract-header > .icon {
+    background: rgba(148, 163, 184, 0.06) !important;
+    border-color: rgba(148, 163, 184, 0.12) !important;
+    color: rgba(180, 194, 214, 0.72) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-copy {
+    display: grid !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-copy .workspace-kicker {
+    color: rgba(122, 213, 236, 0.72) !important;
+    font-size: 0.58rem !important;
+    font-weight: 860 !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-copy strong {
+    color: rgba(245, 249, 255, 0.94) !important;
+    display: block !important;
+    font-size: 0.88rem !important;
+    font-weight: 820 !important;
+    letter-spacing: -0.018em !important;
+    line-height: 1.18 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-contract-copy span {
+    color: rgba(186, 199, 219, 0.70) !important;
+    display: block !important;
+    font-size: 0.74rem !important;
+    font-weight: 600 !important;
+    line-height: 1.38 !important;
+    margin: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-list {
+    border-top: 1px solid rgba(105, 128, 157, 0.12) !important;
+    display: grid !important;
+    gap: 6px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    max-height: 132px !important;
+    min-width: 0 !important;
+    overflow: auto !important;
+    padding: 10px 0 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-item {
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.018) !important;
+    border: 1px solid rgba(105, 128, 157, 0.10) !important;
+    border-radius: 10px !important;
+    display: grid !important;
+    gap: 8px !important;
+    grid-template-columns: 22px minmax(0, 1fr) !important;
+    min-height: 34px !important;
+    min-width: 0 !important;
+    padding: 6px 8px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-item .icon {
+    color: rgba(125, 211, 252, 0.76) !important;
+    font-size: 17px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-item span:not(.icon) {
+    color: rgba(226, 236, 248, 0.88) !important;
+    display: block !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-return {
+    align-items: center !important;
+    color: rgba(125, 211, 252, 0.82) !important;
+    display: inline-flex !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    gap: 6px !important;
+    justify-self: start !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-return:hover,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-source-return:focus-visible {
+    color: rgba(224, 251, 255, 0.96) !important;
+    outline: 0 !important;
+    text-decoration: none !important;
+}
+
+/* ==========================================================================
+   07. EMPTY CHAT IDENTITY
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-identity--workspace {
+    align-items: center !important;
+    align-self: start !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    display: grid !important;
+    gap: 12px !important;
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    justify-self: center !important;
+    margin: clamp(34px, 8vh, 88px) auto 0 !important;
+    max-width: min(
+        var(--solomon-chat-transcript-width),
+        calc(100% - (var(--solomon-chat-edge-pad) * 2))
+    ) !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-identity--workspace[hidden] {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-identity--workspace .solomon-guide-avatar {
+    height: 38px !important;
+    justify-self: start !important;
+    width: 38px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-identity--workspace .solomon-guide-copy {
+    text-align: left !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-identity--workspace h2 {
+    color: var(--solomon-chat-text-strong);
+    font-size: 1.08rem;
+    font-weight: 720;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-stage-summary {
+    color: var(--solomon-chat-text-muted);
+    font-size: 0.92rem;
+    font-weight: 450;
+    line-height: 1.55;
+    margin: 4px 0 0;
+}
+
+/* ==========================================================================
+   08. CONVERSATION THREAD
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages,
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages:not(:empty) {
+    align-content: start !important;
+    align-self: stretch !important;
+    display: grid !important;
+    flex-direction: initial !important;
+    gap: var(--solomon-chat-turn-gap) !important;
+    grid-auto-rows: max-content !important;
+    height: auto !important;
+    justify-self: stretch !important;
+    max-height: none !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding:
+        clamp(32px, 6vh, 68px)
+        var(--solomon-chat-edge-pad)
+        clamp(28px, 5vh, 54px) !important;
+    scrollbar-color: rgba(148, 163, 184, 0.30) transparent !important;
+    scrollbar-gutter: stable !important;
+    scrollbar-width: thin !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages:empty {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages::-webkit-scrollbar {
+    width: 10px;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.24);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+}
+
+/* ==========================================================================
+   09. THINKING AND PENDING STATES
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] {
+    align-self: start !important;
+    justify-items: start !important;
+    justify-self: center !important;
+    max-width: min(
+        var(--solomon-chat-transcript-width),
+        calc(100% - (var(--solomon-chat-edge-pad) * 2))
+    ) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking {
+    align-items: start !important;
+    display: grid !important;
+    margin: 0 !important;
+    min-height: 22px !important;
+    padding: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking .solomon-guide-thinking-dots {
+    align-items: center !important;
+    display: inline-flex !important;
+    gap: 7px !important;
+    justify-content: flex-start !important;
+    min-height: 22px !important;
+    padding: 4px 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking .solomon-guide-thinking-dot {
+    animation: solomonWorkspaceThinkingDot 1.05s ease-in-out infinite !important;
+    background: var(--solomon-chat-cyan) !important;
+    border-radius: 999px;
+    box-shadow: none;
+    display: block;
+    height: 7px;
+    opacity: 0.28;
+    transform: translateY(0) scale(0.88);
+    width: 7px;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking .solomon-guide-thinking-dot:nth-child(2) {
+    animation-delay: 0.14s !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking .solomon-guide-thinking-dot:nth-child(3) {
+    animation-delay: 0.28s !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] {
+    opacity: 1 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] :is(
+    .solomon-workspace-message-timestamp,
+    .solomon-workspace-conversation-message-label
+) {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-content {
+    justify-self: start !important;
+    width: auto !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text {
+    align-items: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: transparent !important;
+    display: inline-flex !important;
+    gap: 7px !important;
+    justify-content: flex-start !important;
+    justify-self: start !important;
+    line-height: 1 !important;
+    max-width: none !important;
+    min-height: 22px !important;
+    min-width: 36px !important;
+    padding: 4px 0 !important;
+    position: relative !important;
+    white-space: normal !important;
+    width: 36px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text::before {
+    animation: solomonWorkspaceSendDots 1s ease-in-out infinite !important;
+    color: var(--solomon-chat-cyan) !important;
+    content: "•••" !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    left: 0 !important;
+    letter-spacing: 2px !important;
+    line-height: 1 !important;
+    opacity: 0.42;
+    pointer-events: none !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text::after,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text span,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text p,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] .solomon-workspace-conversation-message-text > * {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ==========================================================================
+   10. CONVERSATION MESSAGES
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message {
+    display: grid !important;
+    gap: 10px !important;
+    justify-self: center !important;
+    max-width: min(
+        var(--solomon-chat-transcript-width),
+        calc(100% - (var(--solomon-chat-edge-pad) * 2))
+    ) !important;
+    white-space: normal !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant {
+    justify-items: start !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--user {
+    justify-items: end !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] :is(
+    .solomon-workspace-conversation-message-label,
+    .solomon-workspace-conversation-message-label[hidden],
+    .solomon-workspace-conversation-message-label[aria-hidden="true"],
+    .solomon-workspace-message-timestamp,
+    [data-solomon-workspace-author-hidden="true"]
+) {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-content {
+    display: grid !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-content--assistant {
+    justify-self: stretch !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-content--user {
+    background: var(--solomon-chat-user-surface) !important;
+    border: 1px solid rgba(148, 163, 184, 0.16) !important;
+    border-radius: 18px !important;
+    box-shadow: none !important;
+    gap: 0 !important;
+    justify-self: end !important;
+    max-width: min(var(--solomon-chat-user-width), 78%) !important;
+    padding: 11px 16px !important;
+    width: auto !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-heading {
+    color: var(--solomon-chat-text-strong) !important;
+    font-size: 1.06rem !important;
+    font-weight: 720 !important;
+    letter-spacing: -0.018em !important;
+    line-height: 1.38 !important;
+    margin: 0 0 2px !important;
+    overflow-wrap: anywhere !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-text,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-paragraph {
+    color: var(--solomon-chat-text);
+    font-size: 1rem;
+    font-weight: 440;
+    line-height: 1.72;
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant .solomon-workspace-conversation-message-text,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant .solomon-workspace-conversation-message-paragraph {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: var(--solomon-chat-text);
+    justify-self: stretch !important;
+    max-width: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--user .solomon-workspace-conversation-message-text,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--user .solomon-workspace-conversation-message-paragraph {
+    color: var(--solomon-chat-text-strong) !important;
+    font-size: 0.98rem !important;
+    font-weight: 470 !important;
+    line-height: 1.56 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-list {
+    color: var(--solomon-chat-text);
+    display: grid !important;
+    font-size: 1rem !important;
+    font-weight: 440 !important;
+    gap: 8px !important;
+    line-height: 1.66 !important;
+    margin: 0 !important;
+    padding-left: 1.45rem !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-list-item {
+    margin: 0 !important;
+    padding-left: 0.18rem !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-list-item::marker {
+    color: rgba(203, 213, 225, 0.78) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant a:not([data-citation]):not([data-source-citation]) {
+    color: inherit !important;
+    cursor: text !important;
+    pointer-events: none !important;
+    text-decoration: none !important;
+}
+
+/* ==========================================================================
+   11. FOLLOW-UP PROMPTS
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-bridge,
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message-bridge {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: var(--solomon-chat-text-muted);
+    display: block !important;
+    font-size: 0.92rem;
+    font-weight: 450;
+    line-height: 1.55;
+    margin: 2px 0 0;
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-prompts {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: rgba(214, 226, 245, 0.86);
+    cursor: text !important;
+    display: grid !important;
+    gap: 8px !important;
+    list-style-position: outside;
+    list-style-type: disc;
+    margin: 4px 0 0;
+    max-width: 100% !important;
+    padding: 0 0 0 1.45rem !important;
+    pointer-events: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-prompt {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: rgba(224, 235, 250, 0.88);
+    cursor: text !important;
+    display: list-item !important;
+    font-size: 0.94rem;
+    font-weight: 450;
+    line-height: 1.55;
+    margin: 0;
+    padding: 0 0 0 0.18rem;
+    text-decoration: none !important;
+    white-space: normal;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-prompt::marker {
+    color: rgba(34, 211, 238, 0.62);
+    font-size: 0.82em;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-actions {
+    display: none !important;
+}
+
+/* ==========================================================================
+   12. CHAT INPUT FORM
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationForm {
+    align-items: center !important;
+    align-self: end !important;
+    background: rgba(30, 38, 51, 0.92) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    border-radius: var(--solomon-chat-control-radius) !important;
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+    display: grid !important;
+    gap: 10px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    justify-self: center !important;
+    margin: 0 auto clamp(12px, 2.2vh, 22px) !important;
+    max-width: var(--solomon-chat-composer-width) !important;
+    min-height: 58px !important;
+    padding: 8px 8px 8px 18px !important;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease !important;
+    width: min(
+        var(--solomon-chat-composer-width),
+        calc(100% - (var(--solomon-chat-edge-pad) * 2))
+    ) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationForm:focus-within {
+    background: rgba(34, 43, 57, 0.96) !important;
+    border-color: rgba(148, 163, 184, 0.30) !important;
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.28),
+        0 0 0 2px rgba(34, 211, 238, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationForm[data-solomon-workspace-pending="true"] {
+    border-color: rgba(34, 211, 238, 0.34) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationInput {
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--solomon-chat-text-strong);
+    font: inherit !important;
+    font-size: 0.98rem;
+    font-weight: 440;
+    line-height: 1.45 !important;
+    outline: none !important;
+    width: 100% !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationInput::placeholder {
+    color: rgba(184, 199, 223, 0.56);
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationInput[aria-busy="true"] {
+    opacity: 0.72;
+}
+
+/* ==========================================================================
+   13. CHAT SEND BUTTON
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend {
+    align-items: center !important;
+    background: rgba(226, 232, 240, 0.96) !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    color: rgba(15, 23, 42, 0.96);
+    cursor: pointer !important;
+    display: inline-flex !important;
+    height: 38px !important;
+    justify-content: center !important;
+    min-height: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    position: relative !important;
+    transition:
+        background 160ms ease,
+        color 160ms ease,
+        opacity 160ms ease,
+        transform 160ms ease !important;
+    width: 38px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend:hover {
+    background: rgba(248, 250, 252, 1) !important;
+    color: rgba(2, 6, 23, 1) !important;
+    transform: translateY(-1px) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend:focus-visible {
+    outline: 2px solid rgba(34, 211, 238, 0.52) !important;
+    outline-offset: 3px !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend:disabled {
+    background: rgba(148, 163, 184, 0.30) !important;
+    color: rgba(226, 232, 240, 0.58) !important;
+    cursor: default !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend[aria-busy="true"] {
+    color: transparent !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend[aria-busy="true"] > * {
+    opacity: 0 !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend[aria-busy="true"]::before {
+    animation: solomonWorkspaceSendDots 1s ease-in-out infinite !important;
+    color: rgba(15, 23, 42, 0.94) !important;
+    content: "•••" !important;
+    font-size: 0.86rem !important;
+    font-weight: 800 !important;
+    left: 50% !important;
+    letter-spacing: 1px !important;
+    line-height: 1 !important;
+    position: absolute !important;
+    top: 48% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationSend[aria-busy="true"]::after {
+    display: none !important;
+}
+
+/* ==========================================================================
+   14. RESPONSIVE CHAT PARITY
+   ========================================================================== */
+
+@media (max-width: 820px) {
+    .workspace-document-explorer[data-workspace-view="chat"] {
+        --solomon-chat-edge-pad: 14px;
+        --solomon-chat-turn-gap: 28px;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceAssistantPanel {
+        border-radius: 0 !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages,
+    .workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationMessages:not(:empty) {
+        padding-top: 28px !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message,
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-guide-message--thinking,
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message--assistant[data-solomon-message-state="pending"] {
+        max-width: 100% !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-content--user {
+        max-width: 88% !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] #solomonWorkspaceConversationForm {
+        margin-bottom: 10px !important;
+        width: calc(100% - 24px) !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-heading {
+        font-size: 1rem !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-text,
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-paragraph,
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-list {
+        font-size: 0.96rem !important;
+    }
+
+    .workspace-document-explorer[data-workspace-view="chat"] .solomon-workspace-conversation-message-content--user {
+        max-width: 92% !important;
+        padding: 10px 14px !important;
+    }
+}

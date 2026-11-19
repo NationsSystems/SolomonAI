@@ -1,0 +1,377 @@
+<!-- -------------------------------------------------------------------
+     FILE: command_sidebar.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set current_module = active_module|default('documents') %}
+{% set current_path = request.path if request is defined else '' %}
+{% set is_solomon_workspace = current_module == 'solomon_ai' or current_path == '/ai' or current_path[:4] == '/ai/' %}
+{% set is_people_workspace =
+    current_module == 'people'
+    or current_path == '/people'
+    or current_path[:8] == '/people/'
+%}
+{% set is_shared_workspace =
+    current_module == 'shared'
+    or current_path == '/shared'
+    or current_path[:8] == '/shared/'
+%}
+{% set is_recent_workspace =
+    current_module == 'recent'
+    or current_path == '/recent'
+    or current_path[:8] == '/recent/'
+%}
+{% set is_trash_workspace =
+    current_module == 'trash'
+    or current_path == '/trash'
+    or current_path[:7] == '/trash/'
+%}
+{% set is_resource_usage_workspace =
+    current_module == 'resource_usage'
+    or current_path == '/resource-usage'
+    or current_path[:16] == '/resource-usage/'
+%}
+{% set is_home_workspace =
+    not is_solomon_workspace
+    and not is_people_workspace
+    and not is_shared_workspace
+    and not is_recent_workspace
+    and not is_trash_workspace
+    and not is_resource_usage_workspace
+%}
+
+{% set workspace_product_title = 'Nations Systems' %}
+{% set workspace_logo_filename = 'img/OfficialNavLogo.png' %}
+{% set workspace_logo_alt = 'Nations Systems' %}
+{% set workspace_identity_label = 'Nations Systems header' %}
+{% set workspace_home_url = url_for('index') %}
+{% set workspace_chat_url = '/ai' %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_settings_url = '/admin/' %}
+{% set workspace_search_url = '/search' %}
+{% set workspace_search_endpoint = '/api/workspace/search' %}
+{% set workspace_recent_endpoint = url_for('user_uploads.list_my_recent_uploads') %}
+{% set workspace_search_allowed_types = ['all', 'files', 'conversations', 'people', 'groups'] %}
+{% set workspace_search_requested_type = (request.args.get('type', 'all') if request is defined and current_path == '/search' else 'all')|trim|lower %}
+{% set workspace_search_type = workspace_search_requested_type if workspace_search_requested_type in workspace_search_allowed_types else 'all' %}
+{% set workspace_search_scopes = [
+    {'id': 'all', 'label': 'All'},
+    {'id': 'files', 'label': 'Files'},
+    {'id': 'conversations', 'label': 'Conversations'},
+    {'id': 'people', 'label': 'People'},
+    {'id': 'groups', 'label': 'Groups'}
+] %}
+{% set workspace_search_context =
+    'solomon_ai'
+    if is_solomon_workspace
+    else 'people'
+    if is_people_workspace
+    else 'shared'
+    if is_shared_workspace
+    else 'recent'
+    if is_recent_workspace
+    else 'trash'
+    if is_trash_workspace
+    else 'home'
+%}
+
+{% set account_session_user = session.get('user', {}) if session else {} %}
+{% set account_session_context = session.get('account_context', {}) if session else {} %}
+{% set account_context_source = account_context if account_context is defined and account_context is mapping else account_session_context %}
+{% set account_membership = account_context_source.get('membership') if account_context_source is mapping else none %}
+{% set account_organization = account_context_source.get('organization') if account_context_source is mapping else none %}
+{% set account_membership_role = (account_membership.get('role', '') if account_membership is mapping else '') | lower %}
+{% set account_membership_status = (account_membership.get('status', '') if account_membership is mapping else '') | lower %}
+{% set account_can_view_resource_usage = account_membership_role in ['owner', 'admin'] and account_membership_status in ['', 'active'] %}
+
+{% set account_current_user_name = current_user.name|default('', true) if current_user is defined else '' %}
+{% set account_current_user_email = current_user.email|default('', true) if current_user is defined else '' %}
+{% set account_session_display_name = account_session_user.get('display_name', '') if account_session_user is mapping else '' %}
+{% set account_session_email = account_session_user.get('email', '') if account_session_user is mapping else '' %}
+{% set account_email = account_current_user_email or account_session_email %}
+{% set account_display_name = account_current_user_name or account_session_display_name or account_email or 'Account' %}
+{% set account_organization_name = account_organization.get('name', '') if account_organization is mapping else '' %}
+{% set account_initial = account_display_name[:1]|upper if account_display_name else 'A' %}
+
+<aside id="commandSidebar"
+       class="command-sidebar command-taskbar command-workspace-header"
+       aria-label="{{ workspace_identity_label }}"
+       data-sidebar-state="expanded"
+       data-taskbar-position="top"
+       data-taskbar-locked="top"
+       data-command-navbar-mode="assistant_launcher"
+       data-command-navbar-layout="app_header"
+       data-command-workspace-identity="{% if is_solomon_workspace %}solomon_ai{% elif is_people_workspace %}people{% elif is_shared_workspace %}shared{% elif is_recent_workspace %}recent{% elif is_trash_workspace %}trash{% else %}nations_systems{% endif %}"
+       data-solomon-rail-available="{{ 'true' if is_home_workspace else 'false' }}">
+    <div class="command-taskbar-system">
+        <a href="{{ workspace_home_url }}"
+           class="command-sidebar-logo command-taskbar-start"
+           aria-label="Open Nations Systems">
+            <img src="{{ url_for('static', filename=workspace_logo_filename) }}"
+                 alt="{{ workspace_logo_alt }}">
+        </a>
+
+        <div class="command-workspace-header-context"
+             aria-label="Current product">
+            <p class="command-workspace-header-title">
+                {{ workspace_product_title }}
+            </p>
+        </div>
+
+        <div id="commandTaskbarSolomonOutput"
+             class="command-taskbar-solomon-output"
+             aria-live="polite"
+             aria-atomic="false"
+             data-solomon-taskbar-output
+             data-solomon-output-contract="workspace_context"
+             hidden></div>
+    </div>
+
+    <form id="commandGlobalSearchForm"
+          class="command-global-search"
+          action="{{ workspace_search_url }}"
+          method="get"
+          role="search"
+          aria-label="Search Nations Systems"
+          autocomplete="off"
+          data-command-global-search
+          data-command-search-contract="workspace_search_v1"
+          data-command-search-presentation-contract="connected_search_results_v1"
+          data-command-search-endpoint="{{ workspace_search_endpoint }}"
+          data-command-search-recent-endpoint="{{ workspace_recent_endpoint }}"
+          data-command-search-results-route="{{ workspace_search_url }}"
+          data-command-search-context="{{ workspace_search_context }}"
+          data-command-search-type="{{ workspace_search_type }}">
+
+        <div class="command-global-search-control"
+             data-command-global-search-control>
+            <button type="submit"
+                    class="command-global-search-submit"
+                    aria-label="Search Nations Systems"
+                    title="Search">
+                <span class="icon"
+                      aria-hidden="true">
+                    search
+                </span>
+            </button>
+
+            <label class="visually-hidden"
+                   for="commandGlobalSearchInput">
+                Search files, conversations, people, groups, and reports
+            </label>
+
+            <input type="search"
+                   id="commandGlobalSearchInput"
+                   class="command-global-search-input"
+                   name="q"
+                   maxlength="200"
+                   placeholder="Search files, conversations, people, and groups"
+                   autocomplete="off"
+                   spellcheck="false"
+                   autocapitalize="off"
+                   autocorrect="off"
+                   enterkeyhint="search"
+                   aria-label="Search files, conversations, people, groups, and reports"
+                   aria-controls="commandGlobalSearchResults"
+                   aria-describedby="commandGlobalSearchStatus"
+                   aria-expanded="false"
+                   aria-autocomplete="list"
+                   aria-haspopup="listbox"
+                   data-command-global-search-input>
+
+            <button type="button"
+                    class="command-global-search-clear"
+                    data-command-global-search-clear
+                    aria-label="Clear search"
+                    title="Clear search"
+                    hidden
+                    aria-hidden="true">
+                <span class="icon"
+                      aria-hidden="true">
+                    close
+                </span>
+            </button>
+        </div>
+
+        <p id="commandGlobalSearchStatus"
+           class="command-global-search-status visually-hidden"
+           data-command-global-search-status
+           role="status"
+           aria-live="polite"
+           aria-atomic="true"
+           hidden></p>
+
+        <div class="command-global-search-panel"
+             data-command-global-search-panel>
+            <nav class="command-global-search-scopes"
+                 data-command-global-search-scopes
+                 aria-label="Search categories">
+                {% for scope in workspace_search_scopes %}
+                    <button type="button"
+                            class="command-global-search-scope{% if workspace_search_type == scope.id %} is-active{% endif %}"
+                            data-command-global-search-scope="{{ scope.id }}"
+                            aria-pressed="{{ 'true' if workspace_search_type == scope.id else 'false' }}">
+                        {{ scope.label }}
+                    </button>
+                {% endfor %}
+            </nav>
+
+            <section id="commandGlobalSearchResults"
+                     class="command-global-search-results"
+                     data-command-global-search-results
+                     data-command-search-state="idle"
+                     role="listbox"
+                     aria-label="Search results"
+                     hidden
+                     aria-hidden="true"></section>
+
+            <footer class="command-global-search-see-all"
+                    data-command-global-search-see-all-container
+                    hidden
+                    aria-hidden="true">
+                <button type="submit"
+                        class="command-global-search-see-all-button"
+                        data-command-global-search-see-all>
+                    <span>
+                        All results
+                    </span>
+
+                    <span class="icon"
+                          aria-hidden="true">
+                        arrow_forward
+                    </span>
+                </button>
+            </footer>
+        </div>
+    </form>
+
+    <nav class="command-sidebar-nav command-taskbar-nav"
+         aria-label="Workspace utilities">
+        <a id="commandSolomonLauncher"
+           href="{{ workspace_chat_url }}"
+           class="command-nav-item command-nav-item--button command-nav-item--solomon{% if is_solomon_workspace %} is-active{% endif %}"
+           data-command-module="solomon_ai"
+           data-command-shell-navigation="true"
+           data-command-route="{{ workspace_chat_url }}"
+           title="Chat"
+           aria-label="Chat"
+           {% if is_solomon_workspace %}aria-current="page"{% endif %}>
+            <span class="command-nav-solomon-mark"
+                  aria-hidden="true">
+                <span class="icon">
+                    auto_awesome
+                </span>
+            </span>
+        </a>
+
+        <a href="{{ workspace_people_url }}"
+           id="commandPeopleLink"
+           class="command-nav-item command-nav-item--button command-nav-item--utility{% if is_people_workspace %} is-active{% endif %}"
+           data-command-module="people"
+           data-command-shell-navigation="true"
+           data-command-route="{{ workspace_people_url }}"
+           title="People"
+           aria-label="People"
+           {% if is_people_workspace %}aria-current="page"{% endif %}>
+            <span class="icon"
+                  aria-hidden="true">
+                groups
+            </span>
+        </a>
+
+        <a href="{{ workspace_settings_url }}"
+           id="commandSettingsLink"
+           class="command-nav-item command-nav-item--button command-nav-item--utility"
+           data-command-navigation="admin"
+           title="Settings"
+           aria-label="Settings">
+            <span class="icon"
+                  aria-hidden="true">
+                settings
+            </span>
+        </a>
+
+        <div class="command-nav-utility command-nav-account"
+             data-command-utility="account">
+            <button type="button"
+                    id="commandAccountTrigger"
+                    class="command-nav-account-trigger{% if is_resource_usage_workspace %} is-active{% endif %}"
+                    data-command-account-trigger
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    aria-controls="commandAccountMenu"
+                    title="{{ account_display_name }}"
+                    aria-label="Open account menu for {{ account_display_name }}">
+                <span class="command-nav-account-avatar"
+                      aria-hidden="true">
+                    {{ account_initial }}
+                </span>
+            </button>
+
+            <section id="commandAccountMenu"
+                     class="command-nav-popover command-nav-account-menu"
+                     data-command-account-menu
+                     role="menu"
+                     aria-label="Account menu"
+                     hidden>
+                <header class="command-nav-account-summary">
+                    <span class="command-nav-account-avatar command-nav-account-avatar--large"
+                          aria-hidden="true">
+                        {{ account_initial }}
+                    </span>
+
+                    <div class="command-nav-account-copy">
+                        <strong>
+                            {{ account_display_name }}
+                        </strong>
+
+                        {% if account_email and account_email != account_display_name %}
+                            <span>
+                                {{ account_email }}
+                            </span>
+                        {% endif %}
+
+                        {% if account_organization_name %}
+                            <span class="command-nav-account-workspace">
+                                {{ account_organization_name }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </header>
+
+                <div class="command-nav-account-actions">
+                    {% if account_can_view_resource_usage %}
+                        <a href="{{ url_for('resource_usage.resource_usage_page') }}"
+                           class="command-nav-account-action{% if is_resource_usage_workspace %} is-active{% endif %}"
+                           role="menuitem"
+                           {% if is_resource_usage_workspace %}aria-current="page"{% endif %}>
+                            <span class="icon"
+                                  aria-hidden="true">
+                                monitoring
+                            </span>
+
+                            <span class="command-nav-account-action-copy">
+                                <strong>Resource usage</strong>
+                                <small>Capacity and activity</small>
+                            </span>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url_for('auth.logout_user') }}"
+                       class="command-nav-account-action"
+                       data-command-module="logout"
+                       role="menuitem">
+                        <span class="icon"
+                              aria-hidden="true">
+                            logout
+                        </span>
+
+                        <span class="command-nav-account-action-copy">
+                            <strong>Sign out</strong>
+                        </span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </nav>
+</aside>

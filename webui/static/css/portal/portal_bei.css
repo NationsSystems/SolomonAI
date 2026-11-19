@@ -1,0 +1,719 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_bei.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+.bei-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* ==========================================================================
+   CARD
+   ========================================================================== */
+
+.bei-card {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 36px 24px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    background: rgba(8, 13, 24, 0.88);
+    box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   TABS
+   ========================================================================== */
+
+.bei-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.bei-tab {
+    min-height: 38px;
+    padding: 0 18px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-control);
+    color: var(--brand-text-muted);
+    background: rgba(255, 255, 255, 0.018);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.bei-tab.bei-tab-action {
+    color: var(--brand-text-muted);
+    border-color: rgba(105, 128, 157, 0.26);
+    background: rgba(255, 255, 255, 0.018);
+    cursor: pointer;
+}
+
+.bei-tab.bei-tab-action:hover {
+    color: var(--brand-text);
+    border-color: rgba(22, 191, 216, 0.34);
+    background: rgba(22, 191, 216, 0.035);
+}
+
+.bei-tab.active,
+.bei-tab.bei-tab-current {
+    color: rgba(232, 239, 250, 0.92);
+    border-color: rgba(22, 191, 216, 0.34);
+    background: rgba(22, 191, 216, 0.052);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.035),
+        0 0 0 1px rgba(22, 191, 216, 0.025);
+    cursor: default;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.bei-tab.active:hover,
+.bei-tab.bei-tab-current:hover {
+    color: rgba(232, 239, 250, 0.92);
+    border-color: rgba(22, 191, 216, 0.34);
+    background: rgba(22, 191, 216, 0.052);
+}
+
+.bei-tab:disabled {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.bei-tab.active:disabled,
+.bei-tab.bei-tab-current:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   DROPZONE
+   ========================================================================== */
+
+.bei-dropzone {
+    box-sizing: border-box;
+    width: 100%;
+    height: 154px;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    padding: 22px;
+    border: 1px solid rgba(22, 191, 216, 0.62);
+    border-radius: var(--radius-card);
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(22, 191, 216, 0.055),
+            rgba(22, 191, 216, 0.025) 54%,
+            rgba(3, 7, 17, 0.18) 100%
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        inset 0 0 24px rgba(22, 191, 216, 0.025),
+        0 0 0 1px rgba(22, 191, 216, 0.075),
+        0 0 22px rgba(22, 191, 216, 0.075);
+    cursor: pointer;
+    text-align: center;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.bei-dropzone:hover {
+    border-color: rgba(22, 191, 216, 0.82);
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(22, 191, 216, 0.085),
+            rgba(22, 191, 216, 0.04) 54%,
+            rgba(3, 7, 17, 0.2) 100%
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        inset 0 0 30px rgba(22, 191, 216, 0.04),
+        0 0 0 1px rgba(22, 191, 216, 0.14),
+        0 0 30px rgba(22, 191, 216, 0.14);
+}
+
+.bei-dropzone-text {
+    margin-bottom: 9px;
+    color: var(--brand-text);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bei-dropzone-subtext {
+    color: var(--brand-text-muted);
+    font-size: 13px;
+}
+
+.bei-file-input {
+    display: none;
+}
+
+/* ==========================================================================
+   TEXTAREA / PASTE INTAKE
+   ========================================================================== */
+
+.bei-textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 154px;
+    min-height: 154px;
+    max-height: 154px;
+    display: block;
+    resize: none;
+    overflow: auto;
+    margin-bottom: 16px;
+    padding: 20px 22px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    color: var(--brand-text);
+    background: rgba(3, 7, 17, 0.64);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.62;
+    text-align: left;
+    white-space: pre-wrap;
+    outline: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    transition:
+        border-color 0.14s ease,
+        background-color 0.14s ease;
+}
+
+.bei-textarea[hidden] {
+    display: none !important;
+}
+
+.bei-textarea::placeholder {
+    color: rgba(201, 212, 229, 0.46);
+}
+
+.bei-textarea:focus {
+    border-color: rgba(22, 191, 216, 0.44);
+    background: rgba(3, 7, 17, 0.78);
+}
+
+.bei-input-note {
+    margin: 10px 0 0;
+    color: var(--brand-text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+    text-align: left;
+}
+
+.bei-input-note[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================================
+   CTA BUTTON
+   ========================================================================== */
+
+.bei-cta {
+    width: fit-content;
+    min-height: 40px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px auto 0;
+    padding: 0 34px;
+    border: 1px solid rgba(22, 191, 216, 0.38);
+    border-radius: var(--radius-control);
+    color: #ffffff;
+    background: linear-gradient(180deg, #2363d4, #1f55b9);
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.bei-cta:hover {
+    border-color: rgba(22, 191, 216, 0.58);
+    background: linear-gradient(180deg, #2c6fe4, #235ec9);
+}
+
+.bei-cta:disabled {
+    color: rgba(232, 239, 250, 0.54);
+    border-color: rgba(22, 191, 216, 0.16);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.072),
+            rgba(255, 255, 255, 0.045)
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 0 0 1px rgba(22, 191, 216, 0.018);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.bei-cta:disabled:hover {
+    color: rgba(232, 239, 250, 0.54);
+    border-color: rgba(22, 191, 216, 0.16);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.072),
+            rgba(255, 255, 255, 0.045)
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 0 0 1px rgba(22, 191, 216, 0.018);
+}
+
+/* ==========================================================================
+   FILE LIST
+   ========================================================================== */
+
+.bei-file-list {
+    margin-top: 12px;
+}
+
+.bei-file-panel {
+    overflow: hidden;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    background: rgba(3, 7, 17, 0.34);
+}
+
+.bei-file-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--brand-border-soft);
+    background: rgba(255, 255, 255, 0.018);
+}
+
+.bei-file-panel-title {
+    color: var(--brand-text-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.bei-file-count {
+    min-height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 9px;
+    border: 1px solid rgba(105, 128, 157, 0.24);
+    border-radius: var(--radius-control);
+    color: var(--brand-text-soft);
+    background: rgba(255, 255, 255, 0.022);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.bei-file-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.bei-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 50px;
+    padding: 10px 14px;
+    color: var(--brand-text-soft);
+    background: transparent;
+    font-size: 13px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease;
+}
+
+.bei-file-item + .bei-file-item {
+    border-top: 1px solid var(--brand-border-soft);
+}
+
+.bei-file-item:hover {
+    background: rgba(255, 255, 255, 0.032);
+}
+
+.bei-file-name {
+    min-width: 0;
+    max-width: calc(100% - 44px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bei-file-remove {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    flex: 0 0 28px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(223, 100, 107, 0.24);
+    border-radius: var(--radius-control);
+    color: var(--danger);
+    background: rgba(223, 100, 107, 0.045);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    opacity: 0.86;
+    transition:
+        opacity 0.14s ease,
+        background-color 0.14s ease,
+        border-color 0.14s ease;
+}
+
+.bei-file-remove:hover {
+    opacity: 1;
+    border-color: rgba(223, 100, 107, 0.38);
+    background: rgba(223, 100, 107, 0.08);
+}
+
+/* ==========================================================================
+   PROGRESS
+   ========================================================================== */
+
+.bei-progress {
+    width: 100%;
+    max-width: 620px;
+    min-height: 128px;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.bei-progress::before {
+    content: "Analyzing bid package";
+    order: 1;
+    margin-bottom: 8px;
+    color: var(--brand-text);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.bei-progress[hidden] {
+    display: none !important;
+}
+
+.bei-progress-track {
+    order: 3;
+    position: relative;
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bei-progress-bar {
+    position: absolute;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: var(--brand-cyan);
+    box-shadow: none;
+    transition: width 0.25s ease;
+}
+
+.bei-status-text {
+    order: 2;
+    min-height: 18px;
+    margin: 0 0 14px;
+    color: var(--brand-text-muted);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   RESULTS
+   ========================================================================== */
+
+.bei-results {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+   FEATURES
+   ========================================================================== */
+
+.bei-features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 18px auto 0;
+}
+
+.bei-feature {
+    position: relative;
+    min-width: 0;
+    padding: 17px 58px 17px 16px;
+    border: 1px solid rgba(105, 128, 157, 0.26);
+    border-radius: var(--radius-card);
+    background:
+        linear-gradient(180deg, rgba(8, 13, 24, 0.76), rgba(8, 13, 24, 0.58));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.024),
+        inset 0 0 0 1px rgba(22, 191, 216, 0.012);
+    text-align: left;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.bei-feature::before {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    min-width: 30px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+    border: 1px solid rgba(22, 191, 216, 0.30);
+    border-radius: var(--radius-control);
+    color: rgba(232, 239, 250, 0.82);
+    background: rgba(22, 191, 216, 0.045);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1;
+}
+
+.bei-feature:nth-child(1)::before {
+    content: "01";
+}
+
+.bei-feature:nth-child(2)::before {
+    content: "02";
+}
+
+.bei-feature:nth-child(3)::before {
+    content: "03";
+}
+
+.bei-feature:nth-child(4)::before {
+    content: "04";
+}
+
+.bei-feature::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        rgba(22, 191, 216, 0.38),
+        rgba(22, 191, 216, 0.04)
+    );
+    opacity: 0.72;
+}
+
+.bei-feature:hover {
+    border-color: rgba(22, 191, 216, 0.34);
+    background:
+        linear-gradient(180deg, rgba(8, 13, 24, 0.86), rgba(8, 13, 24, 0.64));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.032),
+        inset 0 0 0 1px rgba(22, 191, 216, 0.025),
+        0 0 18px rgba(22, 191, 216, 0.032);
+}
+
+.bei-feature-kicker {
+    margin-bottom: 8px;
+    color: rgba(140, 220, 232, 0.78);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.bei-feature-title {
+    color: var(--brand-text);
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.bei-feature-desc {
+    margin-top: 7px;
+    color: var(--brand-text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+/* ==========================================================================
+   REPORT
+   ========================================================================== */
+
+.bei-report {
+    width: 100%;
+    max-width: 100%;
+    margin: 40px auto 0;
+    text-align: left;
+}
+
+.bei-title-block {
+    display: none;
+}
+
+.bei-primary-text {
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+.bei-section {
+    margin-top: 32px;
+}
+
+.bei-item-block {
+    margin-bottom: 22px;
+}
+
+.bei-risk {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+.bei-severity {
+    margin-top: 6px;
+}
+
+.severity-high {
+    color: #ff7777;
+}
+
+.severity-medium {
+    color: #f2b45b;
+}
+
+.severity-low {
+    color: #42d18d;
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .bei-card {
+        padding: 24px 22px 24px;
+    }
+
+    .bei-tabs {
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .bei-tab {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+
+    .bei-dropzone {
+        height: 160px;
+        min-height: 160px;
+        padding: 18px;
+    }
+
+    .bei-textarea {
+        height: 160px;
+        min-height: 160px;
+        max-height: 160px;
+        padding: 17px 18px;
+        font-size: 14px;
+    }
+
+    .bei-progress {
+        max-width: 100%;
+        min-height: 116px;
+    }
+
+    .bei-features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+    }
+
+    .bei-feature {
+        padding: 16px 54px 16px 14px;
+    }
+
+    .bei-feature::before {
+        right: 14px;
+        top: 14px;
+    }
+
+    .bei-feature::after {
+        left: 14px;
+        right: 14px;
+    }
+
+    .bei-feature-title {
+        font-size: 15px;
+    }
+
+    .bei-feature-desc {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 520px) {
+    .bei-features {
+        grid-template-columns: 1fr;
+    }
+
+    .bei-cta {
+        width: 100%;
+    }
+}

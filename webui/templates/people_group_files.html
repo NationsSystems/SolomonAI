@@ -1,0 +1,167 @@
+{# -------------------------------------------------------------------
+   FILE: people_group_files.html
+   DIRECTORY: webui/templates/
+   -------------------------------------------------------------------
+   Canonical explicit Group file-sharing controls.
+
+   Any Resource Owner may share an owned file to the selected Group. Group
+   role never creates file authority; Viewer/Editor and download policy come
+   from the explicit server-authoritative Group grant.
+   ------------------------------------------------------------------- #}
+
+{% extends "portal_base.html" %}
+
+{% block title %}Group Files · Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/people_group_files.css') }}?v=nations-people-group-files-20260816a">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_workspace_document_drag_drop.css') }}?v=nations-document-drag-drop-20260816a">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_workspace_document_share.css') }}?v=nations-document-share-20260816a">
+{% endblock %}
+
+{% block content %}
+
+{% set active_group = active_group if active_group is defined and active_group else none %}
+{% if not active_group and group_context is defined and group_context %}
+    {% set active_group = group_context %}
+{% endif %}
+
+{% set active_group_id = '' %}
+{% if active_group is mapping %}
+    {% set active_group_id = active_group.get('group_id', active_group.get('id', active_group.get('slug', ''))) %}
+{% endif %}
+
+{% set group_files_url = '/people/groups/' ~ active_group_id ~ '/files' if active_group_id else '/people' %}
+
+<div class="people-group-files-page"
+     data-people-group-files-page
+     data-people-group-id="{{ active_group_id }}"
+     data-people-group-name="{{ active_group.get('name', 'Group') if active_group is mapping else 'Group' }}">
+    <section class="people-group-files-shell">
+
+        <header class="people-group-files-header people-management-header">
+            <div>
+                <p class="people-group-files-kicker">People &amp; Groups</p>
+                <h1 class="people-group-files-title">Group Files</h1>
+                <p class="people-group-files-subtitle">
+                    Share files you own with this Group and manage the explicit resource grant.
+                </p>
+            </div>
+
+            <div class="people-group-files-card">
+                <span class="people-group-files-card-label">Active Group</span>
+                <strong class="people-group-files-card-name">
+                    {% if active_group is mapping and active_group.get('name') %}
+                        {{ active_group.get('name') }}
+                    {% else %}
+                        Group
+                    {% endif %}
+                </strong>
+                <span class="people-group-files-card-detail">
+                    {% if active_group_id %}
+                        Group ID: {{ active_group_id }}
+                    {% else %}
+                        Group workspace
+                    {% endif %}
+                </span>
+            </div>
+        </header>
+
+        <nav class="people-management-tabs" aria-label="People and group sections">
+            <a
+                href="{{ group_files_url }}"
+                class="people-management-tab is-active"
+                aria-current="page"
+            >
+                Files
+            </a>
+            <a
+                href="/people"
+                class="people-management-tab"
+            >
+                People
+            </a>
+        </nav>
+
+        <section class="people-group-files-section-intro" aria-labelledby="groupFilesPageTitle">
+            <p class="people-group-files-kicker">Group Files</p>
+            <h2 id="groupFilesPageTitle">Group Files</h2>
+            <p>
+                Share owned files explicitly with this Group. Membership alone never grants file access.
+            </p>
+            <button type="button"
+                    class="people-group-files-action"
+                    data-document-share-files-trigger
+                    data-share-principal-type="group"
+                    data-share-principal-id="{{ active_group_id }}">
+                <span class="icon" aria-hidden="true">person_add</span>
+                <span>Share files with this Group</span>
+            </button>
+        </section>
+
+        <div class="people-group-files-grid">
+
+            <section class="people-group-files-panel" aria-labelledby="ownedFilesTitle">
+                <div class="people-group-files-panel-header">
+                    <div>
+                        <h2 id="ownedFilesTitle">Owned Files</h2>
+                        <p>Select files from My Files to share. The source remains in My Files and ownership does not change.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="people-group-files-refresh"
+                        data-people-group-files-refresh
+                    >
+                        Refresh
+                    </button>
+                </div>
+
+                <div
+                    class="people-group-files-list"
+                    data-people-owned-files-list
+                    aria-live="polite"
+                >
+                    <div class="people-group-files-empty">Loading owned files...</div>
+                </div>
+            </section>
+
+            <section class="people-group-files-panel" aria-labelledby="groupLibraryTitle">
+                <div class="people-group-files-panel-header">
+                    <div>
+                        <h2 id="groupLibraryTitle">Shared with Group</h2>
+                        <p>Each file is governed by its explicit Viewer/Editor grant and optional download restriction.</p>
+                    </div>
+                </div>
+
+                <div
+                    class="people-group-files-list"
+                    data-people-group-files-list
+                    data-document-group-share-drop-target="true"
+                    data-document-group-id="{{ active_group_id }}"
+                    data-document-group-name="{{ active_group.get('name', 'Group') if active_group is mapping else 'Group' }}"
+                    data-document-drop-label="{{ active_group.get('name', 'Group') if active_group is mapping else 'Group' }}"
+                    aria-live="polite"
+                >
+                    <div class="people-group-files-empty">Loading Group shares...</div>
+                </div>
+            </section>
+
+        </div>
+
+        <div
+            class="people-group-files-status"
+            data-people-group-files-status
+            role="status"
+            aria-live="polite"
+        ></div>
+
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_drag_drop.js') }}?v=nations-document-drag-drop-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_share.js') }}?v=nations-document-share-20260816a"></script>
+<script src="{{ url_for('static', filename='js/people_group_files.js') }}?v=nations-people-group-share-20260816a"></script>
+{% endblock %}

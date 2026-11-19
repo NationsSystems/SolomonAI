@@ -1,0 +1,2508 @@
+/* ==========================================================================
+   FILE: portal_workspace_solomon_ai.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+@import url("./portal_workspace_solomon_ai_source_picker.css?v=nations-solomon-ai-source-picker-20260714a");
+
+/* ==========================================================================
+   SOLOMONAI WORKSPACE
+   --------------------------------------------------------------------------
+   Full-page source-aware conversation workspace rendered at /ai.
+   The shared application header owns the Construction Console identity; this
+   stylesheet owns the SolomonAI page body and two-panel workspace.
+   ========================================================================== */
+
+.solomon-ai-workspace {
+    --solomon-ai-reading-width: 784px;
+    --solomon-ai-user-bubble-width: 650px;
+    --solomon-ai-continuation-reserve-height: 0px;
+    --solomon-ai-composer-reserve-height: 221px;
+    --solomon-ai-composer-offset: 25px;
+    --solomon-ai-user-to-assistant-gap: 32px;
+    --solomon-ai-assistant-to-user-gap: 38px;
+    --solomon-ai-radius-frame: 12px;
+    --solomon-ai-radius-surface: 7px;
+    --solomon-ai-radius-control: 5px;
+    --solomon-ai-radius-compact: 4px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    color: rgba(241, 245, 249, 0.96);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+/* SolomonAI uses the shared application header as its page identity. */
+
+.solomon-ai-workspace__page-close {
+    align-items: center;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(122, 145, 176, 0.18);
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(203, 213, 225, 0.84);
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    position: absolute;
+    right: 14px;
+    text-decoration: none;
+    top: 12px;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease;
+    width: 32px;
+    z-index: 6;
+}
+
+.solomon-ai-workspace__page-close:hover,
+.solomon-ai-workspace__page-close:focus-visible {
+    background: rgba(30, 41, 59, 0.94);
+    border-color: rgba(65, 210, 255, 0.3);
+    color: rgba(248, 250, 252, 0.99);
+    outline: none;
+}
+
+.solomon-ai-workspace__page-close > .icon {
+    font-size: 19px;
+}
+
+.solomon-ai-workspace__layout {
+    align-items: stretch;
+    display: grid;
+    flex: 1 1 auto;
+    gap: var(--solomon-workspace-two-column-gap, 14px);
+    grid-template-columns:
+        var(--solomon-home-sidebar-width, clamp(292px, 18vw, 330px))
+        minmax(0, 1fr);
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   SOURCE AND HISTORY PANEL
+   ========================================================================== */
+
+.solomon-ai-sources {
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(22, 191, 216, 0.045),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(7, 13, 24, 0.82),
+            rgba(3, 8, 18, 0.74)
+        );
+    border: 1px solid rgba(105, 148, 238, 0.14);
+    border-radius: var(--solomon-ai-radius-frame);
+    box-shadow:
+        0 18px 46px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.01) inset;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.solomon-ai-sources__tabs {
+    border-bottom: 1px solid rgba(122, 145, 176, 0.12);
+    display: grid;
+    flex: 0 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 14px;
+}
+
+.solomon-ai-sources__tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: rgba(148, 163, 184, 0.72);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 720;
+    padding: 14px 8px 12px;
+    position: relative;
+}
+
+.solomon-ai-sources__tab::after {
+    background: transparent;
+    border-radius: 999px 999px 0 0;
+    bottom: -1px;
+    content: "";
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    transition:
+        background 140ms ease,
+        width 140ms ease;
+    width: 0;
+}
+
+.solomon-ai-sources__tab:hover,
+.solomon-ai-sources__tab:focus-visible {
+    color: rgba(226, 232, 240, 0.96);
+    outline: none;
+}
+
+.solomon-ai-sources__tab.is-active {
+    color: rgba(226, 247, 255, 0.98);
+}
+
+.solomon-ai-sources__tab.is-active::after {
+    background: rgba(65, 210, 255, 0.88);
+    width: 58px;
+}
+
+.solomon-ai-sources__panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 14px;
+}
+
+.solomon-ai-sources__panel[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-sources__panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.solomon-ai-sources__panel::-webkit-scrollbar-thumb {
+    background: rgba(122, 145, 176, 0.2);
+    border-radius: 999px;
+}
+
+.solomon-ai-sources__panel[
+    data-solomon-ai-panel="history"
+]:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Empty file state leaves room for non-file source controls below it. */
+
+.solomon-ai-workspace[
+    data-solomon-ai-source-state="empty"
+] .solomon-ai-sources__panel[
+    data-solomon-ai-panel="sources"
+] {
+    display: flex;
+    flex-direction: column;
+}
+
+.solomon-ai-sources__panel[
+    data-solomon-ai-panel="history"
+]:has(.solomon-ai-history__empty) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.solomon-ai-workspace[
+    data-solomon-ai-source-state="empty"
+] .solomon-ai-sources__empty,
+.solomon-ai-sources__panel[
+    data-solomon-ai-panel="history"
+]:has(.solomon-ai-history__empty) .solomon-ai-history__empty {
+    min-height: 0;
+}
+
+.solomon-ai-sources__toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.solomon-ai-sources__toolbar[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-sources__add,
+.solomon-ai-sources__empty-action {
+    align-items: center;
+    appearance: none;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.15),
+            rgba(49, 118, 255, 0.08)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.24);
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(235, 249, 255, 0.98);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 740;
+    gap: 6px;
+    justify-content: center;
+    min-height: 36px;
+    min-width: 132px;
+    padding: 8px 13px;
+}
+
+.solomon-ai-sources__add:hover,
+.solomon-ai-sources__add:focus-visible,
+.solomon-ai-sources__empty-action:hover,
+.solomon-ai-sources__empty-action:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.21),
+            rgba(49, 118, 255, 0.12)
+        );
+    border-color: rgba(65, 210, 255, 0.4);
+    outline: none;
+}
+
+.solomon-ai-sources__count {
+    color: rgba(148, 163, 184, 0.7);
+    font-size: 0.7rem;
+    font-weight: 650;
+}
+
+.solomon-ai-source-list {
+    display: grid;
+    gap: 3px;
+    margin: 0 -4px;
+}
+
+.solomon-ai-source-list[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-sources__status {
+    color: rgba(148, 163, 184, 0.76);
+    font-size: 0.68rem;
+    line-height: 1.4;
+    margin: 0 0 9px;
+    min-height: 0;
+}
+
+.solomon-ai-sources__status[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-sources__status[
+    data-solomon-ai-source-status-variant="error"
+] {
+    color: rgba(252, 165, 165, 0.92);
+}
+
+.solomon-ai-source-item {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--solomon-ai-radius-control);
+    display: grid;
+    gap: 8px;
+    grid-template-areas: "icon copy open remove";
+    grid-template-columns: 28px minmax(0, 1fr) 28px 28px;
+    min-height: 56px;
+    padding: 8px;
+    transition:
+        background 140ms ease,
+        opacity 140ms ease;
+}
+
+.solomon-ai-source-item:hover {
+    background: rgba(148, 163, 184, 0.075);
+}
+
+.solomon-ai-source-item[
+    data-solomon-ai-source-state="removing"
+] {
+    opacity: 0.58;
+    pointer-events: none;
+}
+
+.solomon-ai-source-item__icon {
+    align-items: center;
+    background: rgba(65, 210, 255, 0.075);
+    border: 1px solid rgba(125, 229, 255, 0.1);
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(180, 235, 255, 0.88);
+    display: inline-flex;
+    font-size: 16px;
+    grid-area: icon;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.solomon-ai-source-item__copy {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    grid-area: copy;
+    min-width: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.solomon-ai-source-item__copy:focus-visible {
+    outline: none;
+}
+
+.solomon-ai-source-item__copy strong {
+    color: rgba(235, 241, 248, 0.95);
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 680;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.solomon-ai-source-item__copy span {
+    color: rgba(148, 163, 184, 0.62);
+    display: block;
+    font-size: 0.64rem;
+    line-height: 1.3;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.solomon-ai-source-item__open,
+.solomon-ai-source-item__remove {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(148, 163, 184, 0.62);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    height: 28px;
+    justify-content: center;
+    opacity: 0.74;
+    padding: 0;
+    text-decoration: none;
+    transition:
+        background 140ms ease,
+        color 140ms ease,
+        opacity 140ms ease;
+    width: 28px;
+}
+
+.solomon-ai-source-item:hover .solomon-ai-source-item__open,
+.solomon-ai-source-item:hover .solomon-ai-source-item__remove,
+.solomon-ai-source-item__open:focus-visible,
+.solomon-ai-source-item__remove:focus-visible {
+    opacity: 1;
+}
+
+.solomon-ai-source-item__open {
+    grid-area: open;
+}
+
+.solomon-ai-source-item__remove {
+    grid-area: remove;
+}
+
+.solomon-ai-source-item__open:hover,
+.solomon-ai-source-item__open:focus-visible {
+    background: rgba(65, 210, 255, 0.09);
+    color: rgba(180, 235, 255, 0.96);
+    outline: none;
+}
+
+.solomon-ai-source-item__remove:hover,
+.solomon-ai-source-item__remove:focus-visible {
+    background: rgba(248, 113, 113, 0.1);
+    color: rgba(252, 165, 165, 0.96);
+    outline: none;
+}
+
+.solomon-ai-source-item__remove:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+
+.solomon-ai-sources__empty,
+.solomon-ai-history__empty {
+    align-items: center;
+    color: rgba(148, 163, 184, 0.76);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 360px;
+    padding: 34px 18px;
+    text-align: center;
+}
+
+.solomon-ai-sources__empty-icon,
+.solomon-ai-history__empty > .icon {
+    align-items: center;
+    background: rgba(15, 28, 45, 0.7);
+    border: 1px solid rgba(122, 145, 176, 0.13);
+    border-radius: var(--solomon-ai-radius-frame);
+    color: rgba(170, 188, 210, 0.78);
+    display: inline-flex;
+    font-size: 27px;
+    height: 60px;
+    justify-content: center;
+    margin-bottom: 17px;
+    width: 60px;
+}
+
+.solomon-ai-sources__empty strong,
+.solomon-ai-history__empty strong {
+    color: rgba(235, 241, 248, 0.94);
+    font-size: 0.9rem;
+    font-weight: 720;
+    line-height: 1.35;
+}
+
+.solomon-ai-sources__empty p,
+.solomon-ai-history__empty p {
+    color: rgba(148, 163, 184, 0.68);
+    font-size: 0.77rem;
+    line-height: 1.55;
+    margin: 8px 0 19px;
+    max-width: 240px;
+}
+
+.solomon-ai-sources__empty-action {
+    margin: 0 auto;
+}
+
+.solomon-ai-external-sources {
+    border-top: 1px solid rgba(122, 145, 176, 0.12);
+    margin-top: 18px;
+    padding-top: 16px;
+}
+
+.solomon-ai-external-sources__heading {
+    color: rgba(148, 163, 184, 0.72);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.035em;
+    margin: 0 6px 8px;
+    text-transform: uppercase;
+}
+
+.solomon-ai-external-source-option {
+    align-items: center;
+    border-radius: var(--solomon-ai-radius-control);
+    cursor: pointer;
+    display: grid;
+    gap: 9px;
+    grid-template-columns: 30px minmax(0, 1fr) 34px;
+    min-height: 62px;
+    padding: 8px;
+    transition: background 140ms ease;
+}
+
+.solomon-ai-external-source-option:hover {
+    background: rgba(148, 163, 184, 0.075);
+}
+
+.solomon-ai-external-source-option__icon {
+    align-items: center;
+    background: rgba(65, 210, 255, 0.075);
+    border: 1px solid rgba(125, 229, 255, 0.1);
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(180, 235, 255, 0.88);
+    display: inline-flex;
+    font-size: 17px;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+.solomon-ai-external-source-option__copy {
+    min-width: 0;
+}
+
+.solomon-ai-external-source-option__copy strong {
+    color: rgba(235, 241, 248, 0.95);
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 680;
+    line-height: 1.35;
+}
+
+.solomon-ai-external-source-option__copy > span {
+    color: rgba(148, 163, 184, 0.62);
+    display: block;
+    font-size: 0.64rem;
+    line-height: 1.4;
+    margin-top: 3px;
+}
+
+.solomon-ai-external-source-option__input {
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: 1px;
+}
+
+.solomon-ai-external-source-option__switch {
+    background: rgba(100, 116, 139, 0.42);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 999px;
+    box-sizing: border-box;
+    height: 20px;
+    position: relative;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease;
+    width: 34px;
+}
+
+.solomon-ai-external-source-option__switch::after {
+    background: rgba(226, 232, 240, 0.9);
+    border-radius: 50%;
+    content: "";
+    height: 14px;
+    left: 2px;
+    position: absolute;
+    top: 2px;
+    transition: transform 140ms ease;
+    width: 14px;
+}
+
+.solomon-ai-external-source-option__input:checked +
+.solomon-ai-external-source-option__switch {
+    background: rgba(65, 210, 255, 0.52);
+    border-color: rgba(65, 210, 255, 0.72);
+}
+
+.solomon-ai-external-source-option__input:checked +
+.solomon-ai-external-source-option__switch::after {
+    transform: translateX(14px);
+}
+
+.solomon-ai-external-source-option__input:focus-visible +
+.solomon-ai-external-source-option__switch {
+    outline: 2px solid rgba(65, 210, 255, 0.48);
+    outline-offset: 2px;
+}
+
+.solomon-ai-external-source-option__input:disabled +
+.solomon-ai-external-source-option__switch {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+.solomon-ai-external-sources__status {
+    color: rgba(148, 163, 184, 0.76);
+    font-size: 0.66rem;
+    line-height: 1.4;
+    margin: 6px 8px 0;
+}
+
+.solomon-ai-external-sources__status[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-external-sources__status[
+    data-solomon-ai-public-web-status-variant="error"
+] {
+    color: rgba(252, 165, 165, 0.92);
+}
+
+.solomon-ai-workspace[
+    data-solomon-ai-source-state="empty"
+] .solomon-ai-sources__empty {
+    min-height: 280px;
+    padding-bottom: 24px;
+}
+
+.solomon-ai-history {
+    align-content: start;
+    display: grid;
+    flex: 1 1 auto;
+    gap: 3px;
+    grid-auto-rows: max-content;
+    margin: 0 -4px;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 4px 96px;
+    scrollbar-color:
+        rgba(122, 145, 176, 0.28)
+        transparent;
+    scrollbar-width: thin;
+}
+
+.solomon-ai-history[
+    data-solomon-ai-history-management-pending="true"
+] {
+    cursor: wait;
+}
+
+.solomon-ai-history::-webkit-scrollbar {
+    width: 7px;
+}
+
+.solomon-ai-history::-webkit-scrollbar-thumb {
+    background: rgba(122, 145, 176, 0.24);
+    border-radius: 999px;
+}
+
+.solomon-ai-history__row {
+    align-self: start;
+    border-radius: var(--solomon-ai-radius-control);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    min-width: 0;
+    position: relative;
+}
+
+.solomon-ai-history__row.is-renaming {
+    z-index: 4;
+}
+
+.solomon-ai-history__item {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--solomon-ai-radius-control);
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    gap: 10px;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    grid-template-columns: 24px minmax(0, 1fr);
+    min-height: 58px;
+    min-width: 0;
+    padding: 9px 44px 9px 10px;
+    text-align: left;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        box-shadow 140ms ease,
+        color 140ms ease;
+    width: 100%;
+}
+
+.solomon-ai-history__row:not(.is-active) .solomon-ai-history__item:hover {
+    background: rgba(148, 163, 184, 0.075);
+}
+
+.solomon-ai-history__item:focus-visible {
+    background: rgba(148, 163, 184, 0.075);
+    border-color: rgba(65, 210, 255, 0.34);
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.09);
+    outline: none;
+}
+
+.solomon-ai-history__row.is-active .solomon-ai-history__item,
+.solomon-ai-history__item.is-active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.13),
+            rgba(49, 118, 255, 0.065)
+        );
+    border-color: rgba(65, 210, 255, 0.2);
+    box-shadow:
+        2px 0 0 rgba(65, 210, 255, 0.82) inset,
+        0 8px 20px rgba(0, 0, 0, 0.11);
+}
+
+.solomon-ai-history__row.is-menu-open .solomon-ai-history__item {
+    border-color: rgba(65, 210, 255, 0.3);
+    box-shadow:
+        0 0 0 1px rgba(65, 210, 255, 0.08) inset;
+}
+
+.solomon-ai-history__row.is-active.is-menu-open .solomon-ai-history__item {
+    box-shadow:
+        2px 0 0 rgba(65, 210, 255, 0.82) inset,
+        0 0 0 1px rgba(65, 210, 255, 0.09) inset,
+        0 8px 20px rgba(0, 0, 0, 0.11);
+}
+
+.solomon-ai-history__row.is-renaming .solomon-ai-history__item,
+.solomon-ai-history__row.is-renaming .solomon-ai-history__options,
+.solomon-ai-history__row.is-renaming .solomon-ai-history__menu {
+    display: none !important;
+}
+
+.solomon-ai-history__icon {
+    color: rgba(167, 184, 204, 0.72);
+    font-size: 18px;
+    justify-self: center;
+    transition: color 140ms ease;
+}
+
+.solomon-ai-history__item:hover .solomon-ai-history__icon,
+.solomon-ai-history__item:focus-visible .solomon-ai-history__icon {
+    color: rgba(203, 213, 225, 0.9);
+}
+
+.solomon-ai-history__row.is-active .solomon-ai-history__icon,
+.solomon-ai-history__item.is-active .solomon-ai-history__icon {
+    color: rgba(125, 229, 255, 0.96);
+}
+
+.solomon-ai-history__copy {
+    display: block;
+    min-width: 0;
+}
+
+.solomon-ai-history__copy strong {
+    color: rgba(226, 232, 240, 0.93);
+    display: block;
+    font-size: 0.77rem;
+    font-weight: 650;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.solomon-ai-history__row.is-active .solomon-ai-history__copy strong {
+    color: rgba(241, 250, 255, 0.99);
+}
+
+.solomon-ai-history__copy > span {
+    color: rgba(148, 163, 184, 0.56);
+    display: block;
+    font-size: 0.64rem;
+    line-height: 1.35;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.solomon-ai-history__options {
+    align-items: center;
+    align-self: center;
+    appearance: none;
+    background: rgba(7, 18, 31, 0.82);
+    border: 1px solid transparent;
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(166, 184, 205, 0.72);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    grid-column: 2;
+    grid-row: 1;
+    height: 30px;
+    justify-content: center;
+    justify-self: end;
+    margin-right: 5px;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease,
+        opacity 140ms ease;
+    width: 30px;
+    z-index: 3;
+}
+
+.solomon-ai-history__options > .icon {
+    font-size: 18px;
+}
+
+.solomon-ai-history__row:hover .solomon-ai-history__options,
+.solomon-ai-history__row:focus-within .solomon-ai-history__options,
+.solomon-ai-history__row.is-menu-open .solomon-ai-history__options {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.solomon-ai-history__options:hover,
+.solomon-ai-history__options:focus-visible,
+.solomon-ai-history__row.is-menu-open .solomon-ai-history__options {
+    background: rgba(18, 38, 60, 0.96);
+    border-color: rgba(65, 210, 255, 0.22);
+    color: rgba(232, 245, 255, 0.98);
+    outline: none;
+}
+
+.solomon-ai-history__options:focus-visible {
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.12);
+}
+
+.solomon-ai-history__options:disabled {
+    cursor: wait;
+    opacity: 0.38;
+    pointer-events: none;
+}
+
+.solomon-ai-history__menu {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border: 1px solid rgba(122, 145, 176, 0.2);
+    border-radius: var(--solomon-ai-radius-surface);
+    box-shadow:
+        0 18px 36px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    display: grid;
+    gap: 3px;
+    min-width: 154px;
+    padding: 5px;
+    position: absolute;
+    right: 4px;
+    top: calc(100% - 5px);
+    z-index: 20;
+}
+
+.solomon-ai-history__menu[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-history__menu-item {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(218, 229, 240, 0.92);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 650;
+    gap: 9px;
+    min-height: 34px;
+    padding: 7px 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.solomon-ai-history__menu-item > .icon {
+    color: rgba(125, 229, 255, 0.78);
+    font-size: 17px;
+}
+
+.solomon-ai-history__menu-item:hover,
+.solomon-ai-history__menu-item:focus-visible {
+    background: rgba(65, 210, 255, 0.09);
+    color: rgba(242, 249, 255, 0.99);
+    outline: none;
+}
+
+.solomon-ai-history__menu-item:focus-visible {
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.11);
+}
+
+.solomon-ai-history__menu-item--danger {
+    color: rgba(254, 214, 214, 0.92);
+}
+
+.solomon-ai-history__menu-item--danger > .icon {
+    color: rgba(252, 165, 165, 0.82);
+}
+
+.solomon-ai-history__menu-item--danger:hover,
+.solomon-ai-history__menu-item--danger:focus-visible {
+    background: rgba(248, 113, 113, 0.1);
+    color: rgba(254, 226, 226, 0.99);
+}
+
+.solomon-ai-history__menu-item:disabled {
+    cursor: wait;
+    opacity: 0.46;
+}
+
+.solomon-ai-history__rename-editor {
+    align-items: center;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10, 24, 40, 0.97),
+            rgba(6, 17, 30, 0.97)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.26);
+    border-radius: var(--solomon-ai-radius-control);
+    box-shadow:
+        0 0 0 1px rgba(65, 210, 255, 0.045) inset,
+        0 8px 20px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    display: grid;
+    gap: 8px;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    min-height: 58px;
+    min-width: 0;
+    padding: 6px 7px 6px 10px;
+    width: 100%;
+}
+
+.solomon-ai-history__row.is-active .solomon-ai-history__rename-editor {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.13),
+            rgba(49, 118, 255, 0.065)
+        );
+    border-color: rgba(65, 210, 255, 0.24);
+    box-shadow:
+        2px 0 0 rgba(65, 210, 255, 0.82) inset,
+        0 8px 20px rgba(0, 0, 0, 0.11);
+}
+
+.solomon-ai-history__rename-editor[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-history__rename-icon {
+    color: rgba(125, 229, 255, 0.9);
+    font-size: 18px;
+    justify-self: center;
+}
+
+.solomon-ai-history__rename-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.solomon-ai-history__rename-copy input {
+    appearance: none;
+    background: rgba(2, 9, 18, 0.82);
+    border: 1px solid rgba(122, 145, 176, 0.22);
+    border-radius: var(--solomon-ai-radius-compact);
+    box-sizing: border-box;
+    color: rgba(241, 247, 255, 0.98);
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 650;
+    line-height: 1.3;
+    min-height: 29px;
+    min-width: 0;
+    outline: none;
+    padding: 4px 7px;
+    width: 100%;
+}
+
+.solomon-ai-history__rename-copy input:focus {
+    border-color: rgba(65, 210, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.08);
+}
+
+.solomon-ai-history__rename-copy input:disabled {
+    color: rgba(148, 163, 184, 0.52);
+    cursor: wait;
+}
+
+.solomon-ai-history__rename-date {
+    color: rgba(148, 163, 184, 0.56);
+    display: block;
+    font-size: 0.61rem;
+    line-height: 1.2;
+    overflow: hidden;
+    padding-left: 1px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.solomon-ai-history__rename-actions {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.solomon-ai-history__rename-save,
+.solomon-ai-history__rename-cancel {
+    align-items: center;
+    appearance: none;
+    border-radius: var(--solomon-ai-radius-control);
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font: inherit;
+    height: 29px;
+    justify-content: center;
+    padding: 0;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease,
+        opacity 140ms ease;
+    width: 29px;
+}
+
+.solomon-ai-history__rename-save > .icon,
+.solomon-ai-history__rename-cancel > .icon {
+    font-size: 16px;
+}
+
+.solomon-ai-history__rename-save {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.92),
+            rgba(43, 174, 232, 0.88)
+        );
+    border: 1px solid rgba(149, 236, 255, 0.48);
+    color: rgba(3, 13, 24, 0.98);
+}
+
+.solomon-ai-history__rename-save:hover,
+.solomon-ai-history__rename-save:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(109, 226, 255, 0.98),
+            rgba(65, 210, 255, 0.94)
+        );
+    border-color: rgba(188, 244, 255, 0.7);
+    outline: none;
+}
+
+.solomon-ai-history__rename-cancel {
+    background: rgba(7, 18, 31, 0.82);
+    border: 1px solid rgba(122, 145, 176, 0.18);
+    color: rgba(203, 213, 225, 0.82);
+}
+
+.solomon-ai-history__rename-cancel:hover,
+.solomon-ai-history__rename-cancel:focus-visible {
+    background: rgba(148, 163, 184, 0.1);
+    border-color: rgba(148, 163, 184, 0.3);
+    color: rgba(241, 245, 249, 0.96);
+    outline: none;
+}
+
+.solomon-ai-history__rename-save:focus-visible,
+.solomon-ai-history__rename-cancel:focus-visible {
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.12);
+}
+
+.solomon-ai-history__rename-save:disabled,
+.solomon-ai-history__rename-cancel:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+
+.solomon-ai-sources__actions {
+    border-top: 1px solid rgba(122, 145, 176, 0.11);
+    flex: 0 0 auto;
+    padding: 12px 14px;
+}
+
+.solomon-ai-sources__new-chat {
+    align-items: center;
+    appearance: none;
+    background: rgba(12, 27, 45, 0.58);
+    border: 1px solid rgba(122, 145, 176, 0.14);
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(214, 226, 238, 0.9);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 680;
+    gap: 8px;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 12px;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease;
+    width: 100%;
+}
+
+.solomon-ai-sources__new-chat > .icon {
+    color: rgba(125, 229, 255, 0.78);
+    font-size: 18px;
+}
+
+.solomon-ai-sources__new-chat:hover,
+.solomon-ai-sources__new-chat:focus-visible {
+    background: rgba(15, 34, 55, 0.86);
+    border-color: rgba(65, 210, 255, 0.26);
+    color: rgba(240, 248, 255, 0.98);
+    outline: none;
+}
+
+.solomon-ai-sources__new-chat:disabled {
+    background: rgba(12, 27, 45, 0.38);
+    border-color: rgba(122, 145, 176, 0.09);
+    color: rgba(148, 163, 184, 0.5);
+    cursor: wait;
+}
+
+.solomon-ai-sources__new-chat:disabled > .icon {
+    color: rgba(148, 163, 184, 0.44);
+}
+
+/* ==========================================================================
+   CONVERSATION CANVAS
+   ========================================================================== */
+
+.solomon-ai-conversation {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(22, 191, 216, 0.09),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(8, 13, 24, 0.88),
+            rgba(3, 8, 18, 0.72)
+        );
+    border: 1px solid rgba(105, 148, 238, 0.16);
+    border-radius: var(--solomon-ai-radius-frame);
+    box-shadow:
+        0 22px 58px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.solomon-ai-conversation__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 28px 36px var(--solomon-ai-composer-reserve-height);
+    scrollbar-color:
+        rgba(148, 163, 184, 0.42)
+        transparent;
+    scrollbar-width: thin;
+    scroll-padding-bottom: var(--solomon-ai-composer-reserve-height);
+}
+
+.solomon-ai-conversation__scroll:has(.solomon-ai-conversation__welcome) {
+    overflow-y: hidden;
+}
+
+.solomon-ai-conversation__scroll::-webkit-scrollbar {
+    width: 9px;
+}
+
+.solomon-ai-conversation__scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.solomon-ai-conversation__scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.42);
+    border: 2px solid transparent;
+    border-radius: 3px;
+    background-clip: padding-box;
+}
+
+.solomon-ai-conversation__scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(171, 188, 208, 0.58);
+}
+
+.solomon-ai-conversation__thread {
+    margin: 0 auto;
+    max-width: var(--solomon-ai-reading-width);
+    min-height: 100%;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.solomon-ai-conversation__thread[
+    data-solomon-ai-thread-state="empty"
+] {
+    display: flex;
+    flex-direction: column;
+}
+
+.solomon-ai-conversation__welcome {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 0;
+    padding: clamp(64px, 8vh, 96px) 22px 32px;
+    text-align: center;
+}
+
+.solomon-ai-conversation__thread[
+    data-solomon-ai-thread-state="empty"
+] .solomon-ai-conversation__welcome {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 24px 22px 40px;
+}
+
+.solomon-ai-conversation__welcome-mark {
+    align-items: center;
+    background:
+        radial-gradient(
+            circle at 34% 28%,
+            rgba(125, 229, 255, 0.16),
+            transparent 48%
+        ),
+        rgba(10, 23, 40, 0.9);
+    border: 1px solid rgba(65, 210, 255, 0.18);
+    border-radius: var(--solomon-ai-radius-frame);
+    display: inline-flex;
+    height: 72px;
+    justify-content: center;
+    margin-bottom: 28px;
+    width: 72px;
+}
+
+.solomon-ai-conversation__welcome-mark img {
+    display: block;
+    height: 44px;
+    object-fit: contain;
+    width: 44px;
+}
+
+.solomon-ai-conversation__kicker {
+    color: rgba(125, 229, 255, 0.78);
+    font-size: 0.68rem;
+    font-weight: 780;
+    letter-spacing: 0.11em;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+}
+
+.solomon-ai-conversation__welcome h2 {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: clamp(1.45rem, 2.3vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.solomon-ai-conversation__welcome-copy {
+    color: rgba(148, 163, 184, 0.74);
+    font-size: 0.86rem;
+    line-height: 1.58;
+    margin: 18px 0 0;
+    max-width: 620px;
+}
+
+.solomon-ai-conversation__suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    justify-content: center;
+    margin-top: 34px;
+}
+
+.solomon-ai-conversation__suggestions button {
+    align-items: center;
+    appearance: none;
+    background: rgba(12, 27, 45, 0.72);
+    border: 1px solid rgba(122, 145, 176, 0.16);
+    border-radius: var(--solomon-ai-radius-surface);
+    color: rgba(213, 224, 236, 0.9);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 650;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 14px;
+}
+
+.solomon-ai-conversation__suggestions button:hover,
+.solomon-ai-conversation__suggestions button:focus-visible {
+    background: rgba(15, 34, 55, 0.94);
+    border-color: rgba(65, 210, 255, 0.28);
+    color: rgba(238, 248, 255, 0.98);
+    outline: none;
+}
+
+.solomon-ai-conversation__suggestions button > .icon {
+    color: rgba(125, 229, 255, 0.82);
+    font-size: 17px;
+}
+
+/* ==========================================================================
+   MESSAGE THREAD
+   ========================================================================== */
+
+.solomon-ai-message {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.solomon-ai-message--assistant {
+    margin-bottom: var(--solomon-ai-assistant-to-user-gap);
+}
+
+.solomon-ai-message--user {
+    justify-items: end;
+    margin-bottom: var(--solomon-ai-user-to-assistant-gap);
+}
+
+.solomon-ai-message:last-child {
+    margin-bottom: 0;
+}
+
+.solomon-ai-message__label {
+    display: none;
+}
+
+.solomon-ai-message__time {
+    color: rgba(148, 163, 184, 0.48);
+    display: block;
+    font-size: 0.56rem;
+    font-weight: 450;
+    letter-spacing: 0.008em;
+    line-height: 1;
+    margin-bottom: 4px;
+    user-select: none;
+}
+
+.solomon-ai-message__time[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-message--assistant .solomon-ai-message__time {
+    justify-self: start;
+    text-align: left;
+}
+
+.solomon-ai-message--user .solomon-ai-message__time {
+    justify-self: end;
+    margin-bottom: 3px;
+    text-align: right;
+}
+
+.solomon-ai-conversation__date-divider {
+    align-items: center;
+    color: rgba(188, 205, 222, 0.76);
+    display: flex;
+    font-size: 0.66rem;
+    font-weight: 650;
+    gap: 10px;
+    justify-content: center;
+    letter-spacing: 0.035em;
+    line-height: 1;
+    margin: 0 0 22px;
+    text-align: center;
+    user-select: none;
+}
+
+.solomon-ai-conversation__date-divider::before,
+.solomon-ai-conversation__date-divider::after {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(65, 210, 255, 0),
+            rgba(122, 145, 176, 0.18)
+        );
+    content: "";
+    flex: 1 1 0;
+    height: 1px;
+    max-width: 118px;
+}
+
+.solomon-ai-conversation__date-divider::after {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(122, 145, 176, 0.18),
+            rgba(65, 210, 255, 0)
+        );
+}
+
+.solomon-ai-conversation__date-divider[hidden] {
+    display: none !important;
+}
+
+.solomon-ai-conversation__date-divider > span {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15, 31, 49, 0.96),
+            rgba(8, 18, 32, 0.96)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.14);
+    border-radius: 999px;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    padding: 5px 10px;
+}
+
+.solomon-ai-message__body {
+    color: rgba(236, 241, 247, 0.96);
+    font-size: 1rem;
+    font-weight: 420;
+    letter-spacing: -0.006em;
+    line-height: 1.68;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+    width: 100%;
+}
+
+.solomon-ai-message--assistant .solomon-ai-message__body {
+    background: transparent;
+    border: 0;
+    max-width: none;
+    padding: 0;
+}
+
+.solomon-ai-message--user .solomon-ai-message__body {
+    background: rgba(34, 47, 62, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius:
+        var(--solomon-ai-radius-surface)
+        var(--solomon-ai-radius-compact)
+        var(--solomon-ai-radius-surface)
+        var(--solomon-ai-radius-surface);
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 0.95rem;
+    font-weight: 470;
+    letter-spacing: -0.003em;
+    line-height: 1.55;
+    max-width: min(var(--solomon-ai-user-bubble-width), 78%);
+    padding: 11px 15px;
+    width: fit-content;
+}
+
+.solomon-ai-message__body > :first-child {
+    margin-top: 0;
+}
+
+.solomon-ai-message__body > :last-child {
+    margin-bottom: 0;
+}
+
+.solomon-ai-message__body p {
+    margin: 0 0 0.92em;
+}
+
+.solomon-ai-message--assistant .solomon-ai-message__body p + p {
+    margin-top: 0.08em;
+}
+
+.solomon-ai-message__body h2,
+.solomon-ai-message__body h3,
+.solomon-ai-message__body h4 {
+    color: rgba(248, 250, 252, 0.99);
+    font-weight: 690;
+    letter-spacing: -0.025em;
+    line-height: 1.28;
+    text-wrap: balance;
+}
+
+.solomon-ai-message__body h2 {
+    font-size: 1.24rem;
+    margin: 1.55em 0 0.62em;
+}
+
+.solomon-ai-message__body h3 {
+    font-size: 1.08rem;
+    margin: 1.42em 0 0.56em;
+}
+
+.solomon-ai-message__body h4 {
+    color: rgba(226, 232, 240, 0.96);
+    font-size: 0.98rem;
+    letter-spacing: -0.012em;
+    margin: 1.32em 0 0.5em;
+}
+
+.solomon-ai-message__body ul,
+.solomon-ai-message__body ol {
+    margin: 0.5em 0 1.05em;
+    padding-inline-start: 1.55em;
+}
+
+.solomon-ai-message__body li {
+    line-height: 1.58;
+    margin: 0.42em 0;
+    padding-inline-start: 0.2em;
+}
+
+.solomon-ai-message__body li + li {
+    margin-top: 0.48em;
+}
+
+.solomon-ai-message__body li::marker {
+    color: rgba(125, 229, 255, 0.76);
+    font-weight: 650;
+}
+
+.solomon-ai-message__body strong {
+    color: rgba(248, 250, 252, 0.99);
+    font-weight: 680;
+}
+
+.solomon-ai-message__body em {
+    color: rgba(226, 232, 240, 0.92);
+}
+
+.solomon-ai-message__body a {
+    color: rgba(125, 229, 255, 0.94);
+    text-decoration-color: rgba(125, 229, 255, 0.4);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 3px;
+    transition:
+        color 120ms ease,
+        text-decoration-color 120ms ease;
+}
+
+.solomon-ai-message__body a:hover,
+.solomon-ai-message__body a:focus-visible {
+    color: rgba(194, 244, 255, 0.99);
+    text-decoration-color: rgba(194, 244, 255, 0.74);
+}
+
+.solomon-ai-message__body a:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid rgba(65, 210, 255, 0.28);
+    outline-offset: 2px;
+}
+
+.solomon-ai-message__body blockquote {
+    background: rgba(15, 31, 49, 0.46);
+    border-left: 3px solid rgba(65, 210, 255, 0.38);
+    border-radius: 0 var(--solomon-ai-radius-control)
+        var(--solomon-ai-radius-control) 0;
+    color: rgba(203, 213, 225, 0.9);
+    margin: 1.15em 0;
+    padding: 0.62em 0.9em 0.62em 1em;
+}
+
+.solomon-ai-message__body blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+.solomon-ai-message__body code {
+    background: rgba(148, 163, 184, 0.1);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: var(--solomon-ai-radius-compact);
+    color: rgba(226, 247, 255, 0.96);
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    font-size: 0.88em;
+    letter-spacing: 0;
+    padding: 0.12em 0.34em;
+}
+
+.solomon-ai-message__body pre {
+    background: rgba(2, 8, 16, 0.88);
+    border: 1px solid rgba(122, 145, 176, 0.16);
+    border-radius: var(--solomon-ai-radius-surface);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    line-height: 1.55;
+    margin: 1.15em 0;
+    overflow-x: auto;
+    padding: 14px 16px;
+    tab-size: 4;
+    white-space: pre;
+}
+
+.solomon-ai-message__body pre code {
+    background: transparent;
+    border: 0;
+    display: block;
+    font-size: 0.88rem;
+    padding: 0;
+    white-space: inherit;
+}
+
+.solomon-ai-message__table-scroll {
+    margin: 1.15em 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-color:
+        rgba(148, 163, 184, 0.34)
+        transparent;
+    scrollbar-width: thin;
+}
+
+.solomon-ai-message__body table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.92rem;
+    line-height: 1.48;
+    min-width: 100%;
+    width: max-content;
+}
+
+.solomon-ai-message__body th,
+.solomon-ai-message__body td {
+    border-bottom: 1px solid rgba(122, 145, 176, 0.14);
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.solomon-ai-message__body th {
+    background: rgba(15, 31, 49, 0.72);
+    border-top: 1px solid rgba(122, 145, 176, 0.18);
+    color: rgba(236, 246, 252, 0.98);
+    font-weight: 650;
+}
+
+.solomon-ai-message__body th:first-child {
+    border-top-left-radius: var(--solomon-ai-radius-control);
+}
+
+.solomon-ai-message__body th:last-child {
+    border-top-right-radius: var(--solomon-ai-radius-control);
+}
+
+.solomon-ai-message__body td {
+    background: rgba(8, 18, 32, 0.36);
+    color: rgba(215, 226, 237, 0.94);
+}
+
+.solomon-ai-message__body tr:last-child td:first-child {
+    border-bottom-left-radius: var(--solomon-ai-radius-control);
+}
+
+.solomon-ai-message__body tr:last-child td:last-child {
+    border-bottom-right-radius: var(--solomon-ai-radius-control);
+}
+
+.solomon-ai-message__body hr {
+    border: 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    margin: 1.6em 0;
+}
+
+.solomon-ai-message__reveal-group {
+    animation: solomon-ai-progressive-reveal 120ms ease-out both;
+}
+
+.solomon-ai-message__continuation {
+    border: 0;
+    display: grid;
+    gap: 9px;
+    margin-top: 12px;
+    min-height: var(--solomon-ai-continuation-reserve-height);
+    min-width: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.solomon-ai-message__continuation--reserved {
+    pointer-events: none;
+}
+
+.solomon-ai-message__continuation:not(
+    .solomon-ai-message__continuation--reserved
+) {
+    animation: solomon-ai-continuation-settle 180ms ease-out both;
+}
+
+.solomon-ai-message__bridge {
+    color: rgba(203, 221, 238, 0.88);
+    font-size: 0.82rem;
+    font-weight: 620;
+    letter-spacing: -0.005em;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.solomon-ai-message__suggestions {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.solomon-ai-message__suggestion {
+    align-items: center;
+    appearance: none;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.09),
+            rgba(49, 118, 255, 0.045)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.18);
+    border-radius: var(--solomon-ai-radius-surface);
+    color: rgba(218, 239, 249, 0.92);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.35;
+    max-width: 100%;
+    min-height: 34px;
+    overflow-wrap: anywhere;
+    padding: 7px 12px;
+    text-align: left;
+    white-space: normal;
+}
+
+.solomon-ai-message__suggestion:hover,
+.solomon-ai-message__suggestion:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.16),
+            rgba(49, 118, 255, 0.08)
+        );
+    border-color: rgba(65, 210, 255, 0.34);
+    color: rgba(241, 250, 255, 0.99);
+    outline: none;
+}
+
+/* Response actions remain visually attached to the assistant turn. */
+
+.solomon-ai-message__actions {
+    align-items: center;
+    display: flex;
+    gap: 2px;
+    margin: 7px 0 0 -5px;
+    min-height: 32px;
+    width: fit-content;
+}
+
+.solomon-ai-message__action {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--solomon-ai-radius-control);
+    color: rgba(160, 176, 196, 0.8);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    transition:
+        background 140ms ease,
+        color 140ms ease,
+        opacity 140ms ease,
+        transform 140ms ease;
+    width: 32px;
+}
+
+.solomon-ai-message__action > .icon {
+    font-size: 19px;
+    line-height: 1;
+}
+
+.solomon-ai-message__action:hover,
+.solomon-ai-message__action:focus-visible {
+    background: rgba(18, 34, 52, 0.78);
+    border-color: rgba(122, 145, 176, 0.16);
+    color: rgba(235, 241, 248, 0.98);
+    outline: none;
+}
+
+.solomon-ai-message__action:focus-visible {
+    box-shadow: 0 0 0 2px rgba(65, 210, 255, 0.22);
+}
+
+.solomon-ai-message__action:active {
+    transform: translateY(1px);
+}
+
+.solomon-ai-message__action.is-active {
+    background: rgba(65, 210, 255, 0.09);
+    border-color: rgba(65, 210, 255, 0.22);
+    color: rgba(125, 229, 255, 0.98);
+}
+
+.solomon-ai-message__action.is-confirmed {
+    background: rgba(74, 222, 128, 0.075);
+    border-color: rgba(74, 222, 128, 0.18);
+    color: rgba(134, 239, 172, 0.96);
+}
+
+.solomon-ai-message__action:disabled {
+    cursor: wait;
+    opacity: 0.46;
+    transform: none;
+}
+
+.solomon-ai-clipboard-buffer {
+    height: 1px;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    width: 1px;
+}
+
+.solomon-ai-message--pending {
+    margin-bottom: 28px;
+}
+
+.solomon-ai-message--pending .solomon-ai-message__body {
+    color: rgba(148, 163, 184, 0.76);
+    width: auto;
+}
+
+.solomon-ai-thinking {
+    align-items: center;
+    display: inline-flex;
+    min-height: 28px;
+}
+
+.solomon-ai-thinking__visual {
+    align-items: center;
+    display: inline-flex;
+    gap: 5px;
+    height: 28px;
+}
+
+.solomon-ai-thinking__segment {
+    animation: solomon-ai-thinking-pulse 1.25s ease-in-out infinite;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(125, 229, 255, 0.9),
+            rgba(65, 210, 255, 0.38)
+        );
+    border-radius: 999px;
+    box-shadow:
+        0 0 14px rgba(65, 210, 255, 0.12),
+        0 0 0 1px rgba(125, 229, 255, 0.08) inset;
+    display: inline-block;
+    height: 8px;
+    opacity: 0.46;
+    transform: scaleY(0.72);
+    width: 5px;
+}
+
+.solomon-ai-thinking__segment:nth-child(2) {
+    animation-delay: 0.12s;
+}
+
+.solomon-ai-thinking__segment:nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.solomon-ai-thinking__segment:nth-child(4) {
+    animation-delay: 0.36s;
+}
+
+.solomon-ai-message[
+    data-solomon-ai-pending-state="queued"
+] .solomon-ai-thinking__segment {
+    animation-duration: 1.7s;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(170, 188, 210, 0.86),
+            rgba(122, 145, 176, 0.36)
+        );
+    box-shadow:
+        0 0 12px rgba(148, 163, 184, 0.08),
+        0 0 0 1px rgba(203, 213, 225, 0.06) inset;
+}
+
+.solomon-ai-message[
+    data-solomon-ai-pending-state="reconnecting"
+] .solomon-ai-thinking__segment {
+    animation-duration: 1.05s;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(251, 191, 36, 0.82),
+            rgba(217, 119, 6, 0.38)
+        );
+    box-shadow:
+        0 0 14px rgba(251, 191, 36, 0.1),
+        0 0 0 1px rgba(251, 191, 36, 0.08) inset;
+}
+
+.solomon-ai-thinking__label {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+@keyframes solomon-ai-progressive-reveal {
+    from {
+        opacity: 0.18;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes solomon-ai-continuation-settle {
+    from {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes solomon-ai-thinking-pulse {
+    0%,
+    100% {
+        opacity: 0.38;
+        transform: scaleY(0.68);
+    }
+
+    45% {
+        opacity: 0.98;
+        transform: scaleY(1.78);
+    }
+}
+
+/* ==========================================================================
+   COMPOSER
+   ========================================================================== */
+
+.solomon-ai-composer-shell {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3, 9, 18, 0),
+            rgba(3, 9, 18, 0.94) 28%,
+            rgba(3, 9, 18, 1) 100%
+        );
+    bottom: var(--solomon-ai-composer-offset);
+    isolation: isolate;
+    left: 0;
+    padding: 14px 28px 12px;
+    position: absolute;
+    right: 10px;
+    z-index: 5;
+}
+
+.solomon-ai-composer__readiness {
+    align-items: center;
+    color: rgba(179, 202, 226, 0.78);
+    display: flex;
+    font-size: 0.78rem;
+    gap: 8px;
+    justify-content: center;
+    line-height: 1.35;
+    margin: 0 auto 8px;
+    max-width: var(--solomon-ai-reading-width);
+    min-height: 18px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.solomon-ai-composer__readiness[hidden] {
+    display: none;
+}
+
+.solomon-ai-composer__readiness::before {
+    background: rgba(129, 177, 206, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(129, 177, 206, 0.08);
+    content: "";
+    flex: 0 0 auto;
+    height: 6px;
+    width: 6px;
+}
+
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="warming"
+] {
+    color: rgba(173, 218, 238, 0.84);
+}
+
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="warming"
+]::before {
+    animation: solomon-ai-thinking-pulse 1.4s ease-in-out infinite;
+    background: rgba(65, 210, 255, 0.9);
+    box-shadow: 0 0 0 3px rgba(65, 210, 255, 0.1);
+}
+
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="degraded"
+],
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="unavailable"
+] {
+    color: rgba(214, 187, 191, 0.84);
+}
+
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="degraded"
+]::before,
+.solomon-ai-composer__readiness[
+    data-solomon-ai-intelligence-status-variant="unavailable"
+]::before {
+    background: rgba(214, 147, 158, 0.82);
+    box-shadow: 0 0 0 3px rgba(214, 147, 158, 0.08);
+}
+
+.solomon-ai-composer-shell::after {
+    background: rgba(3, 9, 18, 1);
+    content: "";
+    height: var(--solomon-ai-composer-offset);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+}
+
+.solomon-ai-composer {
+    align-items: end;
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(65, 210, 255, 0.055),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(9, 22, 38, 1),
+            rgba(5, 14, 26, 1)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.22);
+    border-radius: var(--solomon-ai-radius-frame);
+    box-shadow:
+        0 16px 42px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(65, 210, 255, 0.025),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    display: grid;
+    column-gap: 12px;
+    grid-template-columns:
+        34px
+        minmax(0, 1fr)
+        34px;
+    grid-template-rows: auto;
+    margin: 0 auto;
+    max-width: var(--solomon-ai-reading-width);
+    padding: 8px 10px;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.solomon-ai-composer[
+    data-solomon-ai-composer-availability="disabled"
+] {
+    background: rgba(8, 18, 30, 0.82);
+    border-color: rgba(89, 141, 166, 0.14);
+    box-shadow:
+        0 12px 34px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+.solomon-ai-composer:focus-within {
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(65, 210, 255, 0.085),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(10, 25, 43, 1),
+            rgba(5, 14, 27, 1)
+        );
+    border-color: rgba(65, 210, 255, 0.46);
+    box-shadow:
+        0 18px 46px rgba(0, 0, 0, 0.32),
+        0 0 0 3px rgba(65, 210, 255, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.032);
+}
+
+.solomon-ai-composer__input {
+    align-self: end;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    box-sizing: border-box;
+    color: rgba(241, 247, 255, 0.98);
+    display: block;
+    font: inherit;
+    font-size: 0.95rem;
+    grid-column: 2;
+    grid-row: 1;
+    line-height: 1.42;
+    max-height: 180px;
+    min-height: 34px;
+    outline: none;
+    overflow-y: hidden;
+    padding: 6px 4px 5px 6px;
+    resize: none;
+    width: 100%;
+}
+
+.solomon-ai-composer__input::placeholder {
+    color: rgba(158, 181, 210, 0.56);
+}
+
+.solomon-ai-composer__input:disabled {
+    color: rgba(158, 181, 210, 0.5);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.solomon-ai-composer__input:disabled::placeholder {
+    color: rgba(143, 174, 193, 0.38);
+}
+
+.solomon-ai-composer__controls {
+    display: contents;
+}
+
+.solomon-ai-composer__source,
+.solomon-ai-composer__submit {
+    align-items: center;
+    align-self: end;
+    appearance: none;
+    border-radius: var(--solomon-ai-radius-control);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    grid-row: 1;
+    height: 34px;
+    justify-content: center;
+    transition:
+        background 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease,
+        transform 150ms ease;
+    width: 34px;
+}
+
+.solomon-ai-composer__source {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.09),
+            rgba(49, 118, 255, 0.04)
+        );
+    border: 1px solid rgba(65, 210, 255, 0.18);
+    color: rgba(160, 225, 247, 0.86);
+    grid-column: 1;
+}
+
+.solomon-ai-composer__source:hover,
+.solomon-ai-composer__source:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.16),
+            rgba(49, 118, 255, 0.08)
+        );
+    border-color: rgba(65, 210, 255, 0.34);
+    color: rgba(226, 247, 255, 0.98);
+    outline: none;
+}
+
+.solomon-ai-composer__source:disabled {
+    background: rgba(45, 79, 99, 0.28);
+    border-color: rgba(89, 141, 166, 0.13);
+    color: rgba(143, 174, 193, 0.4);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.solomon-ai-composer__source-state {
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.solomon-ai-composer__submit {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.92),
+            rgba(43, 174, 232, 0.88)
+        );
+    border: 1px solid rgba(149, 236, 255, 0.5);
+    box-shadow:
+        0 6px 16px rgba(34, 184, 226, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    color: rgba(3, 13, 24, 0.96);
+    grid-column: 3;
+}
+
+.solomon-ai-composer__submit:hover,
+.solomon-ai-composer__submit:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(109, 226, 255, 0.98),
+            rgba(65, 210, 255, 0.94)
+        );
+    border-color: rgba(188, 244, 255, 0.72);
+    color: rgba(2, 10, 19, 0.99);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.solomon-ai-composer__submit:disabled {
+    background: rgba(45, 79, 99, 0.42);
+    border-color: rgba(89, 141, 166, 0.16);
+    box-shadow: none;
+    color: rgba(143, 174, 193, 0.46);
+    cursor: not-allowed;
+    opacity: 1;
+    transform: none;
+}
+
+/* ==========================================================================
+   FULL-PAGE FOOTER BOUNDARY
+   --------------------------------------------------------------------------
+   The dedicated SolomonAI workspace intentionally renders without a global
+   footer or a persistent lower-left panel notice.
+   ========================================================================== */
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1040px) {
+    .solomon-ai-workspace__layout {
+        grid-template-columns:
+            var(
+                --solomon-workspace-two-column-left-width,
+                clamp(232px, 25vw, 270px)
+            )
+            minmax(0, 1fr);
+    }
+
+    .solomon-ai-conversation__scroll {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .solomon-ai-composer-shell {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .solomon-ai-message--user .solomon-ai-message__body {
+        max-width: 82%;
+    }
+}
+
+@media (max-width: 780px) {
+    .solomon-ai-workspace {
+        height: 100%;
+        min-height: 0;
+    }
+
+    .solomon-ai-workspace__layout {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .solomon-ai-sources {
+        flex: 0 0 auto;
+        max-height: 300px;
+    }
+
+    .solomon-ai-sources__empty,
+    .solomon-ai-history__empty {
+        min-height: 220px;
+        padding-bottom: 26px;
+        padding-top: 26px;
+    }
+
+    .solomon-ai-conversation {
+        min-height: 560px;
+    }
+
+    .solomon-ai-conversation__welcome {
+        min-height: 340px;
+        padding-bottom: 20px;
+        padding-top: 36px;
+    }
+
+    .solomon-ai-conversation__thread[
+        data-solomon-ai-thread-state="empty"
+    ] .solomon-ai-conversation__welcome {
+        min-height: 340px;
+        padding-bottom: 28px;
+        padding-top: 28px;
+    }
+}
+
+@media (max-width: 560px) {
+    .solomon-ai-workspace {
+        --solomon-ai-continuation-reserve-height: 0px;
+        --solomon-ai-composer-reserve-height: 213px;
+        --solomon-ai-user-to-assistant-gap: 28px;
+        --solomon-ai-assistant-to-user-gap: 36px;
+        border-left: 0;
+        border-radius: 0;
+        border-right: 0;
+    }
+
+    .solomon-ai-conversation__scroll {
+        padding: 24px 14px var(--solomon-ai-composer-reserve-height);
+    }
+
+    .solomon-ai-message--assistant {
+        margin-bottom: var(--solomon-ai-assistant-to-user-gap);
+    }
+
+    .solomon-ai-message--user {
+        margin-bottom: var(--solomon-ai-user-to-assistant-gap);
+    }
+
+    .solomon-ai-message:last-child {
+        margin-bottom: 0;
+    }
+
+    .solomon-ai-message__body {
+        font-size: 0.96rem;
+        line-height: 1.66;
+    }
+
+    .solomon-ai-message--user .solomon-ai-message__body {
+        max-width: 92%;
+    }
+
+    .solomon-ai-conversation__welcome {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .solomon-ai-conversation__suggestions {
+        align-items: stretch;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .solomon-ai-conversation__suggestions button {
+        border-radius: var(--solomon-ai-radius-surface);
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .solomon-ai-message__suggestions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .solomon-ai-message__suggestion {
+        border-radius: var(--solomon-ai-radius-surface);
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .solomon-ai-message__actions {
+        margin-top: 10px;
+    }
+
+    .solomon-ai-message__action {
+        height: 34px;
+        width: 34px;
+    }
+
+    .solomon-ai-composer-shell {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .solomon-ai-composer {
+        column-gap: 9px;
+        grid-template-columns:
+            34px
+            minmax(0, 1fr)
+            34px;
+    }
+
+    .solomon-ai-composer__input {
+        padding-left: 3px;
+    }
+}
+
+@media (hover: none) {
+    .solomon-ai-history__options {
+        opacity: 0.72;
+        pointer-events: auto;
+    }
+}
+
+@media (max-height: 760px) and (min-width: 781px) {
+    .solomon-ai-workspace {
+        height: 100%;
+        min-height: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .solomon-ai-workspace *,
+    .solomon-ai-workspace *::before,
+    .solomon-ai-workspace *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+
+    .solomon-ai-message__reveal-group,
+    .solomon-ai-message__continuation:not(
+        .solomon-ai-message__continuation--reserved
+    ),
+    .solomon-ai-thinking__segment {
+        animation: none !important;
+    }
+
+    .solomon-ai-thinking__segment {
+        opacity: 0.7;
+        transform: scaleY(1);
+    }
+}

@@ -1,0 +1,520 @@
+﻿<!-- -------------------------------------------------------------------
+     FILE: workspace_document_reader.html
+     DIRECTORY: webui/templates/
+------------------------------------------------------------------- -->
+
+{% set reader_title = document.title if document else 'Document Reader' %}
+{% set reader_mode = document.reader_mode if document and document.reader_mode else 'stored_file' %}
+{% set active_reader_state = reader_state|default('error') %}
+{% set reader_supported_by_server = reader_supported|default(false) %}
+{% set reader_pages_available = reader_pages|default([]) %}
+{% set reader_text_blocks_available = reader_text_blocks|default([]) %}
+{% set reader_spreadsheet_sheets_available = reader_spreadsheet_sheets|default([]) %}
+{% set reader_image_preview_available = reader_image_preview|default({}) %}
+{% set reader_page_count = page_count|default(0) %}
+{% set reader_status = 'Workflow active' if document and document.active else 'Stored' %}
+{% set reader_metadata_line = document.reader_metadata_line if document and document.reader_metadata_line else '' %}
+{% set reader_page_count_label = document.page_count_label if document and document.page_count_label else reader_page_count ~ ' pages' %}
+{% set reader_preview_truncated = document.reader_preview_truncated if document and document.reader_preview_truncated else false %}
+{% set spreadsheet_reader_label = 'CSV File' if reader_mode == 'csv' else 'Excel Workbook' %}
+{% set spreadsheet_unit_label = 'table' if reader_mode == 'csv' else 'sheet' %}
+{% set spreadsheet_unit_label_plural = 'tables' if reader_mode == 'csv' else 'sheets' %}
+{% set reader_document_id = document.document_id if document and document.document_id else document_id|default('') %}
+{% set reader_document_analysis_action_label = 'Open Document Analysis' if document and document.active else 'Use in Document Analysis' %}
+{% set reader_bid_scope_handoff_endpoint = '/uploads/use/bid-scope-review' %}
+{% set reader_back_url = back_url|default('/docs') %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#02050d" />
+    <title>{{ reader_title }} | Nations Systems</title>
+
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_theme.css') }}?v=nations-v3-shell-20260515b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_workspace_document_reader.css') }}?v=nations-document-reader-20260607b">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_workspace_document_share.css') }}?v=nations-document-share-20260816a">
+</head>
+
+<body class="nations-app-theme nations-business-theme nations-document-reader-page"
+      data-reader-state="{{ active_reader_state }}"
+      data-reader-mode="{{ reader_mode }}"
+      data-reader-page-count="{{ reader_page_count }}">
+
+<main class="document-reader-shell document-reader-shell--workspace"
+      aria-label="Document reader"
+      data-reader-controller
+      data-reader-mode="{{ reader_mode }}"
+      data-reader-state="{{ active_reader_state }}"
+      data-reader-fit-mode="width"
+      data-reader-zoom="100">
+
+    <header class="document-reader-console-header"
+            aria-label="Nations Systems application shell">
+        <a class="document-reader-brand"
+           href="{{ reader_back_url }}"
+           aria-label="Return to Documents">
+            <span class="document-reader-brand-mark" aria-hidden="true">N</span>
+            <span class="document-reader-brand-copy">
+                <span>Nations Systems</span>
+                <strong>Operations Console</strong>
+            </span>
+        </a>
+
+        <div class="document-reader-console-context"
+             aria-label="Current workspace">
+            <span>Workspace</span>
+            <strong>Documents</strong>
+        </div>
+    </header>
+
+    <section class="document-reader-frame"
+             aria-label="Documents reader workspace">
+        <header class="document-reader-appbar">
+            <div class="document-reader-appbar-left">
+                <div class="document-reader-file">
+                    <nav class="document-reader-breadcrumb"
+                         aria-label="Reader location">
+                        <a href="{{ reader_back_url }}">Documents</a>
+                        <span aria-hidden="true">/</span>
+                        <span>Reader</span>
+                    </nav>
+
+                    <h1>{{ reader_title }}</h1>
+
+                    {% if document %}
+                        <span>
+                            {% if reader_metadata_line %}
+                                {{ reader_metadata_line }}
+                            {% else %}
+                                {{ document.type_label }} Â· {{ reader_status }} Â· View only
+                            {% endif %}
+                        </span>
+                    {% else %}
+                        <span>Document unavailable</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if active_reader_state == 'open' and reader_supported_by_server and reader_mode == 'pdf' %}
+                <div class="document-reader-appbar-center"
+                     aria-label="Reader controls">
+                    <div class="document-reader-toolbar-zone document-reader-toolbar-zone--navigation">
+                        <div class="document-reader-control-group document-reader-page-controls"
+                             aria-label="Page navigation">
+                            <button type="button"
+                                    class="document-reader-control-button"
+                                    data-reader-page-previous
+                                    aria-label="Previous page"
+                                    title="Previous page">
+                                <span class="icon" aria-hidden="true">chevron_left</span>
+                            </button>
+
+                            <button type="button"
+                                    class="document-reader-control-pill document-reader-current-page"
+                                    data-reader-current-page-control
+                                    aria-label="Return to current page">
+                                <span data-reader-current-page>1</span>
+                                <span aria-hidden="true">/</span>
+                                <span>{{ reader_page_count }}</span>
+                            </button>
+
+                            <button type="button"
+                                    class="document-reader-control-button"
+                                    data-reader-page-next
+                                    aria-label="Next page"
+                                    title="Next page">
+                                <span class="icon" aria-hidden="true">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-reader-toolbar-zone document-reader-toolbar-zone--view">
+                        <div class="document-reader-control-group document-reader-zoom-controls"
+                             aria-label="Zoom controls">
+                            <button type="button"
+                                    class="document-reader-control-button"
+                                    data-reader-zoom-out
+                                    aria-label="Zoom out"
+                                    title="Zoom out">
+                                <span class="icon" aria-hidden="true">remove</span>
+                            </button>
+
+                            <button type="button"
+                                    class="document-reader-control-pill document-reader-zoom-value"
+                                    data-reader-zoom-control
+                                    aria-label="Change reader zoom">
+                                <span data-reader-zoom-label>100%</span>
+                            </button>
+
+                            <button type="button"
+                                    class="document-reader-control-button"
+                                    data-reader-zoom-in
+                                    aria-label="Zoom in"
+                                    title="Zoom in">
+                                <span class="icon" aria-hidden="true">add</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="document-reader-appbar-right">
+                {% if document and reader_document_id %}
+                    <div class="document-reader-appbar-actions document-reader-toolbar-zone document-reader-toolbar-zone--utility"
+                         aria-label="Reader actions">
+                        {% if document.capabilities and document.capabilities.can_share %}
+                            <button type="button"
+                                    class="document-reader-command document-reader-command--icon"
+                                    data-document-share-trigger
+                                    data-document-id="{{ reader_document_id }}"
+                                    data-document-name="{{ reader_title }}"
+                                    aria-label="Share {{ reader_title }}"
+                                    title="Share">
+                                <span class="icon" aria-hidden="true">person_add</span>
+                                <span>Share</span>
+                            </button>
+                        {% endif %}
+                        {% if active_reader_state == 'open' and reader_supported_by_server and reader_mode == 'pdf' %}
+                            <button type="button"
+                                    class="document-reader-control-pill document-reader-control-pill--icon"
+                                    data-reader-fit-toggle
+                                    aria-label="Fit page"
+                                    title="Fit page">
+                                <span class="icon" data-reader-fit-toggle-icon aria-hidden="true">aspect_ratio</span>
+                                <span data-reader-fit-toggle-label>Fit page</span>
+                            </button>
+                        {% endif %}
+
+                        <span class="document-reader-status-pill">View only</span>
+
+                        <form class="document-reader-handoff-form"
+                              method="post"
+                              action="{{ reader_bid_scope_handoff_endpoint }}">
+                            <input type="hidden"
+                                   name="document_id"
+                                   value="{{ reader_document_id }}">
+
+                            <button type="submit"
+                                    class="document-reader-command document-reader-command--handoff"
+                                    aria-label="{{ reader_document_analysis_action_label }}">
+                                <span class="document-reader-command-icon" aria-hidden="true">â†’</span>
+                                <span>{{ reader_document_analysis_action_label }}</span>
+                            </button>
+                        </form>
+                    </div>
+                {% elif active_reader_state == 'open' and reader_supported_by_server %}
+                    <div class="document-reader-appbar-actions document-reader-toolbar-zone document-reader-toolbar-zone--utility"
+                         aria-label="Reader status">
+                        {% if active_reader_state == 'open' and reader_supported_by_server and reader_mode == 'pdf' %}
+                            <button type="button"
+                                    class="document-reader-control-pill document-reader-control-pill--icon"
+                                    data-reader-fit-toggle
+                                    aria-label="Fit page"
+                                    title="Fit page">
+                                <span class="icon" data-reader-fit-toggle-icon aria-hidden="true">aspect_ratio</span>
+                                <span data-reader-fit-toggle-label>Fit page</span>
+                            </button>
+                        {% endif %}
+
+                        <span class="document-reader-status-pill">View only</span>
+                    </div>
+                {% endif %}
+
+                <div class="document-reader-appbar-exit" aria-label="Reader exit">
+                    <a class="document-reader-command document-reader-command--icon document-reader-command--close"
+                       href="{{ reader_back_url }}"
+                       aria-label="Close Reader and return to Documents"
+                       title="Close Reader">
+                        <span class="icon" aria-hidden="true">close</span>
+                        <span>Close</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <section class="document-reader-content"
+                 aria-label="Document content">
+            {% if active_reader_state == 'error' or error_message %}
+                <section class="document-reader-empty"
+                         aria-label="Document reader error">
+                    <span class="document-reader-empty-icon" aria-hidden="true">!</span>
+                    <div>
+                        <p class="document-reader-kicker">Document Reader</p>
+                        <strong>{{ error_message if error_message else 'The selected document could not be opened.' }}</strong>
+                        <span>Return to Documents and choose another file.</span>
+                    </div>
+                </section>
+            {% elif active_reader_state == 'open' and reader_supported_by_server and reader_mode == 'pdf' and reader_pages_available %}
+                <section class="document-reader-workspace"
+                         aria-label="{{ reader_title }} reader">
+
+                    <aside class="document-reader-page-rail"
+                           aria-label="Document pages">
+                        <div class="document-reader-rail-header">
+                            <p class="document-reader-kicker">Pages</p>
+                            <strong>{{ reader_page_count }}</strong>
+                        </div>
+
+                        <nav class="document-reader-rail-list"
+                             aria-label="Page navigation">
+                            {% for page in reader_pages_available %}
+                                <a class="document-reader-rail-page {% if loop.first %}is-active{% endif %}"
+                                   href="#reader-page-{{ page.page_number }}"
+                                   data-reader-page-link="{{ page.page_number }}"
+                                   aria-label="Go to {{ page.label }}">
+                                    <span class="document-reader-rail-thumb">
+                                        <span class="document-reader-rail-thumb-frame">
+                                            <img src="{{ page.image_url }}"
+                                                 alt=""
+                                                 loading="{% if loop.index <= 2 %}eager{% else %}lazy{% endif %}"
+                                                 decoding="async">
+                                        </span>
+                                    </span>
+                                    <span class="document-reader-rail-page-label">{{ page.label }}</span>
+                                </a>
+                            {% endfor %}
+                        </nav>
+                    </aside>
+
+                    <section class="document-reader-canvas"
+                             aria-label="{{ reader_title }} document canvas">
+                        <div class="document-reader-canvas-header">
+                            <div>
+                                <p class="document-reader-kicker">PDF</p>
+                                <strong>{{ reader_title }}</strong>
+                            </div>
+
+                            <span>
+                                {{ reader_page_count_label }}
+                            </span>
+                        </div>
+
+                        <div class="document-reader-page-stack"
+                             data-reader-page-stack
+                             aria-label="{{ reader_title }} pages">
+                            {% for page in reader_pages_available %}
+                                <article class="document-reader-page-card"
+                                         id="reader-page-{{ page.page_number }}"
+                                         data-reader-page="{{ page.page_number }}"
+                                         aria-label="{{ page.label }}">
+                                    <header class="document-reader-page-header">
+                                        <span>{{ page.label }}</span>
+                                        <em>{{ page.page_number }} / {{ reader_page_count }}</em>
+                                    </header>
+
+                                    <div class="document-reader-page-canvas">
+                                        <img class="document-reader-page-image"
+                                             src="{{ page.image_url }}"
+                                             alt="{{ reader_title }} {{ page.label }}"
+                                             loading="{% if loop.first %}eager{% else %}lazy{% endif %}"
+                                             decoding="async">
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </section>
+            {% elif active_reader_state == 'open' and reader_supported_by_server and reader_mode in ['docx', 'text'] and reader_text_blocks_available %}
+                <section class="document-reader-workspace document-reader-workspace--text"
+                         aria-label="{{ reader_title }} reader">
+
+                    <section class="document-reader-canvas document-reader-canvas--text"
+                             aria-label="{{ reader_title }} document text preview">
+                        <article class="document-reader-text-card"
+                                 aria-label="{{ reader_title }} text content">
+                            <div class="document-reader-text-body">
+                                {% for block in reader_text_blocks_available %}
+                                    <p>{{ block }}</p>
+                                {% endfor %}
+                            </div>
+
+                            {% if reader_preview_truncated %}
+                                <footer class="document-reader-text-footer">
+                                    Preview limited for safe in-browser reading. The original file remains stored in Solomon Documents.
+                                </footer>
+                            {% endif %}
+                        </article>
+                    </section>
+                </section>
+            {% elif active_reader_state == 'open' and reader_supported_by_server and reader_mode in ['xlsx', 'csv'] and reader_spreadsheet_sheets_available %}
+                <section class="document-reader-workspace document-reader-workspace--spreadsheet"
+                         aria-label="{{ reader_title }} {{ spreadsheet_unit_label }} reader">
+
+                    <aside class="document-reader-page-rail document-reader-sheet-rail"
+                           aria-label="{{ spreadsheet_reader_label }} {{ spreadsheet_unit_label_plural }}">
+                        <div class="document-reader-rail-header">
+                            <p class="document-reader-kicker">{{ spreadsheet_unit_label_plural|title }}</p>
+                            <strong>{{ reader_spreadsheet_sheets_available|length }}</strong>
+                        </div>
+
+                        <nav class="document-reader-rail-list"
+                             aria-label="{{ spreadsheet_unit_label|title }} navigation">
+                            {% for sheet in reader_spreadsheet_sheets_available %}
+                                <a class="document-reader-rail-page document-reader-sheet-link {% if loop.first %}is-active{% endif %}"
+                                   href="#reader-sheet-{{ loop.index }}"
+                                   aria-label="Go to {{ spreadsheet_unit_label }} {{ sheet.name }}">
+                                    <span class="document-reader-sheet-index">{{ loop.index }}</span>
+                                    <span class="document-reader-rail-page-label">{{ sheet.name }}</span>
+                                </a>
+                            {% endfor %}
+                        </nav>
+                    </aside>
+
+                    <section class="document-reader-canvas document-reader-canvas--spreadsheet"
+                             aria-label="{{ reader_title }} {{ spreadsheet_unit_label }} preview">
+                        <div class="document-reader-canvas-header">
+                            <div>
+                                <p class="document-reader-kicker">{{ spreadsheet_reader_label }}</p>
+                                <strong>{{ reader_title }}</strong>
+                            </div>
+
+                            <span>
+                                {{ reader_spreadsheet_sheets_available|length }} {{ spreadsheet_unit_label }}{% if reader_spreadsheet_sheets_available|length != 1 %}s{% endif %}
+                            </span>
+                        </div>
+
+                        <div class="document-reader-spreadsheet-stack"
+                             aria-label="{{ reader_title }} {{ spreadsheet_unit_label_plural }}">
+                            {% for sheet in reader_spreadsheet_sheets_available %}
+                                <article class="document-reader-spreadsheet-card"
+                                         id="reader-sheet-{{ loop.index }}"
+                                         aria-label="{{ spreadsheet_unit_label|title }} {{ sheet.name }}">
+                                    <header class="document-reader-spreadsheet-header">
+                                        <div>
+                                            <p class="document-reader-kicker">{{ spreadsheet_unit_label|title }} {{ loop.index }}</p>
+                                            <strong>{{ sheet.name }}</strong>
+                                        </div>
+
+                                        <span>{{ sheet.range_label }}</span>
+                                    </header>
+
+                                    <div class="document-reader-spreadsheet-frame"
+                                         role="region"
+                                         aria-label="{{ sheet.name }} read-only table preview"
+                                         tabindex="0">
+                                        <table class="document-reader-spreadsheet-table">
+                                            {% if sheet.columns %}
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="document-reader-spreadsheet-corner"></th>
+                                                        {% for column in sheet.columns %}
+                                                            <th scope="col">{{ column }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                </thead>
+                                            {% endif %}
+
+                                            <tbody>
+                                                {% for row in sheet.rows %}
+                                                    <tr>
+                                                        <th scope="row">{{ row.row_number }}</th>
+                                                        {% for cell in row.cells %}
+                                                            <td>{{ cell }}</td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    {% if sheet.truncated %}
+                                        <footer class="document-reader-text-footer">
+                                            {{ spreadsheet_unit_label|title }} preview limited for safe in-browser reading. The original file remains stored in Solomon Documents.
+                                        </footer>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+                        </div>
+
+                        {% if reader_preview_truncated %}
+                            <footer class="document-reader-spreadsheet-footer">
+                                {% if reader_mode == 'csv' %}
+                                    CSV preview limited for safe in-browser reading. The original file remains stored in Solomon Documents.
+                                {% else %}
+                                    Workbook preview limited for safe in-browser reading. Formulas, charts, macros, comments, and advanced workbook features may not be fully represented.
+                                {% endif %}
+                            </footer>
+                        {% endif %}
+                    </section>
+                </section>
+            {% elif active_reader_state == 'open' and reader_supported_by_server and reader_mode == 'image' and reader_image_preview_available and reader_image_preview_available.image_url %}
+                <section class="document-reader-workspace document-reader-workspace--image"
+                         aria-label="{{ reader_title }} image reader">
+
+                    <section class="document-reader-canvas document-reader-canvas--image"
+                             aria-label="{{ reader_title }} image preview">
+                        <div class="document-reader-canvas-header">
+                            <div>
+                                <p class="document-reader-kicker">Image File</p>
+                                <strong>{{ reader_title }}</strong>
+                            </div>
+
+                            <span>
+                                {% if reader_image_preview_available.width and reader_image_preview_available.height %}
+                                    {{ reader_image_preview_available.width }} Ã— {{ reader_image_preview_available.height }} px
+                                {% else %}
+                                    Read-only preview
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <article class="document-reader-image-card"
+                                 aria-label="{{ reader_title }} image content">
+                            <figure class="document-reader-image-frame">
+                                <img class="document-reader-image-preview"
+                                     src="{{ reader_image_preview_available.image_url }}"
+                                     alt="{{ reader_image_preview_available.alt_text if reader_image_preview_available.alt_text else reader_title }}"
+                                     loading="eager"
+                                     decoding="async">
+
+                                <figcaption>
+                                    <strong>{{ reader_image_preview_available.title if reader_image_preview_available.title else reader_title }}</strong>
+                                    <span>
+                                        {% if reader_image_preview_available.width and reader_image_preview_available.height %}
+                                            {{ reader_image_preview_available.width }} Ã— {{ reader_image_preview_available.height }} px Â· {{ reader_image_preview_available.orientation }}
+                                        {% else %}
+                                            {{ reader_image_preview_available.orientation if reader_image_preview_available.orientation else 'Image preview' }}
+                                        {% endif %}
+                                    </span>
+                                </figcaption>
+                            </figure>
+
+                            <footer class="document-reader-text-footer">
+                                View-only image preview. The original file remains stored in Solomon Documents under server-owned document authority.
+                            </footer>
+                        </article>
+                    </section>
+                </section>
+            {% else %}
+                <section class="document-reader-empty document-reader-empty--stored"
+                         aria-label="{{ reader_title }} stored file view">
+                    <span class="document-reader-empty-icon" aria-hidden="true">FILE</span>
+                    <div>
+                        <p class="document-reader-kicker">View Only</p>
+                        <strong>{{ document.reader_title if document and document.reader_title else 'File stored' }}</strong>
+                        <span>
+                            {{ document.reader_message if document and document.reader_message else 'This file is stored in Solomon Documents. Full in-app reading for this format is not available yet.' }}
+                        </span>
+                    </div>
+                </section>
+            {% endif %}
+        </section>
+    </section>
+
+    <footer class="document-reader-shell-footer">
+        <span>Â© 2026 Nations Systems.</span>
+        <span>Document Reader</span>
+    </footer>
+</main>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_share.js') }}?v=nations-document-share-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_reader_print.js') }}?v=nations-reader-print-20260701a" defer></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_reader_controls.js') }}?v=nations-document-reader-controls-20260605a" defer></script>
+
+</body>
+</html>

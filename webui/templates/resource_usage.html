@@ -1,0 +1,24 @@
+{# -------------------------------------------------------------------
+   FILE: resource_usage.html
+   DIRECTORY: webui/templates/
+   -------------------------------------------------------------------
+   Customer-facing resource usage workspace wrapper.
+   ------------------------------------------------------------------- #}
+
+{% set active_module = 'resource_usage' %}
+{% set workspace_surface_template = 'components/resource_usage_workspace.html' %}
+{% set workspace_initial_view = 'files' %}
+{% set workspace_section = 'resource_usage' %}
+
+{% extends "index.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/resource_usage.css') }}?v=nations-resource-usage-account-20260825b">
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/resource_usage.js') }}?v=nations-resource-usage-account-20260825a"></script>
+{% endblock %}

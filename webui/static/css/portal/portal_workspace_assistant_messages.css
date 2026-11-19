@@ -1,0 +1,22 @@
+/* ==========================================================================
+   FILE: portal_workspace_assistant_messages.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMON ASSISTANT MESSAGE THREAD — LEGACY COMPATIBILITY GUARD
+   --------------------------------------------------------------------------
+   The active document workspace chat is owned by:
+
+       portal_workspace_document_viewer_chat.css
+
+   This file previously applied broad .solomon-guide-thread and
+   .solomon-guide-thread:not(:empty) rules. Those rules only became active
+   when the thread received a message, which made the GUI look correct while
+   ready but break during the Thinking state.
+
+   Do not style the document workspace chat, pending message, message rail,
+   input, or chat-history layout from this file.
+   ========================================================================== */
+
+/* Intentionally no active document-chat or thinking-state rules in this file. */

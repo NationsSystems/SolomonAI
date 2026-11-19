@@ -1,0 +1,122 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_search.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   DOCUMENT WORKSPACE HEADER
+   --------------------------------------------------------------------------
+   Preserves document section heading geometry after removal of the legacy
+   page-level search contract. Universal search belongs to the shell.
+   ========================================================================== */
+
+.workspace-command-files-panel .workspace-document-browser-toolbar {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    min-width: 0;
+    width: 100%;
+}
+
+.workspace-command-files-panel .workspace-document-browser-heading {
+    min-width: 0;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"]
+.workspace-command-files-panel
+.workspace-document-browser-toolbar,
+.workspace-document-explorer[data-workspace-section="trash"]
+.workspace-command-files-panel
+.workspace-document-browser-toolbar {
+    padding-right: 56px;
+}
+
+/* ==========================================================================
+   SERVER-AUTHORIZED SEARCH LISTING CONTROLS
+   --------------------------------------------------------------------------
+   Search reuses the universal document filters, layout control, sortable
+   headers, and far-right post-filter Sort control while the server remains
+   authoritative for result membership and ordering state.
+   ========================================================================== */
+
+.search-explorer .search-results-listing-utility {
+    margin-top: 9px;
+}
+
+.search-explorer .search-results-listing-controls {
+    position: relative;
+    z-index: 6;
+}
+
+.search-explorer .workspace-document-listing-filter {
+    flex: 0 1 auto;
+    min-width: 144px;
+    width: auto;
+}
+
+.search-explorer .workspace-document-listing-filter-trigger {
+    box-sizing: border-box;
+    max-width: min(280px, calc(100vw - 48px));
+    min-width: 144px;
+    width: max-content;
+}
+
+.search-explorer .workspace-document-listing-filter-trigger
+[data-document-listing-filter-label] {
+    max-width: 224px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-explorer .workspace-document-listing-filter.is-active
+.workspace-document-listing-filter-trigger {
+    background: rgba(12, 30, 49, 0.96);
+    border-color: rgba(71, 192, 224, 0.48);
+    color: rgba(245, 251, 255, 0.98);
+}
+
+.search-explorer .workspace-document-file-list-sort-button[aria-pressed="true"] {
+    color: rgba(190, 236, 249, 0.94);
+}
+
+.search-explorer .search-results-utility-row[data-document-selection-state="empty"] {
+    margin: 0;
+    min-height: 0;
+    padding: 0;
+}
+
+.search-explorer .search-results-utility-row[data-document-selection-state="empty"]
+.workspace-document-default-utility:empty {
+    display: none;
+}
+
+.search-explorer .workspace-document-keyboard-help {
+    margin-top: 5px;
+}
+
+.workspace-document-explorer[data-workspace-module="search"]
+.workspace-command-files-panel
+.workspace-document-browser-toolbar {
+    padding-right: 56px;
+}
+
+/* ==========================================================================
+   SEARCH RESULT VERTICAL FLOW
+   --------------------------------------------------------------------------
+   Search keeps filters in the universal control row, followed by selection
+   state and the canonical result region. Post-filter ordering belongs to the
+   result header or grid edge. Declare every visible row explicitly so the
+   result region receives the remaining panel height.
+   ========================================================================== */
+
+.search-explorer .search-workspace-panel {
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+}
+
+.search-explorer .search-result-list {
+    align-self: stretch;
+    height: 100%;
+    min-height: 0;
+}

@@ -1,0 +1,141 @@
+<!-- -------------------------------------------------------------------
+     FILE: navbar.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set current_path = request.path %}
+{% set nav_current_user = current_user if current_user is defined else none %}
+{% set nav_billing_access = billing_access if billing_access is defined else none %}
+{% set nav_context_is_admin = is_admin if is_admin is defined else false %}
+{% set nav_context_is_authenticated = is_authenticated if is_authenticated is defined else false %}
+{% set nav_session_user = session.get('user', {}) if session else {} %}
+{% set nav_session_user_id = session.get('user_id') if session else none %}
+
+{% set nav_user_role = (nav_current_user.role if nav_current_user else '') | lower %}
+{% set nav_session_role = (nav_session_user.get('role', '') if nav_session_user else '') | lower %}
+
+{% set nav_has_session_identity = (
+    nav_session_user_id or
+    (
+        nav_session_user and (
+            nav_session_user.get('id') or
+            nav_session_user.get('user_id') or
+            nav_session_user.get('email')
+        )
+    )
+) %}
+
+{% set nav_is_authenticated = nav_context_is_authenticated or nav_has_session_identity %}
+{% set nav_is_admin = nav_context_is_admin or nav_user_role == 'admin' or nav_session_role == 'admin' %}
+{% set nav_is_people_area = current_path == '/people' or current_path.startswith('/people/') %}
+
+<nav class="app-nav" aria-label="Primary navigation">
+    <div class="nav-left">
+        <a href="/" class="nav-logo" aria-label="Nations Systems home">
+            <img src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                 alt="Nations Systems"/>
+            <span class="nav-logo-text">Nations Systems</span>
+        </a>
+    </div>
+
+    <div class="nav-right" role="navigation" aria-label="Application navigation">
+
+        {% if nav_is_authenticated %}
+
+            {% if current_path.startswith('/admin') %}
+
+                <!-- ADMIN NAV -->
+                <a href="/admin"
+                   class="nav-item{% if current_path == '/admin' %} is-active{% endif %}"
+                   {% if current_path == '/admin' %}aria-current="page"{% endif %}>
+                    Admin
+                </a>
+
+                <a href="/admin/users"
+                   class="nav-item{% if current_path.startswith('/admin/users') %} is-active{% endif %}"
+                   {% if current_path.startswith('/admin/users') %}aria-current="page"{% endif %}>
+                    Users
+                </a>
+
+                <a href="/admin/errors"
+                   class="nav-item{% if current_path.startswith('/admin/errors') %} is-active{% endif %}"
+                   {% if current_path.startswith('/admin/errors') %}aria-current="page"{% endif %}>
+                    Errors
+                </a>
+
+                <a href="/"
+                   class="nav-item">
+                    Operations Console
+                </a>
+
+                <a href="/history"
+                   class="nav-item">
+                    History
+                </a>
+
+            {% else %}
+
+                <!-- PORTAL NAV -->
+                <a href="/"
+                   class="nav-item{% if current_path == '/' %} is-active{% endif %}"
+                   {% if current_path == '/' %}aria-current="page"{% endif %}>
+                    Operations Console
+                </a>
+
+                <a href="/history"
+                   class="nav-item{% if current_path.startswith('/history') %} is-active{% endif %}"
+                   {% if current_path.startswith('/history') %}aria-current="page"{% endif %}>
+                    Review History
+                </a>
+
+                <a href="/people"
+                   class="nav-item{% if nav_is_people_area %} is-active{% endif %}"
+                   {% if nav_is_people_area %}aria-current="page"{% endif %}>
+                    People
+                </a>
+
+                {% if nav_billing_access and nav_billing_access.can_manage_billing and not nav_is_admin %}
+                    {% if nav_billing_access.plan_status in ['active'] %}
+                        <a href="/billing/portal"
+                           class="nav-item{% if current_path.startswith('/billing') %} is-active{% endif %}"
+                           {% if current_path.startswith('/billing') %}aria-current="page"{% endif %}>
+                            Billing
+                        </a>
+                    {% else %}
+                        <a href="/billing/checkout"
+                           class="nav-item{% if current_path.startswith('/billing') %} is-active{% endif %}"
+                           {% if current_path.startswith('/billing') %}aria-current="page"{% endif %}>
+                            Upgrade
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+                {% if nav_is_admin %}
+                    <a href="/admin"
+                       class="nav-item">
+                        Admin
+                    </a>
+                {% endif %}
+
+            {% endif %}
+
+            <a href="/auth/logout" class="nav-item logout">Logout</a>
+
+        {% else %}
+
+            <a href="/auth/login"
+               class="nav-item{% if current_path == '/auth/login' %} is-active{% endif %}"
+               {% if current_path == '/auth/login' %}aria-current="page"{% endif %}>
+                Sign In
+            </a>
+
+            <a href="/auth/register"
+               class="nav-item{% if current_path == '/auth/register' %} is-active{% endif %}"
+               {% if current_path == '/auth/register' %}aria-current="page"{% endif %}>
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+</nav>

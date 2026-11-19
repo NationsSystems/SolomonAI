@@ -1,0 +1,644 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_assistant_canvas.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant Active Canvas Controls and Structured Blocks
+   ========================================================================== */
+
+.command-solomon-response-canvas {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .command-solomon-response-canvas,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .command-solomon-response-canvas,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .command-solomon-response-canvas,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .command-solomon-response-canvas {
+    align-self: end;
+    grid-area: widget-band;
+    justify-self: center;
+    margin-bottom: clamp(36px, 5.2vh, 64px);
+    max-width: min(100%, 1540px);
+    position: relative;
+    width: min(100%, 1540px);
+    z-index: 6;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .command-solomon-response-canvas {
+    align-self: stretch;
+    display: grid;
+    grid-area: widget-band;
+    justify-self: stretch;
+    margin: 0;
+    max-width: none;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+    z-index: 6;
+}
+
+.command-solomon-response-canvas [data-command-category-panel] {
+    position: relative;
+    transform-origin: 50% 62%;
+}
+
+.command-solomon-response-canvas .command-category-panel--document-focus {
+    display: grid;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    transform-origin: 50% 50%;
+    width: 100%;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) {
+    animation: solomonCanvasPanelReveal 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.command-solomon-response-canvas .command-category-panel--document-focus.is-active:not([hidden]) {
+    animation: solomonDocumentFocusReveal 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-floating-card {
+    animation: solomonCanvasCardMaterialize 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-floating-card:nth-child(1) {
+    animation-delay: 0.04s;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-floating-card:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-floating-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-floating-card:nth-child(4) {
+    animation-delay: 0.22s;
+}
+
+.command-solomon-panel-actions {
+    align-items: center;
+    animation: solomonCanvasControlReveal 0.36s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 8;
+}
+
+.command-category-panel--document-focus .command-solomon-panel-actions {
+    right: 12px;
+    top: 12px;
+}
+
+.command-solomon-widget-dismiss {
+    align-items: center;
+    background: rgba(8, 13, 24, 0.74);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    border-radius: 10px;
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.26),
+        0 0 0 1px rgba(255, 255, 255, 0.014) inset;
+    color: rgba(201, 212, 229, 0.64);
+    cursor: pointer;
+    display: inline-flex;
+    height: 30px;
+    justify-content: center;
+    padding: 0;
+    pointer-events: auto;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.18s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+    width: 30px;
+}
+
+.command-solomon-widget-dismiss .icon {
+    color: currentColor;
+    font-size: 17px;
+}
+
+.command-solomon-widget-dismiss:hover,
+.command-solomon-widget-dismiss:focus-visible {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(22, 191, 216, 0.34);
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.30),
+        0 0 22px rgba(22, 191, 216, 0.14),
+        0 0 0 1px rgba(22, 191, 216, 0.08) inset;
+    color: rgba(248, 250, 252, 0.92);
+    outline: none;
+    transform: translateY(-1px) scale(1.035);
+}
+
+.command-solomon-widget-dismiss:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.command-solomon-floating-card {
+    appearance: none;
+    cursor: pointer;
+    font-family: var(--font-ui, inherit);
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    transform-origin: 50% 72%;
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        filter 0.16s ease,
+        transform 0.16s ease;
+}
+
+.command-solomon-floating-card::after {
+    background:
+        linear-gradient(
+            105deg,
+            transparent 0%,
+            rgba(22, 191, 216, 0.00) 32%,
+            rgba(22, 191, 216, 0.12) 46%,
+            rgba(255, 255, 255, 0.13) 50%,
+            rgba(22, 191, 216, 0.08) 55%,
+            transparent 74%
+        );
+    content: "";
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(-115%);
+    transition: opacity 0.18s ease;
+}
+
+.command-solomon-floating-card:hover,
+.command-solomon-floating-card:focus-visible {
+    border-color: rgba(22, 191, 216, 0.46);
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(22, 191, 216, 0.12) inset,
+        0 0 42px rgba(22, 191, 216, 0.10);
+    filter: brightness(1.04) saturate(1.04);
+    outline: none;
+    transform: translateY(-2px) scale(1.006);
+}
+
+.command-solomon-floating-card:hover::after,
+.command-solomon-floating-card:focus-visible::after {
+    animation: solomonCanvasSheen 0.72s cubic-bezier(0.22, 1, 0.36, 1) 1;
+    opacity: 1;
+}
+
+.command-solomon-floating-card:active {
+    transform: translateY(0) scale(0.994);
+}
+
+.command-solomon-focused-widget {
+    animation: solomonFocusedWidgetReveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(22, 191, 216, 0.11), transparent 34%),
+        linear-gradient(135deg, rgba(8, 13, 24, 0.94), rgba(3, 8, 18, 0.80));
+    border: 1px solid rgba(22, 191, 216, 0.22);
+    border-radius: 18px;
+    box-shadow:
+        0 22px 58px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(255, 255, 255, 0.016) inset,
+        0 0 42px rgba(22, 191, 216, 0.07);
+    box-sizing: border-box;
+    display: grid;
+    gap: 16px;
+    min-height: 264px;
+    overflow: hidden;
+    padding: 18px 58px 18px 18px;
+    position: relative;
+    transform-origin: 50% 70%;
+    width: 100%;
+}
+
+.command-solomon-focused-widget::before {
+    background:
+        radial-gradient(circle at 14% 0%, rgba(22, 191, 216, 0.18), transparent 34%),
+        linear-gradient(110deg, transparent 0%, rgba(22, 191, 216, 0.09) 44%, transparent 68%);
+    content: "";
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(-30%);
+    z-index: 0;
+}
+
+.command-solomon-response-canvas [data-command-category-panel].is-active:not([hidden]) .command-solomon-focused-widget::before {
+    animation: solomonFocusedWidgetLightSweep 0.86s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.command-solomon-focused-widget > * {
+    position: relative;
+    z-index: 1;
+}
+
+.command-solomon-focused-widget-header {
+    align-items: start;
+    animation: solomonFocusedWidgetContentReveal 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.10s both;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: auto minmax(0, 1fr);
+}
+
+.command-solomon-focused-kicker {
+    color: rgba(22, 191, 216, 0.82);
+    font-size: 0.64rem;
+    font-weight: 840;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+}
+
+.command-solomon-focused-widget h3 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.28rem;
+    font-weight: 780;
+    letter-spacing: -0.025em;
+    line-height: 1.16;
+    margin: 0 0 6px;
+}
+
+.command-solomon-focused-widget p {
+    color: rgba(201, 212, 229, 0.68);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 760px;
+}
+
+.command-solomon-widget-back {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.075);
+    border: 1px solid rgba(22, 191, 216, 0.18);
+    border-radius: 10px;
+    color: rgba(239, 245, 255, 0.86);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-weight: 760;
+    gap: 6px;
+    min-height: 34px;
+    padding: 8px 10px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.18s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+}
+
+.command-solomon-widget-back .icon {
+    color: var(--brand-cyan);
+    font-size: 17px;
+}
+
+.command-solomon-widget-back:hover,
+.command-solomon-widget-back:focus-visible {
+    background: var(--brand-cyan-soft);
+    border-color: rgba(22, 191, 216, 0.44);
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.22),
+        0 0 24px rgba(22, 191, 216, 0.10);
+    color: #ffffff;
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.command-solomon-widget-back:active {
+    transform: translateY(0) scale(0.986);
+}
+
+.command-solomon-upload-dropzone,
+.command-solomon-empty-widget-state {
+    align-items: center;
+    animation: solomonFocusedWidgetContentReveal 0.54s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+    background:
+        linear-gradient(135deg, rgba(22, 191, 216, 0.055), rgba(8, 13, 24, 0.66)),
+        rgba(5, 10, 20, 0.54);
+    border: 1px dashed rgba(22, 191, 216, 0.38);
+    border-radius: 15px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    min-height: 122px;
+    overflow: hidden;
+    padding: 18px 22px;
+    position: relative;
+    text-align: center;
+}
+
+.command-solomon-upload-dropzone::before,
+.command-solomon-empty-widget-state::before {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(22, 191, 216, 0.15), transparent 44%),
+        linear-gradient(105deg, transparent 0%, rgba(22, 191, 216, 0.075) 48%, transparent 72%);
+    content: "";
+    inset: 0;
+    opacity: 0.62;
+    pointer-events: none;
+    position: absolute;
+}
+
+.command-solomon-upload-dropzone::after {
+    animation: solomonDropzoneBreath 2.6s ease-in-out infinite;
+    border: 1px solid rgba(22, 191, 216, 0.18);
+    border-radius: 12px;
+    content: "";
+    inset: 9px;
+    pointer-events: none;
+    position: absolute;
+}
+
+.command-solomon-empty-widget-state {
+    border-style: solid;
+    border-color: rgba(105, 148, 238, 0.18);
+}
+
+.command-solomon-upload-dropzone > *,
+.command-solomon-empty-widget-state > * {
+    position: relative;
+    z-index: 1;
+}
+
+.command-solomon-upload-dropzone .icon,
+.command-solomon-empty-widget-state .icon {
+    color: var(--brand-cyan);
+    font-size: 30px;
+    filter: drop-shadow(0 0 14px rgba(22, 191, 216, 0.18));
+}
+
+.command-solomon-upload-dropzone strong,
+.command-solomon-empty-widget-state strong {
+    color: rgba(248, 250, 252, 0.94);
+    font-size: 0.98rem;
+    font-weight: 760;
+    line-height: 1.25;
+}
+
+.command-solomon-upload-dropzone em,
+.command-solomon-empty-widget-state em {
+    color: rgba(201, 212, 229, 0.64);
+    font-size: 0.78rem;
+    font-style: normal;
+    line-height: 1.4;
+}
+
+.command-solomon-scope-textarea {
+    animation: solomonFocusedWidgetContentReveal 0.54s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+    background:
+        linear-gradient(135deg, rgba(22, 191, 216, 0.04), rgba(8, 13, 24, 0.72)),
+        rgba(5, 10, 20, 0.62);
+    border: 1px solid rgba(22, 191, 216, 0.24);
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: rgba(248, 250, 252, 0.92);
+    font-family: var(--font-ui, inherit);
+    font-size: 0.86rem;
+    line-height: 1.48;
+    min-height: 128px;
+    outline: none;
+    padding: 14px 15px;
+    resize: vertical;
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+    width: 100%;
+}
+
+.command-solomon-scope-textarea:focus {
+    border-color: rgba(22, 191, 216, 0.52);
+    box-shadow:
+        0 0 0 1px rgba(22, 191, 216, 0.12) inset,
+        0 0 30px rgba(22, 191, 216, 0.08);
+    filter: brightness(1.035) saturate(1.04);
+}
+
+.command-solomon-scope-textarea::placeholder {
+    color: rgba(201, 212, 229, 0.46);
+}
+
+.solomon-guide-message--structured {
+    justify-self: stretch !important;
+    max-width: none !important;
+    width: 100% !important;
+}
+
+.solomon-guide-message--structured .solomon-guide-message-header {
+    margin-bottom: 8px;
+}
+
+.solomon-guide-message--structured .solomon-guide-message-label {
+    color: rgba(22, 191, 216, 0.72);
+}
+
+.solomon-guide-message--structured .solomon-guide-message-body {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    color: rgba(239, 245, 255, 0.90);
+    padding: 0;
+    text-align: left;
+    width: 100%;
+}
+
+.solomon-structured-block {
+    animation: solomonFocusedWidgetReveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(22, 191, 216, 0.11), transparent 34%),
+        linear-gradient(135deg, rgba(9, 16, 30, 0.92), rgba(5, 10, 20, 0.78));
+    border: 1px solid rgba(105, 148, 238, 0.20);
+    border-radius: 16px;
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.26),
+        0 0 0 1px rgba(255, 255, 255, 0.014) inset;
+    box-sizing: border-box;
+    padding: 18px;
+    width: 100%;
+}
+
+.solomon-structured-block-header {
+    margin-bottom: 14px;
+}
+
+.solomon-structured-block-eyebrow {
+    color: rgba(22, 191, 216, 0.84);
+    font-size: 0.66rem;
+    font-weight: 840;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0 0 7px !important;
+    text-transform: uppercase;
+}
+
+.solomon-structured-block h3 {
+    color: rgba(248, 250, 252, 0.96);
+    font-family: var(--font-ui, inherit);
+    font-size: 1.08rem;
+    font-weight: 760;
+    letter-spacing: -0.018em;
+    line-height: 1.22;
+    margin: 0 0 7px;
+}
+
+@keyframes solomonCanvasPanelReveal {
+    0% {
+        filter: blur(12px) saturate(0.84) brightness(0.76);
+        opacity: 0;
+        transform: translate3d(0, 22px, -90px) rotateX(5deg) scale(0.968);
+    }
+
+    54% {
+        filter: blur(2px) saturate(1.08) brightness(1.06);
+        opacity: 0.92;
+        transform: translate3d(0, -3px, 18px) rotateX(-1deg) scale(1.006);
+    }
+
+    100% {
+        filter: blur(0) saturate(1) brightness(1);
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+    }
+}
+
+@keyframes solomonDocumentFocusReveal {
+    0% {
+        filter: blur(8px) saturate(0.88) brightness(0.82);
+        opacity: 0;
+        transform: translate3d(0, 14px, -46px) scale(0.982);
+    }
+
+    60% {
+        filter: blur(1px) saturate(1.04) brightness(1.03);
+        opacity: 0.96;
+        transform: translate3d(0, -1px, 8px) scale(1.002);
+    }
+
+    100% {
+        filter: blur(0) saturate(1) brightness(1);
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes solomonCanvasCardMaterialize {
+    0% {
+        filter: blur(10px) saturate(0.86) brightness(0.72);
+        opacity: 0;
+        transform: translate3d(0, 18px, -60px) scale(0.948);
+    }
+
+    62% {
+        filter: blur(1px) saturate(1.08) brightness(1.05);
+        opacity: 0.94;
+        transform: translate3d(0, -2px, 12px) scale(1.008);
+    }
+
+    100% {
+        filter: blur(0) saturate(1) brightness(1);
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes solomonFocusedWidgetReveal {
+    0% {
+        filter: blur(12px) saturate(0.82) brightness(0.74);
+        opacity: 0;
+        transform: translate3d(0, 24px, -80px) scale(0.954);
+    }
+
+    58% {
+        filter: blur(2px) saturate(1.08) brightness(1.06);
+        opacity: 0.96;
+        transform: translate3d(0, -2px, 18px) scale(1.006);
+    }
+
+    100% {
+        filter: blur(0) saturate(1) brightness(1);
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes solomonFocusedWidgetContentReveal {
+    0% {
+        filter: blur(7px);
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+    }
+
+    100% {
+        filter: blur(0);
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes solomonFocusedWidgetLightSweep {
+    0% {
+        opacity: 0;
+        transform: translateX(-40%);
+    }
+
+    42% {
+        opacity: 0.82;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(44%);
+    }
+}
+
+@keyframes solomonCanvasControlReveal {
+    0% {
+        filter: blur(5px);
+        opacity: 0;
+        transform: translate3d(6px, -6px, 0) scale(0.92);
+    }
+
+    100% {
+        filter: blur(0);
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes solomonCanvasSheen {
+    0% {
+        transform: translateX(-115%);
+    }
+
+    100% {
+        transform: translateX(115%);
+    }
+}
+
+@keyframes solomonDropzoneBreath {
+    0%,
+    100% {
+        opacity: 0.38;
+        transform: scale(0.992);
+    }
+
+    50% {
+        opacity: 0.86;
+        transform: scale(1.006);
+    }
+}

@@ -1,0 +1,159 @@
+<!-- ==========================================================================
+     FILE: history_detail.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+{% extends "portal_base.html" %}
+
+{% block title %}Saved Review | Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_history.css') }}?v=nations-history-detail-restore-20260515a">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_history_detail.css') }}?v=nations-history-detail-restore-20260515a">
+{% endblock %}
+
+{% block content %}
+<section class="history-page history-detail-page">
+    <div class="history-shell">
+
+        <header class="history-hero history-detail-hero">
+            <div class="history-hero-copy">
+                <a href="{{ url_for('history_bp.history') }}" class="history-back-link">
+                    &larr; Back to Review History
+                </a>
+
+                <p class="history-eyebrow">Saved Review Record</p>
+
+                <h1 class="history-title">
+                    {{ review.review_title }}
+                </h1>
+
+                <p class="history-description">
+                    This saved review opens exactly as originally generated, preserving the decision record without rerunning analysis.
+                </p>
+            </div>
+
+            <div class="history-hero-actions history-detail-actions">
+                {% if review.report_html %}
+                    <div class="history-report-action-group">
+                        <button type="button"
+                                class="history-report-action"
+                                data-history-report-action="copy"
+                                aria-label="Copy report">
+                            Copy
+                        </button>
+
+                        <button type="button"
+                                class="history-report-action"
+                                data-history-report-action="print"
+                                aria-label="Print report">
+                            Print
+                        </button>
+
+                        <button type="button"
+                                class="history-report-action"
+                                data-history-report-action="download"
+                                aria-label="Download report">
+                            Download
+                        </button>
+
+                        <span id="history-action-status"
+                              class="history-report-action-status"
+                              aria-live="polite"></span>
+                    </div>
+                {% endif %}
+
+                <form method="post"
+                      action="{{ url_for('history_bp.delete_history_review', review_id=review.id) }}"
+                      data-confirm-form
+                      data-confirm-title="Delete saved review?"
+                      data-confirm-message="This saved review record will be removed from Review History. The original analysis will not be rerun."
+                      data-confirm-action="Delete">
+                    <button type="submit" class="history-danger-action">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <section class="history-detail-meta-card" aria-label="Saved review details">
+            <div class="history-detail-meta-grid">
+                <div class="history-detail-meta-item">
+                    <div class="history-detail-meta-label">Mode</div>
+                    <div class="history-detail-meta-value">
+                        {{ review.review_mode }}
+                    </div>
+                </div>
+
+                <div class="history-detail-meta-item">
+                    <div class="history-detail-meta-label">Risk Level</div>
+                    <div class="history-detail-meta-value">
+                        {% if review.risk_level %}
+                            <span class="history-risk history-risk-{{ review.risk_level | lower | replace(' ', '-') }}">
+                                {{ review.risk_level }}
+                            </span>
+                        {% else %}
+                            <span class="history-muted">Not available</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="history-detail-meta-item">
+                    <div class="history-detail-meta-label">Scope Completeness</div>
+                    <div class="history-detail-meta-value">
+                        {% if review.scope_completeness %}
+                            {{ review.scope_completeness }}
+                        {% else %}
+                            <span class="history-muted">Not available</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="history-detail-meta-item">
+                    <div class="history-detail-meta-label">Created</div>
+                    <div class="history-detail-meta-value">
+                        {% if review.created_at %}
+                            <time datetime="{{ review.created_at.isoformat() }}">
+                                {{ review.created_at.strftime("%Y-%m-%d %I:%M %p") }}
+                            </time>
+                        {% else %}
+                            <span class="history-muted">Not available</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="history-detail-meta-item history-detail-meta-wide">
+                    <div class="history-detail-meta-label">Documents</div>
+                    <div class="history-detail-meta-value">
+                        {% if review.document_names %}
+                            {{ review.document_names }}
+                        {% else %}
+                            <span class="history-muted">Not available</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <article id="saved-review-report" class="history-detail-report">
+            {% if review.report_html %}
+                {{ review.report_html | safe }}
+            {% else %}
+                <section class="history-empty-card" aria-label="Saved report unavailable">
+                    <h2>Saved report unavailable</h2>
+                    <p>
+                        This review record exists, but no saved report HTML was stored.
+                    </p>
+                </section>
+            {% endif %}
+        </article>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/history_detail.actions.js') }}?v=nations-history-detail-restore-20260515a" defer></script>
+{% endblock %}

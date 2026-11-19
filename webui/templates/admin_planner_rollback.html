@@ -1,0 +1,94 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h1 class="admin-title">Planner Rollback History</h1>
+
+<div class="card">
+    <h2>Rollback Events</h2>
+
+    {% if history|length == 0 %}
+        <p>No rollback actions have been recorded.</p>
+    {% else %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rolled Back At</th>
+                    <th>Patch ID</th>
+                    <th>Backup File</th>
+                    <th>Reason</th>
+                    <th>Restored Version</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for r in history %}
+                <tr>
+                    <td>{{ r.rollback_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ r.patch_id }}</td>
+
+                    <td>
+                        {% if r.backup_path %}
+                            <code>{{ r.backup_path }}</code>
+                        {% else %}
+                            <em>Not Available</em>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ r.reason or "No reason provided" }}</td>
+
+                    <td>
+                        {% if r.restored_to_version %}
+                            <code>{{ r.restored_to_version }}</code>
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+</div>
+
+<style>
+    /* Phase 17 unified theme */
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        color: var(--text-normal);
+    }
+
+    .table th {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-bright);
+        font-weight: 600;
+    }
+
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+        color: var(--text-normal);
+    }
+
+    code {
+        background: var(--bg-panel);
+        padding: 4px 6px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-code);
+    }
+
+    em {
+        color: var(--text-muted);
+    }
+</style>
+
+{% endblock %}

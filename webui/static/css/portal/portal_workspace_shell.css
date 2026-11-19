@@ -1,0 +1,342 @@
+/* ==========================================================================
+   FILE: portal_workspace_shell.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMON V3 WORKSPACE SHELL
+   --------------------------------------------------------------------------
+   Owns shared command-center tokens, viewport isolation, full-width workspace
+   sizing, and page-level shell structure. Component files own the navbar, file
+   browser, reader, report, and chat panel details.
+   ========================================================================== */
+
+.command-center-deck {
+    --cc-panel: rgba(8, 13, 24, 0.78);
+    --cc-border: rgba(105, 128, 157, 0.15);
+    --cc-muted: var(--brand-text-muted);
+    --cc-soft: var(--brand-text-soft);
+    --cc-alert: #ff5f64;
+    --cc-sidebar-expanded: 96px;
+    --cc-sidebar-collapsed: 64px;
+    --cc-taskbar-height: 76px;
+    --cc-taskbar-top-height: 76px;
+    --cc-taskbar-bottom-height: 112px;
+    --cc-workspace-home-float-offset: 32px;
+    --cc-workspace-app-top-gap: clamp(56px, 7vh, 82px);
+    --cc-workspace-app-bottom-gap: clamp(10px, 1.6vh, 18px);
+    --cc-workspace-app-footer-gap: clamp(8px, 1.4vh, 14px);
+    --solomon-input-zone-height: 118px;
+    --solomon-widget-zone-height: 188px;
+    --solomon-widget-band-gap: 18px;
+    --solomon-workspace-gutter: clamp(12px, 0.78vw, 14px);
+    --solomon-home-centered-width: calc(100vw - (var(--solomon-workspace-gutter) * 2));
+    --solomon-home-command-width: calc(100vw - (var(--solomon-workspace-gutter) * 2));
+    --solomon-drawer-width: clamp(360px, 24vw, 430px);
+
+    --solomon-context-rail-standard-width: 352px;
+    --solomon-context-rail-expanded-width: 472px;
+    --solomon-context-rail-width: var(--solomon-context-rail-standard-width);
+    --solomon-context-rail-gap: var(--solomon-workspace-gutter);
+    --solomon-context-rail-standard-space: calc(var(--solomon-context-rail-standard-width) + var(--solomon-context-rail-gap));
+    --solomon-context-rail-expanded-space: calc(var(--solomon-context-rail-expanded-width) + var(--solomon-context-rail-gap));
+    --solomon-context-rail-space: var(--solomon-context-rail-standard-space);
+
+    --solomon-home-rail-width: calc(100vw - (var(--solomon-workspace-gutter) * 2));
+    --solomon-home-edge: var(--solomon-workspace-gutter);
+    --solomon-home-top: 12px;
+    --solomon-home-nav-height: 70px;
+    --solomon-home-content-gap: 12px;
+    --solomon-home-shell-bottom: 10px;
+    --solomon-home-footer-height: 20px;
+    --solomon-home-footer-offset: calc(var(--solomon-home-footer-height) + 4px);
+    --solomon-home-panel-top: calc(
+        var(--solomon-home-top)
+        + var(--solomon-home-nav-height)
+        + var(--solomon-home-content-gap)
+    );
+    --solomon-home-panel-bottom: calc(
+        var(--solomon-home-shell-bottom)
+        + var(--solomon-home-footer-offset)
+    );
+    --solomon-home-sidebar-width: clamp(292px, 18vw, 330px);
+    --solomon-workspace-two-column-left-width: clamp(270px, 17vw, 320px);
+    --solomon-workspace-two-column-gap: 14px;
+}
+
+html:not([data-command-center-ready="true"]) .workspace-deck,
+html:not([data-command-center-ready="true"]) .workspace-deck *,
+html:not([data-command-center-ready="true"]) .workspace-deck *::before,
+html:not([data-command-center-ready="true"]) .workspace-deck *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
+}
+
+html:has(.workspace-deck),
+body:has(.workspace-deck) {
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    min-height: 100% !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+body:has(.workspace-deck),
+body.nations-app-theme:has(.workspace-deck),
+body.nations-business-theme:has(.workspace-deck) {
+    background:
+        radial-gradient(circle at 50% 42%, rgba(22, 191, 216, 0.055), transparent 24%),
+        radial-gradient(circle at 78% 18%, rgba(32, 92, 185, 0.075), transparent 28%),
+        radial-gradient(circle at 28% 72%, rgba(30, 58, 124, 0.12), transparent 34%),
+        linear-gradient(135deg, #02050d 0%, #050914 52%, #07101d 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    color: var(--brand-text);
+    display: block;
+    margin: 0 !important;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+body:has(.command-center-deck) .app-nav,
+body:has(.command-center-deck) .portal-footer {
+    display: none !important;
+}
+
+body:has(.workspace-deck) .app-shell,
+body:has(.workspace-deck) .nations-business-shell,
+body:has(.workspace-deck) .app-main,
+body:has(.workspace-deck) .app-content,
+.workspace-deck,
+.command-center-deck,
+.command-center-layout,
+.command-center-layout[data-taskbar-position="top"],
+.command-center-layout[data-taskbar-position="bottom"],
+.command-center-layout[data-taskbar-position="left"] {
+    background: transparent !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    max-height: 100vh !important;
+    max-width: none !important;
+    min-height: 100vh !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.command-center-layout,
+.command-center-layout[data-taskbar-position="top"],
+.command-center-layout[data-taskbar-position="bottom"],
+.command-center-layout[data-taskbar-position="left"] {
+    display: block !important;
+    grid-template-areas: none !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+    position: relative !important;
+}
+
+.command-content-layer {
+    align-items: center !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding:
+        var(--solomon-home-top)
+        var(--solomon-home-edge)
+        var(--solomon-home-shell-bottom) !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+.command-content-layer > .command-main,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-main,
+.command-center-deck[data-active-module="home"] .command-main,
+.command-center-deck:not([data-active-module="home"]) .command-main {
+    align-self: center !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    height: calc(
+        100vh
+        - var(--solomon-home-top)
+        - var(--solomon-home-shell-bottom)
+        - var(--solomon-home-nav-height)
+    ) !important;
+    margin: 0 auto !important;
+    max-height: calc(
+        100vh
+        - var(--solomon-home-top)
+        - var(--solomon-home-shell-bottom)
+        - var(--solomon-home-nav-height)
+    ) !important;
+    max-width: var(--solomon-home-rail-width) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding:
+        var(--solomon-home-content-gap)
+        0
+        0 !important;
+    scrollbar-gutter: auto !important;
+    width: var(--solomon-home-rail-width) !important;
+}
+
+.command-content-layer[data-solomon-rail-state="standard"] > .command-main {
+    align-self: flex-start !important;
+    margin:
+        0
+        var(--solomon-context-rail-standard-space)
+        0
+        0 !important;
+    max-width: calc(var(--solomon-home-rail-width) - var(--solomon-context-rail-standard-space)) !important;
+    width: calc(var(--solomon-home-rail-width) - var(--solomon-context-rail-standard-space)) !important;
+}
+
+.command-content-layer[data-solomon-rail-state="expanded"] > .command-main {
+    align-self: flex-start !important;
+    margin:
+        0
+        var(--solomon-context-rail-expanded-space)
+        0
+        0 !important;
+    max-width: calc(var(--solomon-home-rail-width) - var(--solomon-context-rail-expanded-space)) !important;
+    width: calc(var(--solomon-home-rail-width) - var(--solomon-context-rail-expanded-space)) !important;
+}
+
+.command-content-layer[data-solomon-rail-state="standard"] > .solomon-context-rail,
+.command-content-layer[data-solomon-rail-state="expanded"] > .solomon-context-rail {
+    bottom: var(--solomon-home-shell-bottom) !important;
+    max-height: calc(
+        100vh
+        - var(--solomon-home-panel-top)
+        - var(--solomon-home-shell-bottom)
+    ) !important;
+    position: absolute !important;
+    right: var(--solomon-home-edge) !important;
+    top: var(--solomon-home-panel-top) !important;
+}
+
+.command-main[data-workspace-loading="true"] {
+    cursor: progress;
+    filter: blur(5px) saturate(0.88) brightness(0.82);
+    opacity: 0.58;
+    pointer-events: none;
+}
+
+.command-main > .operations-console-footer {
+    align-items: center !important;
+    align-self: center !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 0 0 var(--solomon-home-footer-height) !important;
+    gap: 12px !important;
+    justify-content: center !important;
+    margin: 4px auto 0 !important;
+    max-width: var(--solomon-home-rail-width) !important;
+    min-height: 0 !important;
+    opacity: 0.78 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.command-main:has(> .solomon-ai-workspace) > .operations-console-footer,
+.command-main:has([data-document-explorer]) > .operations-console-footer {
+    align-self: flex-end !important;
+    margin:
+        4px
+        0
+        0
+        auto !important;
+    max-width: calc(
+        100%
+        - var(--solomon-workspace-two-column-left-width)
+        - var(--solomon-workspace-two-column-gap)
+    ) !important;
+    width: calc(
+        100%
+        - var(--solomon-workspace-two-column-left-width)
+        - var(--solomon-workspace-two-column-gap)
+    ) !important;
+}
+
+.command-main > .operations-console-footer * {
+    text-align: center !important;
+}
+
+.command-center-deck .icon {
+    direction: ltr;
+    display: inline-flex;
+    font-family: "Material Symbols Outlined";
+    font-feature-settings: "liga";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 1;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.command-main > :not(.operations-console-footer):not(#interactionBlock):not(#system-message-anchor) {
+    box-sizing: border-box !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+@media (max-width: 1180px) {
+    .command-content-layer[data-solomon-rail-state="standard"] > .command-main,
+    .command-content-layer[data-solomon-rail-state="expanded"] > .command-main {
+        align-self: center !important;
+        margin: 0 auto !important;
+        max-width: var(--solomon-home-rail-width) !important;
+        width: var(--solomon-home-rail-width) !important;
+    }
+
+    .command-content-layer[data-solomon-rail-state="standard"] > .solomon-context-rail,
+    .command-content-layer[data-solomon-rail-state="expanded"] > .solomon-context-rail {
+        bottom: 12px !important;
+        max-height: calc(100vh - 74px) !important;
+        position: fixed !important;
+        right: 12px !important;
+        top: 62px !important;
+    }
+}
+
+@media (max-width: 1040px) {
+    .command-center-deck {
+        --solomon-workspace-two-column-left-width:
+            clamp(232px, 25vw, 270px);
+    }
+}
+
+@media (max-width: 780px) {
+    .command-center-deck {
+        --solomon-workspace-two-column-gap: 0px;
+        --solomon-workspace-two-column-left-width: 0px;
+    }
+
+    .command-main:has(> .solomon-ai-workspace) > .operations-console-footer,
+    .command-main:has([data-document-explorer]) > .operations-console-footer {
+        align-self: center !important;
+        margin: 4px auto 0 !important;
+    }
+}

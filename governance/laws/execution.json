@@ -1,0 +1,19 @@
+{
+  "laws": [
+    {
+      "law_id": "WEB_EXTERNAL_STATE_REQUIRES_ACTION",
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "description": "Requests that require mutable, real-world external state must not execute without explicit user action.",
+      "conditions": {
+        "requires": {
+          "web.external_state_required": "TRUE"
+        }
+      },
+      "verdict": "REQUIRES_ACTION",
+      "basis_summary": "This request requires access to real-world, up-to-date information and needs your confirmation to proceed.",
+      "author": "solomon_governance",
+      "created_at": "2026-01-27"
+    }
+  ]
+}

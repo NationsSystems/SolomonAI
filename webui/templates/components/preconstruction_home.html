@@ -1,0 +1,210 @@
+<!-- -------------------------------------------------------------------
+     FILE: webui/templates/components/preconstruction_home.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+<section class="precon-app-page" aria-label="Operations workspace">
+
+    <section class="precon-workspace-shell" aria-label="Operations workspace shell">
+
+        <section class="precon-mode-deck precon-command-desk"
+                 aria-label="Operations command desk">
+
+            <div class="precon-mode-heading precon-command-heading">
+                <p class="workspace-kicker">Operations Workspace</p>
+            </div>
+
+            <section class="precon-dashboard-strip" aria-label="Workspace status">
+                <article class="precon-mini-widget precon-mini-widget-cyan">
+                    <span class="icon" aria-hidden="true">folder_copy</span>
+                    <div>
+                        <strong>Workspace</strong>
+                        <span>File-first command console</span>
+                    </div>
+                </article>
+
+                <article class="precon-mini-widget precon-mini-widget-blue">
+                    <span class="icon" aria-hidden="true">fact_check</span>
+                    <div>
+                        <strong>Actions</strong>
+                        <span>Selection-based workflows</span>
+                    </div>
+                </article>
+
+                <article class="precon-mini-widget precon-mini-widget-green">
+                    <span class="icon" aria-hidden="true">rule_settings</span>
+                    <div>
+                        <strong>Governance</strong>
+                        <span>Server-owned execution</span>
+                    </div>
+                </article>
+
+                <a class="precon-mini-widget precon-mini-widget-active"
+                   href="/ai"
+                   aria-label="Open SolomonAI workspace">
+                    <span class="icon" aria-hidden="true">auto_awesome</span>
+                    <div>
+                        <strong>Active Workflow</strong>
+                        <span>Ask SolomonAI</span>
+                    </div>
+                </a>
+            </section>
+
+            <section class="precon-file-command-layout"
+                     aria-label="Workspace file command layout">
+
+                <aside class="precon-file-library" aria-label="Workspace library">
+                    <div class="precon-panel-heading">
+                        <p class="workspace-kicker">Library</p>
+                        <strong>Workspace Files</strong>
+                    </div>
+
+                    <nav class="precon-library-list" aria-label="Workspace file categories">
+                        <a class="precon-library-item is-active" href="/docs">
+                            <span class="icon" aria-hidden="true">folder_open</span>
+                            <span>My Files</span>
+                            <em>0</em>
+                        </a>
+
+                        <a class="precon-library-item" href="/docs">
+                            <span class="icon" aria-hidden="true">description</span>
+                            <span>Documents</span>
+                            <em>0</em>
+                        </a>
+
+                        <a class="precon-library-item" href="/docs">
+                            <span class="icon" aria-hidden="true">summarize</span>
+                            <span>Reports</span>
+                            <em>0</em>
+                        </a>
+
+                        <a class="precon-library-item" href="/docs">
+                            <span class="icon" aria-hidden="true">post_add</span>
+                            <span>Updates</span>
+                            <em>0</em>
+                        </a>
+
+                        <a class="precon-library-item" href="/docs">
+                            <span class="icon" aria-hidden="true">contact_support</span>
+                            <span>Requests / Notes</span>
+                            <em>0</em>
+                        </a>
+
+                        <a class="precon-library-item" href="/docs">
+                            <span class="icon" aria-hidden="true">move_up</span>
+                            <span>Handoff</span>
+                            <em>0</em>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="precon-file-console" aria-label="Workspace file console">
+                    <div class="precon-file-console-head">
+                        <div>
+                            <p class="workspace-kicker">File Console</p>
+                            <strong>Workspace Files</strong>
+                        </div>
+
+                        <div class="precon-file-console-actions" aria-label="File console actions">
+                            <a class="precon-console-button" href="/docs">
+                                <span class="icon" aria-hidden="true">upload_file</span>
+                                <span>Upload</span>
+                            </a>
+
+                            <a class="precon-console-button" href="/docs">
+                                <span class="icon" aria-hidden="true">refresh</span>
+                                <span>Refresh</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <form class="precon-file-search" role="search" aria-label="Search workspace files">
+                        <span class="icon" aria-hidden="true">search</span>
+                        <input type="search"
+                               name="precon_file_search"
+                               autocomplete="off"
+                               placeholder="Search files, documents, reports, updates, and notes..."
+                               aria-label="Search workspace files">
+                    </form>
+
+                    <section class="precon-selection-bar" aria-label="Selection actions">
+                        <span>No files selected</span>
+
+                        <div class="precon-selection-actions">
+                            <a class="precon-action-button" href="/docs">Open Documents</a>
+                            <a class="precon-action-button precon-action-button-primary"
+                               href="/ai">
+                                Ask SolomonAI
+                            </a>
+                            <button class="precon-action-button" type="button" disabled>Compare</button>
+                            <button class="precon-action-button" type="button" disabled>More</button>
+                        </div>
+                    </section>
+
+                    <section class="precon-file-table-shell" aria-label="Workspace files">
+                        <div class="precon-file-table-head" aria-hidden="true">
+                            <span>Name</span>
+                            <span>Type</span>
+                            <span>Status</span>
+                            <span>Actions</span>
+                        </div>
+
+                        <article class="precon-empty-file-state">
+                            <span class="icon" aria-hidden="true">folder_open</span>
+                            <strong>No workspace files loaded yet.</strong>
+                            <span>Upload documents in the Documents workspace, then ask SolomonAI for document-specific help, comparisons, summaries, and handoff support.</span>
+                            <a href="/docs">Open Documents</a>
+                        </article>
+                    </section>
+                </section>
+
+                <aside class="precon-context-panel" aria-label="SolomonAI context panel">
+                    <div class="precon-panel-heading">
+                        <p class="workspace-kicker">SolomonAI Context</p>
+                        <strong>No file selected</strong>
+                    </div>
+
+                    <div class="precon-context-card">
+                        <span class="icon" aria-hidden="true">psychology_alt</span>
+                        <p>Select one file, multiple files, or a workspace collection to activate contextual SolomonAI actions.</p>
+                    </div>
+
+                    <section class="precon-context-actions" aria-label="Available SolomonAI actions">
+                        <p class="workspace-kicker">Available Actions</p>
+
+                        <a class="precon-context-action" href="/docs">
+                            <span class="icon" aria-hidden="true">visibility</span>
+                            <span>Open / Preview File</span>
+                        </a>
+
+                        <a class="precon-context-action" href="/ai">
+                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                            <span>Ask SolomonAI</span>
+                        </a>
+
+                        <button class="precon-context-action" type="button" disabled>
+                            <span class="icon" aria-hidden="true">difference</span>
+                            <span>Compare Selected Files</span>
+                        </button>
+
+                        <button class="precon-context-action" type="button" disabled>
+                            <span class="icon" aria-hidden="true">rule</span>
+                            <span>Extract Key Details</span>
+                        </button>
+
+                        <button class="precon-context-action" type="button" disabled>
+                            <span class="icon" aria-hidden="true">post_add</span>
+                            <span>Review Changes</span>
+                        </button>
+
+                        <button class="precon-context-action" type="button" disabled>
+                            <span class="icon" aria-hidden="true">move_up</span>
+                            <span>Create Handoff Notes</span>
+                        </button>
+                    </section>
+                </aside>
+            </section>
+        </section>
+    </section>
+
+</section>

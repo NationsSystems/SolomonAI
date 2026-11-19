@@ -1,0 +1,263 @@
+<!-- -------------------------------------------------------------------
+     FILE: company_staff_workspace.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set workspace_module = 'people' %}
+{% set people_asset_version = 'nations-people-groups-canonical-20260727a' %}
+{% set workspace_home_url = url_for('index') %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_reports_url = '/reports' %}
+{% set workspace_recent_url = '/recent' %}
+{% set workspace_trash_url = '/trash' %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/people.css') }}?v={{ people_asset_version }}">
+
+<section class="precon-app-page precon-app-page--documents workspace-command-app people-command-app"
+         data-workspace-module="{{ workspace_module }}"
+         aria-label="People and groups workspace">
+
+    <section class="precon-workspace-shell precon-workspace-shell--documents workspace-command-shell people-workspace-shell"
+             aria-label="People and groups shell">
+
+        <section class="precon-mode-deck precon-command-desk precon-command-desk--documents workspace-command-canvas"
+                 aria-label="People and groups command workspace">
+
+            <section class="workspace-document-explorer workspace-command-explorer people-explorer"
+                     data-workspace-view="files"
+                     data-workspace-initial-view="files"
+                     data-workspace-reader-state="idle"
+                     data-workspace-module="{{ workspace_module }}"
+                     data-workspace-label="People"
+                     data-workspace-section="people"
+                     aria-label="People and groups workspace">
+
+                <aside class="workspace-document-collections"
+                       aria-label="Workspace navigation">
+
+                    <div class="workspace-document-primary-actions"
+                         aria-label="People primary actions">
+                        <a href="#inviteGroupTitle"
+                           class="workspace-document-command workspace-document-command-primary workspace-document-new-button"
+                           aria-label="Invite people to a group">
+                            <span class="icon" aria-hidden="true">person_add</span>
+                            <span>Invite to Group</span>
+                        </a>
+                    </div>
+
+                    <nav class="workspace-document-collection-list workspace-document-static-navigation"
+                         aria-label="Workspace sections">
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_home_url }}"
+                           data-command-module="documents"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_home_url }}">
+                            <span class="icon" aria-hidden="true">home</span>
+                            <span>Home</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_home_url }}"
+                           data-command-module="documents"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_home_url }}">
+                            <span class="icon" aria-hidden="true">folder_open</span>
+                            <span>My Files</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_reports_url }}"
+                           data-command-module="documents"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_reports_url }}">
+                            <span class="icon" aria-hidden="true">summarize</span>
+                            <span>Reports</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_recent_url }}"
+                           data-command-module="documents"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_recent_url }}">
+                            <span class="icon" aria-hidden="true">schedule</span>
+                            <span>Recent</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_trash_url }}"
+                           data-command-module="documents"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_trash_url }}">
+                            <span class="icon" aria-hidden="true">delete_outline</span>
+                            <span>Trash</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link is-active"
+                           href="{{ workspace_people_url }}"
+                           data-command-module="people"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_people_url }}"
+                           aria-current="page">
+                            <span class="icon" aria-hidden="true">groups</span>
+                            <span>People</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="workspace-document-browser workspace-command-main people-browser"
+                         aria-label="People and groups management">
+
+                    <section class="workspace-command-view-panel workspace-command-files-panel people-workspace-panel"
+                             data-workspace-view-panel="files"
+                             aria-label="People, groups, and invitations">
+
+                        <div class="workspace-document-browser-toolbar people-toolbar">
+                            <div class="workspace-document-browser-heading">
+                                <p class="workspace-kicker">People &amp; Groups</p>
+                                <strong id="peopleGroupsPageTitle">People &amp; Groups</strong>
+                            </div>
+                        </div>
+
+                        <div class="people-page people-page--home-extension"
+                             data-people-page>
+                            <section class="people-shell">
+
+                                <section class="people-overview"
+                                         aria-labelledby="peopleGroupsOverviewTitle">
+                                    <div class="people-overview-copy">
+                                        <p class="people-kicker">People</p>
+                                        <h2 id="peopleGroupsOverviewTitle">Group access</h2>
+                                        <p>
+                                            Invite members, organize groups, and keep access roles current.
+                                        </p>
+                                    </div>
+
+                                    <div class="people-overview-note"
+                                         aria-label="Group access rule">
+                                        <strong>Group membership controls access.</strong>
+                                        <span>
+                                            File access is managed separately through group files and grants.
+                                        </span>
+                                    </div>
+                                </section>
+
+                                <section class="people-panel people-wide-panel people-primary-panel"
+                                         aria-labelledby="groupMembersTitle">
+                                    <div class="people-panel-header">
+                                        <div>
+                                            <h2 id="groupMembersTitle">Group Members</h2>
+                                            <p>
+                                                Manage current group members. Owners cannot be removed from this screen.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="people-list people-list--primary"
+                                         data-people-members-list
+                                         aria-live="polite">
+                                        <div class="people-empty">
+                                            Loading group members...
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <div class="people-secondary-grid">
+
+                                    <section class="people-panel people-secondary-panel"
+                                             aria-labelledby="inviteGroupTitle">
+                                        <div class="people-panel-header">
+                                            <div>
+                                                <h2 id="inviteGroupTitle">Invite to Group</h2>
+                                                <p>
+                                                    Create a shareable group invitation link and assign the starting role.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <form class="people-invite-form"
+                                              data-people-invite-form>
+                                            <label class="people-field">
+                                                <span>Email Address</span>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    autocomplete="email"
+                                                    placeholder="name@example.com"
+                                                    required
+                                                >
+                                            </label>
+
+                                            <label class="people-field">
+                                                <span>Role</span>
+                                                <select name="role" data-people-role-select>
+                                                    <option value="member">Member</option>
+                                                    <option value="admin">Admin</option>
+                                                    <option value="guest">Guest</option>
+                                                </select>
+                                            </label>
+
+                                            <button
+                                                type="submit"
+                                                class="people-primary-action"
+                                                data-people-invite-submit
+                                            >
+                                                Create Group Invite
+                                            </button>
+                                        </form>
+
+                                        <div
+                                            class="people-invite-result"
+                                            data-people-invite-result
+                                            hidden
+                                        ></div>
+                                    </section>
+
+                                    <section class="people-panel people-secondary-panel"
+                                             aria-labelledby="pendingGroupInvitationsTitle">
+                                        <div class="people-panel-header">
+                                            <div>
+                                                <h2 id="pendingGroupInvitationsTitle">Pending Group Invitations</h2>
+                                                <p>
+                                                    Review open group invite links and revoke any that should no longer be accepted.
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                class="people-refresh"
+                                                data-people-refresh
+                                            >
+                                                Refresh
+                                            </button>
+                                        </div>
+
+                                        <div
+                                            class="people-list"
+                                            data-people-invitations-list
+                                            aria-live="polite"
+                                        >
+                                            <div class="people-empty">
+                                                Loading group invitations...
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                </div>
+
+                                <div
+                                    class="people-status"
+                                    data-people-status
+                                    role="status"
+                                    aria-live="polite"
+                                ></div>
+
+                            </section>
+                        </div>
+
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>

@@ -1,0 +1,59 @@
+<!-- ==========================================================================
+     FILE: admin_errors.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+{% extends "admin_base.html" %}
+
+{% block title %}Error Sentinel | Nations Systems{% endblock %}
+
+{% block page_header %}
+Error Sentinel
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-panel">
+    <div class="admin-panel-header">
+        <div class="admin-panel-title-group">
+            <h2 class="admin-panel-title">Recent System Errors</h2>
+            <p class="admin-panel-description">
+                Review backend error events collected by the Global Error Sentinel. Repeated failures are grouped by counter.
+            </p>
+        </div>
+
+        <div class="admin-action-row">
+            <button type="button"
+                    id="loadErrorsBtn"
+                    class="admin-action admin-action-primary">
+                Load Errors
+            </button>
+
+            <button type="button"
+                    id="clearErrorsBtn"
+                    class="admin-action admin-action-danger">
+                Clear All Errors
+            </button>
+        </div>
+    </div>
+
+    <div id="adminErrorsNotice"
+         class="admin-notice"
+         role="status"
+         aria-live="polite"
+         hidden></div>
+
+    <div id="errors"
+         class="admin-record-list"
+         aria-live="polite">
+        <div class="admin-empty-state">
+            Load errors to review current system events.
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin/admin_errors.js') }}?v=nations-admin-errors-theme-20260517a" defer></script>
+{% endblock %}

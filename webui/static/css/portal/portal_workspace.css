@@ -1,0 +1,35 @@
+/* ==========================================================================
+   FILE: portal_workspace.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   OPERATIONS CONSOLE CSS ENTRYPOINT
+   --------------------------------------------------------------------------
+   Imports are ordered from broad legacy component styles to the active Solomon
+   V3 Home workspace contract. The active contract files must remain last so
+   they can override older imported rules until deprecated CSS is removed.
+   ========================================================================== */
+
+@import url("./portal_workspace_sidebar.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_console.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_widgets.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_intake.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_document_viewer.css?v=nations-document-canonical-file-manager-list-cell-readability-20260807a");
+@import url("./portal_workspace_document_viewer_files.css?v=nations-document-canonical-file-manager-list-cell-readability-20260807a");
+@import url("./portal_workspace_document_search.css?v=nations-document-post-filter-sort-control-20260806a");
+@import url("./portal_workspace_document_viewer_preview.css?v=nations-file-properties-scope-20260807a");
+@import url("./portal_workspace_document_viewer_chat.css?v=nations-gui-contract-20260615a");
+@import url("./portal_workspace_document_upload_status.css?v=nations-gui-contract-20260619b");
+@import url("./portal_workspace_document_reader.css?v=nations-reader-embedded-layout-fix-20260628a");
+@import url("./portal_workspace_document_reports.css?v=nations-report-surface-20260624a");
+@import url("./portal_workspace_responsive.css?v=nations-gui-contract-20260614a");
+
+@import url("./portal_workspace_shell.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_navbar.css?v=nations-account-avatar-scale-20260825a");
+@import url("./portal_workspace_solomon_context_rail.css?v=nations-solomon-inspector-rail-20260625a");
+@import url("./portal_workspace_home.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_chat.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_narrow.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_document_selection_actions.css?v=nations-document-selection-actions-20260704a");

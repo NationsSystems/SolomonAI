@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "phase_introduced": 27,
+  "description": "Declarative agent capability manifest. Defines allowed domains and actions. No logic, no routing, no inference.",
+
+  "agents": {
+    "generic": {
+      "description": "Default non-domain-specific agent. Safe fallback.",
+      "domains": [
+        "generic_document"
+      ],
+      "allowed_actions": [
+        "extract_text",
+        "extract_claims",
+        "summarize_document"
+      ],
+      "forbidden_actions": [
+        "compare_documents",
+        "recommend_inclusivity",
+        "domain_specific_reasoning"
+      ]
+    },
+
+    "estimating": {
+      "description": "Estimator-facing agent for bid and estimate comparison.",
+      "domains": [
+        "bid",
+        "estimate",
+        "procurement"
+      ],
+      "allowed_actions": [
+        "compare_documents",
+        "identify_scope_gaps",
+        "surface_explicit_inclusions",
+        "surface_explicit_exclusions"
+      ],
+      "forbidden_actions": [
+        "legal_interpretation",
+        "contractual_obligation_analysis",
+        "pricing_assumptions"
+      ]
+    },
+
+    "contracts": {
+      "description": "Contract-focused agent for obligations and scope language.",
+      "domains": [
+        "contract",
+        "specification"
+      ],
+      "allowed_actions": [
+        "extract_obligations",
+        "identify_scope_conflicts",
+        "surface_explicit_terms"
+      ],
+      "forbidden_actions": [
+        "bid_leveling",
+        "estimate_validation",
+        "pricing_analysis"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1602 @@
+<!-- -------------------------------------------------------------------
+     FILE: workspace_global_search.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set workspace_module = 'search' %}
+{% set workspace_section = 'search' %}
+{% set workspace_navigation_contract = 'workspace_module_section_route' %}
+{% set workspace_home_url = url_for('index') %}
+{% set workspace_chat_url = '/ai' %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_recent_url = '/recent' %}
+{% set workspace_trash_url = '/trash' %}
+{% set workspace_folders_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_create_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_contract = 'workspace_folder_v1' %}
+{% set workspace_folder_create_contract = 'workspace_folder_create_v1' %}
+{% set workspace_folder_creation_authority = 'server_owned_location_required' %}
+{% set workspace_folder_create_mode = 'location_required' %}
+{% set workspace_folder_location_required = true %}
+{% set workspace_enable_new_folder_control = false %}
+{% set workspace_current_folder_id = '' %}
+{% set workspace_new_folder_summary = 'Open My Files to choose a destination.' %}
+{% set workspace_search_payload = workspace_search_response if workspace_search_response is defined and workspace_search_response is mapping else {} %}
+{% set search_state_payload = workspace_search_payload.get('state', {}) if workspace_search_payload is mapping else {} %}
+{% set search_filter_payload = workspace_search_payload.get('filters', {}) if workspace_search_payload is mapping else {} %}
+{% set search_sort_payload = workspace_search_payload.get('sort', {}) if workspace_search_payload is mapping else {} %}
+{% set search_query = workspace_search_payload.get('query', request.args.get('q', '') if request is defined else '')|trim %}
+{% set requested_search_type = workspace_search_payload.get('type', request.args.get('type', 'all') if request is defined else 'all')|trim|lower %}
+{% set allowed_search_types = ['all', 'files', 'conversations', 'people', 'groups'] %}
+{% set search_type = requested_search_type if requested_search_type in allowed_search_types else 'all' %}
+{% set requested_layout = workspace_search_payload.get('layout', search_state_payload.get('layout', request.args.get('layout', 'list') if request is defined else 'list'))|trim|lower %}
+{% set workspace_layout = requested_layout if requested_layout in ['list', 'grid'] else 'list' %}
+{% set search_filter_type = search_state_payload.get('filter_type', '')|trim|lower %}
+{% set search_people = search_state_payload.get('people', '')|trim|lower %}
+{% set search_modified = search_state_payload.get('modified', '')|trim|lower %}
+{% set search_source = search_state_payload.get('source', '')|trim|lower %}
+{% set search_sort_key = search_sort_payload.get('key', search_state_payload.get('sort', 'relevance'))|trim|lower %}
+{% set search_sort_direction = search_sort_payload.get('direction', search_state_payload.get('direction', 'desc'))|trim|lower %}
+{% set search_folder_placement = search_sort_payload.get('folders', search_state_payload.get('folders', 'top'))|trim|lower %}
+{% set search_active_filter_count = search_state_payload.get('active_filter_count', 0)|int %}
+{% set search_filtered_count = workspace_search_payload.get('filtered_count', workspace_search_payload.get('result_count', 0))|int %}
+{% set search_unfiltered_count = workspace_search_payload.get('unfiltered_count', search_filtered_count)|int %}
+{% set payload_results = workspace_search_payload.get('results', []) if workspace_search_payload is mapping else [] %}
+{% set fallback_results = workspace_search_results if workspace_search_results is defined and workspace_search_results is sequence and workspace_search_results is not string else [] %}
+{% set search_results = payload_results if payload_results is sequence and payload_results is not string else fallback_results %}
+{% set search_empty_state = workspace_search_payload.get('empty_state') if workspace_search_payload is mapping else none %}
+{% set search_capability_request = workspace_search_payload.get('capability_request') if workspace_search_payload is mapping else none %}
+{% set has_search_query = search_query != '' %}
+{% set has_search_results = search_results|length > 0 %}
+{% set has_capability_request = search_capability_request is mapping %}
+{% set search_state = 'listing' if has_search_results else 'filtered-empty' if search_active_filter_count > 0 and search_unfiltered_count > 0 else 'requestable' if has_capability_request else 'not-found' %}
+{% set search_back_route = workspace_search_payload.get('route', '/search') if workspace_search_payload is mapping else '/search' %}
+{% set workspace_active_route = search_back_route %}
+{% set workspace_right_pane_contract = 'nations_right_pane_content_surface_v1' %}
+{% set search_filter_controls = [
+    {'id': 'type', 'label': 'Type', 'name': 'filter_type', 'value': search_filter_type, 'options': search_filter_payload.get('type', {}).get('options', [])},
+    {'id': 'people', 'label': 'People', 'name': 'people', 'value': search_people, 'options': search_filter_payload.get('people', {}).get('options', [])},
+    {'id': 'modified', 'label': 'Modified', 'name': 'modified', 'value': search_modified, 'options': search_filter_payload.get('modified', {}).get('options', [])},
+    {'id': 'source', 'label': 'Source', 'name': 'source', 'value': search_source, 'options': search_filter_payload.get('source', {}).get('options', [])}
+] %}
+{% set search_sort_options = [
+    {'id': 'relevance', 'label': 'Relevance'},
+    {'id': 'name', 'label': 'Name'},
+    {'id': 'modified', 'label': 'Date modified'},
+    {'id': 'type', 'label': 'File type'},
+    {'id': 'size', 'label': 'File size'}
+] %}
+{% set search_sort_labels = {
+    'relevance': 'Relevance',
+    'name': 'Name',
+    'modified': 'Date modified',
+    'type': 'File type',
+    'size': 'File size'
+} %}
+{% set search_sort_label = search_sort_labels.get(search_sort_key, 'Relevance') %}
+{% if search_sort_key == 'name' or search_sort_key == 'type' %}
+    {% set search_ascending_label = 'A to Z' %}
+    {% set search_descending_label = 'Z to A' %}
+{% elif search_sort_key == 'size' %}
+    {% set search_ascending_label = 'Smallest first' %}
+    {% set search_descending_label = 'Largest first' %}
+{% elif search_sort_key == 'modified' %}
+    {% set search_ascending_label = 'Oldest first' %}
+    {% set search_descending_label = 'Newest first' %}
+{% else %}
+    {% set search_ascending_label = 'Least relevant first' %}
+    {% set search_descending_label = 'Most relevant first' %}
+{% endif %}
+
+
+<section class="precon-app-page precon-app-page--documents workspace-command-app search-command-app"
+         data-workspace-module="{{ workspace_module }}"
+         data-workspace-section="{{ workspace_section }}"
+         data-workspace-route="{{ workspace_active_route }}"
+         data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+         data-right-pane-content-surface="search"
+         data-right-pane-content-route="{{ workspace_active_route }}"
+         data-right-pane-content-contract="{{ workspace_right_pane_contract }}"
+         aria-label="Search workspace">
+
+    <section class="precon-workspace-shell precon-workspace-shell--documents workspace-command-shell search-workspace-shell"
+             aria-label="Search shell">
+        <section class="precon-mode-deck precon-command-desk precon-command-desk--documents workspace-command-canvas"
+                 aria-label="Search command workspace">
+
+            <section class="workspace-document-explorer workspace-command-explorer search-explorer"
+                     data-document-explorer
+                     data-workspace-explorer
+                     data-document-layout="{{ workspace_layout }}"
+                     data-search-results-surface="true"
+                     data-search-route="{{ search_back_route }}"
+                     data-search-sort-key="{{ search_sort_key }}"
+                     data-search-sort-direction="{{ search_sort_direction }}"
+                     data-search-folder-placement="{{ search_folder_placement }}"
+                     data-search-filter-type="{{ search_filter_type }}"
+                     data-search-filter-people="{{ search_people }}"
+                     data-search-filter-modified="{{ search_modified }}"
+                     data-search-filter-source="{{ search_source }}"
+                     data-workspace-view="files"
+                     data-workspace-initial-view="files"
+                     data-workspace-reader-state="idle"
+                     data-workspace-reader-back-route="{{ search_back_route }}"
+                     data-workspace-module="{{ workspace_module }}"
+                     data-workspace-label="Search"
+                     data-workspace-section="{{ workspace_section }}"
+                     data-workspace-route="{{ workspace_active_route }}"
+                     data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+                     data-workspace-folders-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                     data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                     data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                     data-workspace-folder-creation-authority="{{ workspace_folder_creation_authority }}"
+                     data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                     data-workspace-folder-create-enabled="{{ 'true' if workspace_enable_new_folder_control else 'false' }}"
+                     data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                     data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                     data-right-pane-content-surface="search"
+                     data-right-pane-content-route="{{ workspace_active_route }}"
+                     data-right-pane-content-contract="{{ workspace_right_pane_contract }}"
+                     data-workspace-open-endpoint="/workspace/action/open-document"
+                     data-workspace-focus-endpoint="/workspace/action/focus-document"
+                     data-workspace-minimize-endpoint="/workspace/action/minimize-document"
+                     data-workspace-close-endpoint="/workspace/action/close-document"
+                     aria-label="Search results workspace">
+
+                <aside class="workspace-document-collections"
+                       aria-label="Workspace navigation">
+                    <div class="workspace-document-primary-actions"
+                         aria-label="Workspace primary actions">
+                        <div class="workspace-document-new-menu-shell"
+                             data-document-new-menu
+                             data-document-new-menu-contract="server_rendered_actions_transport_only"
+                             data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                             data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}">
+                            <button type="button"
+                                    id="workspaceSearchNewMenuTrigger"
+                                    class="workspace-document-command workspace-document-command-primary workspace-document-new-button"
+                                    data-document-section-control="search"
+                                    data-document-new-menu-trigger
+                                    aria-haspopup="menu"
+                                    aria-expanded="false"
+                                    aria-controls="workspaceSearchNewMenu"
+                                    aria-hidden="false">
+                                <span class="icon" aria-hidden="true">add</span>
+                                <span>New</span>
+                                <span class="icon workspace-document-new-button-chevron"
+                                      aria-hidden="true">expand_more</span>
+                            </button>
+
+                            <section id="workspaceSearchNewMenu"
+                                     class="workspace-document-new-menu"
+                                     data-document-new-menu-panel
+                                     role="menu"
+                                     aria-label="Create, upload, share, or ask SolomonAI"
+                                     hidden>
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">Add</p>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-upload-placeholder
+                                            data-document-upload-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">upload_file</span>
+
+                                        <span>
+                                            <strong>Upload file</strong>
+                                            <small>Store files in My Files.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-share-files-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">person_add</span>
+
+                                        <span>
+                                            <strong>Share files</strong>
+                                            <small>Choose owned files and grant access to People or Groups.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-workspace-new-action="new_folder"
+                                            data-workspace-new-authority="server"
+                                            data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                                            data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                                            data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                                            data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                                            data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                                            data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                                            data-document-new-menu-close
+                                            role="menuitem"
+                                            disabled
+                                            aria-disabled="true"
+                                            aria-hidden="false">
+                                        <span class="icon" aria-hidden="true">create_new_folder</span>
+
+                                        <span>
+                                            <strong>New folder</strong>
+                                            <small>{{ workspace_new_folder_summary }}</small>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">AI</p>
+
+                                    <a href="/ai"
+                                       class="workspace-document-new-menu-action"
+                                       data-command-shell-navigation="true"
+                                       data-command-module="solomon_ai"
+                                       data-command-route="/ai"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                       data-workspace-new-action="ask_solomon_ai"
+                                       data-workspace-new-authority="server"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">auto_awesome</span>
+
+                                        <span>
+                                            <strong>Ask SolomonAI</strong>
+                                            <small>Start a workspace conversation.</small>
+                                        </span>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <nav class="workspace-document-collection-list workspace-document-static-navigation"
+                         data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                         aria-label="Workspace navigation">
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_home_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-module="documents"
+                           data-command-section="files"
+                           data-command-route="{{ workspace_home_url }}"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">home</span>
+                            <span>Home</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_chat_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-module="solomon_ai"
+                           data-command-route="{{ workspace_chat_url }}"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                            <span>Chat</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_people_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-module="people"
+                           data-command-route="{{ workspace_people_url }}"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">groups</span>
+                            <span>People</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_recent_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-module="documents"
+                           data-command-section="recent"
+                           data-command-route="{{ workspace_recent_url }}"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">schedule</span>
+                            <span>Recent</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_trash_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-module="documents"
+                           data-command-section="trash"
+                           data-command-route="{{ workspace_trash_url }}"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">delete_outline</span>
+                            <span>Trash</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="workspace-document-browser workspace-command-main search-browser"
+                         aria-label="Search results">
+                    <section class="workspace-command-view-panel workspace-command-files-panel search-workspace-panel"
+                             data-workspace-view-panel="files"
+                             data-workspace-route="{{ workspace_active_route }}"
+                             data-right-pane-content-surface="search"
+                             data-right-pane-content-route="{{ workspace_active_route }}"
+                             aria-label="Search results">
+
+                        <div class="workspace-document-browser-toolbar search-results-toolbar">
+                            <div class="workspace-document-browser-heading search-results-heading">
+                                <p class="workspace-kicker">Documents</p>
+                                <strong data-document-section-title>
+                                    {% if has_search_query %}
+                                        Search results for “{{ search_query }}”
+                                    {% else %}
+                                        Search results
+                                    {% endif %}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="workspace-document-recent-utility workspace-document-listing-utility search-results-listing-utility"
+                             data-document-listing-utility
+                             data-search-listing-utility
+                             aria-label="Search result display controls">
+                            <div class="workspace-document-recent-utility-controls workspace-document-listing-utility-controls workspace-document-control-row search-results-listing-controls"
+                                 data-document-control-row
+                                 data-document-control-row-contract="universal_document_control_row_v1">
+                                <form class="workspace-document-recent-filters workspace-document-listing-filters workspace-document-control-row-primary"
+                                      data-search-filters
+                                      data-document-listing-filters
+                                      data-document-listing-filter-contract="server_authorized_search_filters_v1"
+                                      aria-label="Filter search results"
+                                      autocomplete="off">
+                                    {% for filter in search_filter_controls %}
+                                        <div class="workspace-document-recent-filter workspace-document-listing-filter{% if filter.value %} is-active{% endif %}"
+                                             data-search-filter-control="{{ filter.id }}"
+                                             data-document-recent-filter-control="{{ filter.id }}"
+                                             data-document-listing-filter-control="{{ filter.id }}"
+                                             data-document-recent-filter-active="{{ 'true' if filter.value else 'false' }}">
+                                            <select id="workspaceSearchFilter{{ filter.id|capitalize }}"
+                                                    class="workspace-document-recent-filter-native workspace-document-listing-filter-native"
+                                                    name="{{ filter.name }}"
+                                                    data-search-filter="{{ filter.id }}"
+                                                    data-document-recent-filter="{{ filter.id }}"
+                                                    data-document-listing-filter="{{ filter.id }}"
+                                                    aria-hidden="true"
+                                                    tabindex="-1"
+                                                    {% if filter.options|length == 0 %}disabled{% endif %}>
+                                                <option value="">{{ filter.label }}</option>
+                                                {% for option in filter.options %}
+                                                    <option value="{{ option.get('value', '') }}"
+                                                            {% if filter.value == option.get('value', '') %}selected{% endif %}>
+                                                        {{ option.get('label', '') }} ({{ option.get('count', 0) }})
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+
+                                            <button type="button"
+                                                    class="workspace-document-recent-filter-trigger workspace-document-listing-filter-trigger"
+                                                    data-document-recent-filter-trigger="{{ filter.id }}"
+                                                    data-document-listing-filter-trigger="{{ filter.id }}"
+                                                    aria-label="{{ filter.label }} filter"
+                                                    aria-haspopup="listbox"
+                                                    aria-expanded="false"
+                                                    aria-controls="workspaceSearchFilter{{ filter.id|capitalize }}Menu"
+                                                    {% if filter.options|length == 0 %}disabled{% endif %}>
+                                                <span data-document-recent-filter-label
+                                                      data-document-listing-filter-label>{{ filter.label }}</span>
+                                                <span class="icon workspace-document-recent-filter-chevron workspace-document-listing-filter-chevron"
+                                                      aria-hidden="true">expand_more</span>
+                                            </button>
+
+                                            <div id="workspaceSearchFilter{{ filter.id|capitalize }}Menu"
+                                                 class="workspace-document-recent-filter-menu workspace-document-listing-filter-menu"
+                                                 data-document-recent-filter-menu="{{ filter.id }}"
+                                                 data-document-listing-filter-menu="{{ filter.id }}"
+                                                 role="listbox"
+                                                 aria-label="{{ filter.label }} filter options"
+                                                 hidden></div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <button type="button"
+                                            class="workspace-document-recent-filter-clear workspace-document-listing-filter-clear"
+                                            data-search-filter-clear
+                                            data-document-listing-filter-clear
+                                            aria-label="Clear search filters"
+                                            title="Clear filters"
+                                            {% if search_active_filter_count == 0 %}hidden{% endif %}>
+                                        <span class="icon" aria-hidden="true">filter_alt_off</span>
+                                        <span>Clear</span>
+                                    </button>
+
+                                    <span class="workspace-document-recent-filter-status workspace-document-listing-filter-status"
+                                          data-search-filter-status
+                                          data-document-listing-filter-status
+                                          role="status"
+                                          aria-live="polite">
+                                        {% if has_search_query %}{{ search_filtered_count }} {{ 'result' if search_filtered_count == 1 else 'results' }}{% endif %}
+                                    </span>
+                                </form>
+
+                                <div class="workspace-document-control-row-actions"
+                                     data-document-control-row-actions
+                                     role="toolbar"
+                                     aria-label="Search result view controls">
+
+                                <div class="workspace-document-layout-toggle workspace-document-recent-layout-toggle workspace-document-listing-layout-toggle"
+                                     data-document-section-control="search"
+                                     data-workspace-listing-control="search"
+                                     role="group"
+                                     aria-label="Search result layout">
+                                    {% set list_layout_route = url_for('search', q=search_query, type=search_type, filter_type=search_filter_type, people=search_people, modified=search_modified, source=search_source, sort=search_sort_key, direction=search_sort_direction, folders=search_folder_placement, layout='list') %}
+                                    {% set grid_layout_route = url_for('search', q=search_query, type=search_type, filter_type=search_filter_type, people=search_people, modified=search_modified, source=search_source, sort=search_sort_key, direction=search_sort_direction, folders=search_folder_placement, layout='grid') %}
+                                    <button type="button"
+                                            class="workspace-document-command workspace-document-layout-button{% if workspace_layout == 'list' %} is-active{% endif %}"
+                                            data-search-layout-option="list"
+                                            data-command-route="{{ list_layout_route }}"
+                                            aria-pressed="{{ 'true' if workspace_layout == 'list' else 'false' }}"
+                                            title="List view">
+                                        <span class="icon" aria-hidden="true">view_list</span>
+                                        <span class="visually-hidden">List view</span>
+                                    </button>
+                                    <button type="button"
+                                            class="workspace-document-command workspace-document-layout-button{% if workspace_layout == 'grid' %} is-active{% endif %}"
+                                            data-search-layout-option="grid"
+                                            data-command-route="{{ grid_layout_route }}"
+                                            aria-pressed="{{ 'true' if workspace_layout == 'grid' else 'false' }}"
+                                            title="Grid view">
+                                        <span class="icon" aria-hidden="true">grid_view</span>
+                                        <span class="visually-hidden">Grid view</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="workspace-document-utility-row workspace-document-selection-row workspace-document-selection-row--drive-utility search-results-utility-row"
+                             data-document-utility-row
+                             data-document-selection-row
+                             data-workspace-listing-utility-row
+                             data-document-selection-state="empty"
+                             data-document-selection-count="0"
+                             data-workspace-listing-selection-state="empty"
+                             data-workspace-listing-selection-count="0"
+                             aria-label="Selected search result actions">
+                            <div class="workspace-document-default-utility"
+                                 data-document-default-utility-row
+                                 data-document-selection-default-utility
+                                 aria-hidden="false"></div>
+                            <aside class="workspace-document-selection-rail workspace-document-selection-action-bar workspace-document-selection-action-bar--drive-row"
+                                   data-document-selection-rail
+                                   data-document-selection-state="empty"
+                                   data-document-selection-count="0"
+                                   role="toolbar"
+                                   aria-label="Selected search result actions"
+                                   aria-live="polite"
+                                   aria-hidden="true"
+                                   hidden></aside>
+                        </div>
+
+                        <p id="workspaceSearchKeyboardHelp"
+                           class="workspace-document-keyboard-help">
+                            Search results support one selected item at a time. Use arrow keys to move between files, folders, people, groups, and conversations, Space to select, Enter to open an authorized item, and Shift+F10 or the Context Menu key for available actions.
+                        </p>
+
+                        {% if has_search_results %}
+                            <div class="workspace-document-file-content search-result-file-content"
+                                 data-document-file-content>
+                                <div class="workspace-document-sort-control workspace-document-content-sort-control"
+                                     data-search-sort-control
+                                     data-document-content-order-contract="post_filter_sort_projection_v1"
+                                     data-document-sort-open="false">
+                                    <div class="workspace-document-sort-trigger-host"
+                                         data-document-sort-trigger-host>
+                                    {% if workspace_layout == 'grid' %}
+                                    <button id="workspaceSearchSortTrigger"
+                                            type="button"
+                                            class="workspace-document-sort-trigger workspace-document-content-sort-trigger"
+                                            data-search-sort-trigger
+                                            aria-label="Sort search results"
+                                            aria-haspopup="menu"
+                                            aria-expanded="false"
+                                            aria-controls="workspaceSearchSortMenu"
+                                            title="Sort search results">
+                                        <span class="icon workspace-document-sort-button-icon"
+                                              aria-hidden="true">sort</span>
+                                        <span class="workspace-document-sort-button-label">Sort</span>
+                                    </button>
+                                    {% endif %}
+                                    </div>
+
+                                    <div id="workspaceSearchSortMenu"
+                                         class="workspace-document-sort-menu"
+                                         data-search-sort-menu
+                                         role="menu"
+                                         aria-labelledby="workspaceSearchSortTrigger"
+                                         hidden>
+                                        <div class="workspace-document-sort-menu-group"
+                                             role="group"
+                                             aria-label="Sort by">
+                                            <p class="workspace-document-sort-menu-label">Sort by</p>
+                                            {% for option in search_sort_options %}
+                                                <button type="button"
+                                                        class="workspace-document-sort-option"
+                                                        data-search-sort-option
+                                                        data-search-sort-field="key"
+                                                        data-search-sort-value="{{ option.id }}"
+                                                        role="menuitemradio"
+                                                        tabindex="-1"
+                                                        aria-checked="{{ 'true' if search_sort_key == option.id else 'false' }}">
+                                                    <span>{{ option.label }}</span>
+                                                    <span class="icon workspace-document-sort-option-check"
+                                                          aria-hidden="true">check</span>
+                                                </button>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="workspace-document-sort-menu-group"
+                                             role="group"
+                                             aria-label="Direction">
+                                            <p class="workspace-document-sort-menu-label">Direction</p>
+                                            <button type="button"
+                                                    class="workspace-document-sort-option"
+                                                    data-search-sort-option
+                                                    data-search-sort-field="direction"
+                                                    data-search-sort-value="asc"
+                                                    role="menuitemradio"
+                                                    tabindex="-1"
+                                                    aria-checked="{{ 'true' if search_sort_direction == 'asc' else 'false' }}">
+                                                <span data-search-sort-direction-label="asc">{{ search_ascending_label }}</span>
+                                                <span class="icon workspace-document-sort-option-check"
+                                                      aria-hidden="true">check</span>
+                                            </button>
+                                            <button type="button"
+                                                    class="workspace-document-sort-option"
+                                                    data-search-sort-option
+                                                    data-search-sort-field="direction"
+                                                    data-search-sort-value="desc"
+                                                    role="menuitemradio"
+                                                    tabindex="-1"
+                                                    aria-checked="{{ 'true' if search_sort_direction == 'desc' else 'false' }}">
+                                                <span data-search-sort-direction-label="desc">{{ search_descending_label }}</span>
+                                                <span class="icon workspace-document-sort-option-check"
+                                                      aria-hidden="true">check</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="workspace-document-sort-menu-group"
+                                             role="group"
+                                             aria-label="Folders">
+                                            <p class="workspace-document-sort-menu-label">Folders</p>
+                                            {% for value, label in [('top', 'On top'), ('mixed', 'Mixed with files')] %}
+                                                <button type="button"
+                                                        class="workspace-document-sort-option"
+                                                        data-search-sort-option
+                                                        data-search-sort-field="folders"
+                                                        data-search-sort-value="{{ value }}"
+                                                        role="menuitemradio"
+                                                        tabindex="-1"
+                                                        aria-checked="{{ 'true' if search_folder_placement == value else 'false' }}">
+                                                    <span>{{ label }}</span>
+                                                    <span class="icon workspace-document-sort-option-check"
+                                                          aria-hidden="true">check</span>
+                                                </button>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="workspace-document-list workspace-listing search-result-list"
+                                     data-document-list
+                                     data-workspace-listing
+                                     data-workspace-listing-contract="nations_workspace_listing_v1"
+                                     data-workspace-listing-controller="true"
+                                     data-workspace-listing-layout="{{ workspace_layout }}"
+                                     data-workspace-listing-surface="search"
+                                     data-workspace-reader-back-route="{{ search_back_route }}"
+                                     data-search-results-list
+                                     data-search-results-page
+                                     data-search-state="{{ search_state }}"
+                                     data-search-query="{{ search_query }}"
+                                     data-search-type="{{ search_type }}"
+                                     data-search-filter-type="{{ search_filter_type }}"
+                                     data-search-filter-people="{{ search_people }}"
+                                     data-search-filter-modified="{{ search_modified }}"
+                                     data-search-filter-source="{{ search_source }}"
+                                     data-search-sort-key="{{ search_sort_key }}"
+                                     data-search-sort-direction="{{ search_sort_direction }}"
+                                     data-search-folder-placement="{{ search_folder_placement }}"
+                                     data-search-contract="nations_global_search_v1"
+                                     data-document-layout="{{ workspace_layout }}"
+                                     data-document-list-state="loaded"
+                                     data-document-list-section="search"
+                                     data-document-empty-state="hidden"
+                                     data-document-selected-count="0"
+                                     data-document-selection-active="false"
+                                     data-workspace-route="{{ workspace_active_route }}"
+                                     data-right-pane-content-surface="search"
+                                     data-right-pane-content-route="{{ workspace_active_route }}"
+                                     role="region"
+                                     aria-label="Search results"
+                                     aria-describedby="workspaceSearchKeyboardHelp">
+                                {% if workspace_layout == 'list' %}
+                                    <div class="workspace-document-table-region search-result-table-region"
+                                         data-document-table-region
+                                         tabindex="-1">
+                                        <table class="workspace-document-file-table search-result-table"
+                                               data-document-file-table
+                                               data-document-table-section="search">
+                                            <caption class="workspace-document-table-caption">Search results</caption>
+                                            <colgroup>
+                                                <col class="workspace-document-file-table-column workspace-document-file-table-column--name"
+                                                     data-document-table-column="name">
+                                                <col class="workspace-document-file-table-column workspace-document-file-table-column--type"
+                                                     data-document-table-column="type">
+                                                <col class="workspace-document-file-table-column workspace-document-file-table-column--size"
+                                                     data-document-table-column="size">
+                                                <col class="workspace-document-file-table-column workspace-document-file-table-column--uploaded"
+                                                     data-document-table-column="uploaded">
+                                                <col class="workspace-document-file-table-column workspace-document-file-table-column--actions"
+                                                     data-document-table-column="actions">
+                                            </colgroup>
+                                            <thead class="workspace-document-file-table-head"
+                                                   data-document-table-head>
+                                                <tr class="workspace-document-file-list-header workspace-listing-header search-result-list-header"
+                                                    data-document-list-header
+                                                    data-workspace-listing-header>
+                                                    {% for key, label, modifier in [('name', 'Name', 'name'), ('type', 'Type', 'type'), ('size', 'Size', 'size'), ('modified', 'Modified', 'uploaded')] %}
+                                                        <th class="workspace-document-file-list-header-cell workspace-document-file-list-header-cell--{{ modifier }}"
+                                                            data-document-list-header-cell="{{ modifier }}"
+                                                            scope="col"
+                                                            aria-sort="{% if search_sort_key == key %}{{ 'ascending' if search_sort_direction == 'asc' else 'descending' }}{% else %}none{% endif %}">
+                                                            <button type="button"
+                                                                    class="workspace-document-file-list-sort-button{% if search_sort_key == key %} is-active{% endif %}"
+                                                                    data-search-column-sort-key="{{ key }}"
+                                                                    data-search-column-sort-label="{{ label }}"
+                                                                    aria-pressed="{{ 'true' if search_sort_key == key else 'false' }}"
+                                                                    aria-label="Sort by {{ label }}{% if search_sort_key == key %}, currently {{ 'ascending' if search_sort_direction == 'asc' else 'descending' }}{% endif %}">
+                                                                <span class="workspace-document-file-list-sort-label">{{ label }}</span>
+                                                                <span class="icon workspace-document-file-list-sort-icon"
+                                                                      data-search-column-sort-icon
+                                                                      aria-hidden="true"
+                                                                      {% if search_sort_key != key %}hidden{% endif %}>
+                                                                    {{ 'arrow_upward' if search_sort_direction == 'asc' else 'arrow_downward' }}
+                                                                </span>
+                                                            </button>
+                                                        </th>
+                                                    {% endfor %}
+                                                    <th id="workspaceSearchSortTrigger"
+                                                        class="workspace-document-file-list-header-cell workspace-document-file-list-header-cell--actions workspace-document-file-list-header-cell--sort-control"
+                                                        data-document-list-header-cell="actions"
+                                                        data-search-sort-trigger
+                                                        scope="col"
+                                                        tabindex="0"
+                                                        aria-label="Sort search results"
+                                                        aria-haspopup="menu"
+                                                        aria-expanded="false"
+                                                        aria-controls="workspaceSearchSortMenu"
+                                                        title="Sort search results">
+                                                        <span class="workspace-document-file-list-sort-cell-content">
+                                                            <span class="icon workspace-document-sort-button-icon"
+                                                                  aria-hidden="true">sort</span>
+                                                            <span class="workspace-document-sort-button-label">Sort</span>
+                                                        </span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="workspace-document-file-table-body"
+                                                   data-document-table-body>
+                                {% endif %}
+
+                                {% for result in search_results %}
+                                    {% set result_type = result.get('type', 'item') if result is mapping else 'item' %}
+                                    {% set result_type_clean = result_type|lower %}
+                                    {% set result_title = result.get('title', 'Untitled') if result is mapping else 'Untitled' %}
+                                    {% set result_title_lower = result_title|lower %}
+                                    {% set raw_result_route = (
+                                        result.get('reader_url') or
+                                        result.get('readerUrl') or
+                                        result.get('workspace_reader_url') or
+                                        result.get('workspaceReaderUrl') or
+                                        result.get('document_reader_url') or
+                                        result.get('documentReaderUrl') or
+                                        result.get('folder_url') or
+                                        result.get('folderUrl') or
+                                        result.get('canonical_url') or
+                                        result.get('canonicalUrl') or
+                                        result.get('route') or
+                                        result.get('url') or
+                                        '#'
+                                    ) if result is mapping else '#' %}
+                                    {% set result_route = raw_result_route %}
+                                    {% set result_module_raw = (result.get('module') or '') if result is mapping else '' %}
+                                    {% set result_id = (
+                                        result.get('result_id') or
+                                        result.get('intelligence_id') or
+                                        result.get('id') or
+                                        loop.index
+                                    ) if result is mapping else loop.index %}
+                                    {% set result_record_id = result.get('record_id', {}) if result is mapping and result.get('record_id') is mapping else {} %}
+                                    {% set result_meta = result.get('meta', '') if result is mapping else '' %}
+                                    {% set result_summary = (result.get('summary') or result.get('snippet') or '') if result is mapping else '' %}
+                                    {% set result_summary_clean = result_summary|trim %}
+                                    {% set first_summary_line = result_summary_clean.split('\n')[0]|trim if result_summary_clean else '' %}
+                                    {% set result_scope_label = result.get('scope_label', '') if result is mapping else '' %}
+                                    {% set result_permission = result.get('permission', '') if result is mapping else '' %}
+                                    {% set result_authority = result.get('authority', '') if result is mapping else '' %}
+                                    {% set result_index_status = result.get('index_status', '') if result is mapping else '' %}
+                                    {% set result_summary_status = result.get('summary_status', '') if result is mapping else '' %}
+                                    {% set result_thumbnail_url = (result.get('thumbnail_url') or result.get('preview_thumbnail_url') or result.get('workspace_thumbnail_url') or '') if result is mapping else '' %}
+                                    {% if result is mapping and 'surface_actions' in result %}
+                                        {% set raw_actions = result.get('surface_actions', []) %}
+                                    {% elif result is mapping and 'available_actions' in result %}
+                                        {% set raw_actions = result.get('available_actions', []) %}
+                                    {% else %}
+                                        {% set raw_actions = result.get('actions', []) if result is mapping else [] %}
+                                    {% endif %}
+                                    {% set result_actions = raw_actions if raw_actions is sequence and raw_actions is not string else [] %}
+                                    {% set result_action_surface = (result.get('action_surface') or workspace_section) if result is mapping else workspace_section %}
+                                    {% set result_can_open = 'open' in result_actions %}
+                                    {% set result_can_ask_solomon_ai = 'ask_solomon_ai' in result_actions or 'ask_about_this' in result_actions %}
+                                    {% set result_can_share = 'share' in result_actions %}
+                                    {% set result_can_view_details = 'view_details' in result_actions or 'details' in result_actions %}
+                                    {% set result_can_move_to_trash = 'move_to_trash' in result_actions or 'delete' in result_actions %}
+                                    {% set result_can_restore = 'restore' in result_actions %}
+                                    {% set result_can_permanently_delete = 'permanent_delete' in result_actions %}
+                                    {% set result_metadata = result.get('metadata', {}) if result is mapping and result.get('metadata') is mapping else {} %}
+                                    {% if not result_metadata %}
+                                        {% set result_metadata = result.get('document_metadata', {}) if result is mapping and result.get('document_metadata') is mapping else {} %}
+                                    {% endif %}
+                                    {% if not result_metadata %}
+                                        {% set result_metadata = result.get('workspace_metadata', {}) if result is mapping and result.get('workspace_metadata') is mapping else {} %}
+                                    {% endif %}
+                                    {% set result_metadata_contract = result_metadata.get('contract', '') if result_metadata is mapping else '' %}
+                                    {% if not result_metadata_contract %}
+                                        {% set result_metadata_contract = result.get('metadata_contract', '') if result is mapping else '' %}
+                                    {% endif %}
+                                    {% if not result_metadata_contract %}
+                                        {% set result_metadata_contract = 'workspace_document_metadata_v1' %}
+                                    {% endif %}
+
+                                    {% if result_type_clean in ['conversation', 'conversations', 'chat', 'ai_conversation'] %}
+                                        {% set result_kind = 'conversation' %}
+                                        {% set result_label = 'Conversation' %}
+                                        {% set fallback_icon = 'forum' %}
+                                        {% set thumbnail_kind = 'file' %}
+                                        {% set thumbnail_badge = 'CHAT' %}
+                                        {% set thumbnail_title = 'Conversation' %}
+                                        {% set thumbnail_detail = 'Workspace chat' %}
+                                    {% elif result_type_clean in ['person', 'people', 'user'] %}
+                                        {% set result_kind = 'person' %}
+                                        {% set result_label = 'Person' %}
+                                        {% set fallback_icon = 'person' %}
+                                        {% set thumbnail_kind = 'file' %}
+                                        {% set thumbnail_badge = 'USER' %}
+                                        {% set thumbnail_title = 'Person' %}
+                                        {% set thumbnail_detail = 'Workspace identity' %}
+                                    {% elif result_type_clean in ['group', 'groups', 'team'] %}
+                                        {% set result_kind = 'group' %}
+                                        {% set result_label = 'Group' %}
+                                        {% set fallback_icon = 'groups' %}
+                                        {% set thumbnail_kind = 'file' %}
+                                        {% set thumbnail_badge = 'TEAM' %}
+                                        {% set thumbnail_title = 'Group' %}
+                                        {% set thumbnail_detail = 'Shared workspace' %}
+                                    {% elif result_type_clean in ['folder', 'folders', 'workspace_folder', 'workspace-folder'] %}
+                                        {% set result_kind = 'folder' %}
+                                        {% set result_label = 'Folder' %}
+                                        {% set fallback_icon = 'folder' %}
+                                        {% set thumbnail_kind = 'folder' %}
+                                        {% set thumbnail_badge = 'DIR' %}
+                                        {% set thumbnail_title = 'Workspace Folder' %}
+                                        {% set thumbnail_detail = 'Visibility container' %}
+                                    {% elif result_type_clean in ['file', 'files', 'document'] %}
+                                        {% set result_kind = 'file' %}
+                                        {% set result_label = 'File' %}
+                                        {% set fallback_icon = 'description' %}
+                                        {% if result_title_lower[-4:] == '.pdf' %}
+                                            {% set thumbnail_kind = 'pdf' %}
+                                            {% set thumbnail_badge = 'PDF' %}
+                                            {% set thumbnail_title = 'PDF Document' %}
+                                            {% set thumbnail_detail = 'Preview pending' %}
+                                            {% set result_label = 'PDF Document' %}
+                                        {% elif result_title_lower[-5:] == '.docx' %}
+                                            {% set thumbnail_kind = 'word' %}
+                                            {% set thumbnail_badge = 'DOCX' %}
+                                            {% set thumbnail_title = 'Word Document' %}
+                                            {% set thumbnail_detail = 'Text preview available' %}
+                                            {% set result_label = 'Word Document' %}
+                                        {% elif result_title_lower[-4:] == '.doc' %}
+                                            {% set thumbnail_kind = 'legacy-word' %}
+                                            {% set thumbnail_badge = 'DOC' %}
+                                            {% set thumbnail_title = 'Legacy Word' %}
+                                            {% set thumbnail_detail = 'Preview unavailable' %}
+                                            {% set result_label = 'Word Document' %}
+                                        {% elif result_title_lower[-5:] == '.xlsx' or result_title_lower[-4:] == '.xls' %}
+                                            {% set thumbnail_kind = 'spreadsheet' %}
+                                            {% set thumbnail_badge = 'XLS' %}
+                                            {% set thumbnail_title = 'Spreadsheet' %}
+                                            {% set thumbnail_detail = 'Workbook stored' %}
+                                            {% set result_label = 'Spreadsheet' %}
+                                        {% elif result_title_lower[-4:] == '.csv' %}
+                                            {% set thumbnail_kind = 'table' %}
+                                            {% set thumbnail_badge = 'CSV' %}
+                                            {% set thumbnail_title = 'CSV File' %}
+                                            {% set thumbnail_detail = 'Table stored' %}
+                                            {% set result_label = 'CSV File' %}
+                                        {% elif result_title_lower[-4:] == '.txt' %}
+                                            {% set thumbnail_kind = 'text' %}
+                                            {% set thumbnail_badge = 'TXT' %}
+                                            {% set thumbnail_title = 'Text File' %}
+                                            {% set thumbnail_detail = 'Text stored' %}
+                                            {% set result_label = 'Text File' %}
+                                        {% else %}
+                                            {% set thumbnail_kind = 'file' %}
+                                            {% set thumbnail_badge = 'FILE' %}
+                                            {% set thumbnail_title = 'Workspace File' %}
+                                            {% set thumbnail_detail = 'File stored' %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% set result_kind = 'result' %}
+                                        {% set result_label = 'Result' %}
+                                        {% set fallback_icon = 'search' %}
+                                        {% set thumbnail_kind = 'file' %}
+                                        {% set thumbnail_badge = 'ITEM' %}
+                                        {% set thumbnail_title = 'Search Result' %}
+                                        {% set thumbnail_detail = 'Workspace item' %}
+                                    {% endif %}
+
+                                    {% set result_explicit_type_label = (
+                                        result_metadata.get('type_label') or
+                                        result_metadata.get('file_type_label') or
+                                        result.get('type_label') or
+                                        result.get('file_type_label') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if result_explicit_type_label %}
+                                        {% set result_label = result_explicit_type_label %}
+                                    {% endif %}
+
+                                    {% set result_reader_launch = result_kind == 'file' and (result_route[:16] == '/workspace/file/' or result_route[:20] == '/workspace/document/') %}
+                                    {% set result_object_route = (
+                                        result.get('workspace_object_route') or
+                                        result.get('workspaceObjectRoute') or
+                                        result.get('object_route') or
+                                        result.get('objectRoute') or
+                                        result.get('document_route') or
+                                        result.get('documentRoute') or
+                                        result.get('file_route') or
+                                        result.get('fileRoute') or
+                                        result.get('folder_url') or
+                                        result.get('folderUrl') or
+                                        result.get('canonical_url') or
+                                        result.get('canonicalUrl') or
+                                        result_route
+                                    ) if result is mapping else result_route %}
+                                    {% if result_reader_launch and result_object_route == result_route and '/reader' in result_route %}
+                                        {% set result_object_route = result_route.split('/reader')[0] %}
+                                    {% endif %}
+                                    {% if result_reader_launch and '/reader' not in result_route %}
+                                        {% set result_open_route = result_object_route ~ '/reader' %}
+                                    {% else %}
+                                        {% set result_open_route = result_route %}
+                                    {% endif %}
+                                    {% if result_reader_launch and 'back=' not in result_open_route %}
+                                        {% set result_open_route = result_open_route ~ ('&' if '?' in result_open_route else '?') ~ 'back=' ~ (search_back_route|urlencode) %}
+                                    {% endif %}
+                                    {% if result_kind == 'folder' and result_open_route != '#' and 'return_route=' not in result_open_route %}
+                                        {% set result_open_route = result_open_route ~ ('&' if '?' in result_open_route else '?') ~ 'return_route=' ~ (search_back_route|urlencode) %}
+                                    {% endif %}
+                                    {% set result_reader_url = result_open_route if result_reader_launch else '' %}
+                                    {% set route_document_key = '' %}
+                                    {% if result_object_route[:16] == '/workspace/file/' %}
+                                        {% set route_document_key = result_object_route[16:].split('/')[0].split('?')[0] %}
+                                    {% endif %}
+                                    {% set result_folder_id = (
+                                        result.get('folder_id') or
+                                        result.get('folderId') or
+                                        result.get('workspace_folder_id') or
+                                        result.get('workspaceFolderId') or
+                                        result.get('workspace_item_id') or
+                                        result.get('workspaceItemId') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if result_kind == 'folder' %}
+                                        {% set result_document_id = result_folder_id or result_id %}
+                                    {% else %}
+                                        {% set result_document_id = (
+                                            result.get('document_id') or
+                                            result.get('documentId') or
+                                            result.get('file_id') or
+                                            result.get('fileId') or
+                                            result.get('upload_id') or
+                                            result.get('uploadId') or
+                                            result.get('random_name') or
+                                            result.get('randomName') or
+                                            route_document_key or
+                                            result_id
+                                        ) if result is mapping else result_id %}
+                                    {% endif %}
+                                    {% set result_random_name = (
+                                        result.get('random_name') or
+                                        result.get('randomName') or
+                                        route_document_key or
+                                        result_document_id
+                                    ) if result is mapping else result_document_id %}
+                                    {% if result_kind == 'file' %}
+                                        {% set result_object_id = result_document_id %}
+                                    {% elif result_kind == 'folder' and result_folder_id %}
+                                        {% set result_object_id = result_folder_id %}
+                                    {% else %}
+                                        {% set result_object_id = result_id %}
+                                    {% endif %}
+                                    {% set result_file_registry_id = result_record_id.get('file_registry_id', '') if result_record_id is mapping else '' %}
+                                    {% set result_module = result_module_raw if result_module_raw else 'documents' if result_reader_launch or result_kind in ['file', 'folder'] else 'search' %}
+                                    {% set result_icon = (result.get('icon', '') if result is mapping else '') or fallback_icon %}
+                                    {% set result_initial = (result_title[:1]|upper) if result_title else '?' %}
+                                    {% set result_status_index_label = result_index_status|replace('_', ' ')|title if result_index_status else result_summary_status|replace('_', ' ')|title if result_summary_status else 'Ready' %}
+                                    {% set result_storage_status = (
+                                        result_metadata.get('status_token') or
+                                        result_metadata.get('status') or
+                                        result.get('storage_status') or
+                                        result.get('library_status') or
+                                        result.get('document_status') or
+                                        result.get('status') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if not result_storage_status and result_kind == 'folder' %}
+                                        {% set result_storage_status = 'active' %}
+                                    {% elif not result_storage_status and result_kind == 'file' %}
+                                        {% set result_storage_status = 'stored' %}
+                                    {% endif %}
+                                    {% set result_storage_status_clean = result_storage_status|lower|replace('-', '_')|replace(' ', '_') %}
+                                    {% set result_is_trashed = result_kind == 'file' and result_storage_status_clean in ['trash', 'trashed', 'deleted'] %}
+                                    {% set result_action_context = result_action_surface %}
+                                    {% set result_open_enabled = result_open_route != '#' and result_can_open %}
+                                    {% set result_status_label = (
+                                        result_metadata.get('status_label') or
+                                        result.get('storage_status_label') or
+                                        result.get('document_status_label') or
+                                        result.get('status_label') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if not result_status_label %}
+                                        {% if result_kind == 'folder' %}
+                                            {% set result_status_label = 'Folder' %}
+                                        {% elif result_kind == 'file' %}
+                                            {% if result_storage_status_clean in ['trash', 'trashed', 'deleted'] %}
+                                                {% set result_status_label = 'In Trash' %}
+                                            {% else %}
+                                                {% set result_status_label = 'Stored' %}
+                                            {% endif %}
+                                        {% else %}
+                                            {% set result_status_label = result_status_index_label %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% set result_size_bytes = '' %}
+                                    {% if result_kind != 'folder' and result is mapping %}
+                                        {% if result_metadata.get('size_bytes') is not none and result_metadata.get('size_bytes') != '' %}
+                                            {% set result_size_bytes = result_metadata.get('size_bytes') %}
+                                        {% elif result.get('size_bytes') is not none and result.get('size_bytes') != '' %}
+                                            {% set result_size_bytes = result.get('size_bytes') %}
+                                        {% elif result.get('file_size_bytes') is not none and result.get('file_size_bytes') != '' %}
+                                            {% set result_size_bytes = result.get('file_size_bytes') %}
+                                        {% elif result.get('content_length') is not none and result.get('content_length') != '' %}
+                                            {% set result_size_bytes = result.get('content_length') %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% set result_size_display = (
+                                        result_metadata.get('size_label') or
+                                        result.get('size_label') or
+                                        result.get('file_size_label') or
+                                        result.get('formatted_size') or
+                                        result.get('display_size') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if result_kind == 'folder' %}
+                                        {% set result_size_display = 'Not applicable' %}
+                                    {% elif not result_size_display %}
+                                        {% set result_size_display = 'Size unavailable' %}
+                                    {% endif %}
+                                    {% set result_uploaded_at = (
+                                        result_metadata.get('uploaded_at') or
+                                        result.get('uploaded_at') or
+                                        result.get('uploadedAt') or
+                                        result.get('upload_time') or
+                                        result.get('uploadTime') or
+                                        result.get('created_at') or
+                                        result.get('createdAt') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% set result_uploaded_display = (
+                                        result_metadata.get('uploaded_label') or
+                                        result.get('uploaded_label') or
+                                        result.get('uploadedLabel') or
+                                        result.get('upload_label') or
+                                        result.get('uploadLabel') or
+                                        result_uploaded_at or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if not result_uploaded_display %}
+                                        {% set result_uploaded_display = 'Date unavailable' %}
+                                    {% endif %}
+                                    {% set result_modified_at = (
+                                        result_metadata.get('modified_at') or
+                                        result.get('modified_at') or
+                                        result.get('modifiedAt') or
+                                        result_uploaded_at or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% set result_modified_display = (
+                                        result_metadata.get('modified_label') or
+                                        result.get('modified_label') or
+                                        result.get('modifiedLabel') or
+                                        result_modified_at or
+                                        result_uploaded_display or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if not result_modified_display %}
+                                        {% set result_modified_display = 'Date unavailable' %}
+                                    {% endif %}
+                                    {% set result_location_label = (
+                                        result_metadata.get('location_label') or
+                                        result.get('location_label') or
+                                        result.get('workspace_location_label') or
+                                        result.get('authorized_location_label') or
+                                        result.get('folder_location_label') or
+                                        result.get('parent_folder_name') or
+                                        ''
+                                    ) if result is mapping else '' %}
+                                    {% if not result_location_label %}
+                                        {% set result_location_label = 'Location unavailable' %}
+                                    {% endif %}
+
+                                    {% if first_summary_line and first_summary_line|lower != result_title|lower %}
+                                        {% set result_description = first_summary_line %}
+                                    {% elif result_kind == 'folder' %}
+                                        {% set result_description = 'Folder visibility container' %}
+                                    {% elif result_meta %}
+                                        {% set result_description = result_meta %}
+                                    {% else %}
+                                        {% set result_description = result_label %}
+                                    {% endif %}
+
+                                    {% set result_row_tag = 'tr' if workspace_layout == 'list' else 'article' %}
+                                    <{{ result_row_tag }} class="workspace-document-file workspace-object search-result-row search-result-row--{{ result_kind }}{% if workspace_layout == 'list' %} workspace-document-file--table-row{% else %} workspace-document-file--grid-card{% endif %}"
+                                             role="{{ 'row' if workspace_layout == 'list' else 'option' }}"
+                                             tabindex="0"
+                                             aria-selected="false"
+                                             aria-label="{{ result_title }}; {{ result_label }}; {{ result_size_display }}; modified {{ result_modified_display }}; location {{ result_location_label }}; status {{ result_status_label }}"
+                                             data-document-list-row
+                                             data-document-keyboard-row="true"
+                                             data-workspace-object
+                                             data-workspace-object-row
+                                             data-workspace-object-keyboard-row="true"
+                                             data-workspace-object-contract="nations_workspace_object_v1"
+                                             data-document-metadata-contract="{{ result_metadata_contract }}"
+                                             data-workspace-object-id="{{ result_object_id }}"
+                                             data-workspace-object-name="{{ result_title }}"
+                                             data-workspace-object-title="{{ result_title }}"
+                                             data-workspace-object-type="{{ result_type_clean }}"
+                                             data-workspace-object-kind="{{ result_kind }}"
+                                             data-workspace-object-label="{{ result_label }}"
+                                             data-workspace-object-route="{{ result_object_route }}"
+                                             data-workspace-object-open-route="{{ result_open_route }}"
+                                             data-workspace-object-module="{{ result_module }}"
+                                             data-workspace-object-open-enabled="{{ 'true' if result_open_enabled else 'false' }}"
+                                             data-workspace-object-selected="false"
+                                             data-workspace-object-action-context="{{ result_action_context }}"
+                                             data-document-id="{{ result_document_id }}"
+                                             data-document-can-share="{{ 'true' if result_can_share else 'false' }}"
+                                             data-random-name="{{ result_random_name }}"
+                                             data-document-name="{{ result_title }}"
+                                             data-document-title="{{ result_title }}"
+                                             data-document-original-name="{{ result_title }}"
+                                             data-original-name="{{ result_title }}"
+                                             data-file-name="{{ result_title }}"
+                                             data-document-active="false"
+                                             data-document-selected="false"
+                                             data-document-selected-for-workflow="false"
+                                             data-document-trashed="{{ 'true' if result_is_trashed else 'false' }}"
+                                             data-document-kind="{{ result_kind }}"
+                                             data-document-type-label="{{ result_label }}"
+                                             data-document-size="{{ result_size_bytes }}"
+                                             data-document-size-bytes="{{ result_size_bytes }}"
+                                             data-document-size-label="{{ result_size_display }}"
+                                             data-document-uploaded-at="{{ result_uploaded_at }}"
+                                             data-document-uploaded-label="{{ result_uploaded_display }}"
+                                             data-document-modified-at="{{ result_modified_at }}"
+                                             data-document-modified-label="{{ result_modified_display }}"
+                                             data-document-location-label="{{ result_location_label }}"
+                                             data-document-storage-status="{{ result_storage_status_clean }}"
+                                             data-document-status-label="{{ result_status_label }}"
+                                             data-document-action-context="{{ result_action_context }}"
+                                             data-document-surface-actions="{{ result_actions|join(',') }}"
+                                             data-document-thumbnail-state="{{ 'ready' if result_thumbnail_url else 'fallback' }}"
+                                             data-document-thumbnail-url="{{ result_thumbnail_url }}"
+                                             data-document-thumbnail-fallback-kind="{{ thumbnail_kind }}"
+                                             data-document-route="{{ result_object_route }}"
+                                             data-document-open-route="{{ result_open_route }}"
+                                             data-document-open-enabled="{{ 'true' if result_open_enabled else 'false' }}"
+                                             {% if result_kind == 'folder' %}
+                                                 data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                                                 data-workspace-folder-id="{{ result_object_id }}"
+                                                 data-folder-id="{{ result_object_id }}"
+                                                 data-document-folder="true"
+                                                 data-workspace-object-folder-visibility-only="true"
+                                                 data-workspace-object-file-authority-inherited="false"
+                                                 data-workspace-object-allow-ai-query="false"
+                                             {% endif %}
+                                             {% if result_reader_launch and result_open_enabled %}
+                                                 data-document-reader-url="{{ result_reader_url }}"
+                                                 data-right-pane-content-launch="reader"
+                                                 data-right-pane-content-back-route="{{ search_back_route }}"
+                                             {% endif %}
+                                             data-search-result-id="{{ result_id }}"
+                                             data-search-result-object-id="{{ result_object_id }}"
+                                             data-search-result-title="{{ result_title }}"
+                                             data-search-result-open-route="{{ result_open_route }}"
+                                             data-search-result-open-module="{{ result_module }}"
+                                             data-search-result-open-enabled="{{ 'true' if result_open_enabled else 'false' }}"
+                                             data-search-result-type="{{ result_type_clean }}"
+                                             data-search-result-kind="{{ result_kind }}"
+                                             data-search-result-authority="{{ result_authority }}"
+                                             data-search-result-permission="{{ result_permission }}"
+                                             {% if result_file_registry_id and result_kind == 'file' %}data-file-registry-id="{{ result_file_registry_id }}"{% endif %}>
+                                        {% if workspace_layout == 'list' %}
+                                            <td class="workspace-document-table-cell workspace-document-table-cell--name"
+                                                data-document-list-cell="name"
+                                                data-workspace-listing-cell="name">
+                                                <div class="workspace-document-table-name">
+                                        {% endif %}
+                                        <label class="workspace-document-file-selection"
+                                               data-document-list-cell="selection"
+                                               data-workspace-listing-cell="selection"
+                                               data-workspace-object-select="{{ result_object_id }}"
+                                               aria-label="Select {{ result_title }}">
+                                            <input type="checkbox"
+                                                   class="workspace-document-file-selection-input"
+                                                   value="{{ result_document_id }}"
+                                                   data-document-select-checkbox
+                                                   data-workspace-object-select-checkbox
+                                                   data-document-id="{{ result_document_id }}"
+                                                   data-workspace-object-id="{{ result_object_id }}"
+                                                   aria-checked="false">
+                                            <span class="workspace-document-file-selection-box"
+                                                  aria-hidden="true"></span>
+                                        </label>
+
+                                        {% if workspace_layout != 'list' %}
+                                        <figure class="workspace-document-file-thumbnail search-result-thumbnail search-result-thumbnail--{{ result_kind }}"
+                                                data-document-list-cell="thumbnail"
+                                                data-workspace-listing-cell="thumbnail"
+                                                data-document-thumbnail
+                                                data-document-thumbnail-state="{{ 'ready' if result_thumbnail_url else 'fallback' }}"
+                                                data-document-thumbnail-type="{{ result_label }}"
+                                                data-document-thumbnail-fallback-kind="{{ thumbnail_kind }}"
+                                                aria-label="{{ result_label }} {{ 'preview' if result_thumbnail_url else 'placeholder' }}">
+                                            {% if result_thumbnail_url %}
+                                                <img class="workspace-document-file-thumbnail-image"
+                                                     src="{{ result_thumbnail_url }}"
+                                                     alt=""
+                                                     loading="lazy"
+                                                     decoding="async"
+                                                     draggable="false">
+                                            {% else %}
+                                                <span class="workspace-document-file-thumbnail-fallback"
+                                                      data-document-thumbnail-fallback="{{ thumbnail_kind }}">
+                                                    <span class="workspace-document-file-thumbnail-file">
+                                                        {% if result_kind == 'person' %}
+                                                            <span class="workspace-document-file-thumbnail-icon search-result-thumbnail-initial"
+                                                                  aria-hidden="true">{{ result_initial }}</span>
+                                                        {% else %}
+                                                            <span class="icon workspace-document-file-thumbnail-icon"
+                                                                  aria-hidden="true">{{ result_icon }}</span>
+                                                        {% endif %}
+
+                                                        <span class="workspace-document-file-thumbnail-corner"
+                                                              aria-hidden="true"></span>
+                                                        <span class="workspace-document-file-thumbnail-badge">{{ thumbnail_badge }}</span>
+                                                        <span class="workspace-document-file-thumbnail-lines"
+                                                              aria-hidden="true">
+                                                            <span class="workspace-document-file-thumbnail-line"></span>
+                                                            <span class="workspace-document-file-thumbnail-line"></span>
+                                                            <span class="workspace-document-file-thumbnail-line"></span>
+                                                            <span class="workspace-document-file-thumbnail-line"></span>
+                                                        </span>
+                                                    </span>
+
+                                                    <span class="workspace-document-file-thumbnail-copy">
+                                                        <strong>{{ thumbnail_title }}</strong>
+                                                        <span>{{ thumbnail_detail }}</span>
+                                                    </span>
+                                                </span>
+                                            {% endif %}
+                                        </figure>
+                                        {% endif %}
+
+                                        <span class="icon workspace-document-file-icon"
+                                              data-document-list-cell="icon"
+                                              data-workspace-listing-cell="icon"
+                                              aria-hidden="true">{{ result_icon }}</span>
+
+                                        <div class="workspace-document-file-identity search-result-identity"
+                                             data-document-list-cell="name"
+                                             data-workspace-listing-cell="name"
+                                             title="{{ result_title }}">
+                                            <strong>{{ result_title }}</strong>
+                                            <span>{{ result_description }}</span>
+                                        </div>
+                                        {% if workspace_layout == 'list' %}
+                                                </div>
+                                            </td>
+                                            <td class="workspace-document-table-cell workspace-document-table-cell--type"
+                                                data-document-list-cell="type"
+                                                data-workspace-listing-cell="type">
+                                        {% endif %}
+
+                                        <span class="workspace-document-file-meta workspace-document-file-meta--type"
+                                              data-document-list-cell="type"
+                                              data-workspace-listing-cell="type">{{ result_label }}</span>
+                                        {% if workspace_layout == 'list' %}
+                                            </td>
+                                            <td class="workspace-document-table-cell workspace-document-table-cell--size"
+                                                data-document-list-cell="size"
+                                                data-workspace-listing-cell="size">
+                                        {% endif %}
+
+                                        <span class="workspace-document-file-meta workspace-document-file-meta--size"
+                                              data-document-list-cell="size"
+                                              data-workspace-listing-cell="size">{{ result_size_display }}</span>
+                                        {% if workspace_layout == 'list' %}
+                                            </td>
+                                            <td class="workspace-document-table-cell workspace-document-table-cell--uploaded"
+                                                data-document-list-cell="uploaded"
+                                                data-workspace-listing-cell="uploaded">
+                                        {% endif %}
+
+                                        <span class="workspace-document-file-meta workspace-document-file-meta--uploaded"
+                                              data-document-list-cell="uploaded"
+                                              data-workspace-listing-cell="uploaded">{{ result_modified_display }}</span>
+                                        {% if workspace_layout == 'list' %}
+                                            </td>
+                                            <td class="workspace-document-table-cell workspace-document-table-cell--actions"
+                                                data-document-list-cell="actions"
+                                                data-workspace-listing-cell="actions">
+                                        {% endif %}
+
+                                        <div class="workspace-document-file-action-menu search-result-action-menu"
+                                             data-document-list-cell="actions"
+                                             data-workspace-listing-cell="actions"
+                                             data-document-action-menu
+                                             data-workspace-object-action-menu
+                                             data-document-menu-context="{{ result_action_context }}"
+                                             data-document-selection-count="1"
+                                             data-document-selected-ids="{{ result_document_id }}"
+                                             data-workspace-object-id="{{ result_object_id }}">
+                                            <button type="button"
+                                                    class="workspace-document-file-action-button"
+                                                    data-document-action-menu-button="{{ result_document_id }}"
+                                                    data-workspace-object-action-menu-button="{{ result_object_id }}"
+                                                    aria-haspopup="menu"
+                                                    aria-expanded="false"
+                                                    aria-label="{{ result_label }} actions for {{ result_title }}"
+                                                    aria-controls="workspace-search-result-action-menu-{{ loop.index }}">
+                                                <span class="icon" aria-hidden="true">more_vert</span>
+                                            </button>
+
+                                            <div id="workspace-search-result-action-menu-{{ loop.index }}"
+                                                 class="workspace-document-file-action-popover search-result-action-popover"
+                                                 data-workspace-object-action-popover
+                                                 role="menu"
+                                                 aria-label="{{ result_label }} actions for {{ result_title }}"
+                                                 hidden>
+                                                {% if result_kind == 'file' %}
+                                                    {% if result_can_open %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="open"
+                                                                data-workspace-object-action-menu-item="open"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="open"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-workspace-object-open-trigger
+                                                                data-document-open-trigger
+                                                                data-search-result-open-trigger="menu"
+                                                                data-document-selection-policy="single"
+                                                                data-document-single-label="Open Reader"
+                                                                data-document-multiple-label="Open Reader"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Open Reader {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">open_in_new</span>
+                                                            <span data-document-action-label>Open Reader</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if result_can_ask_solomon_ai %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="ask_solomon_ai"
+                                                                data-workspace-object-action-menu-item="ask_solomon_ai"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="ask_solomon_ai"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="multiple"
+                                                                data-document-single-label="Ask SolomonAI"
+                                                                data-document-multiple-label="Ask SolomonAI about Selected"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Ask SolomonAI about {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                                                            <span data-document-action-label>Ask SolomonAI</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if (result_can_open or result_can_ask_solomon_ai) and (result_can_share or result_can_view_details or result_can_move_to_trash or result_can_restore or result_can_permanently_delete) %}
+                                                        <span class="workspace-document-file-action-separator"
+                                                              role="separator"
+                                                              aria-hidden="true"></span>
+                                                    {% endif %}
+
+                                                    {% if result_can_share %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="share"
+                                                                data-workspace-object-action-menu-item="share"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-document-name="{{ result_title }}"
+                                                                data-workspace-object-action="share"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="multiple"
+                                                                data-document-single-label="Share"
+                                                                data-document-multiple-label="Share Selected"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Share {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">person_add</span>
+                                                            <span data-document-action-label>Share</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if result_can_view_details %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="details"
+                                                                data-workspace-object-action-menu-item="details"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="details"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="single"
+                                                                data-document-single-label="Details"
+                                                                data-document-multiple-label="Details"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Details for {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">info</span>
+                                                            <span data-document-action-label>Details</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if (result_can_share or result_can_view_details) and (result_can_move_to_trash or result_can_restore or result_can_permanently_delete) %}
+                                                        <span class="workspace-document-file-action-separator"
+                                                              role="separator"
+                                                              aria-hidden="true"></span>
+                                                    {% endif %}
+
+                                                    {% if result_can_move_to_trash %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="delete"
+                                                                data-workspace-object-action-menu-item="delete"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="delete"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="multiple"
+                                                                data-document-single-label="Move to Trash"
+                                                                data-document-multiple-label="Move Selected to Trash"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Move {{ result_title }} to Trash">
+                                                            <span class="icon" aria-hidden="true">delete</span>
+                                                            <span data-document-action-label>Move to Trash</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if result_can_restore %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="restore"
+                                                                data-workspace-object-action-menu-item="restore"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="restore"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="multiple"
+                                                                data-document-single-label="Restore"
+                                                                data-document-multiple-label="Restore Selected"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Restore {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">restore_from_trash</span>
+                                                            <span data-document-action-label>Restore</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if result_can_permanently_delete %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="permanent_delete"
+                                                                data-workspace-object-action-menu-item="permanent_delete"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="permanent_delete"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-document-selection-policy="multiple"
+                                                                data-document-single-label="Delete forever"
+                                                                data-document-multiple-label="Delete Selected Forever"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Delete {{ result_title }} forever">
+                                                            <span class="icon" aria-hidden="true">delete_forever</span>
+                                                            <span data-document-action-label>Delete forever</span>
+                                                        </button>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if result_open_route != '#' %}
+                                                        <button type="button"
+                                                                class="workspace-document-file-action-item"
+                                                                role="menuitem"
+                                                                data-document-action-menu-item="open"
+                                                                data-workspace-object-action-menu-item="open"
+                                                                data-document-id="{{ result_document_id }}"
+                                                                data-workspace-object-action="open"
+                                                                data-workspace-object-id="{{ result_object_id }}"
+                                                                data-workspace-object-open-trigger
+                                                                data-document-open-trigger
+                                                                data-search-result-open-trigger="menu"
+                                                                data-document-selection-policy="single"
+                                                                data-document-single-label="Open"
+                                                                data-document-multiple-label="Open"
+                                                                data-document-selection-count="1"
+                                                                data-document-selected-ids="{{ result_document_id }}"
+                                                                aria-label="Open {{ result_title }}">
+                                                            <span class="icon" aria-hidden="true">open_in_new</span>
+                                                            <span data-document-action-label>Open</span>
+                                                        </button>
+                                                    {% endif %}
+
+                                                    {% if result_actions %}
+                                                        {% for action in result_actions %}
+                                                            {% set folder_blocked_action = result_kind == 'folder' and action in ['ask_about_this', 'ask_solomon_ai', 'add_to_conversation', 'run_bid_scope_review', 'bid_scope_review', 'open_reader', 'reader', 'download', 'delete', 'move_to_trash', 'restore', 'permanent_delete'] %}
+                                                            {% if action != 'open' and not folder_blocked_action %}
+                                                                {% set action_label = action|replace('_', ' ')|title %}
+                                                                {% if action == 'details' %}
+                                                                    {% set action_icon = 'info' %}
+                                                                    {% set action_label = 'Details' %}
+                                                                {% elif action == 'rename' %}
+                                                                    {% set action_icon = 'drive_file_rename_outline' %}
+                                                                    {% set action_label = 'Rename' %}
+                                                                {% elif action == 'move' or action == 'move_to' %}
+                                                                    {% set action_icon = 'drive_file_move' %}
+                                                                    {% set action_label = 'Move to' %}
+                                                                {% elif action == 'share_visibility' %}
+                                                                    {% set action_icon = 'person_add' %}
+                                                                    {% set action_label = 'Share visibility' %}
+                                                                {% elif action == 'ask_about_this' %}
+                                                                    {% set action_icon = 'auto_awesome' %}
+                                                                    {% set action_label = 'Ask SolomonAI' %}
+                                                                {% elif action == 'ask_solomon_ai' %}
+                                                                    {% set action_icon = 'auto_awesome' %}
+                                                                    {% set action_label = 'Ask SolomonAI' %}
+                                                                {% elif action == 'add_to_conversation' %}
+                                                                    {% set action_icon = 'add_comment' %}
+                                                                    {% set action_label = 'Add to Conversation' %}
+                                                                {% elif action == 'continue_conversation' %}
+                                                                    {% set action_icon = 'forum' %}
+                                                                    {% set action_label = 'Continue Conversation' %}
+                                                                {% else %}
+                                                                    {% set action_icon = 'more_horiz' %}
+                                                                {% endif %}
+
+                                                                <button type="button"
+                                                                        class="workspace-document-file-action-item"
+                                                                        role="menuitem"
+                                                                        data-document-action-menu-item="{{ action }}"
+                                                                        data-workspace-object-action-menu-item="{{ action }}"
+                                                                        data-document-id="{{ result_document_id }}"
+                                                                        data-workspace-object-action="{{ action }}"
+                                                                        data-workspace-object-id="{{ result_object_id }}"
+                                                                        data-search-result-action="{{ action }}"
+                                                                        data-document-selection-policy="single"
+                                                                        data-document-single-label="{{ action_label }}"
+                                                                        data-document-multiple-label="{{ action_label }}"
+                                                                        data-document-selection-count="1"
+                                                                        data-document-selected-ids="{{ result_document_id }}"
+                                                                        aria-label="{{ action_label }} {{ result_title }}">
+                                                                    <span class="icon" aria-hidden="true">{{ action_icon }}</span>
+                                                                    <span data-document-action-label>{{ action_label }}</span>
+                                                                </button>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% if workspace_layout == 'list' %}
+                                            </td>
+                                        {% endif %}
+                                    </{{ result_row_tag }}>
+                                {% endfor %}
+                                {% if workspace_layout == 'list' %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            </div>
+                        {% else %}
+                            <section class="search-empty-state{% if not has_search_query %} search-empty-state--ready{% endif %}"
+                                     data-search-empty-state
+                                     data-search-results-page
+                                     data-search-state="{{ search_state }}"
+                                     data-search-query="{{ search_query }}"
+                                     data-search-type="{{ search_type }}"
+                                     data-search-contract="nations_global_search_v1"
+                                     aria-label="{% if has_search_query %}No search results{% else %}Search ready{% endif %}">
+                                <div class="search-empty-illustration"
+                                     aria-hidden="true">
+                                    <span class="icon">
+                                        {% if has_search_query %}manage_search{% else %}search{% endif %}
+                                    </span>
+                                </div>
+
+                                {% if search_state == 'filtered-empty' %}
+                                    <h2>No results with these filters</h2>
+
+                                    <p>
+                                        Clear one or more filters to return to the authorized results for this search.
+                                    </p>
+                                {% elif has_capability_request %}
+                                    <h2>{{ search_capability_request.get('title', 'Request this capability') }}</h2>
+
+                                    <p>
+                                        {{ search_capability_request.get('summary', 'Solomon does not have that action yet. Send this request to your group admin?') }}
+                                    </p>
+                                {% elif has_search_query %}
+                                    <h2>
+                                        {{ search_empty_state.get('title', 'No matching files, conversations, people, or groups') if search_empty_state is mapping else 'No matching files, conversations, people, or groups' }}
+                                    </h2>
+
+                                    <p>
+                                        {{ search_empty_state.get('message', 'Try another search, or narrow the search by type.') if search_empty_state is mapping else 'Try another search, or narrow the search by type.' }}
+                                    </p>
+                                {% else %}
+                                    <h2>Search across Nations Systems</h2>
+
+                                    <p>
+                                        Use the header search to find files, conversations, people, and groups.
+                                    </p>
+                                {% endif %}
+                            </section>
+                        {% endif %}
+                    </section>
+
+                    <section class="workspace-command-view-panel workspace-command-reader-panel"
+                             data-workspace-view-panel="reader"
+                             data-workspace-reader-panel
+                             data-workspace-reader-state="idle"
+                             hidden
+                             aria-hidden="true"
+                             aria-label="Search result reader"></section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>

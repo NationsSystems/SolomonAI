@@ -1,0 +1,1660 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_intake.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   WORKSPACE FORM BASE
+   ========================================================================== */
+
+.workspace-command-form {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.012);
+    box-shadow: none;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 44px 1fr 44px;
+    min-height: 62px;
+    padding: 9px;
+}
+
+.workspace-upload-button,
+.workspace-run-button {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.022);
+    border: 1px solid rgba(105, 128, 157, 0.20);
+    border-radius: var(--radius-control);
+    color: var(--cc-soft);
+    display: flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.8rem;
+    font-weight: 650;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.workspace-upload-button:hover,
+.workspace-upload-button:focus-visible,
+.workspace-run-button:hover:not(:disabled),
+.workspace-run-button:focus-visible:not(:disabled) {
+    background: var(--brand-cyan-soft);
+    border-color: rgba(22, 191, 216, 0.42);
+    color: #ffffff;
+    outline: none;
+}
+
+.workspace-run-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.workspace-command-input {
+    background: transparent;
+    border: 0;
+    color: var(--brand-text);
+    font-family: var(--font-ui, inherit);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    outline: none;
+    resize: none;
+    width: 100%;
+}
+
+.workspace-command-input::placeholder {
+    color: rgba(201, 212, 229, 0.48);
+}
+
+#fileInput {
+    display: none !important;
+}
+
+/* ==========================================================================
+   PRECONSTRUCTION APP PAGE
+   ========================================================================== */
+
+.precon-app-page {
+    display: grid;
+    gap: 10px;
+    min-height: 0;
+    padding: 4px 0 18px;
+}
+
+.precon-workspace-shell {
+    display: grid;
+    gap: 10px;
+    min-height: 0;
+    padding: 4px 12px 20px;
+    width: 100%;
+}
+
+.precon-breadcrumb,
+.precon-mode-deck,
+.precon-workspace-grid,
+.precon-results-surface > .workspace-section-heading {
+    margin-inline: auto;
+    max-width: 1480px;
+    width: 100%;
+}
+
+.precon-breadcrumb {
+    align-items: center;
+    color: var(--brand-text-muted);
+    display: flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-weight: 740;
+    gap: 7px;
+    letter-spacing: 0.055em;
+    line-height: 1.2;
+    min-height: 24px;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.precon-breadcrumb a {
+    color: rgba(201, 212, 229, 0.66);
+    text-decoration: none;
+    transition:
+        color 0.14s ease,
+        text-shadow 0.14s ease;
+}
+
+.precon-breadcrumb a:hover,
+.precon-breadcrumb a:focus-visible {
+    color: var(--brand-cyan);
+    outline: none;
+    text-shadow: 0 0 10px rgba(22, 191, 216, 0.18);
+}
+
+.precon-breadcrumb .icon {
+    color: rgba(105, 128, 157, 0.56);
+    font-size: 17px;
+}
+
+.precon-breadcrumb span[aria-current="page"] {
+    color: rgba(232, 239, 250, 0.82);
+}
+
+/* ==========================================================================
+   ESTIMATOR COMMAND DESK
+   ========================================================================== */
+
+.precon-mode-deck,
+.precon-command-desk {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: grid;
+    gap: 16px;
+    margin-bottom: 4px;
+    min-height: 0;
+    padding: 8px 10px 6px;
+}
+
+.precon-command-desk {
+    grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.precon-mode-heading,
+.precon-command-heading {
+    align-items: end;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.precon-mode-heading .workspace-kicker {
+    margin: 0 0 5px;
+}
+
+.precon-mode-heading h2 {
+    color: var(--brand-text);
+    font-family: var(--font-heading, var(--font-ui, inherit));
+    font-size: clamp(1.05rem, 1.6vw, 1.38rem);
+    font-weight: 720;
+    letter-spacing: 0.02em;
+    line-height: 1.12;
+    margin: 0;
+}
+
+/* ==========================================================================
+   DASHBOARD STRIP
+   ========================================================================== */
+
+.precon-dashboard-strip {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.precon-mini-widget {
+    align-items: center;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.020), rgba(255, 255, 255, 0.008)),
+        rgba(4, 9, 19, 0.42);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 14px;
+    color: inherit;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    min-height: 68px;
+    padding: 12px 13px;
+    position: relative;
+    text-decoration: none;
+}
+
+.precon-mini-widget::after {
+    border-radius: inherit;
+    content: "";
+    inset: -1px;
+    opacity: 0.28;
+    pointer-events: none;
+    position: absolute;
+}
+
+.precon-mini-widget .icon {
+    align-items: center;
+    border-radius: 10px;
+    display: inline-flex;
+    font-size: 19px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.precon-mini-widget strong {
+    color: rgba(242, 247, 255, 0.94);
+    display: block;
+    font-size: 0.80rem;
+    font-weight: 830;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.precon-mini-widget span:not(.icon) {
+    color: rgba(201, 212, 229, 0.70);
+    display: block;
+    font-size: 0.70rem;
+    font-weight: 650;
+    line-height: 1.28;
+}
+
+.precon-mini-widget-cyan {
+    border-color: rgba(105, 128, 157, 0.13);
+}
+
+.precon-mini-widget-cyan .icon {
+    background: rgba(22, 191, 216, 0.055);
+    color: rgba(140, 220, 232, 0.84);
+}
+
+.precon-mini-widget-blue {
+    border-color: rgba(105, 128, 157, 0.13);
+}
+
+.precon-mini-widget-blue .icon {
+    background: rgba(76, 124, 225, 0.065);
+    color: rgba(158, 184, 255, 0.84);
+}
+
+.precon-mini-widget-green {
+    border-color: rgba(105, 128, 157, 0.13);
+}
+
+.precon-mini-widget-green .icon {
+    background: rgba(48, 214, 150, 0.052);
+    color: rgba(126, 239, 194, 0.80);
+}
+
+.precon-mini-widget-active {
+    background:
+        linear-gradient(180deg, rgba(22, 191, 216, 0.050), rgba(255, 255, 255, 0.010)),
+        rgba(4, 10, 22, 0.50);
+    border-color: rgba(22, 191, 216, 0.22);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.030),
+        0 12px 24px rgba(0, 0, 0, 0.10);
+}
+
+.precon-mini-widget-active .icon {
+    background: rgba(22, 191, 216, 0.080);
+    color: rgba(140, 220, 232, 0.92);
+}
+
+/* ==========================================================================
+   FILE-FIRST COMMAND WORKSPACE
+   ========================================================================== */
+
+.precon-file-command-layout {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(210px, 240px) minmax(430px, 1fr) minmax(300px, 340px);
+    min-height: clamp(470px, calc(100vh - 320px), 680px);
+    min-width: 0;
+}
+
+.precon-file-library,
+.precon-file-console,
+.precon-context-panel {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.020), rgba(255, 255, 255, 0.008)),
+        rgba(4, 9, 19, 0.44);
+    border: 1px solid rgba(105, 128, 157, 0.13);
+    border-radius: 16px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.026),
+        0 14px 30px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.precon-file-library,
+.precon-context-panel {
+    align-content: start;
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+}
+
+.precon-panel-heading {
+    min-width: 0;
+}
+
+.precon-panel-heading .workspace-kicker {
+    margin: 0 0 6px;
+}
+
+.precon-panel-heading strong {
+    color: rgba(244, 248, 255, 0.96);
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 820;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.precon-library-list {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.precon-library-item {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.014);
+    border: 1px solid rgba(105, 128, 157, 0.10);
+    border-radius: 12px;
+    color: rgba(201, 212, 229, 0.72);
+    display: grid;
+    gap: 9px;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    min-height: 42px;
+    padding: 8px 9px;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+}
+
+.precon-library-item:hover,
+.precon-library-item:focus-visible {
+    background: rgba(255, 255, 255, 0.024);
+    border-color: rgba(148, 163, 184, 0.18);
+    color: rgba(244, 248, 255, 0.92);
+    outline: none;
+}
+
+.precon-library-item.is-active {
+    background: rgba(22, 191, 216, 0.048);
+    border-color: rgba(22, 191, 216, 0.20);
+    color: rgba(244, 248, 255, 0.94);
+}
+
+.precon-library-item .icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.052);
+    border-radius: 9px;
+    color: rgba(140, 220, 232, 0.86);
+    display: inline-flex;
+    font-size: 18px;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.precon-library-item span:not(.icon) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.precon-library-item em {
+    color: rgba(201, 212, 229, 0.46);
+    font-size: 0.68rem;
+    font-style: normal;
+    font-weight: 800;
+}
+
+.precon-file-console {
+    display: grid;
+    gap: 12px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    padding: 16px;
+}
+
+.precon-file-console-head {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.precon-file-console-head .workspace-kicker {
+    margin: 0 0 6px;
+}
+
+.precon-file-console-head strong {
+    color: rgba(244, 248, 255, 0.98);
+    display: block;
+    font-size: 1.02rem;
+    font-weight: 830;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+}
+
+.precon-file-console-actions,
+.precon-selection-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.precon-console-button,
+.precon-action-button {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.020);
+    border: 1px solid rgba(105, 128, 157, 0.14);
+    border-radius: 999px;
+    color: rgba(201, 212, 229, 0.72);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-weight: 780;
+    gap: 6px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 32px;
+    padding: 0 12px;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease;
+    white-space: nowrap;
+}
+
+.precon-console-button .icon {
+    font-size: 17px;
+}
+
+.precon-console-button:hover,
+.precon-console-button:focus-visible,
+.precon-action-button:hover:not(:disabled),
+.precon-action-button:focus-visible:not(:disabled) {
+    background: rgba(22, 191, 216, 0.055);
+    border-color: rgba(22, 191, 216, 0.24);
+    color: rgba(244, 248, 255, 0.94);
+    outline: none;
+}
+
+.precon-action-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.precon-action-button-primary {
+    background: rgba(22, 191, 216, 0.085);
+    border-color: rgba(22, 191, 216, 0.26);
+    color: rgba(244, 248, 255, 0.92);
+}
+
+.precon-file-search {
+    align-items: center;
+    background: rgba(3, 7, 17, 0.52);
+    border: 1px solid rgba(105, 128, 157, 0.13);
+    border-radius: 13px;
+    display: grid;
+    gap: 9px;
+    grid-template-columns: 22px minmax(0, 1fr);
+    min-height: 42px;
+    padding: 0 12px;
+}
+
+.precon-file-search .icon {
+    color: rgba(140, 220, 232, 0.72);
+    font-size: 19px;
+}
+
+.precon-file-search input {
+    background: transparent;
+    border: 0;
+    color: rgba(244, 248, 255, 0.92);
+    font-family: var(--font-ui, inherit);
+    font-size: 0.82rem;
+    font-weight: 560;
+    min-width: 0;
+    outline: none;
+}
+
+.precon-file-search input::placeholder {
+    color: rgba(201, 212, 229, 0.46);
+}
+
+.precon-selection-bar {
+    align-items: center;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.006)),
+        rgba(3, 7, 17, 0.42);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 13px;
+    color: rgba(201, 212, 229, 0.68);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 8px 10px 8px 13px;
+}
+
+.precon-selection-bar > span {
+    font-size: 0.76rem;
+    font-weight: 760;
+}
+
+.precon-file-table-shell {
+    background: rgba(3, 7, 17, 0.36);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 15px;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 0;
+    overflow: hidden;
+}
+
+.precon-file-table-head {
+    background: rgba(255, 255, 255, 0.018);
+    border-bottom: 1px solid rgba(105, 128, 157, 0.11);
+    color: rgba(201, 212, 229, 0.54);
+    display: grid;
+    font-size: 0.64rem;
+    font-weight: 860;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) 92px 88px 96px;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    padding: 12px 14px;
+    text-transform: uppercase;
+}
+
+.precon-empty-file-state {
+    align-content: center;
+    display: grid;
+    justify-items: center;
+    min-height: 260px;
+    padding: 38px 26px;
+    text-align: center;
+}
+
+.precon-empty-file-state .icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.060);
+    border: 1px solid rgba(22, 191, 216, 0.16);
+    border-radius: 16px;
+    color: rgba(140, 220, 232, 0.88);
+    display: inline-flex;
+    font-size: 30px;
+    height: 54px;
+    justify-content: center;
+    margin-bottom: 16px;
+    width: 54px;
+}
+
+.precon-empty-file-state strong {
+    color: rgba(244, 248, 255, 0.96);
+    display: block;
+    font-size: 1rem;
+    font-weight: 820;
+    line-height: 1.25;
+    margin-bottom: 8px;
+}
+
+.precon-empty-file-state span:not(.icon) {
+    color: rgba(201, 212, 229, 0.68);
+    display: block;
+    font-size: 0.80rem;
+    line-height: 1.48;
+    max-width: 520px;
+}
+
+.precon-empty-file-state a {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.085);
+    border: 1px solid rgba(22, 191, 216, 0.24);
+    border-radius: 999px;
+    color: rgba(244, 248, 255, 0.92);
+    display: inline-flex;
+    font-size: 0.74rem;
+    font-weight: 820;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 34px;
+    padding: 0 15px;
+    text-decoration: none;
+}
+
+.precon-empty-file-state a:hover,
+.precon-empty-file-state a:focus-visible {
+    background: rgba(22, 191, 216, 0.12);
+    border-color: rgba(22, 191, 216, 0.34);
+    outline: none;
+}
+
+.precon-context-card {
+    background:
+        linear-gradient(180deg, rgba(22, 191, 216, 0.044), rgba(255, 255, 255, 0.008)),
+        rgba(3, 7, 17, 0.42);
+    border: 1px solid rgba(22, 191, 216, 0.15);
+    border-radius: 14px;
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+}
+
+.precon-context-card .icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.075);
+    border-radius: 11px;
+    color: rgba(140, 220, 232, 0.90);
+    display: inline-flex;
+    font-size: 22px;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+}
+
+.precon-context-card p {
+    color: rgba(201, 212, 229, 0.74);
+    font-size: 0.80rem;
+    line-height: 1.48;
+    margin: 0;
+}
+
+.precon-context-actions {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.precon-context-actions .workspace-kicker {
+    margin: 2px 0 2px;
+}
+
+.precon-context-action {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.016);
+    border: 1px solid rgba(105, 128, 157, 0.11);
+    border-radius: 12px;
+    color: rgba(201, 212, 229, 0.74);
+    cursor: pointer;
+    display: grid;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.76rem;
+    font-weight: 760;
+    gap: 9px;
+    grid-template-columns: 28px minmax(0, 1fr);
+    min-height: 42px;
+    padding: 8px 9px;
+    text-align: left;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease;
+}
+
+.precon-context-action .icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.050);
+    border-radius: 9px;
+    color: rgba(140, 220, 232, 0.82);
+    display: inline-flex;
+    font-size: 18px;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.precon-context-action:hover:not(:disabled),
+.precon-context-action:focus-visible:not(:disabled) {
+    background: rgba(22, 191, 216, 0.050);
+    border-color: rgba(22, 191, 216, 0.20);
+    color: rgba(244, 248, 255, 0.94);
+    outline: none;
+}
+
+.precon-context-action:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+/* ==========================================================================
+   WORK WIDGETS
+   ========================================================================== */
+
+.precon-widget-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.precon-work-widget {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.020), rgba(255, 255, 255, 0.008)),
+        rgba(4, 9, 19, 0.40);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 16px;
+    color: inherit;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) 40px;
+    min-height: 182px;
+    overflow: hidden;
+    padding: 16px;
+    position: relative;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        transform 0.14s ease;
+}
+
+.precon-work-widget:hover {
+    border-color: rgba(148, 163, 184, 0.22);
+    transform: translateY(-1px);
+}
+
+.precon-work-widget::before {
+    content: "";
+    height: 2px;
+    inset: 0 0 auto;
+    opacity: 0.42;
+    position: absolute;
+}
+
+.precon-widget-head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    min-width: 0;
+}
+
+.precon-widget-head .icon {
+    align-items: center;
+    border-radius: 10px;
+    display: inline-flex;
+    font-size: 20px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.precon-widget-head em {
+    background: rgba(255, 255, 255, 0.022);
+    border: 1px solid rgba(105, 128, 157, 0.11);
+    border-radius: 999px;
+    color: rgba(201, 212, 229, 0.58);
+    font-size: 0.59rem;
+    font-style: normal;
+    font-weight: 830;
+    letter-spacing: 0.055em;
+    line-height: 1;
+    padding: 5px 7px;
+    text-transform: uppercase;
+}
+
+.precon-widget-body {
+    min-width: 0;
+}
+
+.precon-widget-body .workspace-kicker {
+    margin: 0 0 7px;
+}
+
+.precon-widget-body strong {
+    color: rgba(244, 248, 255, 0.97);
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 820;
+    line-height: 1.22;
+    margin-bottom: 7px;
+}
+
+.precon-widget-body span {
+    color: rgba(201, 212, 229, 0.76);
+    display: block;
+    font-size: 0.76rem;
+    line-height: 1.46;
+}
+
+.precon-widget-visual {
+    align-items: end;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-start;
+    min-height: 38px;
+    opacity: 0.76;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   WIDGET COLOR IDENTITIES
+   ========================================================================== */
+
+.widget-plan-room::before {
+    background: linear-gradient(90deg, rgba(76, 124, 225, 0.46), transparent);
+}
+
+.widget-plan-room .icon {
+    background: rgba(76, 124, 225, 0.065);
+    color: rgba(158, 184, 255, 0.84);
+}
+
+.widget-estimate::before {
+    background: linear-gradient(90deg, rgba(231, 174, 92, 0.48), transparent);
+}
+
+.widget-estimate .icon {
+    background: rgba(231, 174, 92, 0.065);
+    color: rgba(246, 199, 126, 0.84);
+}
+
+.widget-coverage::before {
+    background: linear-gradient(90deg, rgba(48, 214, 150, 0.44), transparent);
+}
+
+.widget-coverage .icon {
+    background: rgba(48, 214, 150, 0.052);
+    color: rgba(126, 239, 194, 0.80);
+}
+
+.widget-review::before {
+    background: linear-gradient(90deg, rgba(22, 191, 216, 0.64), transparent);
+}
+
+.widget-review .icon {
+    background: rgba(22, 191, 216, 0.080);
+    color: rgba(140, 220, 232, 0.92);
+}
+
+.widget-questions::before {
+    background: linear-gradient(90deg, rgba(126, 142, 255, 0.44), transparent);
+}
+
+.widget-questions .icon {
+    background: rgba(126, 142, 255, 0.065);
+    color: rgba(178, 188, 255, 0.82);
+}
+
+.widget-risk::before {
+    background: linear-gradient(90deg, rgba(232, 129, 82, 0.44), transparent);
+}
+
+.widget-risk .icon {
+    background: rgba(232, 129, 82, 0.065);
+    color: rgba(247, 170, 126, 0.82);
+}
+
+.widget-handoff::before {
+    background: linear-gradient(90deg, rgba(117, 174, 214, 0.44), transparent);
+}
+
+.widget-handoff .icon {
+    background: rgba(117, 174, 214, 0.065);
+    color: rgba(169, 215, 246, 0.82);
+}
+
+.precon-work-widget.is-active {
+    background:
+        linear-gradient(180deg, rgba(22, 191, 216, 0.060), rgba(255, 255, 255, 0.012)),
+        rgba(4, 12, 26, 0.58);
+    border-color: rgba(22, 191, 216, 0.30);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.036),
+        0 0 0 1px rgba(22, 191, 216, 0.024),
+        0 16px 28px rgba(0, 0, 0, 0.14);
+}
+
+.precon-work-widget.is-active .precon-widget-head em {
+    background: rgba(22, 191, 216, 0.085);
+    border-color: rgba(22, 191, 216, 0.18);
+    color: rgba(244, 248, 255, 0.90);
+}
+
+.precon-work-widget.is-active .precon-widget-body strong {
+    color: #ffffff;
+}
+
+.precon-work-widget.is-active .precon-widget-body span {
+    color: rgba(213, 225, 242, 0.82);
+}
+
+.precon-work-widget.is-building {
+    opacity: 0.86;
+}
+
+/* ==========================================================================
+   WIDGET VISUALS
+   ========================================================================== */
+
+.precon-doc-stack span {
+    background: rgba(158, 184, 255, 0.12);
+    border: 1px solid rgba(158, 184, 255, 0.18);
+    border-radius: 4px;
+    height: 23px;
+    width: 44px;
+}
+
+.precon-doc-stack span:nth-child(2) {
+    height: 29px;
+    margin-left: -28px;
+}
+
+.precon-doc-stack span:nth-child(3) {
+    height: 35px;
+    margin-left: -28px;
+}
+
+.precon-budget-bars {
+    align-items: end;
+    height: 38px;
+}
+
+.precon-budget-bars span {
+    background: linear-gradient(180deg, rgba(246, 199, 126, 0.50), rgba(231, 174, 92, 0.12));
+    border-radius: 999px 999px 4px 4px;
+    height: var(--bar-height, 52%);
+    width: 10px;
+}
+
+.precon-coverage-map {
+    align-items: center;
+    gap: 8px;
+}
+
+.precon-coverage-map span {
+    background: rgba(126, 239, 194, 0.46);
+    border-radius: 999px;
+    box-shadow: none;
+    height: 8px;
+    width: 8px;
+}
+
+.precon-coverage-map span:nth-child(even) {
+    opacity: 0.48;
+}
+
+.precon-review-pulse {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.precon-review-pulse span {
+    background: linear-gradient(90deg, rgba(22, 191, 216, 0.42), rgba(22, 191, 216, 0.12));
+    border: 1px solid rgba(22, 191, 216, 0.24);
+    border-radius: 999px;
+    height: 7px;
+    width: 48px;
+}
+
+.precon-queue-lines {
+    align-items: center;
+    display: grid;
+    gap: 5px;
+}
+
+.precon-queue-lines span {
+    background: rgba(178, 188, 255, 0.16);
+    border-radius: 999px;
+    height: 5px;
+    width: 74px;
+}
+
+.precon-queue-lines span:nth-child(2) {
+    width: 52px;
+}
+
+.precon-queue-lines span:nth-child(3) {
+    width: 64px;
+}
+
+.precon-risk-meter {
+    align-items: center;
+}
+
+.precon-risk-meter span {
+    background:
+        conic-gradient(
+            from 250deg,
+            rgba(232, 129, 82, 0.50) 0 38%,
+            rgba(232, 129, 82, 0.11) 38% 100%
+        );
+    border-radius: 999px;
+    height: 28px;
+    position: relative;
+    width: 28px;
+}
+
+.precon-risk-meter span::after {
+    background: rgba(8, 13, 24, 0.95);
+    border-radius: 999px;
+    content: "";
+    height: 16px;
+    inset: 6px;
+    position: absolute;
+    width: 16px;
+}
+
+.precon-handoff-lane {
+    align-items: center;
+}
+
+.precon-handoff-lane span {
+    background: rgba(169, 215, 246, 0.16);
+    border-radius: 999px;
+    height: 7px;
+    width: 62px;
+}
+
+.precon-handoff-lane span:nth-child(2) {
+    background: rgba(169, 215, 246, 0.38);
+    width: 32px;
+}
+
+/* ==========================================================================
+   WORKSPACE GRID
+   ========================================================================== */
+
+.precon-workspace-grid {
+    align-items: stretch;
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 380px);
+}
+
+.precon-guidance-panel {
+    border-left: 1px solid rgba(105, 128, 157, 0.16);
+    padding-left: 22px;
+}
+
+.precon-guidance-panel .command-guide-list {
+    margin-top: 18px;
+}
+
+.precon-guidance-panel .command-guide-item .icon,
+.precon-guidance-panel .command-guide-item strong {
+    color: rgba(140, 220, 232, 0.92);
+}
+
+.precon-assistant-rail {
+    align-content: stretch;
+    display: grid;
+    min-height: clamp(560px, calc(100vh - 250px), 780px);
+    min-width: 0;
+}
+
+.precon-assistant-slot {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(22, 191, 216, 0.055), transparent 48%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.008)),
+        rgba(8, 13, 24, 0.64);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: var(--radius-card);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.025),
+        0 18px 42px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    display: flex;
+    min-height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.precon-assistant-slot .solomon-assistant-panel {
+    background: transparent !important;
+    border: 0;
+    border-radius: inherit;
+    box-shadow: none;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    height: 100%;
+    max-height: none;
+    max-width: none;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+    z-index: auto;
+}
+
+.precon-assistant-slot .solomon-assistant-panel:has(.solomon-guide-thread:not(:empty)) {
+    height: 100%;
+    max-height: 100%;
+}
+
+.precon-assistant-slot .solomon-guide-thread,
+.precon-assistant-slot .solomon-guide-input,
+.precon-assistant-slot .solomon-guide-security {
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: none;
+    width: 100%;
+}
+
+.command-review-intake {
+    display: grid;
+    gap: 18px;
+}
+
+/* ==========================================================================
+   CLEAN REVIEW INTAKE CARD
+   ========================================================================== */
+
+.command-review-form,
+.precon-review-card {
+    background: rgba(8, 13, 24, 0.88);
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding: 26px 34px 24px;
+}
+
+.command-review-form::before,
+.command-review-form::after {
+    content: none;
+}
+
+.precon-intake-mode {
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: 1px;
+}
+
+.precon-intake-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.precon-intake-tab {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-control);
+    color: var(--brand-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.82rem;
+    font-weight: 750;
+    justify-content: center;
+    letter-spacing: 0.02em;
+    min-height: 38px;
+    padding: 0 18px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.precon-intake-tab:hover,
+.precon-intake-tab:focus-visible {
+    background: rgba(22, 191, 216, 0.035);
+    border-color: rgba(22, 191, 216, 0.34);
+    color: var(--brand-text);
+}
+
+#precon-mode-upload:checked ~ .precon-intake-tabs label[for="precon-mode-upload"],
+#precon-mode-paste:checked ~ .precon-intake-tabs label[for="precon-mode-paste"] {
+    background: rgba(22, 191, 216, 0.052);
+    border-color: rgba(22, 191, 216, 0.38);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.035),
+        0 0 0 1px rgba(22, 191, 216, 0.025);
+    color: rgba(232, 239, 250, 0.92);
+    cursor: default;
+}
+
+.precon-intake-panels {
+    display: grid;
+}
+
+.precon-intake-panel {
+    min-height: 178px;
+    min-width: 0;
+}
+
+#precon-mode-upload:checked ~ .precon-intake-panels .precon-paste-panel,
+#precon-mode-paste:checked ~ .precon-intake-panels .precon-upload-panel {
+    display: none;
+}
+
+/* ==========================================================================
+   UPLOAD SURFACE
+   ========================================================================== */
+
+.precon-dropzone-button {
+    align-items: center;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(22, 191, 216, 0.055),
+            rgba(22, 191, 216, 0.025) 54%,
+            rgba(3, 7, 17, 0.18) 100%
+        );
+    border: 1px solid rgba(22, 191, 216, 0.62);
+    border-radius: var(--radius-card);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        inset 0 0 24px rgba(22, 191, 216, 0.025),
+        0 0 0 1px rgba(22, 191, 216, 0.075),
+        0 0 22px rgba(22, 191, 216, 0.075);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    height: 178px;
+    min-height: 178px;
+    padding: 24px;
+    text-align: center;
+    width: 100%;
+}
+
+.precon-dropzone-button:hover,
+.precon-dropzone-button:focus-visible,
+.command-review-form.is-drag-over .precon-dropzone-button,
+.command-review-form[data-drag-state="over"] .precon-dropzone-button {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(22, 191, 216, 0.085),
+            rgba(22, 191, 216, 0.04) 54%,
+            rgba(3, 7, 17, 0.2) 100%
+        );
+    border-color: rgba(22, 191, 216, 0.82);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        inset 0 0 30px rgba(22, 191, 216, 0.04),
+        0 0 0 1px rgba(22, 191, 216, 0.14),
+        0 0 30px rgba(22, 191, 216, 0.14);
+    outline: none;
+}
+
+.precon-dropzone-icon {
+    color: var(--brand-cyan);
+    font-size: 28px;
+    margin-bottom: 4px;
+}
+
+.precon-dropzone-button strong {
+    color: var(--brand-text);
+    font-size: 1rem;
+    font-weight: 760;
+    line-height: 1.3;
+}
+
+.precon-dropzone-button span:not(.icon):not(.attachment-badge) {
+    color: var(--brand-text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+/* ==========================================================================
+   PASTE SURFACE
+   ========================================================================== */
+
+.precon-review-textarea {
+    background: rgba(3, 7, 17, 0.64);
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    box-sizing: border-box;
+    color: var(--brand-text);
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 400;
+    height: 178px;
+    line-height: 1.62;
+    min-height: 178px;
+    overflow: auto;
+    padding: 20px 22px;
+    text-align: left;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease;
+    white-space: pre-wrap;
+    width: 100%;
+}
+
+.precon-review-textarea:focus {
+    background: rgba(3, 7, 17, 0.78);
+    border-color: rgba(22, 191, 216, 0.44);
+}
+
+.precon-review-textarea::placeholder {
+    color: rgba(201, 212, 229, 0.46);
+}
+
+/* ==========================================================================
+   ACTIONS
+   ========================================================================== */
+
+.precon-intake-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.precon-review-run-button {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.072),
+            rgba(255, 255, 255, 0.045)
+        );
+    border: 1px solid rgba(22, 191, 216, 0.22);
+    border-radius: var(--radius-control);
+    color: rgba(232, 239, 250, 0.72);
+    cursor: pointer;
+    display: inline-flex;
+    gap: 9px;
+    min-height: 40px;
+    padding: 0 28px;
+    width: auto;
+}
+
+.precon-review-run-button:hover:not(:disabled),
+.precon-review-run-button:focus-visible:not(:disabled) {
+    background: rgba(22, 191, 216, 0.075);
+    border-color: rgba(22, 191, 216, 0.44);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   RESULTS + ATTACHMENTS
+   ========================================================================== */
+
+.precon-results-surface {
+    border-top: 0;
+    padding: 8px 18px 0;
+    width: 100%;
+}
+
+.precon-results-surface:empty {
+    display: none;
+    padding: 0;
+}
+
+.workspace-attachments {
+    background: rgba(255, 255, 255, 0.012);
+    box-shadow: none;
+    margin-top: 12px;
+    padding: 12px;
+}
+
+.attachment-badge {
+    align-items: center;
+    background: var(--brand-cyan);
+    border-radius: 999px;
+    color: #02050d;
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 800;
+    height: 18px;
+    justify-content: center;
+    min-width: 18px;
+    padding: 0 5px;
+    position: absolute;
+    right: 14px;
+    top: 14px;
+}
+
+.file-list {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.file-list li {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(105, 128, 157, 0.14);
+    border-radius: var(--radius-control);
+    color: var(--cc-soft);
+    display: flex;
+    font-size: 0.82rem;
+    gap: 8px;
+    justify-content: space-between;
+    line-height: 1.35;
+    padding: 8px 10px;
+}
+
+.portal-filelist-blue li {
+    border-color: rgba(22, 191, 216, 0.18);
+}
+
+/* ==========================================================================
+   WORKSPACE EVENTS
+   ========================================================================== */
+
+.workspace-event-log {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.workspace-event {
+    background: rgba(255, 255, 255, 0.014);
+    border: 1px solid rgba(105, 128, 157, 0.14);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+}
+
+.workspace-event--user {
+    border-color: rgba(22, 191, 216, 0.26);
+}
+
+.workspace-event--error {
+    border-color: rgba(223, 100, 107, 0.34);
+}
+
+.workspace-event-header {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.workspace-event-time {
+    color: var(--brand-text-dim);
+    font-size: 0.78rem;
+}
+
+.workspace-event-body,
+.workspace-thinking-dots {
+    color: var(--cc-soft);
+}
+
+.workspace-event-body {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.workspace-event-body p {
+    margin: 0;
+}
+
+.workspace-event-body p + p {
+    margin-top: 10px;
+}
+
+/* ==========================================================================
+   THINKING / LOADING
+   ========================================================================== */
+
+.workspace-thinking-dots {
+    align-items: center;
+    color: var(--cc-soft);
+    display: inline-flex;
+    gap: 5px;
+    min-height: 10px;
+}
+
+.workspace-thinking-dots span,
+.workspace-thinking-dot {
+    animation: workspaceThinkingPulse 1s ease-in-out infinite;
+    background: rgba(22, 191, 216, 0.78);
+    border-radius: 999px;
+    display: inline-block;
+    height: 5px;
+    opacity: 0.38;
+    width: 5px;
+}
+
+.workspace-thinking-dots span:nth-child(2),
+.workspace-thinking-dot:nth-child(2) {
+    animation-delay: 0.16s;
+}
+
+.workspace-thinking-dots span:nth-child(3),
+.workspace-thinking-dot:nth-child(3) {
+    animation-delay: 0.32s;
+}
+
+@keyframes workspaceThinkingPulse {
+    0%,
+    80%,
+    100% {
+        opacity: 0.32;
+        transform: translateY(0);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(-2px);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1380px) {
+    .precon-file-command-layout {
+        grid-template-columns: minmax(200px, 230px) minmax(0, 1fr);
+    }
+
+    .precon-context-panel {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 1300px) {
+    .precon-dashboard-strip,
+    .precon-widget-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    .precon-file-command-layout,
+    .precon-workspace-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .precon-context-panel {
+        grid-column: auto;
+    }
+
+    .precon-guidance-panel {
+        border-left: 0;
+        border-top: 1px solid rgba(105, 128, 157, 0.16);
+        padding-left: 0;
+        padding-top: 20px;
+    }
+
+    .precon-assistant-rail {
+        min-height: 480px;
+    }
+
+    .precon-assistant-slot {
+        min-height: 480px;
+    }
+}
+
+@media (max-width: 900px) {
+    .precon-workspace-shell,
+    .precon-results-surface {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .precon-breadcrumb {
+        padding-inline: 0;
+    }
+
+    .precon-mode-deck {
+        padding: 16px;
+    }
+
+    .precon-dashboard-strip,
+    .precon-widget-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .precon-file-command-layout {
+        min-height: 0;
+    }
+
+    .precon-file-console-head,
+    .precon-selection-bar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .precon-file-console-actions,
+    .precon-selection-actions {
+        justify-content: flex-start;
+    }
+
+    .precon-file-table-head {
+        grid-template-columns: minmax(0, 1fr) 78px 74px;
+    }
+
+    .precon-file-table-head span:last-child {
+        display: none;
+    }
+
+    .precon-work-widget {
+        min-height: 156px;
+    }
+
+    .command-review-form,
+    .precon-review-card {
+        padding: 22px;
+    }
+
+    .precon-intake-panel,
+    .precon-dropzone-button,
+    .precon-review-textarea {
+        height: 168px;
+        min-height: 168px;
+    }
+
+    .precon-intake-tabs {
+        justify-content: flex-start;
+    }
+
+    .precon-intake-tab {
+        padding: 0 13px;
+    }
+}

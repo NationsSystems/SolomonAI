@@ -1,0 +1,322 @@
+<!-- -------------------------------------------------------------------
+     FILE: admin.html
+     DIRECTORY: SolomonV3/webui/templates/
+------------------------------------------------------------------- -->
+
+{% extends "portal_base.html" %}
+{% block title %}Admin Control Surface | Nations Systems{% endblock %}
+
+{% block content %}
+
+<section class="admin-console admin-console--control-surface"
+         aria-label="Nations Systems admin control surface">
+
+    <header class="admin-console-header">
+        <div class="admin-eyebrow">Nations Systems Admin</div>
+        <div class="admin-console-header-row">
+            <div>
+                <h1 class="admin-console-title">Admin Control Surface</h1>
+                <p class="admin-console-subtitle">
+                    Restricted product operations, access control, system readiness, and error visibility.
+                </p>
+            </div>
+
+            <div class="admin-console-status-card" aria-label="Administrative access status">
+                <span class="admin-console-status-icon icon" aria-hidden="true">admin_panel_settings</span>
+                <div>
+                    <span>Access</span>
+                    <strong>{{ dashboard.product_status.admin_access }}</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="admin-command-strip" aria-label="Admin system status">
+        <article class="admin-command-widget admin-command-widget-cyan">
+            <span class="icon" aria-hidden="true">dns</span>
+            <div>
+                <strong>Application</strong>
+                <span>{{ dashboard.product_status.application }}</span>
+            </div>
+        </article>
+
+        <article class="admin-command-widget admin-command-widget-blue">
+            <span class="icon" aria-hidden="true">database</span>
+            <div>
+                <strong>Database</strong>
+                <span>{{ dashboard.product_status.database }}</span>
+            </div>
+        </article>
+
+        <article class="admin-command-widget admin-command-widget-green">
+            <span class="icon" aria-hidden="true">verified_user</span>
+            <div>
+                <strong>Authentication</strong>
+                <span>{{ dashboard.product_status.authentication }}</span>
+            </div>
+        </article>
+
+        <article class="admin-command-widget admin-command-widget-active">
+            <span class="icon" aria-hidden="true">report</span>
+            <div>
+                <strong>Recent Errors</strong>
+                <span>{{ dashboard.errors.recent_count }}</span>
+            </div>
+        </article>
+    </section>
+
+    <div class="admin-dashboard-grid admin-dashboard-grid--control-plane">
+
+        <main class="admin-stack admin-stack--primary">
+
+            <section class="admin-panel admin-panel--operations">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Operations</p>
+                        <h2 class="admin-panel-title">Product Status</h2>
+                        <p class="admin-panel-description">
+                            Live readiness checks for the Nations Systems application shell and operational dependencies.
+                        </p>
+                    </div>
+                    <span class="admin-panel-tag">System</span>
+                </div>
+
+                <div class="admin-status-list">
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Application</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.product_status.application }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Flask application shell is reachable.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Database</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.product_status.database }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Database connection check from the admin dashboard.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Authentication</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.product_status.authentication }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Login, session, and role-aware access are active.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Admin Access</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.product_status.admin_access }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Current account has administrative access.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-panel admin-panel--workflow">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Workflow Readiness</p>
+                        <h2 class="admin-panel-title">Pre-Award Review Workflow</h2>
+                        <p class="admin-panel-description">
+                            Readiness of the first active review workflow: upload or paste documents, analyze, render findings, and export.
+                        </p>
+                    </div>
+                    <span class="admin-panel-tag">Product</span>
+                </div>
+
+                <div class="admin-status-list">
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Analysis Adapter</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.workflow_status.bei_analysis }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Workflow entry path is available.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">PDF Export</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.workflow_status.pdf_export }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Export route is available for generated review outputs.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Input Path</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.workflow_status.input }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Upload and pasted-text intake remain available.
+                        </div>
+                    </div>
+
+                    <div class="admin-status-row">
+                        <div class="admin-status-label">Renderer</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.workflow_status.report_renderer }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Structured output can render to the workspace surface.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-panel admin-panel--users">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Access Management</p>
+                        <h2 class="admin-panel-title">Users</h2>
+                        <p class="admin-panel-description">
+                            Account status summary for Nations Systems access management.
+                        </p>
+                    </div>
+                    <a class="admin-action" href="/admin/users">Manage Users</a>
+                </div>
+
+                <div class="admin-metric-strip">
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Total Users</div>
+                        <div class="admin-metric-value">{{ dashboard.users.total }}</div>
+                    </div>
+
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Active Users</div>
+                        <div class="admin-metric-value">{{ dashboard.users.active }}</div>
+                    </div>
+
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Admin Users</div>
+                        <div class="admin-metric-value">{{ dashboard.users.admins }}</div>
+                    </div>
+
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Password Changes Required</div>
+                        <div class="admin-metric-value">{{ dashboard.users.password_change_required }}</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <aside class="admin-stack admin-stack--secondary">
+
+            <section class="admin-panel admin-panel--errors">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Error Visibility</p>
+                        <h2 class="admin-panel-title">Backend Errors</h2>
+                        <p class="admin-panel-description">
+                            Recent backend error visibility for product operations.
+                        </p>
+                    </div>
+                    <a class="admin-action" href="/admin/errors">View Errors</a>
+                </div>
+
+                <div class="admin-grid admin-grid-1">
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Recent Errors</div>
+                        <div class="admin-metric-value">{{ dashboard.errors.recent_count }}</div>
+                    </div>
+
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Last Error</div>
+                        <div class="admin-metric-value admin-metric-value-sm">
+                            {{ dashboard.errors.last_error_at or "—" }}
+                        </div>
+                    </div>
+
+                    <div class="admin-metric">
+                        <div class="admin-metric-label">Most Recent Type</div>
+                        <div class="admin-metric-value admin-metric-value-sm">
+                            {{ dashboard.errors.last_error_type or "—" }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-panel admin-panel--capabilities">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Capabilities</p>
+                        <h2 class="admin-panel-title">Product Capabilities</h2>
+                        <p class="admin-panel-description">
+                            Operational status of core review capabilities.
+                        </p>
+                    </div>
+                    <span class="admin-panel-tag">System</span>
+                </div>
+
+                <div class="admin-status-list">
+                    <div class="admin-status-row admin-status-row--stacked">
+                        <div class="admin-status-label">Saved Review History</div>
+                        <div class="admin-status-value">
+                            <span class="admin-pill admin-pill-ready">
+                                {{ dashboard.features.review_history }}
+                            </span>
+                        </div>
+                        <div class="admin-status-note">
+                            Completed review outputs can be preserved and reopened as decision records.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-panel admin-panel--quick-actions">
+                <div class="admin-panel-header">
+                    <div class="admin-panel-title-group">
+                        <p class="admin-panel-kicker">Control Actions</p>
+                        <h2 class="admin-panel-title">Quick Actions</h2>
+                        <p class="admin-panel-description">
+                            Common administrative actions for the review product.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="admin-action-row">
+                    <a href="/admin/users" class="admin-action admin-action-primary">Manage Users</a>
+                    <a href="/admin/errors" class="admin-action">View Errors</a>
+                    <a href="/" class="admin-action">Open Workspace</a>
+                </div>
+            </section>
+
+        </aside>
+
+    </div>
+
+</section>
+
+{% endblock %}

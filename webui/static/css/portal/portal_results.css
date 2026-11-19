@@ -1,0 +1,615 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_results.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   LEGACY BEI RESULT COMPATIBILITY
+   ========================================================================== */
+
+.bei-results {
+    width: 100%;
+    max-width: 1040px;
+    margin: 50px auto 0;
+}
+
+.bei-results-card {
+    padding: 24px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    background: rgba(8, 13, 24, 0.88);
+    box-shadow: var(--shadow-card);
+    color: var(--brand-text-soft);
+    text-align: left;
+}
+
+.bei-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--brand-border-soft);
+}
+
+.bei-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.bei-actions button {
+    min-height: 32px;
+    margin-left: 0;
+    padding: 0 11px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-control);
+    color: var(--brand-text-soft);
+    background: rgba(255, 255, 255, 0.024);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+}
+
+.bei-actions button:hover {
+    color: var(--brand-text);
+    border-color: rgba(22, 191, 216, 0.42);
+    background: rgba(22, 191, 216, 0.045);
+}
+
+.bei-actions button:focus-visible {
+    outline: 1px solid var(--brand-cyan);
+    outline-offset: 3px;
+}
+
+.bei-results-title {
+    margin: 0 0 16px;
+    color: var(--brand-text);
+    font-size: 18px;
+    font-weight: 760;
+    line-height: 1.25;
+}
+
+.bei-results-section {
+    margin-bottom: 14px;
+    color: var(--brand-text-soft);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.bei-results-section strong {
+    color: var(--brand-text);
+    font-weight: 760;
+}
+
+.bei-results-risk-high {
+    color: var(--danger);
+    font-weight: 760;
+}
+
+.bei-results-risk-medium {
+    color: var(--warning);
+    font-weight: 760;
+}
+
+.bei-results-risk-low {
+    color: var(--success);
+    font-weight: 760;
+}
+
+.bei-severity-high {
+    color: #ff7777;
+    font-weight: 760;
+}
+
+.bei-severity-medium {
+    color: #f2b45b;
+    font-weight: 760;
+}
+
+.bei-severity-low {
+    color: #42d18d;
+    font-weight: 760;
+}
+
+.bei-results-list {
+    margin-top: 8px;
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.bei-results-list li {
+    margin-bottom: 6px;
+    color: var(--brand-text-muted);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   PRECONSTRUCTION WORKSPACE VIEW CONTRACT
+   ========================================================================== */
+
+.precon-live-workspace {
+    width: 100%;
+}
+
+.precon-workspace-view {
+    width: 100%;
+}
+
+.precon-workspace-view[hidden] {
+    display: none !important;
+}
+
+.precon-live-workspace[data-precon-view="processing"],
+.precon-live-workspace[data-precon-view="result"] {
+    min-height: 420px;
+}
+
+/* ==========================================================================
+   PRECONSTRUCTION PROCESSING VIEW
+   ========================================================================== */
+
+.precon-processing-view {
+    padding: 8px 0 4px;
+}
+
+.precon-processing-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+    padding: 24px 18px;
+}
+
+.precon-processing-card {
+    position: relative;
+    width: min(100%, 680px);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 42px 46px;
+    border: 1px solid rgba(22, 191, 216, 0.16);
+    border-radius: calc(var(--radius-card) + 4px);
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(22, 191, 216, 0.11),
+            rgba(22, 191, 216, 0.022) 38%,
+            rgba(7, 12, 24, 0) 70%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(10, 16, 32, 0.96),
+            rgba(5, 9, 20, 0.94)
+        );
+    box-shadow:
+        0 24px 90px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    color: var(--brand-text-soft);
+    overflow: hidden;
+    text-align: center;
+}
+
+.precon-processing-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(22, 191, 216, 0.045) 44%,
+            rgba(22, 191, 216, 0.09) 50%,
+            rgba(22, 191, 216, 0.045) 56%,
+            transparent 100%
+        );
+    opacity: 0.42;
+    transform: translateX(-72%);
+    animation: precon-processing-glass-sweep 3.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.precon-processing-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.precon-processing-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.precon-processing-orb {
+    width: 86px;
+    height: 86px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(22, 191, 216, 0.28);
+    border-radius: 999px;
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            rgba(22, 191, 216, 0.2),
+            rgba(22, 191, 216, 0.06) 46%,
+            rgba(5, 9, 20, 0.94) 100%
+        );
+    box-shadow:
+        0 0 32px rgba(22, 191, 216, 0.11),
+        0 0 0 8px rgba(22, 191, 216, 0.025);
+}
+
+.precon-processing-logo {
+    width: 44px;
+    height: 44px;
+    display: block;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 0 10px rgba(22, 191, 216, 0.38))
+        drop-shadow(0 0 24px rgba(22, 191, 216, 0.16));
+}
+
+.precon-processing-symbol {
+    color: var(--brand-cyan);
+    font-size: 34px;
+    line-height: 1;
+    text-shadow: 0 0 18px rgba(22, 191, 216, 0.38);
+}
+
+.precon-processing-copy {
+    max-width: 560px;
+}
+
+.precon-processing-eyebrow {
+    margin: 0 0 10px;
+    color: var(--brand-cyan);
+    font-size: 11px;
+    font-weight: 780;
+    letter-spacing: 0.18em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.precon-processing-copy h2 {
+    margin: 0;
+    color: var(--brand-text);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 760;
+    line-height: 1.18;
+}
+
+.precon-processing-copy p:last-child {
+    max-width: 520px;
+    margin: 13px auto 0;
+    color: var(--brand-text-muted);
+    font-size: 14px;
+    line-height: 1.62;
+}
+
+.precon-processing-sequence {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.precon-processing-sequence span {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border: 1px solid rgba(22, 191, 216, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.024);
+    color: var(--brand-text-muted);
+    font-size: 11px;
+    font-weight: 740;
+    letter-spacing: 0.035em;
+    white-space: nowrap;
+}
+
+.precon-processing-bar {
+    position: relative;
+    width: min(100%, 460px);
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+}
+
+.precon-processing-bar span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -42%;
+    width: 42%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(22, 191, 216, 0),
+            rgba(22, 191, 216, 0.88),
+            rgba(22, 191, 216, 0)
+        );
+    animation: precon-processing-sweep 1.35s ease-in-out infinite;
+}
+
+@keyframes precon-processing-sweep {
+    0% {
+        left: -42%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes precon-processing-glass-sweep {
+    0%,
+    38% {
+        transform: translateX(-72%);
+    }
+
+    100% {
+        transform: translateX(72%);
+    }
+}
+
+/* ==========================================================================
+   PRECONSTRUCTION LIVE REPORT SURFACE
+   ========================================================================== */
+
+.precon-result-view {
+    padding: 0;
+}
+
+.precon-results-surface {
+    width: 100%;
+}
+
+.precon-results-surface.has-report-output {
+    width: 100%;
+    margin: 0;
+}
+
+.precon-report-shell {
+    width: 100%;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-card);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10, 16, 32, 0.96),
+            rgba(7, 12, 24, 0.94)
+        );
+    box-shadow: var(--shadow-card);
+    color: var(--brand-text-soft);
+    overflow: hidden;
+    text-align: left;
+}
+
+.precon-report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 24px 26px 20px;
+    border-bottom: 1px solid var(--brand-border-soft);
+    background: rgba(255, 255, 255, 0.018);
+}
+
+.precon-report-heading {
+    min-width: 0;
+}
+
+.precon-report-eyebrow {
+    margin: 0 0 8px;
+    color: var(--brand-cyan);
+    font-size: 11px;
+    font-weight: 780;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.precon-report-title {
+    margin: 0;
+    color: var(--brand-text);
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 760;
+    line-height: 1.18;
+}
+
+.precon-report-meta {
+    margin: 10px 0 0;
+    color: var(--brand-text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.precon-report-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+}
+
+.precon-report-action {
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid var(--brand-border-soft);
+    border-radius: var(--radius-control);
+    background: rgba(255, 255, 255, 0.024);
+    color: var(--brand-text-soft);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 760;
+    letter-spacing: 0.02em;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+}
+
+.precon-report-action:hover {
+    border-color: rgba(22, 191, 216, 0.42);
+    background: rgba(22, 191, 216, 0.052);
+    color: var(--brand-text);
+    transform: translateY(-1px);
+}
+
+.precon-report-action:focus-visible {
+    outline: 1px solid var(--brand-cyan);
+    outline-offset: 3px;
+}
+
+.precon-report-body {
+    padding: 26px;
+    color: var(--brand-text-soft);
+    font-size: 14px;
+    line-height: 1.68;
+}
+
+.precon-report-body .bei-single-summary,
+.precon-report-body .bei-compare {
+    max-width: 960px;
+}
+
+.precon-report-body b {
+    display: block;
+    margin: 22px 0 8px;
+    color: var(--brand-text);
+    font-size: 15px;
+    font-weight: 780;
+    line-height: 1.35;
+}
+
+.precon-report-body b:first-child {
+    margin-top: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--brand-border-soft);
+    color: var(--brand-text);
+    font-size: clamp(18px, 1.6vw, 22px);
+}
+
+.precon-report-body p {
+    margin: 0 0 14px;
+    color: var(--brand-text-soft);
+}
+
+.precon-report-body .bei-list {
+    margin: 10px 0 18px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.precon-report-body .bei-list li {
+    position: relative;
+    margin: 0 0 9px;
+    padding-left: 18px;
+    color: var(--brand-text-muted);
+    line-height: 1.55;
+}
+
+.precon-report-body .bei-list li::before {
+    content: "";
+    position: absolute;
+    top: 0.75em;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--brand-cyan);
+    box-shadow: 0 0 12px rgba(22, 191, 216, 0.28);
+    transform: translateY(-50%);
+}
+
+.precon-report-body .bei-divider {
+    margin: 26px 0 0;
+    border: 0;
+    border-top: 1px solid var(--brand-border-soft);
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .bei-results {
+        margin-top: 38px;
+    }
+
+    .bei-results-card {
+        padding: 18px;
+    }
+
+    .bei-results-header,
+    .precon-report-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .bei-actions,
+    .precon-report-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .precon-processing-stage {
+        min-height: 360px;
+        padding: 18px 0;
+    }
+
+    .precon-processing-card {
+        width: 100%;
+        padding: 30px 20px;
+    }
+
+    .precon-processing-orb {
+        width: 74px;
+        height: 74px;
+    }
+
+    .precon-processing-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .precon-processing-symbol {
+        font-size: 30px;
+    }
+
+    .precon-processing-sequence {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .precon-processing-sequence span {
+        width: 100%;
+    }
+
+    .precon-report-header {
+        padding: 20px;
+    }
+
+    .precon-report-body {
+        padding: 20px;
+    }
+}

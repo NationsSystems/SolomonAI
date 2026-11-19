@@ -1,0 +1,168 @@
+/* ==========================================================================
+   FILE: portal_workspace_sidebar_responsive.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   RESPONSIVE SAFETY
+   ========================================================================== */
+
+@media (max-width: 1120px) {
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-system,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-system,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-system {
+        min-width: min(420px, 42vw);
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon,
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-focus-state,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-focus-state,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-focus-state {
+        max-width: 340px;
+        width: min(340px, 34vw);
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon[data-solomon-command-reserved="true"],
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon[data-solomon-command-reserved="true"],
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon[data-solomon-command-reserved="true"] {
+        max-width: 0;
+        width: 0;
+    }
+
+    .command-taskbar-solomon-focus-copy span {
+        display: none;
+    }
+
+    .command-taskbar-solomon-return {
+        border-radius: 10px;
+        height: 34px;
+        padding: 0;
+        width: 34px;
+    }
+
+    .command-taskbar-solomon-return span:not(.icon) {
+        display: none;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-output,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-output,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-output {
+        max-width: min(390px, 62vw);
+        min-width: min(320px, 54vw);
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-copy em,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-copy em,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-copy em {
+        display: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-system,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-system,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-system {
+        min-width: 0;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        max-width: 42px;
+        min-width: 42px;
+        padding: 7px;
+        width: 42px;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-focus-state,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-focus-state,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-focus-state {
+        gap: 0;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        max-width: 42px;
+        min-width: 42px;
+        padding: 7px;
+        width: 42px;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon[data-solomon-command-reserved="true"],
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon[data-solomon-command-reserved="true"],
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon[data-solomon-command-reserved="true"] {
+        max-width: 0;
+        min-width: 0;
+        padding-left: 0;
+        padding-right: 0;
+        width: 0;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-icon,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-icon,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-icon {
+        justify-self: center;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-input,
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-send,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-input,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-send,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-input,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-send {
+        display: none;
+    }
+
+    .command-taskbar-solomon-focus-copy,
+    .command-taskbar-solomon-return {
+        display: none;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-output,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-output,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-output {
+        left: 0;
+        max-width: calc(100vw - 40px);
+        min-width: min(320px, calc(100vw - 40px));
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-output {
+        top: calc(100% + 9px);
+    }
+
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-output,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-output {
+        bottom: calc(100% + 9px);
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-taskbar-solomon-copy,
+    .command-center-layout[data-taskbar-position="bottom"] .command-taskbar-solomon-copy,
+    .command-center-layout[data-taskbar-position="left"] .command-taskbar-solomon-copy,
+    .command-center-layout[data-taskbar-position="top"] .command-nav-label,
+    .command-center-layout[data-taskbar-position="bottom"] .command-nav-label,
+    .command-center-layout[data-taskbar-position="left"] .command-nav-label,
+    .command-center-layout[data-taskbar-position="top"] .command-sidebar-toggle-label,
+    .command-center-layout[data-taskbar-position="bottom"] .command-sidebar-toggle-label,
+    .command-center-layout[data-taskbar-position="left"] .command-sidebar-toggle-label {
+        display: none;
+    }
+
+    .command-center-layout[data-taskbar-position="top"] .command-nav-item,
+    .command-center-layout[data-taskbar-position="bottom"] .command-nav-item,
+    .command-center-layout[data-taskbar-position="left"] .command-nav-item,
+    .command-center-layout[data-taskbar-position="top"] .command-sidebar-footer,
+    .command-center-layout[data-taskbar-position="bottom"] .command-sidebar-footer,
+    .command-center-layout[data-taskbar-position="left"] .command-sidebar-footer {
+        min-width: 40px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .command-taskbar-solomon,
+    .command-taskbar-solomon-focus-state {
+        animation: none !important;
+        transition: none;
+    }
+}

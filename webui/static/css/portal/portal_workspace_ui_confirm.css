@@ -1,0 +1,237 @@
+/* ==========================================================================
+   FILE: portal_workspace_ui_confirm.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMON UI CONFIRMATION MODAL
+   --------------------------------------------------------------------------
+   Branded replacement for native browser confirm() dialogs.
+   Tuned for a more restrained, professional, Drive-like presentation.
+   ========================================================================== */
+
+html[data-solomon-confirm-open="true"],
+html[data-solomon-confirm-open="true"] body {
+    overflow: hidden;
+}
+
+.solomon-ui-confirm-overlay {
+    align-items: center;
+    background: rgba(3, 8, 18, 0.56);
+    box-sizing: border-box;
+    display: grid;
+    inset: 0;
+    justify-items: center;
+    padding: 24px;
+    position: fixed;
+    z-index: 11000;
+}
+
+@supports (backdrop-filter: blur(4px)) {
+    .solomon-ui-confirm-overlay {
+        backdrop-filter: blur(4px);
+    }
+}
+
+.solomon-ui-confirm-dialog {
+    background: linear-gradient(180deg, rgba(8, 13, 24, 0.98), rgba(6, 11, 20, 0.98));
+    border: 1px solid rgba(105, 128, 157, 0.20);
+    border-radius: 14px;
+    box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+    box-sizing: border-box;
+    color: var(--brand-text, rgba(248, 250, 252, 0.94));
+    display: grid;
+    gap: 18px;
+    max-width: min(92vw, 420px);
+    min-width: min(92vw, 340px);
+    padding: 20px 20px 16px;
+    position: relative;
+}
+
+.solomon-ui-confirm-overlay[data-confirm-tone="danger"] .solomon-ui-confirm-dialog {
+    border-color: rgba(105, 128, 157, 0.20);
+    box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+}
+
+.solomon-ui-confirm-shell {
+    align-items: start;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 32px minmax(0, 1fr);
+    min-width: 0;
+}
+
+.solomon-ui-confirm-icon {
+    align-items: center;
+    background: rgba(248, 113, 113, 0.08);
+    border: 1px solid rgba(248, 113, 113, 0.16);
+    border-radius: 10px;
+    color: rgba(254, 226, 226, 0.94);
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    margin-top: 1px;
+    width: 32px;
+}
+
+.solomon-ui-confirm-overlay[data-confirm-tone="danger"] .solomon-ui-confirm-icon {
+    background: rgba(248, 113, 113, 0.08);
+    border-color: rgba(248, 113, 113, 0.16);
+    color: rgba(254, 226, 226, 0.94);
+}
+
+.solomon-ui-confirm-icon .icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.solomon-ui-confirm-content {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.solomon-ui-confirm-eyebrow {
+    color: rgba(125, 211, 252, 0.72);
+    font-size: 0.58rem;
+    font-weight: 820;
+    letter-spacing: 0.10em;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.solomon-ui-confirm-title {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.00rem;
+    font-weight: 780;
+    letter-spacing: -0.015em;
+    line-height: 1.24;
+    margin: 0;
+}
+
+.solomon-ui-confirm-message {
+    color: rgba(201, 212, 229, 0.78);
+    font-size: 0.79rem;
+    font-weight: 580;
+    line-height: 1.5;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.solomon-ui-confirm-warning {
+    display: none;
+}
+
+.solomon-ui-confirm-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.solomon-ui-confirm-button {
+    align-items: center;
+    appearance: none;
+    border-radius: 9px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 760;
+    justify-content: center;
+    line-height: 1;
+    min-height: 32px;
+    min-width: 88px;
+    padding: 0 14px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        box-shadow 0.14s ease;
+}
+
+.solomon-ui-confirm-button:focus-visible {
+    outline: 2px solid rgba(103, 232, 249, 0.42);
+    outline-offset: 2px;
+}
+
+.solomon-ui-confirm-button-secondary {
+    background: rgba(30, 41, 59, 0.46);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    color: rgba(226, 236, 248, 0.86);
+}
+
+.solomon-ui-confirm-button-secondary:hover,
+.solomon-ui-confirm-button-secondary:focus-visible {
+    background: rgba(41, 55, 74, 0.62);
+    border-color: rgba(148, 163, 184, 0.24);
+    color: rgba(248, 250, 252, 0.96);
+}
+
+.solomon-ui-confirm-button-danger {
+    background: #d93025;
+    border: 1px solid rgba(217, 48, 37, 0.92);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.solomon-ui-confirm-button-danger:hover,
+.solomon-ui-confirm-button-danger:focus-visible {
+    background: #c5221f;
+    border-color: #c5221f;
+    box-shadow: none;
+}
+
+.solomon-ui-confirm-button:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 560px) {
+    .solomon-ui-confirm-overlay {
+        align-items: end;
+        padding: 12px;
+    }
+
+    .solomon-ui-confirm-dialog {
+        border-radius: 14px;
+        max-width: 100%;
+        min-width: 0;
+        padding: 18px 18px 14px;
+        width: 100%;
+    }
+
+    .solomon-ui-confirm-shell {
+        gap: 10px;
+        grid-template-columns: 30px minmax(0, 1fr);
+    }
+
+    .solomon-ui-confirm-icon {
+        height: 30px;
+        width: 30px;
+    }
+
+    .solomon-ui-confirm-actions {
+        gap: 8px;
+    }
+
+    .solomon-ui-confirm-button {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .solomon-ui-confirm-button {
+        transition: none;
+    }
+
+    .solomon-ui-confirm-button:active {
+        transform: none;
+    }
+}

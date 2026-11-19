@@ -1,0 +1,101 @@
+<!-- ==========================================================================
+     FILE: admin_base.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Nations Systems · Admin{% endblock %}</title>
+
+    <!-- CORE VENDOR -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+
+    <!-- GLOBAL -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/global.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- PORTAL FOUNDATION -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/portal/portal_base.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- PORTAL THEME -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/portal/portal_theme.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- PORTAL LAYOUT -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/portal/portal_layout.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- PORTAL NAVIGATION -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/portal/portal_nav.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- PORTAL MODALS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/portal/portal_modal.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    <!-- ADMIN THEME -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/admin/theme.css') }}?v=nations-admin-base-v2-nav-20260515a">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/admin/layout.css') }}?v=nations-admin-base-v2-nav-20260515a">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body class="nations-app-theme nations-business-theme admin-route">
+
+{% include "components/navbar.html" %}
+
+{% block pre_content_scripts %}{% endblock %}
+
+<div class="app-shell nations-business-shell">
+
+    <main class="app-main">
+
+        <section class="admin-console">
+
+            {% set admin_page_heading = self.page_header() | trim %}
+
+            {% if admin_page_heading %}
+            <header class="admin-console-header">
+                <div class="admin-eyebrow">Nations Systems Admin</div>
+                <h1 class="admin-console-title">
+                    {% block page_header %}{% endblock %}
+                </h1>
+            </header>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+        </section>
+
+    </main>
+
+    <footer class="portal-footer">
+        {% block footer %}
+        Nations Systems © {{ 2026 }}
+        {% endblock %}
+    </footer>
+
+</div>
+
+{% include "components/confirm_modal.html" %}
+
+<!-- CORE JS -->
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
+
+<!-- SHARED UI CONTRACT -->
+<script src="{{ url_for('static', filename='js/ui/ui.confirm.js') }}?v=nations-admin-base-v2-nav-20260515a" defer></script>
+
+<!-- ADMIN UI -->
+<script src="{{ url_for('static', filename='js/admin.js') }}?v=nations-admin-base-v2-nav-20260515a" defer></script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

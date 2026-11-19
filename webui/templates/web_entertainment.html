@@ -1,0 +1,62 @@
+<!-- ==========================================================================
+     FILE: webui/templates/web_entertainment.html
+     Solomon Web Lane Template — Entertainment
+     ========================================================================== -->
+
+<div class="web-card web-card-entertainment">
+
+    <div class="web-card-header">
+        <div class="web-card-kicker">Entertainment</div>
+        <h3 class="web-card-title">Movies & Media</h3>
+    </div>
+
+    <div class="web-card-body">
+
+        <!-- Summary -->
+        <div class="web-summary">
+            <p>{{ content }}</p>
+        </div>
+
+        <!-- Highlights -->
+        {% if points %}
+        <div class="web-section web-section-points">
+            <h4>Highlights</h4>
+            <ul>
+                {% for p in points %}
+                <li>{{ p }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Structured Sections -->
+        {% if sections %}
+        <div class="web-section web-section-sections">
+            {% for section in sections %}
+            <div class="web-subsection">
+                <h4>{{ section.title }}</h4>
+                <ul>
+                    {% for item in section["items"] %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Sources -->
+        {% if sources %}
+        <div class="web-section web-section-sources">
+            <h4>Sources</h4>
+            <ul>
+                {% for s in sources %}
+                <li>{{ s }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>

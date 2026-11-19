@@ -1,0 +1,104 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Skills · Solomon Admin{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/skills.css') }}">
+{% endblock %}
+
+{% block page_header %}
+Skill Registry
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================
+     Summary Row
+     ================================ -->
+<div class="skill-summary">
+
+    <div class="summary-box">
+        <h4>Total Skills</h4>
+        <div class="count" id="skillCount">0</div>
+    </div>
+
+    <div class="summary-box">
+        <h4>Persistent in DB</h4>
+        <div class="count" id="skillDbCount">0</div>
+    </div>
+
+    <div class="summary-box">
+        <h4>Vector-Indexed (FAISS)</h4>
+        <div class="count" id="skillFaissCount">0</div>
+    </div>
+
+</div>
+
+<!-- ================================
+     Actions
+     ================================ -->
+<div class="skill-actions">
+    <button id="syncFaissBtn"
+            data-endpoint="/admin/skills/sync_faiss">
+        Sync FAISS Index
+    </button>
+</div>
+
+<!-- ================================
+     Skills Grid
+     ================================ -->
+<div class="card">
+    <h2>Registered Skills</h2>
+    <div id="skillsContainer" class="skills-grid">
+        <!-- Loaded dynamically -->
+    </div>
+</div>
+
+<!-- ================================
+     Skill Details Modal
+     ================================ -->
+<div id="skillModal" class="skill-modal" style="display:none;">
+    <div class="modal-content">
+
+        <h2 id="modalTitle">Skill Details</h2>
+
+        <pre id="modalBody"></pre>
+
+        <button id="simulateBtn" class="actionBtn">
+            Simulate Upgrade
+        </button>
+
+        <!-- Simulation Panel -->
+        <div id="simulationPanel" class="simulation-panel" style="display:none;">
+
+            <h3>Upgrade Simulation</h3>
+
+            <label>Proposed Python Code</label>
+            <textarea id="simCode"></textarea>
+
+            <label>Test Input (JSON)</label>
+            <textarea id="simInput" placeholder='{"text":"hello"}'></textarea>
+
+            <button id="runSimBtn" class="actionBtn">
+                Run Simulation
+            </button>
+
+            <div id="simResultPanel" style="display:none;">
+                <h4>Simulation Result</h4>
+                <pre id="simResultOutput"></pre>
+            </div>
+
+        </div>
+
+        <button class="close-btn" onclick="document.getElementById('skillModal').style.display='none'">
+            Close
+        </button>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin_skills.js') }}"></script>
+{% endblock %}

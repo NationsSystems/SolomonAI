@@ -1,0 +1,195 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/portal/portal_modal.css
+   DIRECTORY: webui/static/css/portal/
+------------------------------------------------------------------- */
+
+.app-modal-backdrop[hidden] {
+    display: none !important;
+}
+
+.app-modal-backdrop {
+    align-items: center;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(22, 191, 216, 0.055), transparent 38%),
+        rgba(1, 5, 13, 0.46);
+    backdrop-filter: blur(3px);
+    display: none;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
+    z-index: 9999;
+}
+
+.app-modal-backdrop.is-visible {
+    display: flex;
+}
+
+.app-modal {
+    background:
+        linear-gradient(180deg, rgba(13, 22, 38, 0.74), rgba(7, 13, 24, 0.68));
+    backdrop-filter: blur(18px) saturate(1.14);
+    border: 1px solid rgba(140, 164, 194, 0.24);
+    border-radius: 16px;
+    box-shadow:
+        0 24px 76px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+        0 0 34px rgba(22, 191, 216, 0.035);
+    color: var(--brand-text);
+    overflow: hidden;
+    position: relative;
+    width: min(420px, 100%);
+}
+
+.app-modal::before {
+    background: rgba(22, 191, 216, 0.44);
+    content: "";
+    display: block;
+    height: 1px;
+    left: 16px;
+    position: absolute;
+    right: 16px;
+    top: 0;
+}
+
+.app-modal-backdrop[data-confirm-variant="danger"] .app-modal {
+    border-color: rgba(223, 100, 107, 0.30);
+    box-shadow:
+        0 24px 76px rgba(0, 0, 0, 0.50),
+        0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+        0 0 32px rgba(223, 100, 107, 0.045);
+}
+
+.app-modal-backdrop[data-confirm-variant="danger"] .app-modal::before {
+    background: rgba(223, 100, 107, 0.54);
+}
+
+.app-modal-header {
+    padding: 24px 26px 8px;
+}
+
+.app-modal-title {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 18px;
+    font-weight: 720;
+    letter-spacing: -0.012em;
+    line-height: 1.22;
+    margin: 0;
+}
+
+.app-modal-body {
+    padding: 0 26px 22px;
+}
+
+.app-modal-message {
+    color: rgba(213, 223, 237, 0.84);
+    font-size: 14px;
+    line-height: 1.62;
+    margin: 0;
+    max-width: 58ch;
+}
+
+.app-modal-actions {
+    align-items: center;
+    background: rgba(2, 7, 15, 0.26);
+    border-top: 1px solid rgba(140, 164, 194, 0.14);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 15px 20px 17px;
+}
+
+.app-modal-actions .btn {
+    align-items: center;
+    border-radius: 9px;
+    box-shadow: none;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 750;
+    justify-content: center;
+    letter-spacing: 0.005em;
+    line-height: 1;
+    min-height: 36px;
+    min-width: 96px;
+    padding: 0 15px;
+}
+
+.app-modal-actions .btn-outline-secondary {
+    background: rgba(8, 14, 26, 0.46);
+    border-color: rgba(140, 164, 194, 0.28);
+    color: rgba(224, 232, 244, 0.88);
+}
+
+.app-modal-actions .btn-outline-secondary:hover,
+.app-modal-actions .btn-outline-secondary:focus {
+    background: rgba(18, 30, 49, 0.64);
+    border-color: rgba(140, 164, 194, 0.42);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.app-modal-actions .btn-primary {
+    background: rgba(22, 191, 216, 0.88);
+    border-color: rgba(22, 191, 216, 0.56);
+    color: #04101c;
+}
+
+.app-modal-actions .btn-primary:hover,
+.app-modal-actions .btn-primary:focus {
+    background: rgba(45, 211, 235, 0.94);
+    border-color: rgba(45, 211, 235, 0.74);
+    box-shadow: none;
+    color: #03101a;
+}
+
+.app-modal-actions .btn-danger {
+    background: rgba(214, 82, 91, 0.88);
+    border-color: rgba(238, 125, 132, 0.60);
+    color: #ffffff;
+}
+
+.app-modal-actions .btn-danger:hover,
+.app-modal-actions .btn-danger:focus {
+    background: rgba(228, 96, 105, 0.94);
+    border-color: rgba(245, 145, 152, 0.74);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.app-modal-actions .btn:focus-visible {
+    outline: 1px solid rgba(22, 191, 216, 0.78);
+    outline-offset: 3px;
+}
+
+.app-modal-backdrop[data-confirm-variant="danger"] .app-modal-actions .btn:focus-visible {
+    outline-color: rgba(238, 125, 132, 0.86);
+}
+
+@media (max-width: 575.98px) {
+    .app-modal-backdrop {
+        align-items: flex-end;
+        padding: 14px;
+    }
+
+    .app-modal {
+        border-radius: 16px;
+        width: 100%;
+    }
+
+    .app-modal-header {
+        padding: 22px 20px 8px;
+    }
+
+    .app-modal-body {
+        padding: 0 20px 20px;
+    }
+
+    .app-modal-actions {
+        flex-direction: column-reverse;
+        padding: 16px;
+    }
+
+    .app-modal-actions .btn {
+        width: 100%;
+    }
+}

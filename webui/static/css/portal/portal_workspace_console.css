@@ -1,0 +1,18 @@
+/* ==========================================================================
+   FILE: portal_workspace_console.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   OPERATIONS CONSOLE CSS ENTRYPOINT
+   --------------------------------------------------------------------------
+   Imports console-only component styles. Home rail sizing, document explorer
+   layout, and library bar styling are owned by their dedicated workspace files.
+   ========================================================================== */
+
+@import url("./portal_workspace_console_tokens.css");
+@import url("./portal_workspace_console_actions.css");
+@import url("./portal_workspace_console_layout.css");
+@import url("./portal_workspace_console_widgets.css");
+@import url("./portal_workspace_console_documents.css");
+@import url("./portal_workspace_console_responsive.css");

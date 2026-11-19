@@ -1,0 +1,25 @@
+<!-- -------------------------------------------------------------------
+     FILE: operations_console_header.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set current_module = active_module|default('home') %}
+{% set module_label = command_module.label if command_module is defined else 'Operations Console' %}
+{% set display_module_label = 'Operations Console' if current_module == 'home' else module_label %}
+
+<div class="command-system-controls"
+     aria-label="Workspace controls"
+     hidden>
+    <span id="workspace-title" hidden>
+        {{ display_module_label }}
+    </span>
+
+    <button type="button"
+            id="restoreConsoleWidgets"
+            class="command-secondary-button operations-console-restore"
+            data-console-restore-widgets
+            hidden>
+        <span class="icon" aria-hidden="true">refresh</span>
+        Restore Panels
+    </button>
+</div>

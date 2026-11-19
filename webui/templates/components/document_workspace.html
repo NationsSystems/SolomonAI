@@ -1,0 +1,977 @@
+﻿<!-- -------------------------------------------------------------------
+     FILE: document_workspace.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set department = command_department|default({}) %}
+{% set module_name = department.label|default(module_label|default('Workspace')) %}
+{% set module_key = department.key|default(department.id|default(active_module|default(''))) %}
+{% set module_slug = module_key|lower %}
+{% set module_path = command_module.path if command_module is defined else request.path %}
+{% set module_description = command_module.description if command_module is defined else department.description|default('This workspace is registered in the Nations Systems operations substrate.') %}
+{% set functions = department.functions|default([]) %}
+{% set is_documents_module = module_slug == 'documents' %}
+{% set uses_file_explorer = true %}
+{% set workspace_solomon_conversation = session.get('document_ai_active_session', {}) if session is defined else {} %}
+{% set workspace_solomon_conversation_id = workspace_solomon_conversation.get('session_id', '')|trim if workspace_solomon_conversation else '' %}
+{% set workspace_solomon_conversation_available = workspace_solomon_conversation_id != '' %}
+{% set workspace_solomon_embedded_active = false %}
+{% set workspace_solomon_source_names = [] %}
+{% set workspace_solomon_source_ids = [] %}
+{% set workspace_solomon_source_count = 0 %}
+{% set workspace_initial_view = workspace_initial_view|default('files', true) %}
+{% if workspace_initial_view not in ['files', 'chat', 'preview', 'reader'] %}
+    {% set workspace_initial_view = 'files' %}
+{% endif %}
+{% set workspace_reader_surface_template = workspace_reader_surface_template|default('') %}
+{% set workspace_requested_path = request.path|default('') %}
+{% set workspace_reader_route_requested = workspace_reader_surface_template and workspace_requested_path.startswith('/workspace/') and workspace_requested_path.endswith('/reader') %}
+{% set workspace_active_view = 'reader' if workspace_reader_route_requested else workspace_initial_view %}
+{% set workspace_reader_state = 'loaded' if workspace_reader_surface_template else 'idle' %}
+
+{% set workspace_section = workspace_section|default('files', true)|lower %}
+{% if workspace_section not in ['files', 'reports', 'recent', 'shared', 'trash'] %}
+    {% set workspace_section = 'files' %}
+{% endif %}
+
+{% if workspace_section == 'reports' %}
+    {% set workspace_section_label = 'Reports' %}
+{% elif workspace_section == 'recent' %}
+    {% set workspace_section_label = 'Recent' %}
+{% elif workspace_section == 'shared' %}
+    {% set workspace_section_label = 'Shared with me' %}
+{% elif workspace_section == 'trash' %}
+    {% set workspace_section_label = 'Trash' %}
+{% else %}
+    {% set workspace_section_label = 'My Files' %}
+{% endif %}
+
+{% set workspace_home_url = '/' %}
+{% set workspace_chat_url = '/ai' %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_recent_url = '/recent' %}
+{% set workspace_shared_url = '/shared' %}
+{% set workspace_trash_url = '/trash' %}
+{% set workspace_folders_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_create_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_contract = 'workspace_folder_v1' %}
+{% set workspace_folder_create_contract = 'workspace_folder_create_v1' %}
+{% set workspace_folder_creation_authority = 'server_owned_location_required' %}
+{% set workspace_current_folder_id = request.args.get('folder_id', '')|trim if request is defined and request.args is defined else '' %}
+{% set workspace_return_route = workspace_return_route|default('')|trim %}
+{% set workspace_active_documents_endpoint = '/uploads/me/shared' if workspace_section == 'shared' else '/uploads/me' %}
+{% set workspace_recent_documents_endpoint = '/uploads/me/recent' %}
+{% set workspace_trash_documents_endpoint = '/uploads/me/trash' %}
+{% set workspace_active_folders_endpoint = workspace_folders_endpoint ~ '?scope=shared' if workspace_section == 'shared' else workspace_folders_endpoint ~ '?scope=personal' %}
+{% if workspace_section == 'files' and workspace_current_folder_id %}
+    {% set workspace_active_documents_endpoint = '/uploads/me?folder_id=' ~ workspace_current_folder_id|urlencode %}
+    {% set workspace_active_folders_endpoint = workspace_folders_endpoint ~ '?scope=personal&parent_folder_id=' ~ workspace_current_folder_id|urlencode %}
+{% elif workspace_section == 'shared' and workspace_current_folder_id %}
+    {% set workspace_active_documents_endpoint = '/uploads/me/shared?folder_id=' ~ workspace_current_folder_id|urlencode %}
+    {% set workspace_active_folders_endpoint = workspace_folders_endpoint ~ '?scope=shared&parent_folder_id=' ~ workspace_current_folder_id|urlencode %}
+{% endif %}
+{% set workspace_folder_create_mode = 'current_container' if workspace_section == 'files' else 'unavailable' if workspace_section in ['shared', 'trash'] else 'location_required' %}
+{% set workspace_show_new_folder_control = workspace_folder_create_mode != 'unavailable' %}
+{% set workspace_enable_new_folder_control = workspace_folder_create_mode == 'current_container' %}
+{% set workspace_folder_location_required = workspace_folder_create_mode == 'location_required' %}
+{% if workspace_folder_create_mode == 'current_container' %}
+    {% set workspace_new_folder_summary = 'Create a folder here.' if workspace_current_folder_id else 'Create a folder in My Files.' %}
+{% elif workspace_folder_create_mode == 'location_required' %}
+    {% set workspace_new_folder_summary = 'Open My Files to choose a destination.' %}
+{% else %}
+    {% set workspace_new_folder_summary = 'Folder creation is unavailable here.' %}
+{% endif %}
+{% set workspace_navigation_contract = 'workspace_module_section_route' %}
+{% set workspace_active_route = workspace_requested_path if workspace_requested_path else workspace_home_url %}
+{% set workspace_is_home_surface = workspace_active_route == workspace_home_url %}
+{% set workspace_home_navigation_active = workspace_is_home_surface and not workspace_current_folder_id %}
+
+{% set workspace_show_layout_controls = true %}
+{% set workspace_show_file_creation_controls = true %}
+{% set workspace_show_empty_trash_control = workspace_section == 'trash' %}
+{% if workspace_section == 'trash' %}
+    {% set workspace_utility_label = 'Trash controls' %}
+{% elif workspace_section == 'reports' %}
+    {% set workspace_utility_label = 'Reports controls' %}
+{% elif workspace_section == 'recent' %}
+    {% set workspace_utility_label = 'Recent controls' %}
+{% elif workspace_section == 'shared' %}
+    {% set workspace_utility_label = 'Shared with me controls' %}
+{% else %}
+    {% set workspace_utility_label = 'My Files controls' %}
+{% endif %}
+{% set workspace_loading_contract = 'workspace_loading_transition_only_v1' %}
+{% set workspace_recent_filter_contract = 'server_owned_recent_filters_v1' %}
+{% set workspace_listing_filter_contract = 'server_owned_recent_filters_v1' if workspace_section == 'recent' else 'authorized_listing_filter_projection_v1' %}
+{% set workspace_show_listing_filters = workspace_section in ['files', 'shared', 'recent', 'trash'] %}
+{% set workspace_initial_list_state = 'loading' %}
+{% set workspace_initial_list_busy = true %}
+
+{% if current_user is defined and current_user.is_authenticated %}
+    {% set user_display_name = current_user.name|default(current_user.username|default(current_user.email|default('You')), true) %}
+{% else %}
+    {% set user_display_name = 'You' %}
+{% endif %}
+
+{% set workspace_account_context = account_context if account_context is defined and account_context else {} %}
+{% set workspace_active_group = {} %}
+{% if workspace_account_context is mapping and workspace_account_context.get('group') is mapping %}
+    {% set workspace_active_group = workspace_account_context.get('group') %}
+{% elif workspace_account_context is mapping and workspace_account_context.get('organization') is mapping %}
+    {% set workspace_active_group = workspace_account_context.get('organization') %}
+{% endif %}
+{% set workspace_active_group_id = workspace_active_group.get('group_id') or workspace_active_group.get('id') or workspace_active_group.get('organization_id') or '' %}
+
+<section class="precon-app-page precon-app-page--documents workspace-command-app"
+         data-workspace-module="{{ module_slug }}"
+         data-workspace-section="{{ workspace_section }}"
+         data-workspace-route="{{ workspace_active_route }}"
+         data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+         data-workspace-loading-contract="{{ workspace_loading_contract }}"
+         aria-label="{{ module_name }} workspace">
+
+    <section class="precon-workspace-shell precon-workspace-shell--documents workspace-command-shell"
+             aria-label="{{ module_name }} shell">
+        <section class="precon-mode-deck precon-command-desk precon-command-desk--documents workspace-command-canvas"
+                 aria-label="{{ module_name }} command workspace">
+
+            <section class="workspace-document-explorer workspace-command-explorer"
+                     data-document-explorer
+                     data-document-layout="list"
+                     data-workspace-view="{{ workspace_active_view }}"
+                     data-workspace-initial-view="{{ workspace_active_view }}"
+                     data-workspace-reader-state="{{ workspace_reader_state }}"
+                     data-document-section-state="{{ workspace_initial_list_state }}"
+                     data-document-section-state-for="{{ workspace_section }}"
+                     data-workspace-loading-contract="{{ workspace_loading_contract }}"
+                     {% if workspace_reader_route_requested %}data-workspace-route-owned-view="reader"{% endif %}
+                     data-workspace-module="{{ module_slug }}"
+                     data-workspace-label="{{ module_name }}"
+                     data-workspace-section="{{ workspace_section }}"
+                     data-workspace-route="{{ workspace_active_route }}"
+                     data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+                     data-active-group-id="{{ workspace_active_group_id }}"
+                     data-user-display-name="{{ user_display_name }}"
+                     data-solomon-ai-conversation-available="{{ 'true' if workspace_solomon_conversation_available else 'false' }}"
+                     data-solomon-ai-conversation-id="{{ workspace_solomon_conversation_id }}"
+                     data-active-documents-endpoint="{{ workspace_active_documents_endpoint }}"
+                     data-recent-documents-endpoint="{{ workspace_recent_documents_endpoint }}"
+                     data-recent-filter-contract="{{ workspace_recent_filter_contract }}"
+                     data-trash-documents-endpoint="{{ workspace_trash_documents_endpoint }}"
+                     data-workspace-folders-endpoint="{{ workspace_active_folders_endpoint }}"
+                     data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                     data-workspace-folder-lifecycle-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                     data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                     data-workspace-folder-creation-authority="{{ workspace_folder_creation_authority }}"
+                     data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                     data-workspace-folder-create-enabled="{{ 'true' if workspace_enable_new_folder_control else 'false' }}"
+                     data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                     data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                     data-workspace-return-route="{{ workspace_return_route }}"
+                     data-workspace-folder-navigation-scope="{{ 'shared' if workspace_section == 'shared' else 'personal' }}"
+                     data-workspace-folder-tree-personal-endpoint="/uploads/me/folders?scope=personal"
+                     data-workspace-folder-tree-shared-endpoint="/uploads/me/folders?scope=shared"
+                     data-workspace-document-move-endpoint="/uploads/me/move"
+                     data-document-operation-endpoint="/workspace/document-operation/run"
+                     data-document-operation-contract="stored_document_explicit_backend_operation"
+                     data-workspace-context-endpoint="/workspace/context"
+                     data-workspace-open-endpoint="/workspace/action/open-document"
+                     data-workspace-focus-endpoint="/workspace/action/focus-document"
+                     data-workspace-minimize-endpoint="/workspace/action/minimize-document"
+                     data-workspace-close-endpoint="/workspace/action/close-document"
+                     aria-label="{{ module_name }} documents workspace">
+
+                <aside class="workspace-document-collections"
+                       aria-label="{{ module_name }} document navigation">
+                    <div class="workspace-document-primary-actions"
+                         aria-label="Workspace primary actions">
+                        <div class="workspace-document-new-menu-shell"
+                             data-document-new-menu
+                             data-document-new-menu-contract="server_rendered_actions_transport_only"
+                             data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                             data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}">
+                            <button type="button"
+                                    id="workspaceDocumentNewMenuTrigger"
+                                    class="workspace-document-command workspace-document-command-primary workspace-document-new-button"
+                                    data-document-section-control="all"
+                                    data-document-new-menu-trigger
+                                    aria-haspopup="menu"
+                                    aria-expanded="false"
+                                    aria-controls="workspaceDocumentNewMenu"
+                                    aria-hidden="false">
+                                <span class="icon" aria-hidden="true">add</span>
+                                <span>New</span>
+                                <span class="icon workspace-document-new-button-chevron"
+                                      aria-hidden="true">expand_more</span>
+                            </button>
+
+                            <section id="workspaceDocumentNewMenu"
+                                     class="workspace-document-new-menu"
+                                     data-document-new-menu-panel
+                                     role="menu"
+                                     aria-label="Create, upload, share, or ask SolomonAI"
+                                     hidden>
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">Add</p>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-upload-placeholder
+                                            data-document-upload-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">upload_file</span>
+
+                                        <span>
+                                            <strong>Upload file</strong>
+                                            <small>Store files in My Files.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-share-files-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">person_add</span>
+
+                                        <span>
+                                            <strong>Share files</strong>
+                                            <small>Choose owned files and grant access to People or Groups.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-workspace-new-action="new_folder"
+                                            data-workspace-new-authority="server"
+                                            data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                                            data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                                            data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                                            data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                                            data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                                            data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                                            data-document-new-menu-close
+                                            role="menuitem"
+                                            {% if not workspace_enable_new_folder_control %}disabled aria-disabled="true"{% else %}aria-disabled="false"{% endif %}
+                                            {% if not workspace_show_new_folder_control %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                                        <span class="icon" aria-hidden="true">create_new_folder</span>
+
+                                        <span>
+                                            <strong>New folder</strong>
+                                            <small>{{ workspace_new_folder_summary }}</small>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">AI</p>
+
+                                    <a href="/ai"
+                                       class="workspace-document-new-menu-action"
+                                       data-command-shell-navigation="true"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                       data-command-route="/ai"
+                                       data-command-module="solomon_ai"
+                                       data-workspace-new-action="ask_solomon_ai"
+                                       data-workspace-new-authority="server"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">auto_awesome</span>
+
+                                        <span>
+                                            <strong>Ask SolomonAI</strong>
+                                            <small>Start a workspace conversation.</small>
+                                        </span>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <nav class="workspace-document-collection-list workspace-document-static-navigation"
+                         data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                         aria-label="Workspace navigation">
+                        <a class="workspace-document-collection workspace-document-static-link{% if workspace_home_navigation_active %} is-active{% endif %}"
+                           href="{{ workspace_home_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           data-command-route="{{ workspace_home_url }}"
+                           data-command-module="documents"
+                           data-command-section="files"
+                           data-workspace-home-link
+                           {% if workspace_home_navigation_active %}aria-current="page"{% endif %}>
+                            <span class="icon" aria-hidden="true">home</span>
+                            <span>Home</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_chat_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           data-command-route="{{ workspace_chat_url }}"
+                           data-command-module="solomon_ai">
+                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                            <span>Chat</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_people_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           data-command-route="{{ workspace_people_url }}"
+                           data-command-module="people">
+                            <span class="icon" aria-hidden="true">groups</span>
+                            <span>People</span>
+                        </a>
+
+                        <section class="workspace-folder-navigation"
+                                 data-workspace-folder-tree
+                                 aria-label="Folder navigation">
+                            {% for tree_scope, tree_label, tree_route, tree_icon in [
+                                ('personal', 'My Files', workspace_home_url, 'folder_open'),
+                                ('shared', 'Shared Files', workspace_shared_url, 'folder_shared')
+                            ] %}
+                                {% set tree_expanded = (tree_scope == 'personal' and workspace_section == 'files') or (tree_scope == 'shared' and workspace_section == 'shared') %}
+                                {% set tree_active = (tree_scope == 'personal' and workspace_section == 'files' and workspace_current_folder_id) or (tree_scope == 'shared' and workspace_section == 'shared') %}
+                                <div class="workspace-folder-tree-node workspace-folder-tree-node--root{% if tree_active %} is-active{% endif %}"
+                                     data-workspace-folder-tree-node
+                                     data-workspace-folder-tree-scope="{{ tree_scope }}"
+                                     data-workspace-folder-id=""
+                                     data-workspace-folder-depth="0"
+                                     {% if tree_scope == 'personal' %}data-document-drop-folder-target="true" data-document-drop-label="My Files"{% endif %}>
+                                    <div class="workspace-folder-tree-row">
+                                        <button type="button"
+                                                class="workspace-folder-tree-toggle"
+                                                data-workspace-folder-tree-toggle
+                                                aria-label="{{ 'Collapse' if tree_expanded else 'Expand' }} {{ tree_label }}"
+                                                aria-expanded="{{ 'true' if tree_expanded else 'false' }}">
+                                            <span class="icon" aria-hidden="true">{{ 'expand_more' if tree_expanded else 'chevron_right' }}</span>
+                                        </button>
+
+                                        <a class="workspace-folder-tree-link{% if tree_active %} is-active{% endif %}"
+                                           href="{{ tree_route }}"
+                                           data-command-shell-navigation="true"
+                                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                           data-command-route="{{ tree_route }}"
+                                           data-command-module="documents"
+                                           data-command-section="{{ 'shared' if tree_scope == 'shared' else 'files' }}"
+                                           {% if tree_active %}aria-current="page"{% endif %}>
+                                            <span class="icon" aria-hidden="true">{{ tree_icon }}</span>
+                                            <span>{{ tree_label }}</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="workspace-folder-tree-children"
+                                         data-workspace-folder-tree-children
+                                         data-workspace-folder-tree-scope="{{ tree_scope }}"
+                                         data-workspace-folder-tree-parent-id=""
+                                         role="group"
+                                         {% if not tree_expanded %}hidden{% endif %}></div>
+                                </div>
+                            {% endfor %}
+                        </section>
+
+                        <a class="workspace-document-collection workspace-document-static-link{% if workspace_section == 'recent' %} is-active{% endif %}"
+                           href="{{ workspace_recent_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           data-command-route="{{ workspace_recent_url }}"
+                           data-command-module="documents"
+                           data-command-section="recent"
+                           {% if workspace_section == 'recent' %}aria-current="page"{% endif %}>
+                            <span class="icon" aria-hidden="true">schedule</span>
+                            <span>Recent</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link{% if workspace_section == 'trash' %} is-active{% endif %}"
+                           href="{{ workspace_trash_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           data-command-route="{{ workspace_trash_url }}"
+                           data-command-module="documents"
+                           data-command-section="trash"
+                           {% if workspace_section == 'trash' %}aria-current="page"{% endif %}>
+                            <span class="icon" aria-hidden="true">delete_outline</span>
+                            <span>Trash</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="workspace-document-browser workspace-command-main"
+                         aria-label="{{ module_name }} main workspace">
+                    <section class="workspace-command-view-panel workspace-command-files-panel"
+                             data-workspace-view-panel="files"
+                             {% if workspace_section == 'files' %}
+                             data-document-drop-zone="library"
+                             data-document-drop-surface="library"
+                             data-document-drop-target="my_files"
+                             data-document-drop-label="My Files"
+                             data-document-drop-contract="stored_document_only"
+                             {% endif %}
+                             {% if workspace_active_view != 'files' %}hidden aria-hidden="true"{% endif %}
+                             aria-label="{{ module_name }} documents">
+
+                        <div class="workspace-document-browser-toolbar{% if workspace_section == 'recent' %} workspace-document-browser-toolbar--recent{% endif %}">
+                            <div class="workspace-document-browser-heading{% if workspace_section == 'recent' %} workspace-document-browser-heading--recent{% endif %}">
+                                <p class="workspace-kicker">Documents</p>
+                                <nav class="workspace-folder-breadcrumbs"
+                                     data-workspace-folder-breadcrumbs
+                                     aria-label="Current folder"
+                                     hidden></nav>
+                                <strong data-document-section-title>{{ workspace_section_label }}</strong>
+                            </div>
+                        </div>
+
+                        {% if workspace_show_listing_filters %}
+                            <div class="workspace-document-recent-utility workspace-document-listing-utility"
+                                 data-document-listing-utility
+                                 aria-label="{{ workspace_section_label }} display controls">
+                                <div class="workspace-document-recent-utility-controls workspace-document-listing-utility-controls workspace-document-control-row"
+                                     data-document-control-row
+                                     data-document-control-row-contract="universal_document_control_row_v1">
+                                    <form class="workspace-document-recent-filters workspace-document-listing-filters workspace-document-control-row-primary"
+                                          data-document-recent-filters
+                                          data-document-listing-filters
+                                          data-document-recent-filter-contract="{{ workspace_listing_filter_contract }}"
+                                          data-document-listing-filter-contract="{{ workspace_listing_filter_contract }}"
+                                          aria-label="Filter {{ workspace_section_label }} items"
+                                          autocomplete="off">
+                                        {% for filter_name, filter_label in [('type', 'Type'), ('people', 'People'), ('modified', 'Modified'), ('source', 'Source')] %}
+                                            <div class="workspace-document-recent-filter workspace-document-listing-filter"
+                                                 data-document-recent-filter-control="{{ filter_name }}"
+                                                 data-document-listing-filter-control="{{ filter_name }}">
+                                                <select id="workspaceRecentFilter{{ filter_name|capitalize }}"
+                                                        class="workspace-document-recent-filter-native workspace-document-listing-filter-native"
+                                                        name="{{ filter_name }}"
+                                                        data-document-recent-filter="{{ filter_name }}"
+                                                        data-document-listing-filter="{{ filter_name }}"
+                                                        aria-hidden="true"
+                                                        tabindex="-1"
+                                                        disabled>
+                                                    <option value="">{{ filter_label }}</option>
+                                                </select>
+
+                                                <button type="button"
+                                                        class="workspace-document-recent-filter-trigger workspace-document-listing-filter-trigger"
+                                                        data-document-recent-filter-trigger="{{ filter_name }}"
+                                                        data-document-listing-filter-trigger="{{ filter_name }}"
+                                                        aria-label="{{ filter_label }} filter"
+                                                        aria-haspopup="listbox"
+                                                        aria-expanded="false"
+                                                        aria-controls="workspaceRecentFilter{{ filter_name|capitalize }}Menu">
+                                                    <span data-document-recent-filter-label
+                                                          data-document-listing-filter-label>{{ filter_label }}</span>
+                                                    <span class="icon workspace-document-recent-filter-chevron workspace-document-listing-filter-chevron"
+                                                          aria-hidden="true">expand_more</span>
+                                                </button>
+
+                                                <div id="workspaceRecentFilter{{ filter_name|capitalize }}Menu"
+                                                     class="workspace-document-recent-filter-menu workspace-document-listing-filter-menu"
+                                                     data-document-recent-filter-menu="{{ filter_name }}"
+                                                     data-document-listing-filter-menu="{{ filter_name }}"
+                                                     role="listbox"
+                                                     aria-label="{{ filter_label }} filter options"
+                                                     hidden></div>
+                                            </div>
+                                        {% endfor %}
+
+
+                                        <button type="button"
+                                                class="workspace-document-recent-filter-clear workspace-document-listing-filter-clear"
+                                                data-document-recent-filter-clear
+                                                data-document-listing-filter-clear
+                                                aria-label="Clear {{ workspace_section_label }} filters"
+                                                title="Clear filters"
+                                                hidden>
+                                            <span class="icon" aria-hidden="true">filter_alt_off</span>
+                                            <span>Clear</span>
+                                        </button>
+
+                                        <span class="workspace-document-recent-filter-status workspace-document-listing-filter-status"
+                                              data-document-recent-filter-status
+                                              data-document-listing-filter-status
+                                              role="status"
+                                              aria-live="polite"></span>
+                                    </form>
+
+                                    <div class="workspace-document-control-row-actions"
+                                         data-document-control-row-actions
+                                         role="toolbar"
+                                         aria-label="{{ workspace_utility_label }}">
+
+                                    <div class="workspace-document-layout-toggle workspace-document-recent-layout-toggle workspace-document-listing-layout-toggle"
+                                         data-document-section-control="all"
+                                         role="group"
+                                         aria-label="File view layout">
+                                        <button type="button"
+                                                class="workspace-document-command workspace-document-layout-button is-active"
+                                                data-document-layout-option="list"
+                                                aria-pressed="true"
+                                                title="List view">
+                                            <span class="icon" aria-hidden="true">view_list</span>
+                                            <span class="visually-hidden">List view</span>
+                                        </button>
+
+                                        <button type="button"
+                                                class="workspace-document-command workspace-document-layout-button"
+                                                data-document-layout-option="grid"
+                                                aria-pressed="false"
+                                                title="Grid view">
+                                            <span class="icon" aria-hidden="true">grid_view</span>
+                                            <span class="visually-hidden">Grid view</span>
+                                        </button>
+                                    </div>
+
+
+                                        <button type="button"
+                                                class="workspace-document-command workspace-document-command-danger workspace-document-listing-command"
+                                                data-document-section-control="trash"
+                                                data-document-empty-trash
+                                                data-document-empty-trash-trigger
+                                                aria-label="Empty trash"
+                                                title="Empty trash"
+                                                {% if not workspace_show_empty_trash_control %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %}>
+                                            <span class="icon" aria-hidden="true">delete_forever</span>
+                                            <span>Empty trash</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        {% endif %}
+
+                        <div class="workspace-document-utility-row workspace-document-selection-row workspace-document-selection-row--drive-utility{% if workspace_section == 'recent' %} workspace-document-selection-row--recent{% endif %}"
+                             data-document-utility-row
+                             data-document-selection-row
+                             data-document-selection-state="empty"
+                             data-document-selection-count="0"
+                             aria-label="Document utility actions">
+                            <div class="workspace-document-default-utility"
+                                 data-document-default-utility-row
+                                 data-document-selection-default-utility
+                                 aria-hidden="false"></div>
+
+                            <aside class="workspace-document-selection-rail workspace-document-selection-action-bar workspace-document-selection-action-bar--drive-row"
+                                   data-document-selection-rail
+                                   data-document-selection-state="empty"
+                                   data-document-selection-count="0"
+                                   role="toolbar"
+                                   aria-label="Selected workspace item actions"
+                                   aria-live="polite"
+                                   aria-hidden="true"
+                                   hidden></aside>
+<div class="workspace-document-sort-control workspace-document-content-sort-control"
+                                 data-document-sort-control
+                                 data-document-sort-contract="authorized_listing_sort_projection_v2"
+                                 data-document-content-order-contract="post_filter_sort_projection_v1"
+                                 data-document-sort-open="false"
+                                 hidden
+                                 aria-hidden="true">
+                                <div class="workspace-document-sort-trigger-host"
+                                     data-document-sort-trigger-host>
+                                    <button id="workspaceDocumentSortTrigger"
+                                            type="button"
+                                            class="workspace-document-sort-trigger workspace-document-content-sort-trigger"
+                                            data-document-sort-trigger
+                                            aria-label="Sort {{ workspace_section_label }} items"
+                                            aria-haspopup="menu"
+                                            aria-expanded="false"
+                                            aria-controls="workspaceDocumentSortMenu"
+                                            title="Sort {{ workspace_section_label }} items">
+                                        <span class="icon workspace-document-sort-button-icon"
+                                              aria-hidden="true">sort</span>
+                                        <span class="workspace-document-sort-button-label">Sort</span>
+                                    </button>
+                                </div>
+
+                                <div id="workspaceDocumentSortMenu"
+                                     class="workspace-document-sort-menu"
+                                     data-document-sort-menu
+                                     role="menu"
+                                     aria-labelledby="workspaceDocumentSortTrigger"
+                                     hidden>
+                                    <div class="workspace-document-sort-menu-group"
+                                         data-document-sort-key-group
+                                         role="group"
+                                         aria-label="Sort by">
+                                        <p class="workspace-document-sort-menu-label">Sort by</p>
+
+                                        {% for sort_value, sort_label in [('name', 'Name'), ('uploaded', 'Date modified'), ('type', 'File type'), ('size', 'File size')] %}
+                                            <button type="button"
+                                                    class="workspace-document-sort-option"
+                                                    data-document-sort-option
+                                                    data-document-sort-field="key"
+                                                    data-document-sort-value="{{ sort_value }}"
+                                                    role="menuitemradio"
+                                                    tabindex="-1"
+                                                    aria-checked="{{ 'true' if sort_value == 'uploaded' else 'false' }}">
+                                                <span>{{ sort_label }}</span>
+                                                <span class="icon workspace-document-sort-option-check"
+                                                      aria-hidden="true">check</span>
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="workspace-document-sort-menu-group"
+                                         data-document-sort-direction-group
+                                         role="group"
+                                         aria-label="Sort direction">
+                                        <p class="workspace-document-sort-menu-label">Sort direction</p>
+
+                                        <button type="button"
+                                                class="workspace-document-sort-option"
+                                                data-document-sort-option
+                                                data-document-sort-field="direction"
+                                                data-document-sort-value="asc"
+                                                role="menuitemradio"
+                                                tabindex="-1"
+                                                aria-checked="false">
+                                            <span data-document-sort-option-label>Oldest to newest</span>
+                                            <span class="icon workspace-document-sort-option-check"
+                                                  aria-hidden="true">check</span>
+                                        </button>
+
+                                        <button type="button"
+                                                class="workspace-document-sort-option"
+                                                data-document-sort-option
+                                                data-document-sort-field="direction"
+                                                data-document-sort-value="desc"
+                                                role="menuitemradio"
+                                                tabindex="-1"
+                                                aria-checked="true">
+                                            <span data-document-sort-option-label>Newest to oldest</span>
+                                            <span class="icon workspace-document-sort-option-check"
+                                                  aria-hidden="true">check</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="workspace-document-sort-menu-group"
+                                         data-document-sort-folders-group
+                                         role="group"
+                                         aria-label="Folders">
+                                        <p class="workspace-document-sort-menu-label">Folders</p>
+
+                                        <button type="button"
+                                                class="workspace-document-sort-option"
+                                                data-document-sort-option
+                                                data-document-sort-field="folders"
+                                                data-document-sort-value="top"
+                                                role="menuitemradio"
+                                                tabindex="-1"
+                                                aria-checked="true">
+                                            <span>On top</span>
+                                            <span class="icon workspace-document-sort-option-check"
+                                                  aria-hidden="true">check</span>
+                                        </button>
+
+                                        <button type="button"
+                                                class="workspace-document-sort-option"
+                                                data-document-sort-option
+                                                data-document-sort-field="folders"
+                                                data-document-sort-value="mixed"
+                                                role="menuitemradio"
+                                                tabindex="-1"
+                                                aria-checked="false">
+                                            <span>Mixed with files</span>
+                                            <span class="icon workspace-document-sort-option-check"
+                                                  aria-hidden="true">check</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                                                    </div>
+
+                        <div class="workspace-document-upload-status d-none"
+                             data-document-upload-status
+                             data-upload-state="idle"
+                             role="status"
+                             aria-live="polite"
+                             aria-atomic="true">
+                            <span class="icon workspace-document-upload-status-icon"
+                                  data-document-upload-status-icon
+                                  aria-hidden="true">upload_file</span>
+
+                            <div class="workspace-document-upload-status-copy">
+                                <p class="workspace-kicker"
+                                   data-document-upload-status-kicker>Upload</p>
+                                <strong data-document-upload-status-title>Ready to receive file</strong>
+                                <span data-document-upload-status-message>
+                                    Upload stores files only. Document actions and reports run only when you start them.
+                                </span>
+                            </div>
+
+                            <div class="workspace-document-upload-progress"
+                                 aria-hidden="true">
+                                <span data-document-upload-progress-bar></span>
+                            </div>
+                        </div>
+
+                        {% if workspace_section == 'files' %}
+                            <div class="workspace-document-drop-overlay"
+                                 data-document-drop-overlay
+                                 hidden
+                                 aria-hidden="true">
+                                <div class="workspace-document-drop-card"
+                                     data-document-drop-card>
+                                    <span class="icon workspace-document-drop-icon"
+                                          aria-hidden="true">drive_folder_upload</span>
+
+                                    <div class="workspace-document-drop-copy">
+                                        <p class="workspace-kicker">Upload</p>
+                                        <strong>Drop files to upload to My Files</strong>
+                                        <span>
+                                            Files are stored only. Document actions and reports run only when you start them.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <p id="workspaceDocumentKeyboardHelp"
+                           class="workspace-document-keyboard-help">
+                            Workspace documents currently supports one selected item at a time. Use arrow keys to move between files and folders, Space to select, Enter to open the authorized item, and Shift+F10 or the Context Menu key for available actions.
+                        </p>
+
+
+                        <div class="workspace-document-file-content"
+                             data-document-file-content>
+                            <div class="workspace-document-list"
+                                 data-document-list
+                                 data-document-list-state="{{ workspace_initial_list_state }}"
+                                 data-document-list-section="{{ workspace_section }}"
+                                 data-document-loading-contract="{{ workspace_loading_contract }}"
+                                 role="region"
+                                 aria-label="Available files and folders"
+                                 aria-describedby="workspaceDocumentKeyboardHelp"
+                                 aria-busy="{{ 'true' if workspace_initial_list_busy else 'false' }}">
+                                <article class="workspace-document-loading-state"
+                                         data-document-loading-state
+                                         role="status"
+                                         aria-live="polite"
+                                         aria-label="Loading {{ workspace_section_label }}">
+                                    <span class="workspace-document-loading-visual"
+                                          aria-hidden="true">
+                                        <span class="icon workspace-document-loading-icon">sync</span>
+                                    </span>
+
+                                    <div class="workspace-document-loading-copy">
+                                        <strong>Loading {{ workspace_section_label }}</strong>
+                                        <p>Checking the latest workspace records.</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="solomonWorkspaceConversation"
+                             class="workspace-command-view-panel workspace-command-chat-panel solomon-workspace-conversation solomon-workspace-conversation--explorer-main{% if workspace_solomon_embedded_active %} solomon-workspace-conversation--source-session{% endif %}"
+                             data-workspace-view-panel="chat"
+                             data-solomon-workspace-conversation
+                             data-solomon-has-history="{{ 'true' if workspace_solomon_embedded_active else 'false' }}"
+                             data-solomon-ai-conversation-id="{{ workspace_solomon_conversation_id }}"
+                             data-solomon-source-count="{{ workspace_solomon_source_count }}"
+                             {% if workspace_active_view != 'chat' %}hidden aria-hidden="true"{% endif %}
+                             aria-label="SolomonAI workspace panel">
+                        <section id="solomonWorkspaceAssistantPanel"
+                                 class="solomon-assistant-panel solomon-assistant-panel--workspace{% if workspace_solomon_embedded_active %} solomon-assistant-panel--source-session{% endif %}"
+                                 aria-label="SolomonAI workspace guidance"
+                                 data-assistant-endpoint="/api/task/execute"
+                                 data-assistant-module="{{ module_slug }}"
+                                 data-assistant-module-label="{{ module_name }}"
+                                 data-assistant-module-status="active"
+                                 data-assistant-live-workflow=""
+                                 data-assistant-dock-state="workspace"
+                                 data-solomon-panel-state="{{ 'document_source_session' if workspace_solomon_embedded_active else 'workspace_no_source' }}"
+                                 data-solomon-source-state="{{ 'attached' if workspace_solomon_embedded_active else 'empty' }}"
+                                 data-solomon-workspace-mode="{{ 'document_source_session' if workspace_solomon_embedded_active else 'command_workspace' }}">
+
+                            <div class="solomon-stage-shell solomon-stage-shell--workspace{% if workspace_solomon_embedded_active %} solomon-stage-shell--source-session{% endif %}">
+                                <section class="solomon-workspace-source-contract"
+                                         data-solomon-source-contract
+                                         data-solomon-source-state="{{ 'attached' if workspace_solomon_embedded_active else 'empty' }}"
+                                         data-solomon-source-count="{{ workspace_solomon_source_count }}"
+                                         aria-label="SolomonAI document context">
+                                    <div class="solomon-workspace-source-contract-header">
+                                        <span class="icon" aria-hidden="true">
+                                            {{ 'description' if workspace_solomon_embedded_active else 'ads_click' }}
+                                        </span>
+
+                                        <div class="solomon-workspace-source-contract-copy">
+                                            <p class="workspace-kicker">Document</p>
+                                            <strong>
+                                                {% if workspace_solomon_embedded_active %}
+                                                    {{ workspace_solomon_source_count }} selected {{ 'document' if workspace_solomon_source_count == 1 else 'documents' }}
+                                                {% else %}
+                                                    No document selected
+                                                {% endif %}
+                                            </strong>
+                                            <span>
+                                                {% if workspace_solomon_embedded_active %}
+                                                    I can help with the selected {{ 'document' if workspace_solomon_source_count == 1 else 'documents' }}. Document actions and reports run only when you start them.
+                                                {% else %}
+                                                    I can help with the workspace now. Select a document when you want file-specific help.
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {% if workspace_solomon_embedded_active %}
+                                        <ul class="solomon-workspace-source-list"
+                                            data-solomon-source-list
+                                            aria-label="Selected SolomonAI documents">
+                                            {% for source_name in workspace_solomon_source_names %}
+                                                {% set source_id = workspace_solomon_source_ids[loop.index0] if workspace_solomon_source_ids|length > loop.index0 else '' %}
+                                                <li class="solomon-workspace-source-item"
+                                                    {% if source_id %}data-document-id="{{ source_id }}"{% endif %}>
+                                                    <span class="icon" aria-hidden="true">description</span>
+                                                    <span>{{ source_name }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+
+                                        <a href="/"
+                                           class="solomon-workspace-source-return"
+                                           data-command-shell-navigation="true"
+                                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                           data-command-route="{{ workspace_home_url }}"
+                                           data-command-module="documents"
+                                           data-command-section="files"
+                                           aria-label="Return to My Files">
+                                            <span class="icon" aria-hidden="true">arrow_back</span>
+                                            <span>My Files</span>
+                                        </a>
+                                    {% endif %}
+                                </section>
+
+                                <div class="solomon-stage-identity solomon-stage-identity--workspace solomon-stage-identity--compact"
+                                     data-solomon-empty-state-identity
+                                     data-solomon-workspace-conversation-empty>
+                                    <div class="solomon-guide-avatar" aria-hidden="true">
+                                        <img src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                                             alt=""
+                                             class="solomon-guide-logo">
+                                    </div>
+
+                                    <div class="solomon-guide-copy">
+                                        <p class="solomon-stage-kicker">SolomonAI</p>
+                                        <h2>
+                                            {% if workspace_solomon_embedded_active %}
+                                                Ready on selected {{ 'document' if workspace_solomon_source_count == 1 else 'documents' }}
+                                            {% else %}
+                                                No document selected
+                                            {% endif %}
+                                        </h2>
+
+                                        <p class="solomon-stage-summary">
+                                            {% if workspace_solomon_embedded_active %}
+                                                Ask about the selected {{ 'document' if workspace_solomon_source_count == 1 else 'documents' }}. Document actions and reports run only when you start them.
+                                            {% else %}
+                                                Ask about the workspace, or select a document for file-specific help.
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div id="solomonWorkspaceConversationMessages"
+                                     class="solomon-guide-thread solomon-guide-thread--workspace solomon-workspace-conversation-thread"
+                                     aria-live="polite"
+                                     aria-atomic="false"
+                                     aria-label="SolomonAI messages"
+                                     data-solomon-workspace-conversation-thread></div>
+
+                                <form id="solomonWorkspaceConversationForm"
+                                      class="solomon-guide-input solomon-guide-input--workspace solomon-workspace-conversation-form"
+                                      aria-label="Ask SolomonAI for workspace guidance"
+                                      autocomplete="off"
+                                      novalidate
+                                      data-solomon-workspace-conversation-form>
+                                    <label class="visually-hidden" for="solomonWorkspaceConversationInput">
+                                        Ask SolomonAI about selected documents or this workspace
+                                    </label>
+
+                                    <input type="text"
+                                           id="solomonWorkspaceConversationInput"
+                                           name="task"
+                                           class="solomon-guide-question-input solomon-workspace-conversation-input"
+                                           placeholder="{{ 'Ask about the selected document...' if workspace_solomon_embedded_active and workspace_solomon_source_count == 1 else 'Ask about the selected documents...' if workspace_solomon_embedded_active else 'Ask about the workspace, or select a document...' }}"
+                                           autocomplete="off"
+                                           aria-label="Ask SolomonAI about selected documents or this workspace"
+                                           spellcheck="false"
+                                           autocapitalize="off"
+                                           autocorrect="off"
+                                           data-solomon-workspace-conversation-input>
+
+                                    <button type="submit"
+                                            id="solomonWorkspaceConversationSend"
+                                            class="solomon-guide-send-button solomon-workspace-conversation-send"
+                                            aria-label="Send message to SolomonAI"
+                                            title="Send message to SolomonAI">
+                                        <span class="icon" aria-hidden="true">send</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="workspace-command-view-panel workspace-command-preview-panel"
+                             data-workspace-view-panel="preview"
+                             {% if workspace_active_view != 'preview' %}hidden aria-hidden="true"{% endif %}
+                             aria-label="{{ module_name }} file and folder details">
+                        <aside class="workspace-document-inspector"
+                               data-document-inspector
+                               aria-label="{{ module_name }} document summary">
+                            <div class="workspace-document-inspector-header">
+                                <p class="workspace-kicker">My Files</p>
+                                <strong>No document selected</strong>
+                            </div>
+
+                            <div class="workspace-document-inspector-body workspace-document-inspector-body--summary-empty">
+                                <span class="icon" aria-hidden="true">ads_click</span>
+                                <p>Select a file or folder from My Files, then use the action menu to open details.</p>
+                            </div>
+                        </aside>
+                    </section>
+
+                    <section class="workspace-command-view-panel workspace-command-reader-panel"
+                             data-workspace-view-panel="reader"
+                             data-workspace-reader-panel
+                             data-workspace-reader-state="{{ workspace_reader_state }}"
+                             {% if workspace_active_view != 'reader' %}hidden aria-hidden="true"{% endif %}
+                             aria-label="{{ module_name }} document reader">
+                        {% if workspace_reader_surface_template %}
+                            {% include workspace_reader_surface_template %}
+                        {% elif workspace_active_view == 'reader' %}
+                            <article class="workspace-document-inspector workspace-document-reader-empty-slot"
+                                     data-workspace-reader-empty-slot
+                                     aria-label="Document reader slot">
+                                <nav class="workspace-document-inspector-navigation workspace-document-breadcrumb"
+                                     aria-label="Content panel location">
+                                    <button type="button"
+                                            class="workspace-document-breadcrumb-link workspace-document-view-button"
+                                            data-workspace-view="files"
+                                            aria-label="Open My Files"
+                                            title="Open My Files">
+                                        <span>My Files</span>
+                                    </button>
+                                    <span class="workspace-document-breadcrumb-separator">/</span>
+                                    <span class="workspace-document-breadcrumb-current">Reader</span>
+                                </nav>
+
+                                <section class="workspace-document-inspector-body workspace-document-inspector-body--properties"
+                                         aria-label="Document reader pending"></section>
+                            </article>
+                        {% endif %}
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+
+</section>

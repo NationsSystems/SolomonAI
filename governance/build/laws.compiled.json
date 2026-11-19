@@ -1,0 +1,14 @@
+{
+  "content_hash": "62685b16927761c8fecfb6970179dd31912defa34c3ffe2dbb1785e44d8689b9",
+  "laws": [
+    {
+      "basis_summary": "This request requires access to real-world, up-to-date information and needs your confirmation to proceed.",
+      "conditions": {
+        "web.external_state_required": "TRUE"
+      },
+      "law_id": "WEB_EXTERNAL_STATE_REQUIRES_ACTION",
+      "verdict": "REQUIRES_ACTION"
+    }
+  ],
+  "version": "62.0.0"
+}

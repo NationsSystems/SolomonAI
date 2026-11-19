@@ -1,0 +1,90 @@
+/* ==========================================================================
+   FILE: portal_workspace_narrow.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMON V3 WORKSPACE RESPONSIVE CONTRACT
+   --------------------------------------------------------------------------
+   Owns viewport-specific adjustments for the active Home rail, file browser,
+   and embedded SolomonAI chat.
+   ========================================================================== */
+
+@media (max-width: 1280px) {
+    .command-center-deck {
+        --solomon-home-rail-width: calc(100vw - 32px);
+        --solomon-home-edge: 16px;
+        --solomon-home-top: 10px;
+        --solomon-home-content-gap: 12px;
+        --solomon-home-sidebar-width: minmax(260px, 300px);
+    }
+
+    .workspace-document-explorer,
+    .precon-app-page--documents .workspace-document-explorer {
+        grid-template-columns: minmax(260px, 300px) minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 980px) {
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon {
+        width: clamp(280px, 44vw, 520px) !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .command-center-deck {
+        --solomon-home-rail-width: calc(100vw - 24px);
+        --solomon-home-edge: 12px;
+        --solomon-home-nav-height: 64px;
+        --solomon-home-content-gap: 10px;
+        --solomon-home-sidebar-width: minmax(0, 1fr);
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar {
+        height: var(--solomon-home-nav-height) !important;
+        min-height: var(--solomon-home-nav-height) !important;
+        width: var(--solomon-home-rail-width) !important;
+    }
+
+    .command-content-layer > .command-main,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-main {
+        width: var(--solomon-home-rail-width) !important;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-system,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-system {
+        min-width: 0 !important;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon {
+        grid-template-columns: 1fr !important;
+        max-width: 42px !important;
+        min-width: 42px !important;
+        width: 42px !important;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon-input,
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon-send,
+    .command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon-copy,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon-input,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon-send,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon-copy {
+        display: none !important;
+    }
+
+    .workspace-document-explorer,
+    .precon-app-page--documents .workspace-document-explorer {
+        grid-template-areas:
+            "collections"
+            "browser" !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-rows: minmax(180px, 0.38fr) minmax(0, 1fr) !important;
+    }
+
+    .workspace-command-chat-panel .solomon-stage-shell--workspace {
+        padding: 18px !important;
+    }
+}

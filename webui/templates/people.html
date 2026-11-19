@@ -1,0 +1,17 @@
+{# -------------------------------------------------------------------
+   FILE: people.html
+   DIRECTORY: webui/templates/
+   -------------------------------------------------------------------
+   People and groups workspace wrapper.
+
+   People and groups are rendered as a mounted Nations Systems workspace
+   surface. This wrapper delegates to index.html so direct render paths use
+   the same shell as async workspace navigation.
+   ------------------------------------------------------------------- #}
+
+{% set active_module = 'people' %}
+{% set workspace_surface_template = 'components/people_workspace.html' %}
+{% set workspace_initial_view = 'files' %}
+{% set workspace_section = 'people' %}
+
+{% extends "index.html" %}

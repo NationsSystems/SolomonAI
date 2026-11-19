@@ -1,0 +1,473 @@
+<!-- -------------------------------------------------------------------
+     FILE: resource_usage_workspace.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set workspace_module = 'resource_usage' %}
+{% set workspace_section = 'resource_usage' %}
+{% set workspace_navigation_contract = 'workspace_module_section_route' %}
+{% set workspace_home_url = url_for('index') %}
+{% set workspace_chat_url = '/ai' %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_shared_url = '/shared' %}
+{% set workspace_recent_url = '/recent' %}
+{% set workspace_trash_url = '/trash' %}
+{% set workspace_active_route = url_for('resource_usage.resource_usage_page') %}
+{% set workspace_folders_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_create_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_contract = 'workspace_folder_v1' %}
+{% set workspace_folder_create_contract = 'workspace_folder_create_v1' %}
+{% set workspace_folder_creation_authority = 'server_owned_location_required' %}
+{% set workspace_folder_create_mode = 'location_required' %}
+{% set workspace_folder_location_required = true %}
+{% set workspace_current_folder_id = '' %}
+{% set workspace_new_folder_summary = 'Open My Files to choose a destination.' %}
+{% set usage_organization_name = resource_usage_organization_name|default('Workspace', true) %}
+{% set usage_reporting_role = resource_usage_reporting_role|default('', true) %}
+{% set usage_default_hours = resource_usage_default_hours|default(24, true) %}
+
+<section class="precon-app-page precon-app-page--documents workspace-command-app resource-usage-command-app"
+         data-workspace-module="{{ workspace_module }}"
+         data-workspace-section="{{ workspace_section }}"
+         data-workspace-route="{{ workspace_active_route }}"
+         data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+         aria-label="Resource usage workspace">
+
+    <section class="precon-workspace-shell precon-workspace-shell--documents workspace-command-shell resource-usage-workspace-shell"
+             aria-label="Resource usage shell">
+
+        <section class="precon-mode-deck precon-command-desk precon-command-desk--documents workspace-command-canvas"
+                 aria-label="Resource usage command workspace">
+
+            <section class="workspace-document-explorer workspace-command-explorer resource-usage-explorer"
+                     data-document-explorer
+                     data-workspace-explorer
+                     data-workspace-view="files"
+                     data-workspace-initial-view="files"
+                     data-workspace-reader-state="idle"
+                     data-workspace-module="{{ workspace_module }}"
+                     data-workspace-label="Resource Usage"
+                     data-workspace-section="{{ workspace_section }}"
+                     data-workspace-route="{{ workspace_active_route }}"
+                     data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+                     data-workspace-folders-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-tree-personal-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-tree-shared-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                     data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                     data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                     data-workspace-folder-creation-authority="{{ workspace_folder_creation_authority }}"
+                     data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                     data-workspace-folder-create-enabled="false"
+                     data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                     data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                     aria-label="Resource usage workspace">
+
+                <aside class="workspace-document-collections"
+                       aria-label="Workspace navigation">
+                    <div class="workspace-document-primary-actions"
+                         aria-label="Workspace primary actions">
+                        <div class="workspace-document-new-menu-shell"
+                             data-document-new-menu
+                             data-document-new-menu-contract="server_rendered_actions_transport_only"
+                             data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                             data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}">
+                            <button type="button"
+                                    id="workspaceDocumentNewMenuTrigger"
+                                    class="workspace-document-command workspace-document-command-primary workspace-document-new-button"
+                                    data-document-section-control="all"
+                                    data-document-new-menu-trigger
+                                    aria-haspopup="menu"
+                                    aria-expanded="false"
+                                    aria-controls="workspaceDocumentNewMenu">
+                                <span class="icon" aria-hidden="true">add</span>
+                                <span>New</span>
+                                <span class="icon workspace-document-new-button-chevron" aria-hidden="true">expand_more</span>
+                            </button>
+
+                            <section id="workspaceDocumentNewMenu"
+                                     class="workspace-document-new-menu"
+                                     data-document-new-menu-panel
+                                     role="menu"
+                                     aria-label="Create, upload, or ask SolomonAI"
+                                     hidden>
+                                <div class="workspace-document-new-menu-group" role="none">
+                                    <p class="workspace-document-new-menu-label" role="presentation">Add</p>
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-upload-placeholder
+                                            data-document-upload-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">upload_file</span>
+                                        <span>
+                                            <strong>Upload file</strong>
+                                            <small>Store files in My Files.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-workspace-new-action="new_folder"
+                                            data-workspace-new-authority="server"
+                                            data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                                            data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                                            data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                                            data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                                            data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                                            data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                                            data-document-new-menu-close
+                                            role="menuitem"
+                                            disabled
+                                            aria-disabled="true">
+                                        <span class="icon" aria-hidden="true">create_new_folder</span>
+                                        <span>
+                                            <strong>New folder</strong>
+                                            <small>{{ workspace_new_folder_summary }}</small>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="workspace-document-new-menu-group" role="none">
+                                    <p class="workspace-document-new-menu-label" role="presentation">AI</p>
+                                    <a href="{{ workspace_chat_url }}"
+                                       class="workspace-document-new-menu-action"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_chat_url }}"
+                                       data-command-module="solomon_ai"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">auto_awesome</span>
+                                        <span>
+                                            <strong>Ask SolomonAI</strong>
+                                            <small>Start a workspace conversation.</small>
+                                        </span>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <nav class="workspace-document-collection-list workspace-document-static-navigation"
+                         data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                         aria-label="Workspace navigation">
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_home_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_home_url }}"
+                           data-command-module="documents"
+                           data-command-section="files"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">home</span>
+                            <span>Home</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_chat_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_chat_url }}"
+                           data-command-module="solomon_ai"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                            <span>Chat</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_people_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_people_url }}"
+                           data-command-module="people"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">groups</span>
+                            <span>People</span>
+                        </a>
+
+                        <div class="workspace-folder-tree"
+                             data-workspace-folder-tree
+                             role="tree"
+                             aria-label="Files and folders">
+                            <div class="workspace-folder-tree-node is-expanded"
+                                 data-workspace-folder-tree-node
+                                 data-workspace-folder-tree-scope="personal"
+                                 data-workspace-folder-id=""
+                                 data-workspace-folder-depth="0">
+                                <div class="workspace-folder-tree-row">
+                                    <button type="button"
+                                            class="workspace-folder-tree-toggle"
+                                            data-workspace-folder-tree-toggle
+                                            aria-expanded="true"
+                                            aria-label="Collapse My Files">
+                                        <span class="icon" aria-hidden="true">expand_more</span>
+                                    </button>
+                                    <a class="workspace-folder-tree-link"
+                                       href="{{ workspace_home_url }}"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_home_url }}"
+                                       data-command-module="documents"
+                                       data-document-section="files"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                                        <span class="icon" aria-hidden="true">folder</span>
+                                        <span>My Files</span>
+                                    </a>
+                                </div>
+                                <div class="workspace-folder-tree-children"
+                                     data-workspace-folder-tree-children
+                                     data-workspace-folder-tree-scope="personal"
+                                     data-workspace-folder-tree-parent-id=""
+                                     data-workspace-folder-tree-loaded="false"
+                                     role="group"></div>
+                            </div>
+
+                            <div class="workspace-folder-tree-node"
+                                 data-workspace-folder-tree-node
+                                 data-workspace-folder-tree-scope="shared"
+                                 data-workspace-folder-id=""
+                                 data-workspace-folder-depth="0">
+                                <div class="workspace-folder-tree-row">
+                                    <button type="button"
+                                            class="workspace-folder-tree-toggle"
+                                            data-workspace-folder-tree-toggle
+                                            aria-expanded="false"
+                                            aria-label="Expand Shared Files">
+                                        <span class="icon" aria-hidden="true">chevron_right</span>
+                                    </button>
+                                    <a class="workspace-folder-tree-link"
+                                       href="{{ workspace_shared_url }}"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_shared_url }}"
+                                       data-command-module="documents"
+                                       data-document-section="shared"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                                        <span class="icon" aria-hidden="true">folder</span>
+                                        <span>Shared Files</span>
+                                    </a>
+                                </div>
+                                <div class="workspace-folder-tree-children"
+                                     data-workspace-folder-tree-children
+                                     data-workspace-folder-tree-scope="shared"
+                                     data-workspace-folder-tree-parent-id=""
+                                     data-workspace-folder-tree-loaded="false"
+                                     role="group"
+                                     hidden></div>
+                            </div>
+                        </div>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_recent_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_recent_url }}"
+                           data-command-module="documents"
+                           data-command-section="recent"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">schedule</span>
+                            <span>Recent</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_trash_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_trash_url }}"
+                           data-command-module="documents"
+                           data-command-section="trash"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">delete_outline</span>
+                            <span>Trash</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="workspace-document-browser workspace-command-main resource-usage-browser"
+                         aria-label="Resource usage history">
+                    <section class="workspace-command-view-panel workspace-command-files-panel resource-usage-workspace-panel"
+                             data-workspace-view-panel="files"
+                             aria-label="Resource usage">
+
+                        <div class="workspace-document-browser-toolbar resource-usage-toolbar">
+                            <div class="workspace-document-browser-heading">
+                                <strong id="resourceUsagePageTitle">Resource Usage</strong>
+                            </div>
+                        </div>
+
+                        <div class="resource-usage-page-scroll">
+                            <div class="resource-usage-page"
+                                  data-resource-usage-page
+                                  data-resource-usage-endpoint="{{ url_for('resource_usage.resource_usage_data') }}"
+                                  data-resource-usage-default-hours="{{ usage_default_hours }}">
+                                <header class="resource-usage-page-header">
+                                    <div>
+                                        <p class="resource-usage-eyebrow">{{ usage_organization_name }}</p>
+                                        <h1>Usage &amp; Capacity</h1>
+                                        <p>See how your workspace is using its qualified AI compute capacity over time.</p>
+                                    </div>
+
+                                    <div class="resource-usage-window-control">
+                                        <span>History</span>
+                                        <div class="workspace-document-listing-filter resource-usage-history-filter"
+                                             data-document-recent-filter-control="History">
+                                            <select class="resource-usage-window-select"
+                                                    data-document-recent-filter
+                                                    data-resource-usage-window
+                                                    aria-label="Resource usage history window">
+                                                <option value="24" selected>Last 24 hours</option>
+                                                <option value="72">Last 3 days</option>
+                                                <option value="168">Last 7 days</option>
+                                            </select>
+
+                                            <button type="button"
+                                                    class="workspace-document-listing-filter-trigger workspace-document-recent-filter-trigger resource-usage-window-trigger"
+                                                    data-document-recent-filter-trigger
+                                                    aria-haspopup="listbox"
+                                                    aria-expanded="false"
+                                                    aria-controls="resourceUsageHistoryMenu">
+                                                <span data-document-recent-filter-label>Last 24 hours</span>
+                                                <span class="icon" aria-hidden="true">expand_more</span>
+                                            </button>
+
+                                            <div id="resourceUsageHistoryMenu"
+                                                 class="workspace-document-recent-filter-menu resource-usage-window-menu"
+                                                 data-document-recent-filter-menu
+                                                 role="listbox"
+                                                 aria-label="Resource usage history window"
+                                                 hidden></div>
+                                        </div>
+                                    </div>
+                                </header>
+
+                                <div class="resource-usage-status"
+                                     data-resource-usage-status
+                                     role="status"
+                                     aria-live="polite">
+                                    Loading usage history…
+                                </div>
+
+                                <section class="resource-usage-metrics" aria-label="Usage summary">
+                                    <article class="resource-usage-metric">
+                                        <span data-resource-usage-occupancy-label>Qualified occupancy</span>
+                                        <strong data-resource-usage-occupancy>—</strong>
+                                        <small data-resource-usage-occupancy-note>Measured from qualified compute execution.</small>
+                                    </article>
+                                    <article class="resource-usage-metric">
+                                        <span>Available headroom</span>
+                                        <strong data-resource-usage-headroom>—</strong>
+                                        <small>Capacity remaining during the latest recorded period.</small>
+                                    </article>
+                                    <article class="resource-usage-metric">
+                                        <span>AI requests</span>
+                                        <strong data-resource-usage-request-count>—</strong>
+                                        <small>Authorized workspace requests in this history window.</small>
+                                    </article>
+                                    <article class="resource-usage-metric">
+                                        <span>Realtime processing P95</span>
+                                        <strong data-resource-usage-realtime-p95>—</strong>
+                                        <small>95% of realtime compute executions completed within this time.</small>
+                                    </article>
+                                </section>
+
+                                <section class="resource-usage-grid">
+                                    <article class="resource-usage-card">
+                                        <header class="resource-usage-card-header">
+                                            <div>
+                                                <h2>Workload mix</h2>
+                                                <p>How your workspace used AI compute during the selected period.</p>
+                                            </div>
+                                        </header>
+                                        <div class="resource-usage-workload-list" data-resource-usage-workloads></div>
+                                    </article>
+
+                                    <article class="resource-usage-card">
+                                        <header class="resource-usage-card-header">
+                                            <div>
+                                                <h2>Responsiveness</h2>
+                                                <p>Realtime queue and execution behavior for user-awaited work.</p>
+                                            </div>
+                                        </header>
+                                        <dl class="resource-usage-detail-list">
+                                            <div>
+                                                <dt>Realtime queue wait P95</dt>
+                                                <dd data-resource-usage-queue-p95>—</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Average realtime execution</dt>
+                                                <dd data-resource-usage-realtime-average>—</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Successful compute operations</dt>
+                                                <dd data-resource-usage-success-count>—</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Failed compute operations</dt>
+                                                <dd data-resource-usage-failure-count>—</dd>
+                                            </div>
+                                        </dl>
+                                    </article>
+                                </section>
+
+                                <section class="resource-usage-card" data-resource-usage-capacity-section>
+                                    <header class="resource-usage-card-header resource-usage-card-header--split">
+                                        <div>
+                                            <h2>Capacity history</h2>
+                                            <p>Qualified compute occupancy, headroom, wait pressure, and backlog by hour.</p>
+                                        </div>
+                                        <span class="resource-usage-scope-badge" data-resource-usage-capacity-scope>Workspace</span>
+                                    </header>
+                                    <div class="resource-usage-table-shell">
+                                        <table class="resource-usage-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Occupancy</th>
+                                                    <th>Headroom</th>
+                                                    <th>Realtime wait</th>
+                                                    <th>Backlog</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-resource-usage-capacity-rows></tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section class="resource-usage-card">
+                                    <header class="resource-usage-card-header">
+                                        <div>
+                                            <h2>Workspace activity</h2>
+                                            <p>Hourly usage attributed to your workspace.</p>
+                                        </div>
+                                    </header>
+                                    <div class="resource-usage-table-shell">
+                                        <table class="resource-usage-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Operations</th>
+                                                    <th>Workloads</th>
+                                                    <th>Average execution</th>
+                                                    <th>Failures</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-resource-usage-activity-rows></tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section class="resource-usage-card" data-resource-usage-groups-section hidden>
+                                    <header class="resource-usage-card-header">
+                                        <div>
+                                            <h2>Group usage</h2>
+                                            <p>Usage is shown only when an execution is explicitly attributable to a Group.</p>
+                                        </div>
+                                    </header>
+                                    <div data-resource-usage-groups></div>
+                                </section>
+
+                                <footer class="resource-usage-footnote">
+                                    <span class="icon" aria-hidden="true">info</span>
+                                    <p>Usage is reported as qualified compute capacity and service activity. Solomon does not use customer-facing token accounting.</p>
+                                </footer>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>

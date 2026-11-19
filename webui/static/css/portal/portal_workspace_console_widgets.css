@@ -1,0 +1,282 @@
+/* ==========================================================================
+   FILE: portal_workspace_console_widgets.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   STARTER / STATUS WIDGETS
+   ========================================================================== */
+
+.command-starter-grid {
+    align-items: stretch;
+}
+
+.workspace-status-card {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-height: 76px;
+    padding: 12px 16px;
+    position: relative;
+}
+
+.command-starter-card {
+    background:
+        radial-gradient(circle at 92% 12%, var(--widget-accent-soft), transparent 38%),
+        linear-gradient(145deg, rgba(8, 13, 24, 0.88), rgba(5, 9, 20, 0.82));
+    border-color: rgba(105, 128, 157, 0.15);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.014),
+        0 10px 24px rgba(0, 0, 0, 0.14);
+    min-height: 106px;
+    overflow: hidden;
+    padding: 13px 16px;
+}
+
+.command-starter-card > div {
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.workspace-status-card strong,
+.command-starter-card strong {
+    color: rgba(239, 245, 255, 0.92);
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 780;
+    line-height: 1.18;
+}
+
+.command-starter-card .workspace-status-label {
+    color: color-mix(in srgb, var(--widget-accent) 72%, #ffffff);
+    font-weight: 820;
+}
+
+.command-starter-card .workspace-status-note,
+.workspace-status-note {
+    color: rgba(203, 213, 225, 0.64);
+    display: block;
+    font-size: 0.69rem;
+    line-height: 1.36;
+    margin-top: 4px;
+    overflow: visible;
+    white-space: normal;
+}
+
+.command-status-icon,
+.command-starter-card .command-status-icon {
+    align-items: center;
+    background:
+        radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.18), transparent 42%),
+        linear-gradient(145deg, var(--widget-accent-soft), rgba(255, 255, 255, 0.018));
+    border: 1px solid var(--widget-accent-border);
+    border-radius: 12px;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--widget-accent) 16%, transparent);
+    color: var(--widget-accent);
+    display: inline-flex;
+    filter: none;
+    flex: 0 0 auto;
+    font-size: 22px !important;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+}
+
+/* ==========================================================================
+   MODULE SUMMARY / FUNCTION CARDS
+   ========================================================================== */
+
+.command-module-intake {
+    border-top: 1px solid rgba(105, 128, 157, 0.12);
+    padding-top: 14px;
+}
+
+.command-review-summary {
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+}
+
+.workspace-output-slot {
+    background:
+        radial-gradient(circle at 100% 0%, var(--widget-accent-soft), transparent 38%),
+        rgba(255, 255, 255, 0.014);
+    border: 1px solid rgba(105, 128, 157, 0.17);
+    border-radius: var(--radius-card);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.012);
+    min-height: 86px;
+    padding: 12px;
+}
+
+.workspace-output-slot span {
+    color: color-mix(in srgb, var(--widget-accent) 70%, #ffffff);
+    font-size: 0.62rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.workspace-output-slot strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: 1.34rem;
+    font-weight: 780;
+    letter-spacing: -0.03em;
+    margin-top: 7px;
+}
+
+.workspace-output-slot em {
+    color: var(--cc-muted);
+    display: block;
+    font-size: 0.72rem;
+    font-style: normal;
+    line-height: 1.35;
+    margin-top: 3px;
+}
+
+.command-function-card {
+    --function-status-accent: var(--console-blue);
+    --function-status-bg: rgba(96, 165, 250, 0.88);
+
+    background:
+        radial-gradient(circle at 18px 18px, color-mix(in srgb, var(--widget-accent) 13%, transparent), transparent 38px),
+        radial-gradient(circle at 88% 14%, rgba(255, 255, 255, 0.025), transparent 34%),
+        linear-gradient(145deg, rgba(8, 13, 24, 0.92), rgba(5, 9, 20, 0.84));
+    min-height: 140px;
+    overflow: hidden;
+    padding: 16px 16px 14px;
+    position: relative;
+}
+
+.command-function-card::before {
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--widget-accent) 58%, transparent), transparent);
+    border-radius: 999px;
+    bottom: 14px;
+    content: "";
+    left: -1px;
+    opacity: 0.65;
+    position: absolute;
+    top: 14px;
+    width: 2px;
+}
+
+.command-function-card-head {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+}
+
+.command-function-icon {
+    align-items: center;
+    background:
+        radial-gradient(circle at 36% 28%, rgba(255, 255, 255, 0.16), transparent 42%),
+        linear-gradient(145deg, var(--widget-accent-soft), rgba(255, 255, 255, 0.018));
+    border: 1px solid var(--widget-accent-border);
+    border-radius: 13px;
+    box-shadow: 0 0 22px color-mix(in srgb, var(--widget-accent) 14%, transparent);
+    color: color-mix(in srgb, var(--widget-accent) 78%, #ffffff);
+    display: inline-flex !important;
+    font-size: 24px !important;
+    height: 42px;
+    justify-content: center;
+    line-height: 1;
+    width: 42px;
+}
+
+.command-function-card strong {
+    font-size: clamp(1.12rem, 1.25vw, 1.48rem);
+    line-height: 1.05;
+    margin: 0 0 8px;
+    max-width: 86%;
+    position: relative;
+    z-index: 2;
+}
+
+.command-function-card em {
+    color: rgba(203, 213, 225, 0.66);
+    font-size: 0.74rem;
+    line-height: 1.38;
+    max-width: 90%;
+    position: relative;
+    z-index: 2;
+}
+
+.command-function-card .workspace-function-status {
+    align-items: center;
+    background: var(--function-status-bg);
+    border: 1px solid color-mix(in srgb, var(--function-status-accent) 78%, #ffffff);
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.28),
+        0 0 24px color-mix(in srgb, var(--function-status-accent) 16%, transparent);
+    color: rgba(2, 6, 23, 0.88);
+    display: flex;
+    font-size: 0.58rem;
+    font-weight: 950;
+    height: 22px;
+    justify-content: center;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    min-width: 142px;
+    padding: 0 16px;
+    pointer-events: none;
+    position: absolute;
+    right: -46px;
+    text-transform: uppercase;
+    top: 16px;
+    transform: rotate(42deg);
+    transform-origin: center;
+    z-index: 4;
+}
+
+.command-function-card .workspace-function-status::before,
+.command-function-card .workspace-function-status::after {
+    background: rgba(255, 255, 255, 0.34);
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+.command-function-card .workspace-function-status::before {
+    top: 3px;
+}
+
+.command-function-card .workspace-function-status::after {
+    bottom: 3px;
+}
+
+.command-function-card .workspace-function-status.is-live {
+    --function-status-accent: var(--console-green);
+    --function-status-bg: rgba(52, 211, 153, 0.92);
+}
+
+.command-function-card .workspace-function-status.is-in-development {
+    --function-status-accent: var(--console-orange);
+    --function-status-bg: rgba(251, 146, 60, 0.94);
+}
+
+.command-function-card .workspace-function-status.is-planned {
+    --function-status-accent: var(--console-blue);
+    --function-status-bg: rgba(96, 165, 250, 0.90);
+}
+
+.command-function-card .workspace-function-status.is-locked {
+    --function-status-accent: var(--console-slate);
+    --function-status-bg: rgba(148, 163, 184, 0.86);
+}
+
+.command-panel-actions {
+    align-items: center;
+    border-top: 1px solid rgba(105, 128, 157, 0.10);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    margin: 16px 0 0;
+    padding-top: 12px;
+}

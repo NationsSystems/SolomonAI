@@ -1,0 +1,422 @@
+/* ==========================================================================
+   FILE: portal_workspace_home.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMON V3 HOME FILE WORKSPACE
+   --------------------------------------------------------------------------
+   Owns the file-browser-first Home surface. This file assumes the shell and
+   navbar have already established the centered rail.
+   ========================================================================== */
+
+.command-home-composition--file-command-center,
+.command-home-main-column--file-command-center,
+.command-home-file-command-shell,
+.precon-app-page,
+.precon-app-page--documents,
+.precon-workspace-shell,
+.precon-workspace-shell--documents,
+.precon-mode-deck,
+.precon-command-desk,
+.precon-command-desk--documents {
+    box-sizing: border-box !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    margin: 0 !important;
+    max-height: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.command-home-composition--file-command-center {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+}
+
+.command-home-main-column--file-command-center {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-self: stretch;
+}
+
+.command-home-file-command-shell,
+.precon-app-page,
+.precon-app-page--documents,
+.precon-workspace-shell,
+.precon-workspace-shell--documents,
+.precon-mode-deck,
+.precon-command-desk,
+.precon-command-desk--documents {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
+.workspace-document-explorer,
+.precon-app-page--documents .workspace-document-explorer {
+    box-sizing: border-box !important;
+    display: grid !important;
+    flex: 1 1 auto !important;
+    gap: 14px !important;
+    grid-template-areas: "collections browser" !important;
+    grid-template-columns: var(--solomon-home-sidebar-width) minmax(0, 1fr) !important;
+    height: 100% !important;
+    margin: 0 !important;
+    max-height: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.workspace-document-collections,
+.precon-app-page--documents .workspace-document-collections {
+    grid-area: collections !important;
+}
+
+.workspace-document-browser,
+.precon-app-page--documents .workspace-document-browser,
+.workspace-command-main {
+    grid-area: browser !important;
+}
+
+.workspace-document-collections,
+.precon-app-page--documents .workspace-document-collections,
+.workspace-document-browser,
+.precon-app-page--documents .workspace-document-browser,
+.workspace-command-main {
+    box-sizing: border-box !important;
+    height: 100% !important;
+    margin: 0 !important;
+    max-height: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.workspace-command-files-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: clamp(16px, 1.5vw, 22px) !important;
+}
+
+.workspace-document-collection-list,
+.precon-app-page--documents .workspace-document-collection-list,
+.workspace-document-list,
+.precon-app-page--documents .workspace-document-list,
+.workspace-document-inspector-body {
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable !important;
+}
+
+.workspace-command-view-panel,
+.workspace-command-files-panel,
+.workspace-command-chat-panel,
+.workspace-command-preview-panel,
+.precon-app-page--documents .workspace-command-view-panel,
+.precon-app-page--documents .workspace-command-files-panel,
+.precon-app-page--documents .workspace-command-chat-panel,
+.precon-app-page--documents .workspace-command-preview-panel {
+    box-sizing: border-box !important;
+    height: 100% !important;
+    margin: 0 !important;
+    max-height: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+.workspace-command-chat-panel,
+.workspace-command-preview-panel {
+    padding: 0 !important;
+}
+
+.workspace-document-browser-toolbar,
+.workspace-document-collections-header,
+.workspace-document-inspector-header {
+    flex: 0 0 auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.workspace-document-browser-toolbar {
+    align-items: center !important;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.10);
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 0 0 18px !important;
+    padding: 0 0 14px !important;
+}
+
+.workspace-document-browser-toolbar strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: 1.02rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+}
+
+.workspace-document-browser-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.workspace-document-command {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.026);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 10px;
+    color: rgba(218, 228, 242, 0.86);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.76rem;
+    font-weight: 800;
+    gap: 7px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 34px;
+    padding: 0 12px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+    white-space: nowrap;
+}
+
+.workspace-document-command .icon {
+    font-size: 17px;
+}
+
+.workspace-document-command:hover,
+.workspace-document-command:focus-visible {
+    background: rgba(34, 211, 238, 0.070);
+    border-color: rgba(34, 211, 238, 0.26);
+    color: rgba(248, 250, 252, 0.96);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.workspace-document-command-primary {
+    background:
+        linear-gradient(180deg, rgba(34, 211, 238, 0.18), rgba(34, 211, 238, 0.08)),
+        rgba(5, 12, 24, 0.82);
+    border-color: rgba(34, 211, 238, 0.34);
+    color: rgba(248, 250, 252, 0.96);
+}
+
+.workspace-document-command-neutral {
+    background: rgba(255, 255, 255, 0.020);
+}
+
+.workspace-document-list {
+    align-content: start;
+    display: grid;
+    flex: 1 1 auto;
+    gap: 14px;
+}
+
+.workspace-document-empty--commercial {
+    align-items: center;
+    background:
+        radial-gradient(circle at 0 0, rgba(34, 211, 238, 0.075), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.026), rgba(255, 255, 255, 0.010)),
+        rgba(4, 9, 19, 0.34);
+    border: 1px solid rgba(105, 128, 157, 0.15);
+    border-radius: 18px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.028),
+        0 18px 38px rgba(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    margin: 6px auto 0;
+    max-width: 980px;
+    min-height: 178px;
+    padding: 24px;
+    position: relative;
+    width: min(100%, 980px);
+}
+
+.workspace-document-empty--commercial::before {
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.42), transparent 72%);
+    border-radius: 999px;
+    content: "";
+    height: 2px;
+    inset: 0 auto auto 24px;
+    opacity: 0.58;
+    position: absolute;
+    width: min(280px, calc(100% - 48px));
+}
+
+.workspace-document-empty-icon {
+    align-items: center;
+    background:
+        linear-gradient(180deg, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.050));
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    color: rgba(34, 211, 238, 0.90);
+    display: inline-flex;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+}
+
+.workspace-document-empty-icon .icon {
+    font-size: 26px;
+}
+
+.workspace-document-empty-copy {
+    min-width: 0;
+}
+
+.workspace-document-empty-copy strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: clamp(1rem, 1.25vw, 1.16rem);
+    font-weight: 820;
+    letter-spacing: -0.020em;
+    line-height: 1.18;
+    margin-bottom: 8px;
+}
+
+.workspace-document-empty-copy span {
+    color: rgba(203, 213, 225, 0.72);
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 540;
+    line-height: 1.52;
+    max-width: 660px;
+}
+
+.workspace-document-empty-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.workspace-document-empty-assurances {
+    align-items: center;
+    border-top: 1px solid rgba(105, 128, 157, 0.11);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    grid-column: 2 / -1;
+    justify-content: flex-start;
+    padding-top: 14px;
+}
+
+.workspace-document-empty-assurances > span {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 999px;
+    color: rgba(180, 194, 214, 0.72);
+    display: inline-flex;
+    font-size: 0.68rem;
+    font-weight: 780;
+    gap: 6px;
+    line-height: 1;
+    min-height: 26px;
+    padding: 0 9px;
+    white-space: nowrap;
+}
+
+.workspace-document-empty-assurances .icon {
+    color: rgba(34, 211, 238, 0.76);
+    font-size: 15px;
+}
+
+.workspace-kicker,
+.workspace-status-label,
+.workspace-metric-label,
+.workspace-output-slot span,
+.workspace-event-label,
+.solomon-guide-message-label {
+    color: var(--cc-muted);
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.workspace-kicker,
+.workspace-status-label,
+.workspace-metric-label {
+    letter-spacing: 0.13em;
+    margin-bottom: 7px;
+}
+
+.workspace-hero-text,
+.workspace-section-heading p,
+.solomon-guide-copy p,
+.solomon-guide-security {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 0;
+}
+
+@media (max-width: 1040px) {
+    .workspace-document-empty--commercial {
+        align-items: stretch;
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .workspace-document-empty-actions {
+        grid-column: 2;
+        justify-content: flex-start;
+    }
+
+    .workspace-document-empty-assurances {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    .workspace-command-files-panel {
+        padding: 14px !important;
+    }
+
+    .workspace-document-browser-toolbar {
+        align-items: stretch !important;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .workspace-document-browser-actions {
+        justify-content: flex-start;
+    }
+
+    .workspace-document-empty--commercial {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 20px;
+    }
+
+    .workspace-document-empty-icon,
+    .workspace-document-empty-actions,
+    .workspace-document-empty-assurances {
+        grid-column: 1;
+    }
+}

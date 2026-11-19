@@ -1,0 +1,92 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.completion.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+/* ============================================================
+   COMPLETED ANALYZE BUTTON STATE
+============================================================ */
+
+#bei-analyze-btn.bei-analyze-complete {
+    color: var(--bei-text-primary);
+    border: 1px solid var(--bei-divider-strong);
+    background: rgba(255, 255, 255, 0.024);
+    box-shadow: none;
+}
+
+#bei-analyze-btn.bei-analyze-complete:hover {
+    color: #ffffff;
+    border-color: rgba(22, 191, 216, 0.42);
+    background: rgba(22, 191, 216, 0.045);
+}
+
+/* ============================================================
+   COMPLETION STATE
+============================================================ */
+
+.bei-completion-state {
+    max-width: 960px;
+    margin: 16px auto 0;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--bei-text-primary);
+    border: 1px solid var(--bei-divider);
+    border-radius: var(--bei-radius-lg);
+    background: rgba(8, 13, 24, 0.88);
+    box-shadow: none;
+    font-family: var(--bei-font-report);
+}
+
+.bei-completion-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.bei-completion-copy strong {
+    color: var(--bei-text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.bei-completion-copy span {
+    color: var(--bei-text-secondary);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.bei-start-new-review-btn {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 14px;
+    color: var(--bei-text-primary);
+    border: 1px solid var(--bei-divider-strong);
+    border-radius: var(--bei-radius-sm);
+    background: rgba(255, 255, 255, 0.024);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+}
+
+.bei-start-new-review-btn:hover {
+    color: #ffffff;
+    border-color: rgba(22, 191, 216, 0.42);
+    background: rgba(22, 191, 216, 0.045);
+}
+
+.bei-start-new-review-btn:focus-visible {
+    outline: 1px solid var(--bei-brand);
+    outline-offset: 3px;
+}

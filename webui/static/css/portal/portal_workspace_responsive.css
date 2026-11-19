@@ -1,0 +1,203 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_responsive.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   LARGE DESKTOP / NARROW ASSISTANT BREAKPOINT
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+    .command-center-layout,
+    .command-center-layout:has(.command-sidebar[data-sidebar-state="collapsed"]) {
+        grid-template-columns: 92px minmax(0, 1fr);
+    }
+
+    .command-main > .solomon-assistant-panel {
+        border: 1px solid rgba(105, 128, 157, 0.16);
+        border-radius: var(--radius-card);
+        grid-column: 2;
+        margin: 0 24px 24px;
+        min-height: 0;
+    }
+
+    .command-solomon-home-card .solomon-assistant-panel {
+        border: 0;
+        border-radius: 0;
+        grid-column: auto;
+        margin: 0;
+        max-width: none;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .solomon-assistant-resize-handle {
+        display: none;
+    }
+
+    .command-sidebar-logo {
+        max-width: 66px;
+        width: 66px;
+    }
+
+    .command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-logo {
+        max-width: 46px;
+        width: 46px;
+    }
+}
+
+/* ==========================================================================
+   TABLET / MID-WIDTH CONSOLE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .command-status-grid,
+    .command-lower-grid,
+    .command-attention-queue {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .command-attention-items {
+        grid-column: 1 / -1;
+    }
+
+    .command-review-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .console-widget-close {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* ==========================================================================
+   MOBILE / COMPACT CONSOLE
+   ========================================================================== */
+
+@media (max-width: 760px) {
+    .command-center-layout,
+    .command-header,
+    .command-panel-header {
+        display: block;
+    }
+
+    .command-sidebar {
+        display: none;
+    }
+
+    .command-main {
+        padding: 22px 16px;
+    }
+
+    .command-global-status,
+    .command-secondary-button {
+        margin-top: 14px;
+    }
+
+    .operations-console-toolbar {
+        justify-content: flex-start;
+        margin: 0 0 12px;
+    }
+
+    .command-status-grid,
+    .command-lower-grid,
+    .command-attention-queue,
+    .command-attention-items {
+        grid-template-columns: 1fr;
+    }
+
+    .command-attention-queue {
+        padding-right: 44px;
+    }
+
+    .command-attention-item {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+    .workspace-status-card {
+        padding-right: 42px;
+    }
+
+    .workspace-command-form {
+        grid-template-columns: 42px 1fr 42px;
+    }
+
+    .workspace-upload-button,
+    .workspace-run-button {
+        height: 42px;
+        width: 42px;
+    }
+
+    .workspace-output-panel {
+        padding-right: 44px;
+    }
+
+    .command-main > .solomon-assistant-panel {
+        margin: 0 16px 24px;
+    }
+
+    .command-solomon-home-card .solomon-assistant-panel {
+        margin: 0;
+        width: 100%;
+    }
+
+    .solomon-guide-avatar {
+        height: 96px;
+        width: 96px;
+    }
+
+    .solomon-guide-avatar .icon {
+        font-size: 46px;
+    }
+
+    .solomon-guide-thread {
+        max-height: 42vh;
+    }
+}
+
+/* ==========================================================================
+   SMALL MOBILE SAFETY
+   ========================================================================== */
+
+@media (max-width: 520px) {
+    .command-main {
+        padding: 18px 12px;
+    }
+
+    .command-hero-copy h1 {
+        font-size: clamp(28px, 10vw, 36px);
+    }
+
+    .workspace-hero-text {
+        font-size: 12.5px;
+    }
+
+    .workspace-output-panel,
+    .workspace-status-card,
+    .command-attention-queue {
+        border-radius: 5px;
+    }
+
+    .command-panel-header h2,
+    .workspace-section-heading h2 {
+        font-size: 1.1rem;
+    }
+
+    .workspace-output-slot strong {
+        font-size: 1.35rem;
+    }
+
+    .command-main > .solomon-assistant-panel {
+        margin: 0 12px 20px;
+        padding: 20px 12px;
+    }
+
+    .command-solomon-home-card .solomon-assistant-panel {
+        margin: 0;
+        padding-left: 9px;
+        padding-right: 9px;
+        width: 100%;
+    }
+}

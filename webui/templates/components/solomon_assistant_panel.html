@@ -1,0 +1,97 @@
+<!-- -------------------------------------------------------------------
+     FILE: solomon_assistant_panel.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set solomon_current_module = current_module|default(active_module|default('home')) %}
+{% set solomon_module_label = display_module_label|default(module_label|default('Workspace')) %}
+{% set solomon_workflow_available = workflow_available|default(false) %}
+
+<aside id="solomonAssistantPanel"
+       class="solomon-assistant-panel solomon-assistant-panel--drawer solomon-assistant-panel--workspace-window"
+       aria-label="SolomonAI workspace window"
+       data-assistant-endpoint="/api/task/execute"
+       data-assistant-module="{{ solomon_current_module }}"
+       data-assistant-module-label="{{ solomon_module_label }}"
+       data-assistant-module-status="{% if solomon_workflow_available %}active{% else %}workspace{% endif %}"
+       data-assistant-live-workflow="{% if solomon_current_module == 'preconstruction' and solomon_workflow_available %}pre_award_risk_review{% endif %}"
+       data-assistant-dock-state="workspace_window"
+       data-solomon-panel-state="workspace_window_idle"
+       data-solomon-workspace-mode="workspace_window"
+       data-solomon-response-mode="workspace_window"
+       data-solomon-drawer
+       data-solomon-drawer-state="closed"
+       hidden>
+
+    <div class="solomon-sidecar-shell solomon-workspace-window-shell">
+        <header class="solomon-sidecar-header solomon-workspace-window-header"
+                data-solomon-window-drag-handle>
+            <div class="solomon-sidecar-identity">
+                <div class="solomon-sidecar-avatar" aria-hidden="true">
+                    <img src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                         alt=""
+                         class="solomon-guide-logo">
+                </div>
+
+                <div class="solomon-sidecar-titleblock">
+                    <p class="solomon-sidecar-kicker">Nations Systems</p>
+
+                    <div class="solomon-sidecar-title-row">
+                        <h2>SolomonAI</h2>
+                        <span class="solomon-sidecar-status-pill">Workspace window</span>
+                    </div>
+
+                    <span class="solomon-sidecar-context">Workspace response layer.</span>
+                </div>
+            </div>
+
+            <div class="solomon-workspace-window-controls"
+                 aria-label="SolomonAI window controls">
+                <button type="button"
+                        class="solomon-window-minimize"
+                        data-solomon-window-minimize
+                        aria-label="Minimize SolomonAI window"
+                        title="Minimize SolomonAI">
+                    <span class="icon" aria-hidden="true">remove</span>
+                </button>
+
+                <button type="button"
+                        id="solomonAssistantDrawerClose"
+                        class="solomon-sidecar-close"
+                        data-solomon-drawer-close
+                        aria-label="Close SolomonAI window"
+                        title="Close SolomonAI">
+                    <span class="icon" aria-hidden="true">close</span>
+                </button>
+            </div>
+        </header>
+
+        <section id="solomonAssistantMessages"
+                 class="solomon-sidecar-thread solomon-drawer-thread"
+                 aria-label="SolomonAI workspace response"
+                 aria-live="polite"
+                 aria-atomic="false"
+                 data-solomon-assistant-thread
+                 data-solomon-drawer-thread>
+
+            <article class="solomon-sidecar-empty-state solomon-drawer-empty-state"
+                     data-solomon-drawer-empty>
+                <div class="solomon-sidecar-empty-mark" aria-hidden="true">
+                    <span class="icon">auto_awesome</span>
+                </div>
+
+                <div class="solomon-sidecar-empty-copy">
+                    <strong>SolomonAI workspace window.</strong>
+                    <p>
+                        Responses from SolomonAI appear here as movable workspace objects while the file explorer and Preview panel remain available.
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <div class="solomon-sidecar-command-note"
+             aria-label="SolomonAI window status">
+            <span data-solomon-drawer-status>Ready for SolomonAI response</span>
+        </div>
+    </div>
+</aside>

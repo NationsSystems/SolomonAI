@@ -1,0 +1,13 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_theme.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* This file is now a loader only */
+
+@import url("./portal_base.css");
+@import url("./portal_nav.css");
+@import url("./portal_text.css");
+@import url("./portal_bei.css");
+@import url("./portal_results.css");
+@import url("./portal_history.css");

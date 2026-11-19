@@ -1,0 +1,1117 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_viewer_library.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+
+/* ==========================================================================
+   FIRST-PAINT NEUTRAL DOCUMENT WORKSPACE
+   --------------------------------------------------------------------------
+   The document workspace must not expose transitional, stale, or partially
+   hydrated content while the browser is resolving the initial page state.
+   A short CSS-only first-paint hold keeps the workspace neutral without
+   depending on JavaScript to hide content after the user has already seen it.
+   ========================================================================== */
+
+@keyframes workspace-document-first-paint-hold {
+    0%,
+    99% {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+    }
+}
+
+.precon-app-page--documents .workspace-document-explorer,
+.workspace-command-app[data-workspace-module="documents"] .workspace-document-explorer {
+    animation: workspace-document-first-paint-hold 140ms steps(1, end) 0s 1 both !important;
+}
+
+.precon-app-page--documents .workspace-document-explorer[hidden],
+.workspace-command-app[data-workspace-module="documents"] .workspace-document-explorer[hidden] {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .precon-app-page--documents .workspace-document-explorer,
+    .workspace-command-app[data-workspace-module="documents"] .workspace-document-explorer {
+        animation-duration: 90ms !important;
+    }
+}
+
+/* ==========================================================================
+   WORKSPACE DOCUMENT LIBRARY BAR
+   ========================================================================== */
+
+.workspace-document-collections,
+.precon-app-page--documents .workspace-document-explorer .workspace-document-collections {
+    animation: none !important;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(22, 191, 216, 0.030), transparent 30%),
+        linear-gradient(180deg, rgba(8, 13, 24, 0.82), rgba(3, 8, 18, 0.70)) !important;
+    border-color: rgba(105, 148, 238, 0.12) !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    gap: 12px !important;
+    grid-area: collections !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    padding: 14px 13px !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* ==========================================================================
+   PRIMARY WORKSPACE ACTION
+   ========================================================================== */
+
+.workspace-document-primary-actions,
+.precon-app-page--documents .workspace-document-primary-actions {
+    animation: none !important;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.085);
+    box-sizing: border-box;
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    padding: 0 2px 12px;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-new-menu-shell,
+.precon-app-page--documents .workspace-document-new-menu-shell {
+    box-sizing: border-box;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+    z-index: 40;
+}
+
+.workspace-document-new-button,
+.precon-app-page--documents .workspace-document-new-button {
+    align-items: center;
+    animation: none !important;
+    appearance: none;
+    background: linear-gradient(135deg, rgba(22, 191, 216, 0.20), rgba(14, 116, 144, 0.16)) !important;
+    border: 1px solid rgba(103, 232, 249, 0.26) !important;
+    border-radius: 13px !important;
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.026) inset !important;
+    color: rgba(238, 252, 255, 0.98) !important;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 820;
+    gap: 10px;
+    justify-content: flex-start;
+    letter-spacing: -0.008em;
+    min-height: 42px;
+    min-width: 0;
+    padding: 0 14px !important;
+    text-align: left;
+    text-decoration: none !important;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+}
+
+.workspace-document-new-button:hover,
+.workspace-document-new-button:focus,
+.workspace-document-new-button:focus-visible,
+.workspace-document-new-button:active,
+.workspace-document-new-menu-shell[data-document-new-menu-state="open"] .workspace-document-new-button,
+.precon-app-page--documents .workspace-document-new-button:hover,
+.precon-app-page--documents .workspace-document-new-button:focus,
+.precon-app-page--documents .workspace-document-new-button:focus-visible,
+.precon-app-page--documents .workspace-document-new-button:active,
+.precon-app-page--documents .workspace-document-new-menu-shell[data-document-new-menu-state="open"] .workspace-document-new-button {
+    background: linear-gradient(135deg, rgba(22, 191, 216, 0.20), rgba(14, 116, 144, 0.16)) !important;
+    border-color: rgba(103, 232, 249, 0.26) !important;
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.026) inset !important;
+    color: rgba(238, 252, 255, 0.98) !important;
+    outline: 0 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-new-menu-shell[data-document-new-menu-state="open"] .workspace-document-new-button,
+.precon-app-page--documents .workspace-document-new-menu-shell[data-document-new-menu-state="open"] .workspace-document-new-button {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-color: rgba(103, 232, 249, 0.32) !important;
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.20),
+        0 0 0 1px rgba(255, 255, 255, 0.026) inset !important;
+}
+
+.workspace-document-new-button .icon,
+.precon-app-page--documents .workspace-document-new-button .icon {
+    align-items: center;
+    animation: none !important;
+    background: rgba(238, 252, 255, 0.11);
+    border: 1px solid rgba(238, 252, 255, 0.14);
+    border-radius: 999px;
+    color: rgba(238, 252, 255, 0.98);
+    display: inline-flex;
+    font-size: 18px;
+    height: 25px;
+    justify-content: center;
+    transform: none !important;
+    transition: none !important;
+    width: 25px;
+}
+
+.workspace-document-new-button .workspace-document-new-button-chevron,
+.precon-app-page--documents .workspace-document-new-button .workspace-document-new-button-chevron {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: rgba(204, 251, 255, 0.72) !important;
+    font-size: 18px;
+    height: 20px;
+    margin-left: auto;
+    width: 20px;
+}
+
+.workspace-document-new-menu,
+.precon-app-page--documents .workspace-document-new-menu {
+    animation: none !important;
+    background: var(--solomon-menu-surface, rgb(5, 11, 22)) !important;
+    border: 1px solid rgba(103, 232, 249, 0.24);
+    border-radius: 0 0 13px 13px;
+    border-top: 0;
+    box-shadow:
+        0 22px 48px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(255, 255, 255, 0.022) inset;
+    box-sizing: border-box;
+    color: rgba(238, 252, 255, 0.96);
+    display: grid;
+    gap: 8px;
+    left: 0;
+    max-height: min(520px, calc(100vh - 180px));
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 9px;
+    position: absolute;
+    scrollbar-gutter: stable;
+    top: 100%;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+    z-index: 100;
+}
+
+.workspace-document-new-menu[hidden],
+.precon-app-page--documents .workspace-document-new-menu[hidden] {
+    display: none !important;
+}
+
+.workspace-document-new-menu-group,
+.precon-app-page--documents .workspace-document-new-menu-group {
+    border-bottom: 1px solid rgba(105, 128, 157, 0.10);
+    display: grid;
+    gap: 3px;
+    padding: 0 0 8px;
+}
+
+.workspace-document-new-menu-group:last-child,
+.precon-app-page--documents .workspace-document-new-menu-group:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.workspace-document-new-menu-label,
+.precon-app-page--documents .workspace-document-new-menu-label {
+    color: rgba(180, 194, 214, 0.58);
+    font-size: 0.58rem;
+    font-weight: 820;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin: 0;
+    padding: 7px 9px 5px;
+    text-transform: uppercase;
+}
+
+.workspace-document-new-menu-action,
+.precon-app-page--documents .workspace-document-new-menu-action {
+    align-items: center;
+    animation: none !important;
+    appearance: none;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    color: rgba(226, 232, 240, 0.88) !important;
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    gap: 10px;
+    grid-template-columns: 30px minmax(0, 1fr);
+    min-height: 48px;
+    padding: 8px 9px;
+    text-align: left;
+    text-decoration: none !important;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+}
+
+.workspace-document-new-menu-action:hover,
+.workspace-document-new-menu-action:focus,
+.workspace-document-new-menu-action:focus-visible,
+.workspace-document-new-menu-action:active,
+.precon-app-page--documents .workspace-document-new-menu-action:hover,
+.precon-app-page--documents .workspace-document-new-menu-action:focus,
+.precon-app-page--documents .workspace-document-new-menu-action:focus-visible,
+.precon-app-page--documents .workspace-document-new-menu-action:active {
+    background: rgba(34, 211, 238, 0.075) !important;
+    border-color: rgba(34, 211, 238, 0.13) !important;
+    box-shadow: none !important;
+    color: rgba(248, 250, 252, 0.98) !important;
+    outline: 0 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-new-menu-action .icon,
+.precon-app-page--documents .workspace-document-new-menu-action .icon {
+    align-items: center;
+    background: rgba(15, 23, 42, 0.68);
+    border: 1px solid rgba(125, 211, 252, 0.15);
+    border-radius: 10px;
+    color: rgba(125, 211, 252, 0.78);
+    display: inline-flex;
+    font-size: 18px;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+.workspace-document-new-menu-action > span:not(.icon),
+.precon-app-page--documents .workspace-document-new-menu-action > span:not(.icon) {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.workspace-document-new-menu-action strong,
+.precon-app-page--documents .workspace-document-new-menu-action strong {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 0.78rem;
+    font-weight: 820;
+    letter-spacing: -0.006em;
+    line-height: 1.1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-new-menu-action small,
+.precon-app-page--documents .workspace-document-new-menu-action small {
+    color: rgba(180, 194, 214, 0.64);
+    font-size: 0.66rem;
+    font-weight: 650;
+    letter-spacing: -0.002em;
+    line-height: 1.2;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   STATIC DOCUMENT NAVIGATION
+   ========================================================================== */
+
+.workspace-document-collection-list,
+.precon-app-page--documents .workspace-document-collection-list,
+.workspace-document-static-navigation {
+    align-content: start;
+    animation: none !important;
+    display: grid !important;
+    gap: 3px !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0 2px 4px 0;
+    scrollbar-gutter: stable !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-collection,
+.precon-app-page--documents .workspace-document-collection,
+.workspace-document-static-link {
+    align-items: center;
+    animation: none !important;
+    appearance: none;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    color: rgba(203, 213, 225, 0.76) !important;
+    cursor: pointer !important;
+    display: grid;
+    font: inherit;
+    gap: 10px;
+    grid-template-columns: 21px minmax(0, 1fr) auto;
+    min-height: 35px;
+    padding: 0 10px;
+    pointer-events: auto !important;
+    position: relative;
+    text-align: left;
+    text-decoration: none !important;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+}
+
+.workspace-document-collection *,
+.workspace-document-static-link * {
+    pointer-events: none !important;
+}
+
+.workspace-document-collection,
+.workspace-document-collection *,
+.workspace-document-collection::before,
+.workspace-document-collection::after,
+.workspace-document-static-link,
+.workspace-document-static-link *,
+.workspace-document-static-link::before,
+.workspace-document-static-link::after {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-collection::before,
+.workspace-document-collection::after,
+.workspace-document-static-link::before,
+.workspace-document-static-link::after {
+    content: none !important;
+    display: none !important;
+}
+
+.workspace-document-collection:hover,
+.workspace-document-collection:focus,
+.workspace-document-collection:focus-visible,
+.workspace-document-collection:active,
+.workspace-document-static-link:hover,
+.workspace-document-static-link:focus,
+.workspace-document-static-link:focus-visible,
+.workspace-document-static-link:active {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: rgba(203, 213, 225, 0.76) !important;
+    outline: 0 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-collection.is-active,
+.workspace-document-static-link.is-active,
+.precon-app-page--documents .workspace-document-collection.is-active {
+    background: rgba(34, 211, 238, 0.085) !important;
+    border-color: rgba(34, 211, 238, 0.14) !important;
+    box-shadow: none !important;
+    color: rgba(248, 250, 252, 0.96) !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-collection.is-active:hover,
+.workspace-document-collection.is-active:focus,
+.workspace-document-collection.is-active:focus-visible,
+.workspace-document-collection.is-active:active,
+.workspace-document-static-link.is-active:hover,
+.workspace-document-static-link.is-active:focus,
+.workspace-document-static-link.is-active:focus-visible,
+.workspace-document-static-link.is-active:active {
+    background: rgba(34, 211, 238, 0.085) !important;
+    border-color: rgba(34, 211, 238, 0.14) !important;
+    box-shadow: none !important;
+    color: rgba(248, 250, 252, 0.96) !important;
+    outline: 0 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-collection .icon,
+.workspace-document-static-link .icon {
+    color: rgba(125, 211, 252, 0.66) !important;
+    font-size: 18px;
+    justify-self: center;
+}
+
+.workspace-document-collection.is-active .icon,
+.workspace-document-static-link.is-active .icon {
+    color: rgba(34, 211, 238, 0.88) !important;
+}
+
+.workspace-document-collection span:not(.icon),
+.workspace-document-static-link span:not(.icon) {
+    font-size: 0.76rem;
+    font-weight: 760;
+    letter-spacing: -0.004em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-collection em,
+.workspace-document-static-link em {
+    background: rgba(148, 163, 184, 0.060) !important;
+    border: 1px solid rgba(148, 163, 184, 0.075) !important;
+    border-radius: 999px;
+    color: rgba(180, 194, 214, 0.58) !important;
+    font-size: 0.56rem;
+    font-style: normal;
+    font-weight: 820;
+    line-height: 1;
+    max-width: 74px;
+    overflow: hidden;
+    padding: 4px 6px;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.workspace-document-collection.is-active em,
+.workspace-document-static-link.is-active em {
+    background: rgba(34, 211, 238, 0.10) !important;
+    border-color: rgba(34, 211, 238, 0.18) !important;
+    color: rgba(204, 251, 255, 0.78) !important;
+}
+
+
+/* ========================================================================== 
+   AUTHORIZED FOLDER TREE AND BREADCRUMBS
+   ========================================================================== */
+
+.workspace-folder-navigation {
+    border-top: 1px solid rgba(105, 128, 157, 0.08);
+    display: grid;
+    gap: 2px;
+    margin-top: 4px;
+    padding-top: 7px;
+}
+
+.workspace-folder-tree-node {
+    min-width: 0;
+}
+
+.workspace-folder-tree-row {
+    align-items: center;
+    display: grid;
+    gap: 2px;
+    grid-template-columns: 24px minmax(0, 1fr);
+    min-width: 0;
+    padding-left: calc(max(0, var(--workspace-folder-tree-depth, 0) - 1) * 14px);
+}
+
+.workspace-folder-tree-toggle {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+    color: rgba(148, 180, 214, 0.68);
+    cursor: pointer;
+    display: inline-flex;
+    height: 26px;
+    justify-content: center;
+    padding: 0;
+    width: 24px;
+}
+
+.workspace-folder-tree-toggle:hover,
+.workspace-folder-tree-toggle:focus-visible {
+    background: rgba(79, 195, 247, 0.08);
+    color: rgba(125, 211, 252, 0.94);
+    outline: 0;
+}
+
+.workspace-folder-tree-toggle:disabled,
+.workspace-folder-tree-toggle[aria-disabled="true"] {
+    cursor: default;
+    opacity: 0.28;
+}
+
+.workspace-folder-tree-toggle .icon {
+    font-size: 17px;
+}
+
+.workspace-folder-tree-link {
+    align-items: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: rgba(203, 213, 225, 0.76);
+    display: grid;
+    gap: 9px;
+    grid-template-columns: 20px minmax(0, 1fr);
+    min-height: 32px;
+    min-width: 0;
+    padding: 0 9px;
+    text-decoration: none;
+}
+
+.workspace-folder-tree-link:hover,
+.workspace-folder-tree-link:focus-visible {
+    background: rgba(34, 211, 238, 0.055);
+    border-color: rgba(34, 211, 238, 0.09);
+    color: rgba(235, 247, 255, 0.92);
+    outline: 0;
+}
+
+.workspace-folder-tree-link.is-active,
+.workspace-folder-tree-node.is-active > .workspace-folder-tree-row .workspace-folder-tree-link {
+    background: rgba(34, 211, 238, 0.085);
+    border-color: rgba(34, 211, 238, 0.14);
+    color: rgba(248, 250, 252, 0.96);
+}
+
+.workspace-folder-tree-link .icon {
+    color: rgb(96, 223, 255);
+    filter: var(--workspace-folder-shadow);
+    font-size: 0;
+    height: 14px;
+    justify-self: center;
+    line-height: 1;
+    position: relative;
+    width: 17px;
+}
+
+.workspace-folder-tree-link .icon::before,
+.workspace-folder-tree-link .icon::after {
+    background: currentColor;
+    content: "";
+    display: block;
+    position: absolute;
+}
+
+.workspace-folder-tree-link .icon::before {
+    border-radius: 2px 2px 0 0;
+    height: 5px;
+    left: 1px;
+    top: 1px;
+    width: 8px;
+}
+
+.workspace-folder-tree-link .icon::after {
+    border-radius: 2px;
+    bottom: 0;
+    height: 10px;
+    left: 0;
+    width: 17px;
+}
+
+.workspace-folder-tree-link:hover .icon,
+.workspace-folder-tree-link:focus-visible .icon {
+    color: var(--workspace-folder-outline-hover);
+    filter: var(--workspace-folder-shadow-hover);
+}
+
+.workspace-folder-tree-link.is-active .icon,
+.workspace-folder-tree-node.is-active > .workspace-folder-tree-row .workspace-folder-tree-link .icon {
+    color: var(--workspace-folder-outline-active);
+    filter: var(--workspace-folder-shadow-active);
+}
+
+.workspace-folder-tree-link span:not(.icon) {
+    font-size: 0.74rem;
+    font-weight: 740;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-folder-tree-children {
+    display: grid;
+    gap: 1px;
+    min-width: 0;
+}
+
+.workspace-folder-tree-children[hidden] {
+    display: none !important;
+}
+
+.workspace-folder-tree-node.is-loading > .workspace-folder-tree-row .workspace-folder-tree-toggle .icon {
+    animation: workspace-folder-tree-spin 0.8s linear infinite;
+}
+
+@keyframes workspace-folder-tree-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.workspace-folder-breadcrumbs {
+    align-items: center;
+    color: rgba(178, 199, 224, 0.78);
+    display: flex;
+    flex-wrap: nowrap;
+    font-size: 1rem;
+    font-weight: 760;
+    gap: 5px;
+    line-height: 1.25;
+    margin: 2px 0 5px;
+    min-height: 30px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.workspace-folder-breadcrumbs[hidden] {
+    display: none !important;
+}
+
+.workspace-folder-breadcrumb {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: rgba(96, 223, 255, 0.88);
+    display: inline-flex;
+    flex: 0 1 auto;
+    max-width: min(280px, 34vw);
+    min-width: 0;
+    overflow: hidden;
+    padding: 4px 7px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition:
+        background-color 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease;
+    white-space: nowrap;
+}
+
+.workspace-folder-breadcrumbs > .workspace-folder-breadcrumb:first-child {
+    padding-left: 0;
+}
+
+.workspace-folder-breadcrumb:hover,
+.workspace-folder-breadcrumb:focus-visible {
+    background: rgba(96, 223, 255, 0.10);
+    border-color: rgba(96, 223, 255, 0.22);
+    color: rgba(168, 240, 255, 0.98);
+    outline: 0;
+}
+
+.workspace-folder-breadcrumb:focus-visible {
+    box-shadow:
+        0 0 0 2px rgba(7, 14, 27, 0.96),
+        0 0 0 4px rgba(96, 223, 255, 0.24);
+}
+
+.workspace-folder-breadcrumb.is-current {
+    color: rgba(241, 247, 255, 0.96);
+    cursor: default;
+    flex: 0 1 auto;
+    font-weight: 800;
+}
+
+.workspace-folder-breadcrumb.is-current:hover {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(241, 247, 255, 0.96);
+}
+
+.workspace-folder-breadcrumb-separator {
+    color: rgba(96, 223, 255, 0.46);
+    flex: 0 0 auto;
+    font-size: 18px;
+}
+
+.workspace-document-browser-heading[data-workspace-folder-heading-state="breadcrumbs"] {
+    gap: 2px;
+}
+
+.workspace-document-browser-heading[data-workspace-folder-heading-state="breadcrumbs"] > [data-document-section-title][hidden] {
+    display: none !important;
+}
+
+@media (max-width: 860px) {
+    .workspace-folder-breadcrumbs {
+        font-size: 0.92rem;
+        gap: 3px;
+    }
+
+    .workspace-folder-breadcrumb {
+        max-width: min(210px, 38vw);
+        padding-inline: 5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspace-folder-tree-node.is-loading > .workspace-folder-tree-row .workspace-folder-tree-toggle .icon {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
+   WORKSPACE FOLDER DIALOG
+   ========================================================================== */
+
+.workspace-folder-dialog-backdrop {
+    align-items: center;
+    animation: none !important;
+    background:
+        radial-gradient(circle at 50% 35%, rgba(34, 211, 238, 0.12), transparent 34%),
+        rgba(1, 5, 13, 0.72);
+    box-sizing: border-box;
+    display: grid;
+    inset: 0;
+    justify-items: center;
+    padding: 24px;
+    position: fixed;
+    transform: none !important;
+    transition: none !important;
+    z-index: 7000;
+}
+
+.workspace-folder-dialog {
+    animation: none !important;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.10), transparent 42%),
+        linear-gradient(180deg, rgba(8, 13, 24, 0.98), rgba(4, 9, 19, 0.98));
+    border: 1px solid rgba(103, 232, 249, 0.16);
+    border-radius: 18px;
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(255, 255, 255, 0.032) inset;
+    box-sizing: border-box;
+    color: rgba(238, 252, 255, 0.96);
+    display: grid;
+    gap: 16px;
+    max-width: min(420px, calc(100vw - 32px));
+    min-width: min(380px, calc(100vw - 32px));
+    padding: 20px;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-folder-dialog-title {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 1rem;
+    font-weight: 850;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.workspace-folder-dialog-description {
+    color: rgba(180, 194, 214, 0.68);
+    font-size: 0.78rem;
+    font-weight: 620;
+    letter-spacing: -0.004em;
+    line-height: 1.45;
+    margin: -9px 0 0;
+}
+
+.workspace-folder-dialog-form {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+}
+
+.workspace-folder-dialog-label {
+    color: rgba(226, 232, 240, 0.82);
+    display: grid;
+    font-size: 0.70rem;
+    font-weight: 800;
+    gap: 7px;
+    letter-spacing: 0.015em;
+}
+
+.workspace-folder-dialog-input {
+    appearance: none;
+    background: rgba(3, 8, 18, 0.72);
+    border: 1px solid rgba(125, 211, 252, 0.16);
+    border-radius: 12px;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.020) inset,
+        0 12px 22px rgba(0, 0, 0, 0.18);
+    box-sizing: border-box;
+    color: rgba(248, 250, 252, 0.96);
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 720;
+    min-height: 42px;
+    outline: 0;
+    padding: 0 12px;
+    width: 100%;
+}
+
+.workspace-folder-dialog-input:focus,
+.workspace-folder-dialog-input:focus-visible {
+    border-color: rgba(34, 211, 238, 0.34);
+    box-shadow:
+        0 0 0 3px rgba(34, 211, 238, 0.10),
+        0 0 0 1px rgba(255, 255, 255, 0.025) inset,
+        0 12px 22px rgba(0, 0, 0, 0.18);
+}
+
+.workspace-folder-dialog-input[aria-invalid="true"] {
+    border-color: rgba(248, 113, 113, 0.38);
+    box-shadow:
+        0 0 0 3px rgba(248, 113, 113, 0.10),
+        0 0 0 1px rgba(255, 255, 255, 0.025) inset,
+        0 12px 22px rgba(0, 0, 0, 0.18);
+}
+
+.workspace-folder-dialog-error {
+    color: rgba(254, 202, 202, 0.90);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: -2px 0 0;
+    min-height: 1em;
+}
+
+.workspace-folder-dialog-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.workspace-folder-dialog-button {
+    align-items: center;
+    animation: none !important;
+    appearance: none;
+    border-radius: 11px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 820;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    min-height: 38px;
+    min-width: 86px;
+    padding: 0 14px;
+    text-decoration: none;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-folder-dialog-button-secondary {
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    color: rgba(226, 232, 240, 0.84);
+}
+
+.workspace-folder-dialog-button-primary {
+    background: linear-gradient(135deg, rgba(22, 191, 216, 0.28), rgba(14, 116, 144, 0.22));
+    border: 1px solid rgba(103, 232, 249, 0.28);
+    color: rgba(238, 252, 255, 0.98);
+}
+
+.workspace-folder-dialog-button:hover,
+.workspace-folder-dialog-button:focus,
+.workspace-folder-dialog-button:focus-visible,
+.workspace-folder-dialog-button:active {
+    outline: 0;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-folder-dialog-button-secondary:hover,
+.workspace-folder-dialog-button-secondary:focus,
+.workspace-folder-dialog-button-secondary:focus-visible,
+.workspace-folder-dialog-button-secondary:active {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: rgba(148, 163, 184, 0.24);
+    color: rgba(248, 250, 252, 0.94);
+}
+
+.workspace-folder-dialog-button-primary:hover,
+.workspace-folder-dialog-button-primary:focus,
+.workspace-folder-dialog-button-primary:focus-visible,
+.workspace-folder-dialog-button-primary:active {
+    background: linear-gradient(135deg, rgba(22, 191, 216, 0.32), rgba(14, 116, 144, 0.24));
+    border-color: rgba(103, 232, 249, 0.34);
+    color: rgba(238, 252, 255, 1);
+}
+
+.workspace-folder-dialog-button:disabled,
+.workspace-folder-dialog-button[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+/* ==========================================================================
+   UNIFIED WORKSPACE CONTEXT MENU CONTRACT
+   --------------------------------------------------------------------------
+   Location context menus use the same surface, action-row, icon, focus,
+   disabled, and elevation treatment as file and folder action menus.
+   The optional location heading and action summaries remain available to
+   assistive technology without creating a second visual menu language.
+   ========================================================================== */
+
+.workspace-document-background-menu {
+    animation: none !important;
+    background: var(--solomon-menu-surface, rgb(5, 11, 22)) !important;
+    border: 1px solid rgba(105, 148, 238, 0.20);
+    border-radius: 12px;
+    box-shadow:
+        0 22px 52px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.84);
+    display: grid;
+    gap: 2px;
+    left: var(--workspace-document-background-menu-x, 16px);
+    max-width: min(320px, calc(100vw - 28px));
+    min-width: 270px;
+    padding: 7px;
+    position: fixed;
+    top: var(--workspace-document-background-menu-y, 16px);
+    transform: none !important;
+    transition: none !important;
+    width: max-content;
+    z-index: 7200;
+}
+
+.workspace-document-background-menu[hidden] {
+    display: none !important;
+}
+
+.workspace-document-background-menu-label {
+    color: rgba(180, 194, 214, 0.58);
+    font-size: 0.58rem;
+    font-weight: 820;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin: 0;
+    padding: 7px 11px 5px;
+    text-transform: uppercase;
+}
+
+.workspace-document-background-menu-action {
+    align-items: center;
+    animation: none !important;
+    appearance: none;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 9px;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.84) !important;
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 760;
+    gap: 11px;
+    grid-template-columns: 24px minmax(0, 1fr);
+    min-height: 36px;
+    overflow: hidden;
+    padding: 0 11px;
+    position: relative;
+    text-align: left;
+    text-decoration: none !important;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+    z-index: 1;
+}
+
+.workspace-document-background-menu-action:hover,
+.workspace-document-background-menu-action:focus,
+.workspace-document-background-menu-action:focus-visible,
+.workspace-document-background-menu-action:active {
+    background: rgba(22, 191, 216, 0.11) !important;
+    border-color: rgba(22, 191, 216, 0.20) !important;
+    box-shadow: none !important;
+    color: rgba(248, 250, 252, 0.96) !important;
+    outline: 0 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.workspace-document-background-menu-action .icon {
+    color: rgba(125, 211, 252, 0.78);
+    font-size: 18px;
+    line-height: 1;
+}
+
+.workspace-document-background-menu-action > span:not(.icon) {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.workspace-document-background-menu-action strong {
+    color: inherit;
+    display: block;
+    font: inherit;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-background-menu-action small {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.workspace-document-background-menu-action:disabled,
+.workspace-document-background-menu-action[aria-disabled="true"] {
+    color: rgba(148, 163, 184, 0.42) !important;
+    cursor: not-allowed;
+    opacity: 0.58;
+    pointer-events: none;
+}
+
+.workspace-document-background-menu-action:disabled .icon,
+.workspace-document-background-menu-action[aria-disabled="true"] .icon {
+    color: rgba(148, 163, 184, 0.38);
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+.workspace-document-collection-list::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+.workspace-document-collection-list::-webkit-scrollbar-track {
+    background: rgba(3, 8, 18, 0.16);
+}
+
+.workspace-document-collection-list::-webkit-scrollbar-thumb {
+    background: rgba(122, 145, 176, 0.18);
+    border: 2px solid rgba(3, 8, 18, 0.18);
+    border-radius: 999px;
+}
+
+.workspace-document-collection-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(122, 145, 176, 0.18);
+}

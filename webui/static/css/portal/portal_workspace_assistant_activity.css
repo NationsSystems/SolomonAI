@@ -1,0 +1,178 @@
+/* ==========================================================================
+   FILE: portal_workspace_assistant_activity.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant Activity, Suggestions, and Security
+   ========================================================================== */
+
+/* ==========================================================================
+   STRUCTURED ACTIVITY CARDS
+   ========================================================================== */
+
+.solomon-structured-block-summary {
+    color: rgba(201, 212, 229, 0.72);
+    font-size: 0.82rem;
+    line-height: 1.48;
+    margin: 0 !important;
+    max-width: 760px;
+}
+
+.solomon-structured-card-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.solomon-structured-card {
+    background: rgba(5, 10, 20, 0.62);
+    border: 1px solid rgba(105, 148, 238, 0.14);
+    border-radius: 13px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 8px;
+    min-height: 170px;
+    padding: 14px;
+}
+
+.solomon-structured-card-icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.08);
+    border: 1px solid rgba(22, 191, 216, 0.20);
+    border-radius: 10px;
+    color: var(--brand-cyan);
+    display: inline-flex;
+    font-size: 20px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.solomon-structured-card-status {
+    color: rgba(22, 191, 216, 0.72);
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 820;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.solomon-structured-card strong {
+    color: rgba(248, 250, 252, 0.94);
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 760;
+    line-height: 1.2;
+}
+
+.solomon-structured-card em {
+    color: rgba(201, 212, 229, 0.66);
+    display: block;
+    font-size: 0.76rem;
+    font-style: normal;
+    line-height: 1.42;
+}
+
+.solomon-structured-card-action {
+    align-self: end;
+    background: rgba(22, 191, 216, 0.075);
+    border: 1px solid rgba(22, 191, 216, 0.18);
+    border-radius: 8px;
+    color: rgba(239, 245, 255, 0.88);
+    cursor: pointer;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-weight: 720;
+    line-height: 1;
+    min-height: 30px;
+    padding: 8px 10px;
+    text-align: left;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+}
+
+.solomon-structured-card-action:hover,
+.solomon-structured-card-action:focus-visible {
+    background: var(--brand-cyan-soft);
+    border-color: rgba(22, 191, 216, 0.44);
+    color: #ffffff;
+    outline: none;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   THINKING STATE OWNERSHIP
+   --------------------------------------------------------------------------
+   Do not style .solomon-guide-message--thinking here.
+
+   The active document workspace Thinking state is owned by:
+
+       portal_workspace_document_viewer_chat.css
+
+   Previous rules in this file forced Thinking into a small 220px widget with
+   its own avatar, bubble, and dots layout. That was breaking the workspace
+   chat rail while SolomonAI was responding.
+   ========================================================================== */
+
+/* Intentionally no Thinking-state rules in this file. */
+
+/* ==========================================================================
+   SUGGESTION OWNERSHIP
+   --------------------------------------------------------------------------
+   Do not style .solomon-guide-suggestions or .solomon-guide-suggestion here.
+
+   The active document workspace follow-up prompt chips are owned by:
+
+       portal_workspace_document_viewer_chat.css
+
+   Previous broad rules in this file made workspace follow-up prompts look like
+   cyan product links. That conflicts with the current ChatGPT-style contract:
+   follow-up chips are neutral prompt buttons, not links, routes, or workflow
+   actions.
+   ========================================================================== */
+
+/* Intentionally no broad suggestion rules in this file. */
+
+/* ==========================================================================
+   SECURITY
+   ========================================================================== */
+
+.solomon-guide-security {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+}
+
+.command-home-main-column--solomon-centered:not([data-active-command-category="home"]) .solomon-guide-security {
+    display: none;
+}
+
+.solomon-guide-security .icon {
+    color: var(--brand-text-dim);
+    flex: 0 0 auto;
+    font-size: 15px;
+}
+
+.solomon-guide-security a {
+    color: rgba(201, 212, 229, 0.54);
+    font-family: var(--font-ui, inherit);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.35;
+    text-decoration: none;
+    transition:
+        color 0.14s ease,
+        text-shadow 0.14s ease;
+}
+
+.solomon-guide-security a:hover,
+.solomon-guide-security a:focus-visible {
+    color: var(--brand-cyan);
+    outline: none;
+    text-shadow: 0 0 10px rgba(22, 191, 216, 0.18);
+}

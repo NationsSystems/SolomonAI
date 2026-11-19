@@ -1,0 +1,169 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Solomon Metrics{% endblock %}
+
+{% block page_header %}Solomon Metrics{% endblock %}
+
+{% block content %}
+
+<!-- ⭐ UPDATED: Use metrics-grid instead of diagnostic-grid -->
+<div class="admin-section metrics-grid">
+
+    <!-- Summary Cards -->
+    <div class="diagnostic-card">
+        <div id="summary" class="summary-cards metrics-grid">
+            <div class="metric-card">
+                <h6>Total Tasks</h6>
+                <h3 id="total-tasks">—</h3>
+            </div>
+            <div class="metric-card">
+                <h6>Success Rate</h6>
+                <h3 id="success-rate">—%</h3>
+            </div>
+            <div class="metric-card">
+                <h6>Average Duration</h6>
+                <h3 id="avg-duration">— ms</h3>
+            </div>
+            <div class="metric-card">
+                <h6>Last Updated</h6>
+                <h3 id="last-updated">—</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reinforcement Learning Summary -->
+    <div class="diagnostic-card">
+        <section id="reinforcement-summary" class="reinforcement-section">
+            <h2>Reinforcement Learning Summary</h2>
+
+            <div class="reinforcement-cards">
+                <div class="metric-card highlight">
+                    <h6>Average Weight</h6>
+                    <h3 id="reinforce-avg-weight">—</h3>
+                </div>
+                <div class="metric-card">
+                    <h6>Top Positive Intent</h6>
+                    <h3 id="reinforce-top-positive">—</h3>
+                    <p id="reinforce-top-positive-weight" class="metric-sub">Weight: —</p>
+                </div>
+                <div class="metric-card">
+                    <h6>Top Negative Intent</h6>
+                    <h3 id="reinforce-top-negative">—</h3>
+                    <p id="reinforce-top-negative-weight" class="metric-sub">Weight: —</p>
+                </div>
+                <div class="metric-card">
+                    <h6>Total Records</h6>
+                    <h3 id="reinforce-total">—</h3>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h5>Reinforcement Weight Distribution</h5>
+                    <canvas id="chart-reinforcement"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Adaptive Router Bias Overview -->
+    <div class="diagnostic-card">
+        <section id="adaptive-bias-section" class="adaptive-section">
+            <h2>Adaptive Router Bias Overview</h2>
+
+            <div class="bias-cards">
+                <div class="metric-card">
+                    <h6>Deterministic Bias</h6>
+                    <h3 id="bias-deterministic">—</h3>
+                </div>
+                <div class="metric-card">
+                    <h6>Semantic Bias</h6>
+                    <h3 id="bias-semantic">—</h3>
+                </div>
+                <div class="metric-card">
+                    <h6>LLM Bias</h6>
+                    <h3 id="bias-llm">—</h3>
+                </div>
+                <div class="metric-card highlight">
+                    <h6>Average Bias</h6>
+                    <h3 id="bias-average">—</h3>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h5>Adaptive Router Bias Distribution</h5>
+                    <canvas id="chart-adaptive"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Adaptive Reasoning Weights -->
+    <div class="diagnostic-card">
+        <section id="adaptive-weights-section" class="adaptive-section">
+            <h2>Adaptive Reasoning Weights</h2>
+
+            <div class="adaptive-container">
+                <div class="chart-box">
+                    <h5>Reasoning Weight Evolution</h5>
+                    <canvas id="weightsChart"></canvas>
+                </div>
+
+                <div class="metric-table-box">
+                    <table id="weightsTable" class="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Mode</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Charts -->
+    <div class="diagnostic-card">
+        <div class="chart-container">
+            <div class="chart-box">
+                <h5>Reasoning Source</h5>
+                <canvas id="chart-reasoning"></canvas>
+            </div>
+
+            <div class="chart-box">
+                <h5>Intent Frequency</h5>
+                <canvas id="chart-intents"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Tasks -->
+    <div class="diagnostic-card">
+        <h2>Recent Tasks</h2>
+
+        <table class="metrics-table diagnostic-pre">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Intent</th>
+                    <th>Success</th>
+                    <th>Source</th>
+                    <th>Duration (ms)</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="recent-tasks-body"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/metrics.js') }}"></script>
+
+{% endblock %}

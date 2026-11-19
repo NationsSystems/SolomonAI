@@ -1,0 +1,29 @@
+# SolomonAI Release 1.0 — candidate application dependencies (Windows / Python 3.11)
+# The isolated pilot booted, used files/auth, and completed local chat; not all paths tested.
+# Dependency versions are a candidate baseline, not a clean-install-tested lock.
+# Pydantic 2.14.3 and SQLAlchemy 2.1.9 were observed in the successful release pilot.
+# For model inference packages see requirements-ai.txt. Weights are separate.
+
+Flask==3.1.2
+Flask-Session==0.8.0
+waitress==3.0.2
+SQLAlchemy==2.1.9
+PyMySQL==1.1.2
+pydantic==2.14.3
+redis==8.0.1
+requests==2.32.5
+psutil==7.2.2
+concurrent-log-handler==0.9.31
+faiss-cpu==1.16.0
+numpy==2.4.6
+pandas==3.1.1
+openpyxl==3.1.5
+xlrd==2.0.2
+python-docx==1.2.0
+pypdf==7.1.1
+PyPDF2==3.0.1
+pypdfium2==5.15.2
+reportlab==5.1.0
+tabulate==0.10.0
+pyodbc==5.5.0
+alembic==1.20.1

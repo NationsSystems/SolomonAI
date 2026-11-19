@@ -1,0 +1,153 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Meta Diagnostics · Solomon Admin{% endblock %}
+
+{% block page_header %}Meta-Cognition Diagnostics{% endblock %}
+
+{% block content %}
+
+<!-- ⭐ Unified badge under the shared H1 -->
+<div style="
+    margin-top:-10px;
+    margin-bottom:20px;
+    display:flex;
+    justify-content:center;
+">
+    <a href="/admin/diagnostics/meta/full"
+       id="metaBadge"
+       class="pending-badge"
+       style="
+           background: var(--admin-card-bg);
+           color: var(--text-dim);
+           padding: 6px 14px;
+           border-radius: 14px;
+           font-weight: bold;
+           font-size: 0.85rem;
+           text-decoration:none;
+       ">
+        ⏳
+    </a>
+</div>
+
+<div class="admin-section diagnostic-grid">
+
+    <!-- Meta Context -->
+    <div class="diagnostic-card">
+        <h2>🧩 Meta Context</h2>
+        <pre id="metaContext" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Meta Snapshot -->
+    <div class="diagnostic-card">
+        <h2>📸 Meta Snapshot</h2>
+        <pre id="metaSnapshot" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Trends -->
+    <div class="diagnostic-card">
+        <h2>📊 Trend Analysis</h2>
+        <pre id="metaTrends" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Pattern Classifier -->
+    <div class="diagnostic-card">
+        <h2>🔍 Pattern Classification</h2>
+        <pre id="metaPatterns" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Anomaly Detector -->
+    <div class="diagnostic-card">
+        <h2>⚠️ Anomaly Detection</h2>
+        <pre id="metaAnomalies" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Memory Integration -->
+    <div class="diagnostic-card">
+        <h2>🧠 Memory Integration</h2>
+        <pre id="metaMemory" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Summary Printer -->
+    <div class="diagnostic-card" style="grid-column: 1 / -1;">
+        <h2>🧾 Meta Summary</h2>
+        <pre id="metaSummary" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadMeta() {
+    try {
+        // ⭐ UPDATED ENDPOINT — Full meta diagnostics
+        const res = await fetch("/admin/diagnostics/meta/full");
+        const json = await res.json();
+
+        document.getElementById("metaContext").textContent =
+            JSON.stringify(json.context || {}, null, 2);
+
+        document.getElementById("metaSnapshot").textContent =
+            JSON.stringify(json.snapshot || {}, null, 2);
+
+        document.getElementById("metaTrends").textContent =
+            JSON.stringify(json.trends || {}, null, 2);
+
+        document.getElementById("metaPatterns").textContent =
+            JSON.stringify(json.patterns || {}, null, 2);
+
+        document.getElementById("metaAnomalies").textContent =
+            JSON.stringify(json.anomalies || {}, null, 2);
+
+        // Memory integrated result
+        document.getElementById("metaMemory").textContent =
+            JSON.stringify(json.memory_integrated || {}, null, 2);
+
+        // Summary text
+        document.getElementById("metaSummary").textContent =
+            json.summary || "(summary unavailable)";
+
+        // ⭐ Update Meta Badge
+        const metaBadge = document.getElementById("metaBadge");
+        if (metaBadge) {
+            if (json.available) {
+                metaBadge.textContent = "OK";
+                metaBadge.style.background = "var(--pri)";
+                metaBadge.style.color = "#000";
+            } else {
+                metaBadge.textContent = "ERR";
+                metaBadge.style.background = "var(--danger)";
+                metaBadge.style.color = "#fff";
+            }
+        }
+
+    } catch (err) {
+        const ids = [
+            "metaContext",
+            "metaSnapshot",
+            "metaTrends",
+            "metaPatterns",
+            "metaAnomalies",
+            "metaMemory",
+            "metaSummary"
+        ];
+        ids.forEach(id => {
+            document.getElementById(id).textContent =
+                "Error loading meta diagnostics: " + err;
+
+            const metaBadge = document.getElementById("metaBadge");
+            if (metaBadge) {
+                metaBadge.textContent = "ERR";
+                metaBadge.style.background = "var(--danger)";
+                metaBadge.style.color = "#fff";
+            }
+        });
+    }
+}
+
+// Initial load + refresh every 20 seconds
+loadMeta();
+setInterval(loadMeta, 20000);
+</script>
+{% endblock %}

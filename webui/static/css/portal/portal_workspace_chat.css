@@ -1,0 +1,24 @@
+/* ==========================================================================
+   FILE: portal_workspace_chat.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SOLOMONAI EMBEDDED WORKSPACE CHAT — LEGACY COMPATIBILITY GUARD
+   --------------------------------------------------------------------------
+   The active document workspace chat is owned by:
+
+       portal_workspace_document_viewer_chat.css
+
+   This file must not style .workspace-command-chat-panel, pending messages,
+   the document chat rail, the document chat input, or the workspace chat
+   history layout.
+
+   Reason:
+   Older broad selectors in this file were loaded after the document viewer
+   chat contract and were overriding the Thinking state with a different grid,
+   width, and input layout. That caused the GUI to look correct after response
+   but break while SolomonAI was thinking.
+   ========================================================================== */
+
+/* Intentionally no active document-chat rules in this file. */

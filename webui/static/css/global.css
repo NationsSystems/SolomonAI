@@ -1,0 +1,378 @@
+/* ==========================================================================
+   FILE: webui/static/css/global.css
+   DIRECTORY: webui/static/css/
+   ========================================================================== */
+
+/* ==========================================================================
+   GLOBAL / ADMIN THEME
+   ========================================================================== */
+
+:root {
+    --solomon-menu-surface: rgb(5, 11, 22);
+}
+
+/* ==========================================================================
+   APP SHELL — SINGLE SOURCE OF LAYOUT TRUTH
+   ========================================================================== */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Universal box model */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Prevent media/content from exceeding viewport */
+img, video, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ==========================================================================
+   APP SHELL STRUCTURE
+   ========================================================================== */
+
+.app-shell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+   MAIN CONTENT FLOW
+   ========================================================================== */
+
+.app-shell main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-start;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding-top: clamp(24px, 4vh, 40px); 
+    padding-bottom: 24px;
+}
+
+/* ==========================================================================
+   AUTH CENTERING MODE
+   ========================================================================== */
+
+.auth-page {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   UNIVERSAL FOOTER
+   ========================================================================== */
+
+footer {
+    text-align: center;
+    margin-top: auto;
+    padding: 14px 0;
+    color: var(--text-dim);
+    width: 100%;
+}
+
+/* ==========================================================================
+   ADMIN / LEGACY THEME VARIABLES
+   ========================================================================== */
+
+.admin-theme {
+    --pri:        #2563eb;
+    --pri-dark:   #0084C9;
+    --pri-light:  #64CFFE;
+
+    --sec:        #3a78ff;
+
+    --bg:         #fefeff;
+    --bg-dark:    #1e1e1e;
+    --bg-card:    #ffffff;
+    --bg-panel:   #ffffff;
+    --bg-nav:     #ffffff;
+
+    --text:        #1e1e1e;
+    --text-main:   #1e1e1e;
+    --text-soft:   #707581;
+    --text-muted:  #777777;
+    --text-dim:    #525252;
+    --text-logo:   #003549;
+
+    --border:        #dedede;
+    --border-light:  #e6e6e6;
+    --admin-border:  #dedede;
+
+    --accent:        #19AFFA;
+    --glow:          rgba(0, 0, 0, 0.06);
+    --shadow-lg:     0 10px 30px rgba(0, 0, 0, 0.10);
+    --shadow-md:     0 6px 18px  rgba(0, 0, 0, 0.08);
+    --shadow-sm:     0 3px 9px   rgba(0, 0, 0, 0.06);
+
+    --success:       #10D49A;
+    --danger:        #FF4C4C;
+    --warning:       #FFB020;
+
+    --admin-bg:         #f2f2f2;
+    --admin-card-bg:    #ffffff;
+    --admin-pri:        #19AFFA;
+    --admin-sec:        #2563eb;
+    --admin-text:       #1e1e1e;
+    --admin-shadow:     rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   UNIVERSAL NAVBAR
+   ========================================================================== */
+
+.app-nav {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: var(--bg-nav);
+    border-bottom: 2px solid var(--border);
+    box-shadow: 0 0 10px var(--shadow-sm);
+
+    font-family: inherit;
+    padding: 0 20px;
+
+    min-width: 0;
+}
+
+.app-nav .nav-left {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    min-width: 0;
+}
+
+.app-nav .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    min-width: 0;
+}
+
+.app-nav .nav-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.app-nav .nav-logo-text {
+    font-size: 1.3em;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.app-nav .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+
+    min-width: 0;
+    overflow: hidden;
+}
+
+.app-nav .nav-item {
+    color: var(--text-dim);
+    font-size: 1.1em;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.app-nav .logout {
+    color: var(--danger);
+}
+
+/* ==========================================================================
+   PORTAL NAVBAR THEME
+   ========================================================================== */
+
+body.portal-blue-theme .app-nav {
+    position: relative;
+    min-height: 64px;
+    background:
+        linear-gradient(180deg, rgba(7, 17, 31, 0.98), rgba(5, 14, 25, 0.96));
+    border-bottom: 1px solid rgba(22, 199, 255, 0.24);
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+body.portal-blue-theme .app-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: rgba(22, 199, 255, 0.58);
+    opacity: 0.82;
+    pointer-events: none;
+}
+
+body.portal-blue-theme .app-nav .nav-left,
+body.portal-blue-theme .app-nav .nav-right {
+    padding: 11px 0;
+}
+
+body.portal-blue-theme .app-nav .nav-logo img {
+    height: 38px;
+}
+
+body.portal-blue-theme .app-nav .nav-logo-text {
+    color: #16c7ff;
+    /*font-weight: 500;*/
+    letter-spacing: 0.045em;
+    text-shadow: 0 0 8px rgba(22, 199, 255, 0.18);
+}
+
+body.portal-blue-theme .app-nav .nav-item {
+    color: #b7c9dd;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition:
+        color 0.15s ease,
+        opacity 0.15s ease;
+}
+
+body.portal-blue-theme .app-nav .nav-item:hover {
+    color: #eaf6ff;
+}
+
+body.portal-blue-theme .app-nav .logout {
+    color: #b7c9dd;
+}
+
+body.portal-blue-theme .app-nav .logout:hover {
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   ADMIN OVERRIDE FIX
+   ========================================================================== */
+
+body.admin-theme .app-nav,
+body.admin-theme .app-nav .nav-item,
+body.admin-theme .app-nav .nav-right a {
+    font-family: inherit !important;
+}
+
+/* ==========================================================================
+   TOAST SYSTEM
+   ========================================================================== */
+
+#toastContainer {
+    position: fixed;
+    top: 100px !important;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+
+    color: #e6f6ff;
+
+    background: rgba(25, 175, 250, 0.12);
+    border: 1px solid rgba(25, 175, 250, 0.35);
+
+    backdrop-filter: blur(10px);
+
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 0.25s ease;
+
+    box-shadow:
+        0 0 12px rgba(25, 175, 250, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.25);
+
+    pointer-events: auto;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.admin-theme .toast.info {
+    background: var(--pri) !important;
+}
+
+.admin-theme .toast.success {
+    background: var(--success);
+}
+
+.admin-theme .toast.error {
+    background: var(--danger);
+}
+
+.admin-theme .toast.warning {
+    background: var(--warning);
+}
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+}
+
+/* ==========================================================================
+   SIMPLE LOOPING LOADER
+   ========================================================================== */
+
+.bei-progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bei-progress-bar {
+    position: absolute;
+    height: 100%;
+    width: 40%;
+    background: #19AFFA;
+    border-radius: 4px;
+}
+
+.bei-progress-animate {
+    animation: bei-slide 1s linear infinite;
+}
+
+@keyframes bei-slide {
+    0% { left: -40%; }
+    100% { left: 100%; }
+}

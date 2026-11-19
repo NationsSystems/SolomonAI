@@ -1,0 +1,330 @@
+{# -------------------------------------------------------------------
+   FILE: login.html
+   DIRECTORY: webui/templates/
+   ------------------------------------------------------------------- #}
+
+{% extends "portal_base.html" %}
+
+{% block title %}Sign In · Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_auth.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% set auth_state = auth_context if auth_context is mapping else {} %}
+{% set post_login_target = post_login_redirect or auth_state.get('post_login_redirect') or '' %}
+{% set is_invitation_flow = auth_state.get('is_invitation_flow') %}
+{% set invited_email = auth_state.get('invited_email') or '' %}
+{% set suggested_email = auth_state.get('suggested_email') or '' %}
+{% set external_link_pending = auth_state.get('external_link_pending') %}
+{% set external_notice = auth_state.get('external_notice') or '' %}
+
+<div class="portal-auth-page">
+    <div class="auth-container">
+
+        {% if is_invitation_flow %}
+            <div class="auth-context-panel" data-auth-context="people-invitation">
+                <p class="auth-context-kicker">Nations Systems</p>
+                <h1 class="auth-title">Sign in to continue</h1>
+                <p class="auth-context-copy">
+                    Use the account for {{ invited_email }}. Nations Systems will finish
+                    the shared Group access automatically after sign in.
+                </p>
+            </div>
+        {% else %}
+            <h1 class="auth-title">Sign In</h1>
+        {% endif %}
+
+
+        {% if external_notice %}
+            <div class="auth-context-note auth-external-notice" role="status">
+                {{ external_notice }}
+            </div>
+        {% endif %}
+
+
+        <form id="loginForm" class="auth-form" novalidate>
+            <input
+                type="hidden"
+                id="postLoginRedirect"
+                value="{{ post_login_target }}"
+            >
+
+            <label for="email">Email</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email"
+                autocomplete="username"
+                value="{{ invited_email or suggested_email }}"
+                {% if (is_invitation_flow and invited_email) or (external_link_pending and suggested_email) %}readonly aria-readonly="true"{% endif %}
+                required
+            >
+            <div id="error-email" class="error-text" style="display:none;"></div>
+
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <span class="toggle-password" id="togglePassword">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor"
+                         width="22" height="22" class="eye-icon">
+                         <path stroke-linecap="round" stroke-linejoin="round"
+                               d="M2.036 12.322a1 1 0 010-.644C3.423 7.886 7.355 4.75 
+                                  12 4.75c4.645 0 8.577 3.136 9.964 6.928a1 1 0 010 .644C20.577 
+                                  16.114 16.645 19.25 12 19.25c-4.645 0-8.577-3.136-9.964-6.928z" />
+                         <path stroke-linecap="round" stroke-linejoin="round"
+                               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </span>
+            </div>
+
+            <div id="error-password" class="error-text" style="display:none;"></div>
+
+            <button id="loginBtn" class="auth-btn" type="submit">
+                Sign In
+            </button>
+
+        </form>
+
+        {% set external_auth = auth_state.get('external_authentication', {}) %}
+        {% set google_auth = external_auth.get('google', {}) %}
+        {% set microsoft_auth = external_auth.get('microsoft', {}) %}
+
+        <div class="auth-divider" role="separator" aria-label="or">
+            <span>or</span>
+        </div>
+
+        <section class="auth-provider-section" aria-label="External authentication options">
+            {% if google_auth.get('enabled') %}
+                <a class="auth-provider-btn auth-provider-btn-google" href="{{ google_auth.get('start_url') }}">
+                    <svg class="auth-provider-logo auth-provider-logo-google" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+                        <path fill="#EA4335" d="M17.64 9.2045c0-.638-.0573-1.2518-.1636-1.8409H9v3.4818h4.8436c-.2086 1.125-.8427 2.0782-1.7964 2.7164v2.2582h2.9082c1.7027-1.5673 2.6846-3.8741 2.6846-6.6155z"/>
+                        <path fill="#4285F4" d="M9 18c2.43 0 4.4673-.8059 5.9564-2.18l-2.9082-2.2582c-.8059.54-1.8355.8591-3.0482.8591-2.3441 0-4.3286-1.5845-5.0373-3.7109H.9564v2.3318C2.4373 15.9836 5.4818 18 9 18z"/>
+                        <path fill="#FBBC05" d="M3.9627 10.71A5.4097 5.4097 0 0 1 3.6818 9c0-.5936.1018-1.1714.2809-1.71V4.9582H.9564A8.9997 8.9997 0 0 0 0 9c0 1.4527.3473 2.8273.9564 4.0418L3.9627 10.71z"/>
+                        <path fill="#34A853" d="M9 3.5791c1.3214 0 2.5077.4541 3.4405 1.3459l2.5814-2.5814C13.4636.8918 11.4264 0 9 0 5.4818 0 2.4373 2.0164.9564 4.9582L3.9627 7.29C4.6714 5.1636 6.6559 3.5791 9 3.5791z"/>
+                    </svg>
+                    <span class="auth-provider-copy">Continue with Google</span>
+                </a>
+            {% else %}
+                <button class="auth-provider-btn auth-provider-btn-google" type="button" disabled aria-disabled="true" title="Google sign-in setup is pending">
+                    <svg class="auth-provider-logo auth-provider-logo-google" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+                        <path fill="#EA4335" d="M17.64 9.2045c0-.638-.0573-1.2518-.1636-1.8409H9v3.4818h4.8436c-.2086 1.125-.8427 2.0782-1.7964 2.7164v2.2582h2.9082c1.7027-1.5673 2.6846-3.8741 2.6846-6.6155z"/>
+                        <path fill="#4285F4" d="M9 18c2.43 0 4.4673-.8059 5.9564-2.18l-2.9082-2.2582c-.8059.54-1.8355.8591-3.0482.8591-2.3441 0-4.3286-1.5845-5.0373-3.7109H.9564v2.3318C2.4373 15.9836 5.4818 18 9 18z"/>
+                        <path fill="#FBBC05" d="M3.9627 10.71A5.4097 5.4097 0 0 1 3.6818 9c0-.5936.1018-1.1714.2809-1.71V4.9582H.9564A8.9997 8.9997 0 0 0 0 9c0 1.4527.3473 2.8273.9564 4.0418L3.9627 10.71z"/>
+                        <path fill="#34A853" d="M9 3.5791c1.3214 0 2.5077.4541 3.4405 1.3459l2.5814-2.5814C13.4636.8918 11.4264 0 9 0 5.4818 0 2.4373 2.0164.9564 4.9582L3.9627 7.29C4.6714 5.1636 6.6559 3.5791 9 3.5791z"/>
+                    </svg>
+                    <span class="auth-provider-copy">Continue with Google</span>
+                    <span class="auth-provider-status">Setup pending</span>
+                </button>
+            {% endif %}
+
+            {% if microsoft_auth.get('enabled') %}
+                <a class="auth-provider-btn auth-provider-btn-microsoft" href="{{ microsoft_auth.get('start_url') }}" title="Use your work or school account">
+                    <svg class="auth-provider-logo auth-provider-logo-microsoft" viewBox="0 0 21 21" aria-hidden="true" focusable="false">
+                        <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+                        <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+                        <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+                        <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+                    </svg>
+                    <span class="auth-provider-copy">Sign in with Microsoft</span>
+                </a>
+            {% else %}
+                <button class="auth-provider-btn auth-provider-btn-microsoft" type="button" disabled aria-disabled="true" title="Microsoft sign-in setup is pending">
+                    <svg class="auth-provider-logo auth-provider-logo-microsoft" viewBox="0 0 21 21" aria-hidden="true" focusable="false">
+                        <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+                        <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+                        <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+                        <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+                    </svg>
+                    <span class="auth-provider-copy">Sign in with Microsoft</span>
+                    <span class="auth-provider-status">Setup pending</span>
+                </button>
+            {% endif %}
+        </section>
+
+        <p class="auth-switch">
+            Don't have an account?
+            <a
+                href="/auth/register{% if post_login_target %}?next={{ post_login_target|urlencode }}{% endif %}"
+            >
+                Register
+            </a>
+        </p>
+
+        <pre id="loginOutput" class="auth-output" style="display:none;"></pre>
+
+    </div>
+</div>
+
+<div id="sessionModal" class="portal-modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Session Expired</h3>
+        <p>Your session has expired. Please sign in again.</p>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const { showToast, attachLiveErrorClearing } = window.SolomonForm;
+
+    const form = document.getElementById("loginForm");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const output = document.getElementById("loginOutput");
+
+    function setAuthOutput(message, state = "info") {
+        output.textContent = message;
+        output.dataset.state = state;
+        output.style.display = "block";
+    }
+    const loginBtn = document.getElementById("loginBtn");
+    const postLoginRedirect = document.getElementById("postLoginRedirect");
+    let attemptedSubmit = false;
+
+    attachLiveErrorClearing(["email", "password"]);
+
+    function isValidEmail(value) {
+        return /^[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+$/.test(value || "");
+    }
+
+    function validateFields(showErrors = false) {
+        let valid = true;
+
+        const emailErr = document.getElementById("error-email");
+        const emailValue = email.value.trim();
+
+        if (!emailValue) {
+            valid = false;
+            emailErr.textContent = "Email is required.";
+        } else if (!isValidEmail(emailValue)) {
+            valid = false;
+            emailErr.textContent = "Enter a valid email address.";
+        } else {
+            emailErr.textContent = "";
+        }
+
+        emailErr.style.display = emailErr.textContent && showErrors ? "block" : "none";
+
+        const pErr = document.getElementById("error-password");
+        if (!password.value.trim()) {
+            valid = false;
+            pErr.textContent = "Password is required.";
+        } else {
+            pErr.textContent = "";
+        }
+
+        pErr.style.display = pErr.textContent && showErrors ? "block" : "none";
+
+        loginBtn.disabled = !valid;
+        return valid;
+    }
+
+    [email, password].forEach(f =>
+        f.addEventListener("input", () => {
+            attemptedSubmit ? validateFields(true) : validateFields(false);
+        })
+    );
+
+    const sessionModal = document.getElementById("sessionModal");
+    if (sessionStorage.getItem("sessionExpired")) {
+        sessionStorage.removeItem("sessionExpired");
+        sessionModal.style.display = "flex";
+        setTimeout(() => sessionModal.style.display = "none", 4000);
+        showToast("Your previous session expired. Please sign in again.", "error");
+    }
+
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const input = password;
+        input.type = input.type === "password" ? "text" : "password";
+    });
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        attemptedSubmit = true;
+
+        if (!validateFields(true)) {
+            showToast("Please enter your email and password before signing in.", "error");
+            return;
+        }
+
+        setAuthOutput("Signing in...", "info");
+
+        const redirectTarget = (postLoginRedirect.value || "").trim();
+
+        const payload = {
+            email: email.value.trim(),
+            password: password.value.trim(),
+        };
+
+        if (redirectTarget) {
+            payload.next = redirectTarget;
+        }
+
+        try {
+            const res = await fetch("/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            if (data.ok) {
+
+                // Forced password reset flow
+                if (data.force_password_change) {
+                    setAuthOutput("Redirecting to password update...", "warning");
+                    showToast("Password reset required.", "warning");
+                    setTimeout(() => {
+                        window.location.href = data.redirect || "/auth/change-password";
+                    }, 600);
+                    return;
+                }
+
+                localStorage.setItem("solomonUser", JSON.stringify({
+                    email: payload.email,
+                    role: data.role
+                }));
+
+                setAuthOutput(data.message || "Sign in successful.", "success");
+
+                if (redirectTarget) {
+                    showToast("Signed in. Continuing...", "success");
+                } else {
+                    showToast("Welcome back.", "success");
+                }
+
+                window.location.href = data.redirect || redirectTarget || "/";
+            } else {
+                const msg = data.error || "Sign in failed.";
+                setAuthOutput(msg, "error");
+                showToast(msg, "error");
+            }
+
+        } catch (err) {
+            const msg = "Error: " + err.message;
+            setAuthOutput(msg, "error");
+            showToast(msg, "error");
+        }
+    });
+});
+</script>
+
+{{ super() }}
+{% endblock %}

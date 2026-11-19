@@ -1,0 +1,80 @@
+{# -------------------------------------------------------------------
+   FILE: people_invitation_accept.html
+   DIRECTORY: webui/templates/
+   ------------------------------------------------------------------- #}
+
+{% extends "portal_base.html" %}
+
+{% block title %}Solomon · Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_auth.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% set payload = invitation_acceptance if invitation_acceptance is mapping else {} %}
+{% set is_ok = payload.get('ok') %}
+{% set is_accepted = payload.get('accepted') %}
+{% set token = payload.get('token') or '' %}
+{% set message = payload.get('message') or '' %}
+{% set error = payload.get('error') or '' %}
+{% set error_lower = error | lower %}
+{% set accept_target = '/people/invitations/accept?token=' ~ token %}
+{% set wrong_account = 'different email' in error_lower or 'different email address' in error_lower %}
+
+<div class="portal-auth-page">
+    <div class="auth-container">
+
+        <div class="auth-context-panel" data-auth-context="people-invitation">
+            <p class="auth-context-kicker">Solomon</p>
+
+            {% if is_accepted %}
+                <h1 class="auth-title">You're all set</h1>
+                <p class="auth-context-copy">
+                    {{ message or 'Your Solomon access is ready.' }}
+                </p>
+            {% elif wrong_account %}
+                <h1 class="auth-title">Use the invited account</h1>
+                <p class="auth-context-copy">
+                    This link was sent to a different email address. Switch to
+                    the account that received it to continue.
+                </p>
+            {% else %}
+                <h1 class="auth-title">This link can't be used</h1>
+                <p class="auth-context-copy">
+                    {{ error or 'This link is no longer available.' }}
+                </p>
+            {% endif %}
+        </div>
+
+        {% if error and not wrong_account %}
+            <div class="auth-output">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if is_accepted %}
+            <div class="auth-form">
+                <a href="/people" class="auth-btn">Continue to Solomon</a>
+            </div>
+        {% elif wrong_account and token %}
+            <div class="auth-form">
+                <a
+                    href="{{ url_for('auth.logout_user', next=accept_target) }}"
+                    class="auth-btn"
+                >
+                    Switch account
+                </a>
+            </div>
+            <p class="auth-switch"><a href="/">Not now</a></p>
+        {% else %}
+            <div class="auth-form">
+                <a href="/" class="auth-btn">Return to Solomon</a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,437 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_nav.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+.app-nav {
+    align-items: center;
+    background: #050914;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.20);
+    box-shadow: none;
+    backdrop-filter: none;
+    display: flex;
+    font-family: var(--font-ui);
+    height: 68px;
+    justify-content: space-between;
+    padding: 0 34px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.app-nav::after {
+    content: none;
+}
+
+.nav-left {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.nav-logo {
+    align-items: center;
+    color: var(--brand-text);
+    display: inline-flex;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.nav-logo:focus-visible {
+    outline: 1px solid rgba(73, 215, 255, 0.72);
+    outline-offset: 6px;
+}
+
+.nav-logo img {
+    filter: drop-shadow(0 0 10px rgba(0, 183, 255, 0.08));
+    height: 48px;
+    object-fit: contain;
+    width: auto;
+}
+
+.nav-logo-text {
+    color: var(--brand-text);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* RIGHT SIDE NAV */
+
+.nav-right {
+    align-items: center;
+    display: flex;
+    gap: 6px;
+    font-family: var(--font-ui);
+}
+
+.app-nav .nav-right .nav-item {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
+    box-sizing: border-box;
+    color: rgba(226, 237, 248, 0.80);
+    display: inline-flex;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 560;
+    justify-content: center;
+    letter-spacing: -0.005em;
+    line-height: 1;
+    min-height: 38px;
+    opacity: 1;
+    padding: 0 12px;
+    text-decoration: none;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        color 0.14s ease;
+    white-space: nowrap;
+}
+
+.app-nav .nav-right a.nav-item:not(.is-active):hover {
+    background: rgba(15, 68, 112, 0.24);
+    border-color: rgba(69, 197, 255, 0.18);
+    box-shadow:
+        0 0 14px rgba(0, 167, 255, 0.08),
+        inset 0 0 12px rgba(84, 211, 255, 0.03);
+    color: #ffffff;
+}
+
+.app-nav .nav-right .nav-item.is-active {
+    background: rgba(12, 78, 128, 0.36);
+    border-color: rgba(52, 199, 255, 0.46);
+    box-shadow:
+        0 0 18px rgba(0, 172, 255, 0.14),
+        inset 0 0 16px rgba(74, 210, 255, 0.07);
+    color: #ffffff;
+}
+
+.app-nav .nav-right a.nav-item.is-active:hover {
+    background: rgba(12, 78, 128, 0.40);
+    border-color: rgba(72, 215, 255, 0.52);
+    box-shadow:
+        0 0 22px rgba(0, 184, 255, 0.18),
+        inset 0 0 18px rgba(84, 220, 255, 0.09);
+    color: #ffffff;
+}
+
+.app-nav .nav-right .nav-item:focus-visible {
+    outline: 1px solid rgba(73, 215, 255, 0.72);
+    outline-offset: 3px;
+}
+
+.app-nav .nav-right .nav-disabled {
+    color: var(--brand-text-dim);
+    cursor: default;
+    opacity: 0.48;
+    pointer-events: none;
+}
+
+/* LOGOUT SPECIAL STATE */
+
+.nav-item.logout {
+    color: rgba(226, 237, 248, 0.76);
+}
+
+.app-nav .nav-right a.nav-item.logout:not(.is-active):hover {
+    background: rgba(15, 68, 112, 0.22);
+    border-color: rgba(105, 180, 230, 0.18);
+    color: #ffffff;
+}
+
+.app-nav .nav-right a.nav-item.logout.is-active {
+    background: rgba(105, 128, 157, 0.06);
+    border-color: rgba(105, 164, 216, 0.28);
+    color: #ffffff;
+}
+
+.app-nav .nav-right a.nav-item.logout.is-active:hover {
+    background: rgba(105, 128, 157, 0.08);
+    border-color: rgba(119, 180, 232, 0.34);
+    color: #ffffff;
+}
+
+/* TASKBAR SOLOMON COMMAND */
+
+.command-taskbar .command-taskbar-solomon {
+    align-items: center;
+    align-self: center;
+    appearance: none;
+    background: rgba(8, 13, 24, 0.76);
+    border: 1px solid rgba(105, 128, 157, 0.24);
+    border-radius: 0.8125rem;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgba(239, 245, 255, 0.88);
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0.5rem;
+    height: 2.375rem;
+    line-height: 1;
+    margin: 0;
+    max-height: 2.375rem;
+    min-height: 2.375rem;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0.25rem 0.375rem 0.25rem 0.625rem;
+    width: clamp(13.75rem, 20vw, 18.25rem);
+}
+
+.command-taskbar .command-taskbar-solomon[hidden] {
+    display: none !important;
+}
+
+.command-taskbar.is-workspace-chat-open .command-taskbar-solomon,
+.command-taskbar[data-solomon-topbar-state="workspace_chat"] .command-taskbar-solomon {
+    display: none !important;
+}
+
+.command-taskbar .command-taskbar-solomon:focus-within {
+    background: rgba(8, 13, 24, 0.82);
+    border-color: rgba(105, 128, 157, 0.34);
+    box-shadow: none;
+}
+
+.command-taskbar .command-taskbar-solomon-icon {
+    color: var(--brand-cyan);
+    flex: 0 0 auto;
+    font-size: 1.0625rem;
+    line-height: 1;
+}
+
+.command-taskbar .command-taskbar-solomon-input {
+    align-self: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgba(248, 250, 252, 0.94);
+    flex: 1 1 auto;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.84rem;
+    font-weight: 650;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    margin: 0;
+    min-width: 0;
+    outline: none;
+    padding: 0;
+}
+
+.command-taskbar .command-taskbar-solomon-input::placeholder {
+    color: rgba(201, 212, 229, 0.58);
+    opacity: 1;
+}
+
+.command-taskbar .command-taskbar-solomon-send {
+    align-items: center;
+    align-self: center;
+    appearance: none;
+    background: rgba(22, 191, 216, 0.095);
+    border: 1px solid rgba(22, 191, 216, 0.22);
+    border-radius: 0.5rem;
+    color: var(--brand-cyan);
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 1.75rem;
+    height: 1.75rem;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease;
+    width: 1.75rem;
+}
+
+.command-taskbar .command-taskbar-solomon-send .icon {
+    font-size: 0.9375rem;
+    line-height: 1;
+}
+
+.command-taskbar .command-taskbar-solomon-send:hover,
+.command-taskbar .command-taskbar-solomon-send:focus-visible {
+    background: var(--brand-cyan-soft);
+    border-color: rgba(22, 191, 216, 0.42);
+    color: #ffffff;
+    outline: none;
+}
+
+.command-taskbar .command-taskbar-solomon-input:disabled,
+.command-taskbar .command-taskbar-solomon-send:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+}
+
+/* TASKBAR BREADCRUMB */
+
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb {
+    align-items: center;
+    align-self: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgba(226, 237, 248, 0.78);
+    display: inline-flex;
+    flex: 0 1 auto;
+    gap: 0.5rem;
+    height: 2.375rem;
+    line-height: 1;
+    margin: 0;
+    max-height: 2.375rem;
+    min-height: 2.375rem;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 0.125rem;
+    white-space: nowrap;
+}
+
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb[hidden] {
+    display: none !important;
+}
+
+.command-taskbar.is-workspace-chat-open #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb,
+.command-taskbar[data-solomon-topbar-state="workspace_chat"] #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb {
+    display: inline-flex !important;
+}
+
+.command-taskbar:not(.is-workspace-chat-open) #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb,
+.command-taskbar[data-solomon-topbar-state="command"] #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb {
+    display: none !important;
+}
+
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb .command-taskbar-solomon-icon {
+    color: var(--brand-cyan);
+    flex: 0 0 auto;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb span:not(.icon),
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb .command-taskbar-breadcrumb-separator {
+    color: rgba(201, 212, 229, 0.58);
+    flex: 0 0 auto;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: -0.005em;
+    line-height: 1;
+}
+
+#commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb strong {
+    color: rgba(248, 250, 252, 0.94);
+    flex: 0 1 auto;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.84rem;
+    font-weight: 780;
+    letter-spacing: -0.008em;
+    line-height: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* MOBILE SAFETY */
+
+@media (max-width: 1180px) {
+    .command-taskbar .command-taskbar-solomon {
+        width: clamp(11.875rem, 18vw, 15.625rem);
+    }
+
+    .command-taskbar .command-taskbar-solomon-input,
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb strong,
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb span:not(.icon) {
+        font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 980px) {
+    .command-taskbar .command-taskbar-solomon {
+        width: 11.125rem;
+    }
+
+    .command-taskbar .command-taskbar-solomon-send {
+        display: none;
+    }
+
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb span:not(.icon),
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb .command-taskbar-breadcrumb-separator {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-nav {
+        align-items: flex-start;
+        gap: 14px;
+        height: auto;
+        min-height: 64px;
+        padding: 10px 18px;
+    }
+
+    .nav-logo img {
+        height: 38px;
+    }
+
+    .nav-logo-text {
+        font-size: 15px;
+    }
+
+    .nav-right {
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    .app-nav .nav-right .nav-item {
+        font-size: 13px;
+        min-height: 32px;
+        padding: 0 9px;
+    }
+
+    .app-nav .nav-right .nav-item.is-active {
+        min-height: 32px;
+    }
+
+    .command-taskbar .command-taskbar-solomon {
+        width: 9.375rem;
+    }
+
+    .command-taskbar .command-taskbar-solomon-input::placeholder {
+        color: transparent;
+    }
+}
+
+@media (max-width: 520px) {
+    .app-nav {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .nav-left,
+    .nav-right {
+        justify-content: center;
+    }
+
+    .command-taskbar .command-taskbar-solomon {
+        min-width: 2.375rem;
+        width: 2.375rem;
+    }
+
+    .command-taskbar .command-taskbar-solomon-input,
+    .command-taskbar .command-taskbar-solomon-send,
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb strong,
+    #commandSidebar #commandTaskbarWorkspaceBreadcrumb.command-taskbar-workspace-breadcrumb span:not(.icon) {
+        display: none;
+    }
+}

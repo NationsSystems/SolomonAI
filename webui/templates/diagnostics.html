@@ -1,0 +1,215 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Diagnostics · Solomon Admin{% endblock %}
+
+{% block page_header %}Diagnostics{% endblock %}
+
+{% block content %}
+
+<div class="admin-section diagnostic-grid">
+
+    <!-- System Health -->
+    <div class="diagnostic-card">
+        <h2>🩺 System Health</h2>
+        <pre id="systemDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Self-Repair -->
+    <div class="diagnostic-card">
+        <h2>🛠 Latest Self-Repair Report</h2>
+        <pre id="repairDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Cognitive (Operational) -->
+    <div class="diagnostic-card">
+        <h2>🧠 Cognitive Diagnostics</h2>
+        <pre id="cognitiveDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Strategic Planning -->
+    <div class="diagnostic-card">
+        <h2>📈 Strategic Planning Diagnostics</h2>
+        <pre id="strategicDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Strategic Memory -->
+    <div class="diagnostic-card">
+        <h2>📚 Strategic Memory Snapshot</h2>
+        <pre id="memoryDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- Meta-Cognition Diagnostics -->
+    <div class="diagnostic-card">
+        <div class="card-header-row"
+             style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h2 style="margin:0;">🔍 Meta-Cognition Diagnostics (Full)</h2>
+
+            <a href="/admin/diagnostics/meta/full"
+               class="pending-badge"
+               id="metaBadge"
+               style="background: var(--admin-card-bg);color: var(--text-dim);
+                      padding: 4px 10px;border-radius: 12px;font-weight: bold;
+                      font-size: 0.8rem;">
+                ⏳
+            </a>
+        </div>
+
+        <pre id="metaDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- ⭐ NEW — Error Trend Analyzer -->
+    <div class="diagnostic-card">
+        <div class="card-header-row"
+             style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h2 style="margin:0;">🚨 Error Trend Analysis</h2>
+            <span id="errorTrendBadge"
+                  style="background:var(--admin-card-bg);color:var(--text-dim);
+                         padding:4px 10px;border-radius:12px;font-weight:bold;
+                         font-size:0.8rem;">
+                ⏳
+            </span>
+        </div>
+        <pre id="errorTrendDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+    <!-- ⭐ NEW FOR PHASE 20 — USDI DIAGNOSTICS -->
+    <div class="diagnostic-card">
+        <div class="card-header-row"
+             style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h2 style="margin:0;">🔥 USDI — Skill Difficulty Windows</h2>
+            <span id="usdiBadge"
+                  style="background:var(--admin-card-bg);color:var(--text-dim);
+                         padding:4px 10px;border-radius:12px;font-weight:bold;
+                         font-size:0.8rem;">
+                ⏳
+            </span>
+        </div>
+
+        <pre id="usdiDiag" class="diagnostic-pre">Loading...</pre>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadDiagnostics() {
+    try {
+        // --- System report ---
+        const sysJson = await (await fetch("/admin/diagnostics/system")).json();
+        document.getElementById("systemDiag").textContent =
+            JSON.stringify(sysJson, null, 2);
+
+        // --- Self-repair ---
+        const repJson = await (await fetch("/admin/diagnostics/self-repair")).json();
+        document.getElementById("repairDiag").textContent =
+            JSON.stringify(repJson, null, 2);
+
+        // --- Cognitive diagnostics ---
+        const cogJson = await (await fetch("/admin/diagnostics/cognitive")).json();
+        document.getElementById("cognitiveDiag").textContent =
+            JSON.stringify(cogJson, null, 2);
+
+        // --- Strategic diagnostics ---
+        const stratJson = await (await fetch("/admin/diagnostics/strategic")).json();
+        document.getElementById("strategicDiag").textContent =
+            JSON.stringify(stratJson, null, 2);
+
+        // --- Strategic memory ---
+        const memJson = await (await fetch("/admin/diagnostics/strategic-memory")).json();
+        document.getElementById("memoryDiag").textContent =
+            JSON.stringify(memJson, null, 2);
+
+        // --- Full Meta-cognition ---
+        const metaJson = await (await fetch("/admin/diagnostics/meta/full")).json();
+        document.getElementById("metaDiag").textContent =
+            JSON.stringify(metaJson, null, 2);
+
+        const metaBadge = document.getElementById("metaBadge");
+        metaBadge.textContent = metaJson.available ? "OK" : "ERR";
+        metaBadge.style.background = metaJson.available ? "var(--pri)" : "var(--danger)";
+        metaBadge.style.color = metaJson.available ? "#000" : "#fff";
+
+        // --- Error Trend Analyzer ---
+        const errTrendJson = await (await fetch("/admin/diagnostics/error-trends")).json();
+
+        let trendSymbol = "●";
+        try {
+            if (errTrendJson.trending && errTrendJson.trending.length > 0) {
+                const t = errTrendJson.trending[0].direction;
+                if (t === "up") trendSymbol = "▲";
+                else if (t === "down") trendSymbol = "▼";
+            }
+        } catch (_) {}
+
+        document.getElementById("errorTrendDiag").textContent =
+            trendSymbol + "  " + JSON.stringify(errTrendJson, null, 2);
+
+        const errBadge = document.getElementById("errorTrendBadge");
+        if (errTrendJson.error_count === 0) {
+            errBadge.textContent = "OK";
+            errBadge.style.background = "var(--success)";
+            errBadge.style.color = "#000";
+        } else if (errTrendJson.stability_score >= 75) {
+            errBadge.textContent = errTrendJson.stability_score + "%";
+            errBadge.style.background = "var(--pri)";
+            errBadge.style.color = "#000";
+        } else {
+            errBadge.textContent = errTrendJson.stability_score + "%";
+            errBadge.style.background = "var(--danger)";
+            errBadge.style.color = "#fff";
+        }
+
+        // --- ⭐ USDI (Difficulty Windows) ---
+        const usdiJson = await (await fetch("/admin/diagnostics/usdi")).json();
+
+        // Pretty-print USDI window info
+        document.getElementById("usdiDiag").textContent =
+            JSON.stringify(usdiJson, null, 2);
+
+        // Badge classification: hot > warm > cool
+        const usdiBadge = document.getElementById("usdiBadge");
+        const windows = usdiJson.windows || {};
+
+        let badgeColor = "var(--text-dim)";
+        let badgeText = "OK";
+
+        if (windows.hot_window && windows.hot_window.length > 0) {
+            badgeColor = "var(--danger)";
+            badgeText = "HOT";
+        } else if (windows.warm_window && windows.warm_window.length > 0) {
+            badgeColor = "var(--warning)";
+            badgeText = "WARM";
+        } else {
+            badgeColor = "var(--success)";
+            badgeText = "COOL";
+        }
+
+        usdiBadge.textContent = badgeText;
+        usdiBadge.style.background = badgeColor;
+        usdiBadge.style.color = "#000";
+
+    } catch (err) {
+        const ids = [
+            "systemDiag",
+            "repairDiag",
+            "cognitiveDiag",
+            "strategicDiag",
+            "memoryDiag",
+            "metaDiag",
+            "errorTrendDiag",
+            "usdiDiag"
+        ];
+        ids.forEach(id => {
+            document.getElementById(id).textContent =
+                "Error loading diagnostics: " + err;
+        });
+    }
+}
+
+// Initial load + periodic refresh
+loadDiagnostics();
+setInterval(loadDiagnostics, 15000);
+</script>
+{% endblock %}

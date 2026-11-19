@@ -1,0 +1,482 @@
+/* ==========================================================================
+   FILE: layout.css
+   DIRECTORY: SolomonV3/webui/static/css/admin/
+   ========================================================================== */
+
+/* ==========================================================================
+   ADMIN CONSOLE STRUCTURE
+   Loaded only on /admin routes.
+   Integrated V3 control-surface layout scale.
+   ========================================================================== */
+
+.admin-console {
+    box-sizing: border-box;
+    display: grid;
+    gap: 14px;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100%;
+    margin: 0 auto;
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    width: min(1180px, calc(100vw - 64px));
+}
+
+.admin-console:not(.admin-console--control-surface) {
+    display: block;
+    height: auto;
+    margin: 40px auto;
+    max-height: none;
+    overflow: visible;
+}
+
+.admin-console-header {
+    margin: 0;
+    min-width: 0;
+    padding: 0 2px;
+}
+
+.admin-console-header-row {
+    align-items: end;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.admin-console-title {
+    margin: 0;
+}
+
+.admin-console-subtitle {
+    margin: 10px 0 0;
+    max-width: 760px;
+}
+
+.admin-console-status-card {
+    align-items: center;
+    display: grid;
+    flex: 0 0 auto;
+    gap: 10px;
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 58px;
+    min-width: 176px;
+    padding: 10px 12px;
+}
+
+.admin-console-status-card div {
+    min-width: 0;
+}
+
+.admin-console-status-card span:not(.icon) {
+    display: block;
+}
+
+.admin-console-status-card strong {
+    display: block;
+}
+
+/* ==========================================================================
+   COMMAND STRIP
+   ========================================================================== */
+
+.admin-command-strip {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-height: 0;
+}
+
+.admin-command-widget {
+    align-items: center;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 64px;
+    min-width: 0;
+    padding: 11px 13px;
+}
+
+.admin-command-widget div {
+    min-width: 0;
+}
+
+.admin-command-widget strong,
+.admin-command-widget span:not(.icon) {
+    display: block;
+}
+
+/* ==========================================================================
+   DASHBOARD LAYOUT
+   ========================================================================== */
+
+.admin-dashboard-grid {
+    align-items: start;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+    min-height: 0;
+}
+
+.admin-dashboard-grid--control-plane {
+    align-items: stretch;
+    height: 100%;
+    overflow: hidden;
+}
+
+.admin-stack {
+    display: grid;
+    gap: 18px;
+    min-height: 0;
+    min-width: 0;
+}
+
+.admin-stack--primary,
+.admin-stack--secondary {
+    align-content: start;
+    overflow: auto;
+    padding-right: 2px;
+    scrollbar-gutter: stable;
+}
+
+.admin-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.admin-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ==========================================================================
+   PANEL STRUCTURE
+   ========================================================================== */
+
+.admin-panel {
+    margin-bottom: 18px;
+    min-width: 0;
+    padding: 18px 20px;
+}
+
+.admin-console--control-surface .admin-panel {
+    margin-bottom: 0;
+}
+
+.admin-panel:last-child {
+    margin-bottom: 0;
+}
+
+.admin-panel-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    min-width: 0;
+}
+
+.admin-panel-title-group {
+    min-width: 0;
+}
+
+.admin-panel-kicker {
+    margin: 0 0 5px;
+}
+
+.admin-panel-title {
+    margin: 0;
+}
+
+.admin-panel-description {
+    margin: 6px 0 0;
+}
+
+/* ==========================================================================
+   STATUS LISTS
+   ========================================================================== */
+
+.admin-status-list {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.admin-status-row {
+    align-items: center;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(140px, 0.72fr) minmax(110px, 0.38fr) minmax(0, 1.4fr);
+    min-height: 44px;
+    padding: 10px 12px;
+}
+
+.admin-status-row--stacked {
+    align-items: start;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.admin-status-label,
+.admin-status-value,
+.admin-status-note {
+    min-width: 0;
+}
+
+/* ==========================================================================
+   METRICS
+   ========================================================================== */
+
+.admin-metric-strip {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-metric {
+    min-height: 82px;
+    min-width: 0;
+    padding: 13px;
+}
+
+.admin-metric-label {
+    margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   ACTIONS
+   ========================================================================== */
+
+.admin-action-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.admin-action {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+}
+
+/* ==========================================================================
+   TABLE LAYOUT
+   ========================================================================== */
+
+.admin-table-wrap {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.admin-table {
+    border-collapse: collapse;
+    min-width: 860px;
+    width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 13px 14px;
+    vertical-align: middle;
+}
+
+.admin-table th {
+    white-space: nowrap;
+}
+
+.admin-table td {
+    line-height: 1.45;
+}
+
+.admin-table .action-col {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admin-table .admin-action {
+    min-height: 34px;
+    padding: 0 10px;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   ADMIN FORMS / INLINE CONTROLS
+   ========================================================================== */
+
+.admin-inline-controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.admin-form-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-form-row {
+    display: grid;
+    gap: 7px;
+}
+
+.admin-form-row-full {
+    grid-column: 1 / -1;
+}
+
+.admin-notice {
+    margin-bottom: 22px;
+}
+
+.admin-temporary-password-output {
+    margin-top: 14px;
+    white-space: pre-wrap;
+}
+
+/* ==========================================================================
+   DIAGNOSTIC / LOG LAYOUT
+   ========================================================================== */
+
+.diagnostic-grid {
+    align-items: start;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 1fr;
+}
+
+.diagnostic-card {
+    min-width: 0;
+}
+
+.logs-list {
+    display: grid;
+    gap: 12px;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 14px;
+}
+
+.diagnostic-pre,
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 14px;
+}
+
+/* ==========================================================================
+   MODAL / CONFIRMATION LAYOUT
+   ========================================================================== */
+
+.admin-confirm-overlay {
+    align-items: center;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
+    z-index: 2000;
+}
+
+.admin-confirm-dialog {
+    margin: 0;
+    max-width: 100%;
+    width: min(520px, 100%);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+    .admin-console {
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .admin-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-dashboard-grid--control-plane,
+    .admin-stack--primary,
+    .admin-stack--secondary {
+        height: auto;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 980px) {
+    .admin-command-strip,
+    .admin-grid-2,
+    .admin-grid-3,
+    .admin-grid-4,
+    .admin-metric-strip,
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-status-row {
+        gap: 6px;
+        grid-template-columns: 1fr;
+    }
+
+    .admin-console-header-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-console-status-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-console,
+    .admin-console:not(.admin-console--control-surface) {
+        margin: 0 auto;
+        width: min(100% - 28px, 1180px);
+    }
+
+    .admin-panel,
+    .diagnostic-card {
+        padding: 18px;
+    }
+
+    .admin-panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-action-row,
+    .admin-inline-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-action,
+    .admin-action-secondary,
+    .admin-action-quiet,
+    .admin-inline-controls button,
+    .admin-inline-controls input,
+    .admin-inline-controls select {
+        width: 100%;
+    }
+}

@@ -1,0 +1,226 @@
+<!-- -------------------------------------------------------------------
+     FILE: webui/templates/components/preconstruction_workspace.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+<section class="precon-app-page"
+         aria-label="Document Review workspace"
+         data-solomon-ui-region="preconstruction_page">
+
+    <section class="precon-workspace-shell"
+             aria-labelledby="precon-workspace-title"
+             data-solomon-ui-target="review_workspace"
+             data-solomon-ui-region="review_workspace"
+             data-panel="review_workspace">
+
+        <div id="precon-live-workspace"
+             class="precon-live-workspace"
+             data-precon-view="intake"
+             data-solomon-ui-region="live_workspace">
+
+            <div id="precon-intake-view"
+                 class="precon-workspace-view precon-intake-view"
+                 data-precon-view-panel="intake"
+                 data-solomon-ui-target="bid_scope_review"
+                 data-solomon-ui-region="intake_workspace"
+                 data-panel="bid_scope_review">
+
+                <div class="precon-workspace-grid"
+                     data-solomon-ui-region="workspace_grid">
+                    <section id="workspace-intake"
+                             class="command-module-intake command-review-intake"
+                             aria-label="Upload or paste documents"
+                             data-solomon-ui-target="review_workspace"
+                             data-solomon-ui-region="review_intake"
+                             data-panel="review_intake">
+
+                        <form id="taskForm"
+                              class="workspace-command-form command-review-form precon-review-card"
+                              data-gui-state="IDLE"
+                              data-workflow-id="pre_award_risk_review"
+                              data-workflow-endpoint="/api/task/execute"
+                              data-solomon-ui-target="bid_scope_review"
+                              data-solomon-ui-region="review_form"
+                              data-panel="review_form"
+                              aria-label="Document Review"
+                              aria-busy="false"
+                              novalidate>
+
+                            <input type="hidden"
+                                   id="workflowId"
+                                   name="workflow_id"
+                                   value="pre_award_risk_review">
+
+                            <input type="radio"
+                                   id="precon-mode-upload"
+                                   class="precon-intake-mode"
+                                   name="precon_intake_mode"
+                                   checked>
+
+                            <input type="radio"
+                                   id="precon-mode-paste"
+                                   class="precon-intake-mode"
+                                   name="precon_intake_mode">
+
+                            <div class="precon-intake-tabs"
+                                 aria-label="Review input mode"
+                                 data-solomon-ui-region="intake_tabs">
+                                <label for="precon-mode-upload" class="precon-intake-tab">
+                                    Upload Documents
+                                </label>
+
+                                <label for="precon-mode-paste" class="precon-intake-tab">
+                                    Paste Text
+                                </label>
+                            </div>
+
+                            <div class="precon-intake-panels"
+                                 data-solomon-ui-region="intake_panels">
+                                <section class="precon-intake-panel precon-upload-panel"
+                                         aria-label="Upload documents"
+                                         data-solomon-ui-target="documents_panel"
+                                         data-solomon-ui-region="documents_panel"
+                                         data-panel="documents">
+                                    <button type="button"
+                                            id="showUpload"
+                                            class="workspace-upload-button precon-dropzone-button"
+                                            aria-label="Browse for review documents"
+                                            title="Browse for review documents"
+                                            data-solomon-ui-region="document_upload_control">
+                                        <span class="icon precon-dropzone-icon" aria-hidden="true">upload_file</span>
+                                        <strong>Drag and drop documents here</strong>
+                                        <span>Click to browse. PDF, DOCX, TXT, CSV, XLSX, and XLS files are supported.</span>
+
+                                        <span id="attachmentBadge"
+                                              class="attachment-badge d-none"
+                                              aria-hidden="true"></span>
+                                    </button>
+                                </section>
+
+                                <section class="precon-intake-panel precon-paste-panel"
+                                         aria-label="Paste document or workspace text"
+                                         data-solomon-ui-target="scope_gaps_panel"
+                                         data-solomon-ui-region="scope_text_panel"
+                                         data-panel="scope_gaps">
+                                    <textarea name="task"
+                                              id="taskInput"
+                                              placeholder="Paste notes, source text, requirements, assumptions, decisions, terms, or responsibility statements here..."
+                                              autocomplete="off"
+                                              class="workspace-command-input precon-review-textarea"
+                                              aria-label="Workspace review text input"
+                                              rows="8"></textarea>
+                                </section>
+                            </div>
+
+                            <div class="precon-intake-actions"
+                                 data-solomon-ui-region="review_actions">
+                                <button type="submit"
+                                        class="workspace-run-button precon-review-run-button"
+                                        id="runButton"
+                                        aria-label="Run document review"
+                                        title="Run document review"
+                                        data-solomon-ui-target="attention_queue_panel"
+                                        data-solomon-ui-region="run_review_action"
+                                        data-panel="attention_queue">
+                                    Run Document Review
+                                    <span class="icon" aria-hidden="true">arrow_forward</span>
+                                </button>
+                            </div>
+
+                            <input type="file"
+                                   id="fileInput"
+                                   accept=".txt,.pdf,.docx,.xlsx,.xls,.csv"
+                                   multiple
+                                   data-ajax="true"
+                                   aria-hidden="true">
+                        </form>
+
+                        <div id="attachments-region"
+                             class="workspace-attachments d-none"
+                             data-attachment-visibility="collapsed"
+                             data-solomon-ui-target="documents_panel"
+                             data-solomon-ui-region="attached_documents"
+                             data-panel="documents"
+                             aria-label="Attached review documents">
+
+                            <ul id="uploadedFileList"
+                                class="file-list portal-filelist-blue"
+                                aria-label="Session review documents"></ul>
+                        </div>
+                    </section>
+
+                    <aside class="precon-guidance-panel precon-assistant-rail"
+                           aria-label="Document Review SolomonAI assistant"
+                           data-solomon-ui-region="assistant_rail">
+                        <div class="workspace-assistant-slot precon-assistant-slot"
+                             data-assistant-placement="preconstruction_review"
+                             data-solomon-ui-target="solomon_assistant"
+                             data-solomon-ui-region="solomon_assistant"
+                             data-panel="solomon_assistant">
+                            {% include "components/solomon_assistant_panel.html" %}
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <section id="precon-processing-view"
+                     class="precon-workspace-view precon-processing-view"
+                     data-precon-view-panel="processing"
+                     data-solomon-ui-target="compliance_status_panel"
+                     data-solomon-ui-region="processing_status"
+                     data-panel="compliance_status"
+                     aria-label="Document Review processing"
+                     aria-live="polite"
+                     hidden>
+                <div class="precon-processing-stage">
+                    <div class="precon-processing-card" role="status">
+                        <div class="precon-processing-visual" aria-hidden="true">
+                            <div class="precon-processing-orb">
+                                <img src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                                     class="precon-processing-logo"
+                                     alt="">
+                            </div>
+                        </div>
+
+                        <div class="precon-processing-copy">
+                            <p class="precon-processing-eyebrow">Review in Progress</p>
+                            <h2>SolomonAI is evaluating the submitted documents.</h2>
+                            <p>
+                                Document evidence, key details, assumptions, relevant terms,
+                                and coordination signals are being reviewed through the governed
+                                document review workflow.
+                            </p>
+                        </div>
+
+                        <div class="precon-processing-sequence" aria-hidden="true">
+                            <span>Extracting evidence</span>
+                            <span>Reconciling findings</span>
+                            <span>Preparing report</span>
+                        </div>
+
+                        <div class="precon-processing-bar" aria-hidden="true">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="precon-result-view"
+                     class="precon-workspace-view precon-result-view"
+                     data-precon-view-panel="result"
+                     data-solomon-ui-target="evaluation_criteria_panel"
+                     data-solomon-ui-region="review_results"
+                     data-panel="evaluation_criteria"
+                     aria-label="Document Review result"
+                     hidden>
+                <section id="conversation-region"
+                         class="precon-results-surface"
+                         data-solomon-ui-region="review_output"
+                         aria-label="Document Review results"
+                         aria-live="polite"
+                         aria-atomic="false"></section>
+            </section>
+        </div>
+    </section>
+
+</section>

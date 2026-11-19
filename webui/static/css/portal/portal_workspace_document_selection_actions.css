@@ -1,0 +1,619 @@
+﻿/* ==========================================================================
+   FILE: portal_workspace_document_selection_actions.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   SELECTED FILE ACTION HIERARCHY
+   --------------------------------------------------------------------------
+   Extends the Documents selection toolbar with explicit primary and secondary
+   action groups while preserving the compact Drive-like interaction contract.
+   ========================================================================== */
+
+.workspace-document-selection-action-group {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 1 auto;
+    gap: 2px;
+    min-width: 0;
+}
+
+.workspace-document-selection-action-group[hidden] {
+    display: none !important;
+}
+
+.workspace-document-selection-action-group--secondary {
+    border-left: 1px solid rgba(105, 128, 157, 0.16);
+    margin-left: 4px;
+    padding-left: 6px;
+}
+
+/* ==========================================================================
+   DOCUMENTS UTILITY ROW
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--drive-row .workspace-document-selection-actions {
+    align-items: center;
+    border-left: 1px solid rgba(105, 128, 157, 0.18);
+    display: inline-flex;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    gap: 0;
+    justify-content: flex-end;
+    margin-left: 0;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    padding-left: 7px;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command {
+    color: rgba(226, 236, 248, 0.86);
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command {
+    color: rgba(180, 194, 214, 0.66);
+}
+
+/* ==========================================================================
+   SOLOMON ACTIONS
+   ========================================================================== */
+
+.workspace-document-selection-action-group--solomon {
+    border-left: 1px solid rgba(22, 191, 216, 0.16);
+    margin-left: 4px;
+    padding-left: 6px;
+}
+
+.workspace-document-selection-solomon-actions {
+    position: relative;
+}
+
+.workspace-document-selection-solomon-actions[open] {
+    z-index: 410;
+}
+
+.workspace-document-selection-solomon-actions > summary {
+    list-style: none;
+}
+
+.workspace-document-selection-solomon-actions > summary::-webkit-details-marker {
+    display: none;
+}
+
+.workspace-document-selection-solomon-actions-trigger {
+    background: rgba(22, 191, 216, 0.055);
+    border-color: rgba(22, 191, 216, 0.12);
+    color: rgba(224, 251, 255, 0.90);
+}
+
+.workspace-document-selection-solomon-action-count {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.13);
+    border: 1px solid rgba(103, 232, 249, 0.16);
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.62rem;
+    font-weight: 760;
+    justify-content: center;
+    line-height: 1;
+    min-height: 18px;
+    min-width: 18px;
+    padding: 0 5px;
+}
+
+.workspace-document-selection-solomon-actions-menu {
+    --solomon-actions-anchor-x: calc(100% - 22px);
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border: 1px solid rgba(125, 211, 252, 0.24);
+    border-radius: 10px;
+    box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.58),
+        0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+    color: rgb(238, 244, 252);
+    display: grid;
+    gap: 3px;
+    isolation: isolate;
+    max-width: calc(100vw - 16px);
+    min-width: 244px;
+    overscroll-behavior: contain;
+    padding: 7px;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 3px);
+    z-index: 420;
+}
+
+.workspace-document-selection-solomon-actions-menu::before {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    content: "";
+    height: 8px;
+    left: var(--solomon-actions-anchor-x);
+    pointer-events: none;
+    position: absolute;
+    width: 8px;
+    z-index: 0;
+}
+
+.workspace-document-selection-solomon-actions[data-solomon-actions-placement="below"]
+.workspace-document-selection-solomon-actions-menu::before {
+    border-left: 1px solid rgba(103, 232, 249, 0.18);
+    border-top: 1px solid rgba(103, 232, 249, 0.18);
+    top: -4px;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.workspace-document-selection-solomon-actions[data-solomon-actions-placement="above"]
+.workspace-document-selection-solomon-actions-menu::before {
+    border-bottom: 1px solid rgba(103, 232, 249, 0.18);
+    border-right: 1px solid rgba(103, 232, 249, 0.18);
+    bottom: -4px;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.workspace-document-selection-solomon-actions[data-solomon-actions-alignment="right"]
+.workspace-document-selection-solomon-actions-menu {
+    transform-origin: top right;
+}
+
+.workspace-document-selection-solomon-actions[data-solomon-actions-alignment="left"]
+.workspace-document-selection-solomon-actions-menu {
+    transform-origin: top left;
+}
+
+.workspace-document-selection-solomon-action-item {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: rgb(238, 244, 252);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
+    gap: 10px;
+    line-height: 1.25;
+    min-height: 40px;
+    padding: 9px 11px;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    z-index: 1;
+}
+
+.workspace-document-selection-solomon-action-item:hover,
+.workspace-document-selection-solomon-action-item:focus-visible {
+    background: rgb(14, 31, 48);
+    border-color: rgba(103, 232, 249, 0.22);
+    color: rgb(255, 255, 255);
+    outline: 0;
+}
+
+.workspace-document-selection-solomon-action-item:focus-visible {
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.16);
+}
+
+.workspace-document-selection-solomon-action-item .icon {
+    color: rgb(103, 232, 249);
+    flex: 0 0 auto;
+    font-size: 18px;
+    opacity: 0.94;
+}
+
+/* ==========================================================================
+   SOLOMONAI PRIMARY ACTION
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command[data-document-ask-solomon-ai] {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(226, 236, 248, 0.86);
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command[data-document-ask-solomon-ai]:hover,
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command[data-document-ask-solomon-ai]:focus-visible {
+    background: rgba(22, 191, 216, 0.13);
+    border-color: rgba(103, 232, 249, 0.24);
+    color: rgba(248, 254, 255, 0.98);
+}
+
+/* ==========================================================================
+   SECONDARY AND DESTRUCTIVE ACTIONS
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-delete],
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-permanent-delete] {
+    color: rgba(248, 113, 113, 0.66);
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-delete]:hover,
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-delete]:focus-visible,
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-permanent-delete]:hover,
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command[data-document-permanent-delete]:focus-visible {
+    background: rgba(127, 29, 29, 0.20);
+    border-color: rgba(248, 113, 113, 0.26);
+    color: rgba(255, 245, 245, 0.98);
+}
+
+.workspace-document-selection-action-bar--drive-row[data-document-selection-state="trash"]
+.workspace-document-selection-action-group--secondary {
+    border-left-color: rgba(248, 113, 113, 0.18);
+}
+
+/* ==========================================================================
+   COMPACT TOOLBAR VARIANT
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--toolbar
+.workspace-document-selection-action-group {
+    gap: 3px;
+}
+
+.workspace-document-selection-action-bar--toolbar
+.workspace-document-selection-action-group--secondary {
+    margin-left: 2px;
+    padding-left: 4px;
+}
+
+
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions > summary {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 6px;
+    min-width: auto;
+    padding: 0 10px;
+    width: auto;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command:not(.workspace-document-command-icon-only)
+> span:not(.icon),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command:not(.workspace-document-command-icon-only)
+> span:not(.icon) {
+    clip: auto;
+    clip-path: none;
+    height: auto;
+    overflow: visible;
+    position: static;
+    white-space: nowrap;
+    width: auto;
+}
+
+/* ==========================================================================
+   LABELED CONTEXTUAL COMMAND BAR
+   --------------------------------------------------------------------------
+   Desktop selection state favors explicit command labels for the contextual
+   capabilities users must distinguish (Open, Ask Solomon, Actions, Details).
+   Commands explicitly marked icon-only remain compact.
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions > summary {
+    border-radius: 9px;
+    font-size: 0.75rem;
+    font-weight: 680;
+    letter-spacing: 0.005em;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions > summary {
+    min-width: auto;
+    padding-left: 9px;
+    padding-right: 8px;
+    width: auto;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions-trigger > span:not(.icon) {
+    clip: auto;
+    clip-path: none;
+    height: auto;
+    overflow: visible;
+    position: static;
+    white-space: nowrap;
+    width: auto;
+}
+
+@media (max-width: 1120px) {
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--secondary
+    .workspace-document-command:not(.workspace-document-command-icon-only) {
+        gap: 0;
+        padding: 0;
+        width: 32px;
+    }
+
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--secondary
+    .workspace-document-command:not(.workspace-document-command-icon-only)
+    > span:not(.icon) {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+}
+
+@media (max-width: 900px) {
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--primary
+    .workspace-document-command:not([data-document-ask-solomon-ai])
+    > span:not(.icon) {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--primary
+    .workspace-document-command:not([data-document-ask-solomon-ai]) {
+        gap: 0;
+        padding: 0;
+        width: 32px;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE COMPRESSION
+   ========================================================================== */
+
+@media (max-width: 1040px) {
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-actions {
+        padding-left: 5px;
+    }
+
+    .workspace-document-selection-action-group--secondary {
+        margin-left: 2px;
+        padding-left: 4px;
+    }
+}
+/* ==========================================================================
+   SOLOMON RESPONSIVE CONTEXTUAL COMMAND BAR V2
+   --------------------------------------------------------------------------
+   Primary commands stay readable when space exists. The JS fit controller
+   moves lower-priority commands into one More menu based on measured width;
+   CSS never solves pressure by overlapping labels or wrapping the toolbar.
+   ========================================================================== */
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-actions {
+    border-left: 1px solid rgba(105, 128, 157, 0.16) !important;
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group {
+    align-items: center !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary,
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--solomon {
+    margin-left: 2px !important;
+    padding-left: 4px !important;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command:not(.workspace-document-command-icon-only),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions > summary {
+    gap: 6px !important;
+    min-width: max-content !important;
+    padding: 0 9px !important;
+    width: auto !important;
+}
+
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--primary
+.workspace-document-command:not(.workspace-document-command-icon-only)
+> span:not(.icon),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-action-group--secondary
+.workspace-document-command:not(.workspace-document-command-icon-only)
+> span:not(.icon),
+.workspace-document-selection-action-bar--drive-row
+.workspace-document-selection-solomon-actions-trigger > span:not(.icon) {
+    clip: auto !important;
+    clip-path: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    white-space: nowrap !important;
+    width: auto !important;
+}
+
+.workspace-document-selection-command-overflow {
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.workspace-document-selection-command-overflow[hidden] {
+    display: none !important;
+}
+
+.workspace-document-selection-command-overflow > summary {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: rgba(226, 236, 248, 0.84);
+    cursor: pointer;
+    display: inline-flex;
+    height: 28px;
+    justify-content: center;
+    list-style: none;
+    min-height: 28px;
+    min-width: 30px;
+    padding: 0;
+    width: 30px;
+}
+
+.workspace-document-selection-command-overflow > summary::-webkit-details-marker {
+    display: none;
+}
+
+.workspace-document-selection-command-overflow > summary:hover,
+.workspace-document-selection-command-overflow > summary:focus-visible,
+.workspace-document-selection-command-overflow[open] > summary {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(22, 191, 216, 0.22);
+    color: rgba(248, 254, 255, 0.98);
+    outline: 0;
+}
+
+.workspace-document-selection-command-overflow-menu {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border: 1px solid rgba(103, 232, 249, 0.16);
+    border-radius: 10px;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.36);
+    display: grid;
+    gap: 2px;
+    max-width: calc(100vw - 16px);
+    min-width: 210px;
+    padding: 6px;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 155;
+}
+
+.workspace-document-selection-command-overflow:not([open])
+.workspace-document-selection-command-overflow-menu {
+    display: none;
+}
+
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow {
+    align-items: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    color: rgba(226, 236, 248, 0.88) !important;
+    display: flex !important;
+    gap: 9px !important;
+    height: auto !important;
+    justify-content: flex-start !important;
+    min-height: 34px !important;
+    padding: 7px 9px !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow:hover,
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow:focus-visible {
+    background: rgba(22, 191, 216, 0.10) !important;
+    color: rgba(248, 254, 255, 0.98) !important;
+    outline: 0 !important;
+}
+
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow > span:not(.icon) {
+    clip: auto !important;
+    clip-path: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    white-space: nowrap !important;
+    width: auto !important;
+}
+
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow[data-document-delete],
+.workspace-document-selection-command-overflow-menu
+.workspace-document-command--overflow[data-document-permanent-delete] {
+    color: rgba(254, 202, 202, 0.90) !important;
+}
+
+@media (max-width: 900px) {
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--primary
+    .workspace-document-command:not([data-document-ask-solomon-ai])
+    > span:not(.icon),
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--secondary
+    .workspace-document-command:not(.workspace-document-command-icon-only)
+    > span:not(.icon) {
+        clip: auto !important;
+        clip-path: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        position: static !important;
+        white-space: nowrap !important;
+        width: auto !important;
+    }
+
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--primary
+    .workspace-document-command:not([data-document-ask-solomon-ai]),
+    .workspace-document-selection-action-bar--drive-row
+    .workspace-document-selection-action-group--secondary
+    .workspace-document-command:not(.workspace-document-command-icon-only) {
+        gap: 6px !important;
+        padding: 0 9px !important;
+        width: auto !important;
+    }
+}

@@ -1,0 +1,2273 @@
+/* -------------------------------------------------------------------
+   FILE: people.css
+   DIRECTORY: webui/static/css/
+   -------------------------------------------------------------------
+   Canonical People workspace styling.
+
+   Supports People, flat Groups, contextual Group onboarding,
+   administration, and read-only member views while leaving the shared navbar
+   and left navigation under the workspace shell.
+------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------
+   Workspace shell fit and scrolling
+------------------------------------------------------------------- */
+
+.people-command-app {
+    --people-bg: rgba(4, 11, 22, 0.72);
+    --people-bg-soft: rgba(6, 18, 34, 0.42);
+    --people-bg-hover: rgba(8, 20, 34, 0.64);
+    --people-border: rgba(68, 104, 145, 0.20);
+    --people-border-strong: rgba(105, 148, 238, 0.24);
+    --people-text: var(--brand-text, #f3f8ff);
+    --people-text-soft: var(--brand-text-soft, #c7d1df);
+    --people-text-muted: var(--brand-text-muted, #8c98aa);
+    --people-cyan: var(--brand-cyan, #16bfd8);
+    --people-radius: 10px;
+    --people-row-radius: 8px;
+    --people-radius-frame: var(--solomon-ai-radius-frame, 12px);
+    --people-radius-surface: var(--solomon-ai-radius-surface, 7px);
+    --people-radius-control: var(--solomon-ai-radius-control, 5px);
+
+    color: var(--people-text);
+    font-family: var(--font-ui, inherit);
+}
+
+.people-command-app,
+.people-command-app .people-workspace-shell,
+.people-command-app .workspace-command-canvas,
+.people-command-app .people-explorer,
+.people-command-app .people-browser,
+.people-command-app .people-workspace-panel {
+    height: 100%;
+    min-height: 0;
+}
+
+.people-command-app .people-browser {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(22, 191, 216, 0.09),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(8, 13, 24, 0.88),
+            rgba(3, 8, 18, 0.72)
+        );
+    border: 1px solid rgba(105, 148, 238, 0.16);
+    border-radius: var(--people-radius-frame);
+    box-shadow:
+        0 22px 58px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.people-command-app .people-workspace-panel {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: none;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.people-page-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 28px 36px 36px;
+    scrollbar-color:
+        rgba(148, 163, 184, 0.42)
+        transparent;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+}
+
+.people-page-scroll::-webkit-scrollbar {
+    width: 9px;
+}
+
+.people-page-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.people-page-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.42);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 3px;
+}
+
+.people-page-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(171, 188, 208, 0.58);
+}
+
+.people-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.people-list::-webkit-scrollbar-track {
+    background: rgba(3, 9, 18, 0.48);
+    border-radius: 999px;
+}
+
+.people-list::-webkit-scrollbar-thumb {
+    background: rgba(72, 119, 166, 0.5);
+    border: 2px solid rgba(3, 9, 18, 0.48);
+    border-radius: 999px;
+}
+
+.people-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(65, 210, 255, 0.46);
+}
+
+/* -------------------------------------------------------------------
+   Page frame
+------------------------------------------------------------------- */
+
+.people-page {
+    background: transparent;
+    color: var(--people-text);
+    min-height: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.command-main .people-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.people-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+}
+
+/* -------------------------------------------------------------------
+   Toolbar extension of My Files
+------------------------------------------------------------------- */
+
+.people-toolbar {
+    align-items: center;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.10);
+    flex: 0 0 auto;
+    margin: 0;
+    min-height: 0;
+}
+
+.people-toolbar .workspace-document-browser-heading {
+    min-width: 0;
+}
+
+.people-toolbar .workspace-kicker {
+    color: var(--cc-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    margin: 0 0 7px;
+    text-transform: uppercase;
+}
+
+.people-toolbar strong {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.02rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+}
+
+.people-toolbar-actions {
+    align-items: flex-start;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.people-group-card {
+    background: rgba(6, 16, 30, 0.42);
+    border: 1px solid rgba(82, 123, 166, 0.22);
+    border-radius: 8px;
+    box-shadow: none;
+    max-width: 300px;
+    min-width: 214px;
+    padding: 11px 14px;
+}
+
+.people-group-card--toolbar {
+    flex: 0 1 auto;
+}
+
+.people-group-label,
+.people-group-address {
+    display: block;
+}
+
+.people-group-label {
+    color: var(--cc-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+}
+
+.people-group-name {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.people-group-address {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin-top: 4px;
+}
+
+.people-page-close {
+    align-items: center;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(122, 145, 176, 0.18);
+    border-radius: var(--people-radius-control);
+    box-sizing: border-box;
+    color: rgba(203, 213, 225, 0.84);
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    line-height: 1;
+    position: absolute;
+    right: 14px;
+    text-decoration: none;
+    top: 12px;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease;
+    width: 32px;
+    z-index: 6;
+}
+
+.people-page-close:hover,
+.people-page-close:focus-visible {
+    background: rgba(30, 41, 59, 0.94);
+    border-color: rgba(65, 210, 255, 0.3);
+    color: rgba(248, 250, 252, 0.99);
+    outline: none;
+}
+
+.people-page-close > .icon {
+    font-size: 19px;
+    line-height: 1;
+}
+
+/* -------------------------------------------------------------------
+   Header and tabs
+------------------------------------------------------------------- */
+
+.people-header {
+    align-items: flex-start;
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(65, 210, 255, 0.05),
+            transparent 34%
+        ),
+        rgba(7, 18, 34, 0.58);
+    border: 1px solid var(--people-border);
+    border-radius: var(--people-radius);
+    box-shadow: none;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 18px;
+}
+
+.people-kicker {
+    color: var(--cc-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    margin: 0 0 7px;
+    text-transform: uppercase;
+}
+
+.people-title {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.02rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+    margin: 0;
+}
+
+.people-subtitle {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 7px 0 0;
+    max-width: 680px;
+}
+
+.people-management-tabs {
+    align-items: center;
+    background: rgba(3, 10, 20, 0.56);
+    border: 1px solid rgba(90, 130, 170, 0.20);
+    border-radius: 13px;
+    box-shadow: none;
+    display: inline-flex;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 5px;
+}
+
+.people-management-tab {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: rgba(218, 228, 242, 0.86);
+    display: inline-flex;
+    font-size: 0.76rem;
+    font-weight: 800;
+    justify-content: center;
+    line-height: 1;
+    min-height: 34px;
+    min-width: 86px;
+    padding: 0 14px;
+    text-decoration: none;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.people-management-tab:hover {
+    background: rgba(22, 191, 216, 0.08);
+    border-color: rgba(65, 210, 255, 0.24);
+    color: #dff7ff;
+    transform: none;
+}
+
+.people-management-tab.is-active {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(65, 210, 255, 0.32);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+/* -------------------------------------------------------------------
+   Overview and guidance
+------------------------------------------------------------------- */
+
+.people-overview,
+.people-section-intro {
+    align-items: end;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: grid;
+    gap: 14px;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(260px, 0.42fr);
+    margin: 0;
+    padding: 0 2px 4px;
+}
+
+.people-overview-copy {
+    min-width: 0;
+}
+
+.people-overview h2,
+.people-section-intro h2 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.02rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+    margin: 0;
+}
+
+.people-overview p,
+.people-section-intro p {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 7px 0 0;
+    max-width: 820px;
+}
+
+.people-overview-note,
+.people-notice {
+    background: rgba(5, 13, 25, 0.34);
+    border: 1px solid rgba(68, 104, 145, 0.18);
+    border-radius: 9px;
+    box-shadow: none;
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 0;
+    padding: 10px 12px;
+}
+
+.people-overview-note strong,
+.people-notice strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.people-overview-note span {
+    display: block;
+}
+
+.people-notice div {
+    align-items: baseline;
+    color: var(--cc-muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 13px;
+    gap: 7px;
+    line-height: 1.52;
+}
+
+/* -------------------------------------------------------------------
+   Panels
+------------------------------------------------------------------- */
+
+.people-grid,
+.people-secondary-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns:
+        minmax(300px, 0.78fr)
+        minmax(0, 1.22fr);
+}
+
+.people-secondary-grid {
+    grid-template-columns:
+        minmax(300px, 0.92fr)
+        minmax(0, 1.08fr);
+}
+
+.people-panel {
+    background: rgba(5, 13, 25, 0.62);
+    border: 1px solid var(--people-border);
+    border-radius: var(--people-radius);
+    box-shadow: none;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.people-primary-panel {
+    background: rgba(5, 13, 25, 0.68);
+}
+
+.people-secondary-panel {
+    background: rgba(5, 13, 25, 0.56);
+}
+
+.people-wide-panel {
+    margin-top: 0;
+}
+
+.people-panel-header {
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(68, 104, 145, 0.16);
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 15px 17px 13px;
+}
+
+.people-panel-header h2 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.02rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+    margin: 0;
+}
+
+.people-panel-header p {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 7px 0 0;
+}
+
+.people-primary-panel .people-panel-header {
+    padding-bottom: 14px;
+}
+
+/* -------------------------------------------------------------------
+   Forms
+------------------------------------------------------------------- */
+
+.people-invite-form {
+    display: grid;
+    gap: 12px;
+    padding: 15px 16px 16px;
+}
+
+.people-field {
+    display: grid;
+    gap: 7px;
+}
+
+.people-field span {
+    color: var(--cc-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.people-field input,
+.people-field select,
+.people-select {
+    background: rgba(3, 10, 20, 0.74);
+    border: 1px solid rgba(91, 142, 184, 0.22);
+    border-radius: 8px;
+    color: #e9f6ff;
+    font-family: var(--font-ui, inherit);
+    font-size: 13px;
+    min-height: 40px;
+    outline: none;
+    padding: 0 12px;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    width: 100%;
+}
+
+.people-field input::placeholder {
+    color: #6f89a6;
+}
+
+.people-field input:focus,
+.people-field select:focus,
+.people-select:focus {
+    background: rgba(5, 16, 30, 0.9);
+    border-color: rgba(105, 148, 238, 0.36);
+    box-shadow: 0 0 0 3px rgba(105, 148, 238, 0.06);
+}
+
+/* -------------------------------------------------------------------
+   Buttons
+------------------------------------------------------------------- */
+
+.people-refresh,
+.people-primary-action,
+.people-action,
+.people-danger {
+    background: rgba(10, 18, 31, 0.72);
+    border: 1px solid rgba(91, 142, 184, 0.22);
+    border-radius: 8px;
+    color: rgba(218, 228, 242, 0.86);
+    cursor: pointer;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 10px 13px;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        color 160ms ease,
+        opacity 160ms ease;
+}
+
+.people-refresh {
+    min-height: 34px;
+}
+
+.people-primary-action {
+    background: rgba(10, 32, 50, 0.78);
+    border-color: rgba(91, 142, 184, 0.30);
+    color: rgba(241, 247, 255, 0.96);
+    min-height: 40px;
+}
+
+.people-refresh:hover,
+.people-primary-action:hover,
+.people-action:hover {
+    background: rgba(15, 31, 50, 0.82);
+    border-color: rgba(105, 148, 238, 0.34);
+    color: #ffffff;
+}
+
+.people-primary-action:hover {
+    background: rgba(16, 45, 67, 0.86);
+}
+
+.people-danger {
+    background: rgba(74, 20, 32, 0.44);
+    border-color: rgba(255, 115, 132, 0.28);
+    color: #ffd9de;
+}
+
+.people-danger:hover {
+    background: rgba(94, 24, 39, 0.62);
+    border-color: rgba(255, 115, 132, 0.58);
+    color: #ffffff;
+    transform: none;
+}
+
+.people-refresh:disabled,
+.people-primary-action:disabled,
+.people-action:disabled,
+.people-danger:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+    transform: none;
+}
+
+/* -------------------------------------------------------------------
+   Lists, results, and cards
+------------------------------------------------------------------- */
+
+.people-list {
+    display: grid;
+    gap: 10px;
+    max-height: min(38vh, 380px);
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 14px;
+    scrollbar-color:
+        rgba(72, 119, 166, 0.5)
+        rgba(3, 9, 18, 0.48);
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+}
+
+.people-list--primary,
+.people-primary-panel .people-list,
+.people-wide-panel .people-list {
+    max-height: none;
+    overflow: visible;
+}
+
+.people-empty,
+.people-error,
+.people-invite-result {
+    background: rgba(3, 10, 20, 0.34);
+    border: 1px dashed rgba(122, 158, 196, 0.20);
+    border-radius: 8px;
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    padding: 14px;
+}
+
+.people-error {
+    border-color: rgba(255, 115, 132, 0.38);
+    color: #ffd9de;
+}
+
+.people-invite-result {
+    border-color: rgba(65, 210, 255, 0.20);
+    border-style: solid;
+    color: #bfeeff;
+    margin: 0 16px 16px;
+}
+
+.people-invite-result.is-success {
+    border-color: rgba(121, 242, 177, 0.34);
+    color: #c5ffd9;
+}
+
+.people-invite-result.is-error {
+    border-color: rgba(255, 115, 132, 0.38);
+    color: #ffd9de;
+}
+
+.people-copy-value {
+    background: rgba(4, 11, 22, 0.78);
+    border: 1px solid rgba(91, 142, 184, 0.26);
+    border-radius: 8px;
+    color: #e9f6ff;
+    display: block;
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        "Courier New",
+        monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+    padding: 10px 12px;
+}
+
+.people-card {
+    background: rgba(4, 12, 24, 0.46);
+    border: 1px solid rgba(95, 139, 181, 0.16);
+    border-radius: var(--people-row-radius);
+    padding: 13px 14px;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        transform 160ms ease;
+}
+
+.people-card:hover {
+    background: rgba(7, 18, 32, 0.58);
+    border-color: rgba(105, 148, 238, 0.20);
+}
+
+.people-primary-panel .people-card {
+    align-items: center;
+    display: grid;
+    gap: 14px;
+    grid-template-columns:
+        minmax(220px, 1fr)
+        auto;
+}
+
+.people-card-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.people-primary-panel .people-card-header {
+    display: block;
+}
+
+.people-person-title {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.people-person-subtitle {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 5px 0 0;
+    overflow-wrap: anywhere;
+}
+
+.people-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.people-primary-panel .people-card-meta {
+    margin-top: 8px;
+}
+
+.people-pill {
+    align-items: center;
+    background: rgba(11, 27, 48, 0.62);
+    border: 1px solid rgba(86, 132, 176, 0.24);
+    border-radius: 999px;
+    color: rgba(180, 194, 214, 0.72);
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    min-height: 23px;
+    padding: 4px 8px;
+    text-transform: capitalize;
+}
+
+.people-pill.is-owner {
+    background: rgba(96, 71, 24, 0.24);
+    border-color: rgba(255, 214, 122, 0.40);
+    color: #ffe6a8;
+}
+
+.people-pill.is-admin {
+    background: rgba(20, 52, 76, 0.24);
+    border-color: rgba(105, 148, 238, 0.28);
+    color: rgba(203, 213, 225, 0.92);
+}
+
+.people-pill.is-member {
+    background: rgba(30, 70, 52, 0.18);
+    border-color: rgba(121, 242, 177, 0.22);
+    color: rgba(205, 235, 219, 0.88);
+}
+
+.people-pill.is-guest {
+    background: rgba(48, 42, 78, 0.20);
+    border-color: rgba(189, 156, 255, 0.22);
+    color: rgba(220, 213, 235, 0.86);
+}
+
+.people-pill.is-pending {
+    background: rgba(90, 58, 19, 0.22);
+    border-color: rgba(255, 184, 87, 0.34);
+    color: #ffe2ad;
+}
+
+.people-pill.is-expired {
+    background: rgba(74, 20, 32, 0.30);
+    border-color: rgba(255, 115, 132, 0.32);
+    color: #ffd9de;
+}
+
+.people-card-actions {
+    align-items: center;
+    border-top: 1px solid rgba(90, 130, 170, 0.16);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    justify-content: flex-end;
+    margin-top: 13px;
+    padding-top: 13px;
+}
+
+.people-primary-panel .people-card-actions {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.people-role-control {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-right: auto;
+}
+
+.people-primary-panel .people-role-control {
+    margin-right: 0;
+}
+
+.people-role-control label {
+    color: var(--cc-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.people-role-control .people-select {
+    min-height: 36px;
+    min-width: 145px;
+    width: auto;
+}
+
+.people-status {
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.52;
+    margin: 0;
+    min-height: 22px;
+}
+
+.people-status.is-success {
+    color: #79f2b1;
+}
+
+.people-status.is-error {
+    color: #ff9daa;
+}
+
+/* -------------------------------------------------------------------
+   Responsive behavior
+------------------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+    .people-command-app .people-workspace-panel {
+        height: 100%;
+        max-height: none;
+    }
+
+    .people-page-scroll {
+        padding: 24px 28px 32px;
+    }
+
+    .people-grid,
+    .people-secondary-grid {
+        grid-template-columns:
+            minmax(280px, 0.9fr)
+            minmax(0, 1.1fr);
+    }
+}
+
+@media (max-width: 980px) {
+    .people-command-app .people-workspace-panel {
+        height: 100%;
+        max-height: none;
+    }
+
+    .people-page-scroll {
+        padding: 22px 22px 28px;
+    }
+
+    .people-header {
+        flex-direction: column;
+    }
+
+    .people-group-card {
+        max-width: none;
+        width: 100%;
+    }
+
+    .people-toolbar-actions {
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .people-group-card--toolbar {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .people-management-tabs {
+        display: flex;
+        width: 100%;
+    }
+
+    .people-management-tab {
+        flex: 1;
+    }
+
+    .people-overview,
+    .people-grid,
+    .people-secondary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .people-list,
+    .people-wide-panel .people-list {
+        max-height: none;
+    }
+
+    .people-primary-panel .people-card {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+    }
+
+    .people-primary-panel .people-card-actions {
+        border-top: 1px solid rgba(90, 130, 170, 0.16);
+        margin-top: 13px;
+        padding-top: 13px;
+    }
+
+    .people-primary-panel .people-role-control {
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .people-page-scroll {
+        padding: 18px 16px 24px;
+    }
+
+    .people-header,
+    .people-overview,
+    .people-section-intro,
+    .people-overview-note,
+    .people-notice,
+    .people-panel {
+        border-radius: 13px;
+    }
+
+    .people-overview,
+    .people-section-intro,
+    .people-panel-header,
+    .people-invite-form,
+    .people-list {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .people-panel-header,
+    .people-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .people-card-actions,
+    .people-role-control {
+        justify-content: stretch;
+    }
+
+    .people-refresh,
+    .people-primary-action,
+    .people-action,
+    .people-danger,
+    .people-role-control .people-select {
+        width: 100%;
+    }
+
+    .people-toolbar-actions {
+        gap: 10px;
+    }
+
+    .people-page-close {
+        right: 12px;
+        top: 10px;
+    }
+}
+/* -------------------------------------------------------------------
+   Canonical People directory workspace
+   Scoped to the 2026 People | Groups | Invitations surface so legacy
+   company-staff rendering remains unchanged.
+------------------------------------------------------------------- */
+
+.people-page[data-people-active-view] {
+    --people-line: rgba(91, 142, 184, 0.18);
+    --people-line-strong: rgba(65, 210, 255, 0.30);
+    --people-surface: rgba(3, 10, 20, 0.30);
+    --people-surface-strong: rgba(5, 14, 27, 0.64);
+    --people-text: rgba(245, 249, 255, 0.96);
+    --people-muted: rgba(165, 185, 211, 0.76);
+    min-height: 100%;
+}
+
+.people-page[data-people-active-view] .people-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 100%;
+}
+
+.people-page[data-people-active-view] .people-tabs {
+    align-items: center;
+    border-bottom: 1px solid var(--people-line);
+    display: flex;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 2px;
+}
+
+.people-page[data-people-active-view] .people-tab {
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--people-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    min-height: 48px;
+    padding: 0 16px;
+}
+
+.people-page[data-people-active-view] .people-tab:hover {
+    color: var(--people-text);
+}
+
+.people-page[data-people-active-view] .people-tab.is-active {
+    border-bottom-color: #41d2ff;
+    color: #8be7ff;
+}
+
+.people-page[data-people-active-view] .people-view {
+    min-height: 0;
+    padding-top: 18px;
+}
+
+.people-page[data-people-active-view] .people-view[hidden] {
+    display: none !important;
+}
+
+.people-page[data-people-active-view] .people-view-heading {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.people-page[data-people-active-view] .people-view-heading--compact {
+    margin-bottom: 14px;
+}
+
+.people-page[data-people-active-view] .people-view-heading h2,
+.people-page[data-people-active-view] .people-detail-title-line h2,
+.people-page[data-people-active-view] .people-detail-section-heading h3,
+.people-page[data-people-active-view] .people-dialog-header h2 {
+    color: var(--people-text);
+    font-family: var(--font-ui, inherit);
+    margin: 0;
+}
+
+.people-page[data-people-active-view] .people-view-heading h2 {
+    font-size: 18px;
+    font-weight: 850;
+    line-height: 1.25;
+}
+
+.people-page[data-people-active-view] .people-view-heading p,
+.people-page[data-people-active-view] .people-detail-title-copy p {
+    color: var(--people-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 4px 0 0;
+}
+
+.people-page[data-people-active-view] .people-view-actions,
+.people-page[data-people-active-view] .people-detail-actions,
+.people-page[data-people-active-view] .people-dialog-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.people-page[data-people-active-view] .people-primary-action,
+.people-page[data-people-active-view] .people-action,
+.people-page[data-people-active-view] .people-danger {
+    align-items: center;
+    border-radius: 9px;
+    display: inline-flex;
+    gap: 7px;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 13px;
+}
+
+.people-page[data-people-active-view] .people-primary-action {
+    background: linear-gradient(180deg, rgba(21, 123, 210, 0.96), rgba(8, 92, 180, 0.96));
+    border-color: rgba(92, 190, 255, 0.44);
+    box-shadow: 0 8px 22px rgba(0, 104, 214, 0.18);
+}
+
+.people-page[data-people-active-view] .people-toolbar-row {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.people-page[data-people-active-view] .people-search-field {
+    align-items: center;
+    background: rgba(2, 10, 20, 0.62);
+    border: 1px solid rgba(91, 142, 184, 0.24);
+    border-radius: 9px;
+    display: flex;
+    flex: 1 1 260px;
+    gap: 9px;
+    max-width: 360px;
+    min-height: 38px;
+    padding: 0 11px;
+}
+
+.people-page[data-people-active-view] .people-search-field .icon {
+    color: rgba(145, 190, 225, 0.80);
+    font-size: 17px;
+}
+
+.people-page[data-people-active-view] .people-search-field input {
+    background: transparent;
+    border: 0;
+    color: var(--people-text);
+    font: inherit;
+    font-size: 12px;
+    min-width: 0;
+    outline: 0;
+    width: 100%;
+}
+
+.people-page[data-people-active-view] .people-search-field input::placeholder {
+    color: rgba(145, 170, 200, 0.66);
+}
+
+.people-page[data-people-active-view] .people-filter-select,
+.people-page[data-people-active-view] .people-inline-role-select {
+    background: rgba(2, 10, 20, 0.68);
+    border: 1px solid rgba(91, 142, 184, 0.24);
+    border-radius: 9px;
+    color: rgba(225, 235, 247, 0.90);
+    font: inherit;
+    font-size: 12px;
+    min-height: 38px;
+    outline: 0;
+    padding: 0 32px 0 11px;
+}
+
+.people-page[data-people-active-view] .people-groups-layout {
+    display: grid;
+    gap: 0;
+    grid-template-columns: minmax(500px, 1.05fr) minmax(420px, 0.95fr);
+    min-height: 560px;
+}
+
+.people-page[data-people-active-view] .people-groups-directory {
+    border-right: 1px solid var(--people-line);
+    min-width: 0;
+    padding-right: 18px;
+}
+
+.people-page[data-people-active-view] .people-group-detail {
+    min-width: 0;
+    padding-left: 22px;
+}
+
+.people-page[data-people-active-view] .people-table-shell {
+    border: 1px solid var(--people-line);
+    border-radius: 11px;
+    overflow: hidden;
+}
+
+.people-page[data-people-active-view] .people-table {
+    min-width: 0;
+    width: 100%;
+}
+
+.people-page[data-people-active-view] .people-table-head,
+.people-page[data-people-active-view] .people-table-row {
+    align-items: center;
+    display: grid;
+    min-width: 0;
+}
+
+.people-page[data-people-active-view] .people-table--groups .people-table-head,
+.people-page[data-people-active-view] .people-table--groups .people-table-row {
+    grid-template-columns: minmax(155px, 1.05fr) 78px minmax(190px, 1.35fr) 94px;
+}
+
+.people-page[data-people-active-view] .people-table--people .people-table-head,
+.people-page[data-people-active-view] .people-table--people .people-table-row {
+    grid-template-columns: minmax(180px, 1.15fr) minmax(240px, 1.45fr) 125px 100px;
+}
+
+.people-page[data-people-active-view] .people-table--invitations .people-table-head,
+.people-page[data-people-active-view] .people-table--invitations .people-table-row {
+    grid-template-columns: minmax(260px, 1.6fr) 150px 110px 132px;
+}
+
+.people-page[data-people-active-view] .people-table-head {
+    background: rgba(7, 18, 32, 0.66);
+    border-bottom: 1px solid var(--people-line);
+    color: rgba(153, 180, 209, 0.78);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    min-height: 38px;
+    text-transform: uppercase;
+}
+
+.people-page[data-people-active-view] .people-table-head > span,
+.people-page[data-people-active-view] .people-table-cell {
+    min-width: 0;
+    padding: 9px 12px;
+}
+
+.people-page[data-people-active-view] .people-table-row {
+    background: rgba(3, 10, 20, 0.24);
+    border: 0;
+    border-bottom: 1px solid rgba(91, 142, 184, 0.12);
+    color: var(--people-text);
+    font: inherit;
+    min-height: 58px;
+    text-align: left;
+    width: 100%;
+}
+
+.people-page[data-people-active-view] .people-table-row:last-child {
+    border-bottom: 0;
+}
+
+.people-page[data-people-active-view] button.people-table-row {
+    cursor: pointer;
+}
+
+.people-page[data-people-active-view] button.people-table-row:hover {
+    background: rgba(8, 25, 43, 0.52);
+}
+
+.people-page[data-people-active-view] .people-group-row.is-selected {
+    background: linear-gradient(90deg, rgba(0, 101, 171, 0.22), rgba(5, 20, 35, 0.42));
+    box-shadow: inset 2px 0 0 #19affa;
+}
+
+.people-page[data-people-active-view] .people-group-identity,
+.people-page[data-people-active-view] .people-identity {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
+}
+
+.people-page[data-people-active-view] .people-group-icon,
+.people-page[data-people-active-view] .people-avatar {
+    align-items: center;
+    background: rgba(12, 101, 145, 0.68);
+    border: 1px solid rgba(61, 209, 255, 0.22);
+    border-radius: 50%;
+    color: #dff7ff;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 850;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+.people-page[data-people-active-view] .people-group-icon {
+    font-size: 17px;
+}
+
+.people-page[data-people-active-view] .people-identity-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.people-page[data-people-active-view] .people-identity-copy strong,
+.people-page[data-people-active-view] .people-group-identity strong {
+    color: var(--people-text);
+    font-size: 12px;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.people-page[data-people-active-view] .people-identity-copy small,
+.people-page[data-people-active-view] .people-muted-cell,
+.people-page[data-people-active-view] .people-member-date {
+    color: var(--people-muted);
+    font-size: 11px;
+}
+
+.people-page[data-people-active-view] .people-description-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.people-page[data-people-active-view] .people-count-cell {
+    color: rgba(232, 241, 251, 0.92);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.people-page[data-people-active-view] .people-status-pill,
+.people-page[data-people-active-view] .people-role-pill {
+    align-items: center;
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 800;
+    gap: 6px;
+    line-height: 1;
+    min-height: 23px;
+    padding: 4px 8px;
+    white-space: nowrap;
+}
+
+.people-page[data-people-active-view] .people-status-pill {
+    background: rgba(18, 92, 63, 0.22);
+    border: 1px solid rgba(97, 226, 158, 0.18);
+    color: #9af0bd;
+}
+
+.people-page[data-people-active-view] .people-status-pill.is-expired,
+.people-page[data-people-active-view] .people-status-pill.is-removed,
+.people-page[data-people-active-view] .people-status-pill.is-revoked {
+    background: rgba(94, 35, 48, 0.24);
+    border-color: rgba(255, 115, 132, 0.22);
+    color: #ffb7c1;
+}
+
+.people-page[data-people-active-view] .people-status-pill.is-pending {
+    background: rgba(101, 72, 22, 0.24);
+    border-color: rgba(255, 196, 92, 0.22);
+    color: #ffdfa1;
+}
+
+.people-page[data-people-active-view] .people-status-dot {
+    background: currentColor;
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+.people-page[data-people-active-view] .people-role-pill {
+    background: rgba(65, 48, 105, 0.28);
+    border: 1px solid rgba(175, 137, 255, 0.16);
+    color: #d9c4ff;
+}
+
+.people-page[data-people-active-view] .people-role-pill.is-admin {
+    background: rgba(7, 75, 123, 0.30);
+    border-color: rgba(65, 210, 255, 0.18);
+    color: #8be7ff;
+}
+
+.people-page[data-people-active-view] .people-role-pill.is-member,
+.people-page[data-people-active-view] .people-role-pill.is-guest {
+    background: rgba(30, 45, 66, 0.56);
+    border-color: rgba(116, 151, 190, 0.16);
+    color: rgba(211, 226, 242, 0.88);
+}
+
+.people-page[data-people-active-view] .people-result-count {
+    color: var(--people-muted);
+    font-size: 11px;
+    margin: 10px 2px 0;
+}
+
+.people-page[data-people-active-view] .people-detail-header {
+    border-bottom: 1px solid var(--people-line);
+    padding-bottom: 17px;
+}
+
+.people-page[data-people-active-view] .people-detail-title-wrap {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+}
+
+.people-page[data-people-active-view] .people-detail-group-icon {
+    align-items: center;
+    background: linear-gradient(145deg, rgba(5, 150, 198, 0.85), rgba(4, 84, 121, 0.86));
+    border: 1px solid rgba(62, 214, 255, 0.30);
+    border-radius: 50%;
+    color: white;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 28px;
+    height: 54px;
+    justify-content: center;
+    width: 54px;
+}
+
+.people-page[data-people-active-view] .people-detail-title-copy {
+    min-width: 0;
+}
+
+.people-page[data-people-active-view] .people-detail-title-line {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.people-page[data-people-active-view] .people-detail-title-line h2 {
+    font-size: 18px;
+    font-weight: 850;
+}
+
+.people-page[data-people-active-view] .people-membership-copy {
+    align-items: center;
+    color: var(--people-muted);
+    display: flex;
+    font-size: 11px;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.people-page[data-people-active-view] .people-detail-stats {
+    align-items: stretch;
+    border-bottom: 1px solid var(--people-line);
+    display: flex;
+    gap: 0;
+    margin-bottom: 14px;
+}
+
+.people-page[data-people-active-view] .people-detail-stat {
+    border-right: 1px solid var(--people-line);
+    display: flex;
+    flex-direction: column;
+    min-width: 110px;
+    padding: 13px 18px 13px 0;
+}
+
+.people-page[data-people-active-view] .people-detail-stat + .people-detail-stat {
+    padding-left: 18px;
+}
+
+.people-page[data-people-active-view] .people-detail-stat:last-child {
+    border-right: 0;
+}
+
+.people-page[data-people-active-view] .people-detail-stat strong {
+    color: var(--people-text);
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.people-page[data-people-active-view] .people-detail-stat span {
+    color: var(--people-muted);
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.people-page[data-people-active-view] .people-detail-actions {
+    border-bottom: 1px solid var(--people-line);
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+}
+
+.people-page[data-people-active-view] .people-detail-section-heading h3 {
+    font-size: 13px;
+    font-weight: 850;
+    margin-bottom: 6px;
+}
+
+.people-page[data-people-active-view] .people-member-list {
+    border: 1px solid var(--people-line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.people-page[data-people-active-view] .people-member-row {
+    align-items: center;
+    border-bottom: 1px solid rgba(91, 142, 184, 0.12);
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(180px, 1fr) 105px 94px 34px;
+    min-height: 58px;
+    padding: 0 10px;
+}
+
+.people-page[data-people-active-view] .people-member-row:last-child {
+    border-bottom: 0;
+}
+
+.people-page[data-people-active-view] .people-member-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.people-page[data-people-active-view] .people-icon-action {
+    align-items: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: var(--people-muted);
+    cursor: pointer;
+    display: inline-flex;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+.people-page[data-people-active-view] .people-icon-action:hover {
+    background: rgba(15, 31, 50, 0.76);
+    border-color: var(--people-line);
+    color: white;
+}
+
+.people-page[data-people-active-view] .people-icon-action--danger:hover {
+    background: rgba(91, 25, 39, 0.48);
+    border-color: rgba(255, 115, 132, 0.30);
+    color: #ffbdc5;
+}
+
+.people-page[data-people-active-view] .people-group-access-note {
+    align-items: flex-start;
+    background: rgba(5, 20, 33, 0.56);
+    border: 1px solid rgba(65, 210, 255, 0.14);
+    border-radius: 9px;
+    color: var(--people-muted);
+    display: flex;
+    font-size: 10px;
+    gap: 8px;
+    line-height: 1.55;
+    margin: 14px 0 0;
+    padding: 10px 11px;
+}
+
+.people-page[data-people-active-view] .people-empty--detail {
+    margin-top: 4px;
+}
+
+.people-page[data-people-active-view] .people-dialog {
+    background: transparent;
+    border: 0;
+    max-height: calc(100vh - 48px);
+    max-width: min(520px, calc(100vw - 32px));
+    padding: 0;
+    width: 100%;
+}
+
+.people-page[data-people-active-view] .people-dialog::backdrop {
+    background: rgba(0, 5, 12, 0.72);
+    backdrop-filter: blur(3px);
+}
+
+.people-page[data-people-active-view] .people-dialog-card {
+    background: linear-gradient(180deg, rgba(8, 20, 35, 0.99), rgba(4, 12, 23, 0.99));
+    border: 1px solid rgba(91, 142, 184, 0.30);
+    border-radius: 14px;
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.48);
+    display: grid;
+    gap: 15px;
+    padding: 20px;
+}
+
+.people-page[data-people-active-view] .people-dialog--wide {
+    max-width: min(620px, calc(100vw - 32px));
+}
+
+.people-page[data-people-active-view] .people-dialog-card--wide {
+    min-width: 0;
+    width: 100%;
+}
+
+.people-page[data-people-active-view] .people-dialog-header {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+}
+
+.people-page[data-people-active-view] .people-dialog-header h2 {
+    font-size: 17px;
+    font-weight: 850;
+}
+
+.people-page[data-people-active-view] .people-dialog-close {
+    align-items: center;
+    background: rgba(7, 17, 30, 0.60);
+    border: 1px solid var(--people-line);
+    border-radius: 8px;
+    color: var(--people-muted);
+    cursor: pointer;
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+}
+
+.people-page[data-people-active-view] .people-field {
+    display: grid;
+    gap: 7px;
+}
+
+.people-page[data-people-active-view] .people-field > span {
+    color: rgba(158, 188, 220, 0.86);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.people-page[data-people-active-view] .people-field input,
+.people-page[data-people-active-view] .people-field textarea,
+.people-page[data-people-active-view] .people-field select {
+    background: rgba(2, 9, 18, 0.74);
+    border: 1px solid rgba(91, 142, 184, 0.28);
+    border-radius: 9px;
+    color: var(--people-text);
+    font: inherit;
+    font-size: 12px;
+    outline: 0;
+    padding: 10px 11px;
+    resize: vertical;
+}
+
+.people-page[data-people-active-view] .people-dialog-actions {
+    border-top: 1px solid var(--people-line);
+    justify-content: flex-end;
+    padding-top: 14px;
+}
+
+.people-page[data-people-active-view] .people-search-field--dialog {
+    max-width: none;
+}
+
+.people-page[data-people-active-view] .people-member-picker {
+    border: 1px solid var(--people-line);
+    border-radius: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.people-page[data-people-active-view] .people-member-option {
+    align-items: center;
+    border-bottom: 1px solid rgba(91, 142, 184, 0.12);
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    min-height: 56px;
+    padding: 7px 10px;
+}
+
+.people-page[data-people-active-view] .people-member-option:last-child {
+    border-bottom: 0;
+}
+
+.people-page[data-people-active-view] .people-member-option:hover {
+    background: rgba(8, 25, 43, 0.50);
+}
+
+.people-page[data-people-active-view] .people-member-option input {
+    accent-color: #19affa;
+}
+
+.people-page[data-people-active-view] .people-status {
+    margin: 7px 0 0;
+    min-height: 18px;
+}
+
+.people-page[data-people-active-view] .people-invite-result {
+    margin: 0;
+}
+
+@media (max-width: 1180px) {
+    .people-page[data-people-active-view] .people-groups-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .people-page[data-people-active-view] .people-groups-directory {
+        border-right: 0;
+        padding-right: 0;
+    }
+
+    .people-page[data-people-active-view] .people-group-detail {
+        border-top: 1px solid var(--people-line);
+        margin-top: 18px;
+        padding: 20px 0 0;
+    }
+}
+
+@media (max-width: 760px) {
+    .people-page[data-people-active-view] .people-view-heading,
+    .people-page[data-people-active-view] .people-toolbar-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .people-page[data-people-active-view] .people-search-field {
+        flex-basis: auto;
+        max-width: none;
+    }
+
+    .people-page[data-people-active-view] .people-table-shell {
+        overflow-x: auto;
+    }
+
+    .people-page[data-people-active-view] .people-table--groups {
+        min-width: 650px;
+    }
+
+    .people-page[data-people-active-view] .people-table--people {
+        min-width: 650px;
+    }
+
+    .people-page[data-people-active-view] .people-table--invitations {
+        min-width: 650px;
+    }
+
+    .people-page[data-people-active-view] .people-member-row {
+        grid-template-columns: minmax(160px, 1fr) 100px 34px;
+    }
+
+    .people-page[data-people-active-view] .people-member-date {
+        display: none;
+    }
+}
+
+/* -------------------------------------------------------------------
+   People workspace visual refinement
+   -------------------------------------------------------------------
+   Brings the canonical People | Groups | Invitations surface into the
+   same premium, list-centric visual language as the Documents workspace.
+   Deliberately scoped to the People content area; navbar and left rail
+   styling remain owned by the shared workspace shell.
+------------------------------------------------------------------- */
+
+.people-command-app .people-toolbar {
+    background:
+        linear-gradient(180deg, rgba(7, 19, 35, 0.64), rgba(5, 14, 27, 0.28));
+    border-bottom: 0 !important;
+    min-height: 52px;
+    padding: 10px 16px 8px;
+}
+
+.people-command-app .people-toolbar .workspace-kicker {
+    color: rgba(153, 190, 225, 0.76);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+}
+
+.people-command-app .people-toolbar strong {
+    color: rgba(250, 252, 255, 0.99);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+}
+
+.people-command-app .people-page-scroll {
+    padding: 0 22px 28px;
+}
+
+.people-page[data-people-active-view] {
+    --people-line: rgba(104, 151, 198, 0.20);
+    --people-line-strong: rgba(65, 210, 255, 0.38);
+    --people-surface: rgba(5, 15, 28, 0.46);
+    --people-surface-strong: rgba(6, 18, 34, 0.78);
+    --people-text: rgba(248, 251, 255, 0.98);
+    --people-muted: rgba(169, 192, 219, 0.78);
+}
+
+.people-page[data-people-active-view] .people-tabs {
+    background: linear-gradient(180deg, rgba(8, 20, 36, 0.34), rgba(4, 13, 25, 0.10));
+    border-bottom-color: rgba(102, 151, 198, 0.24);
+    gap: 12px;
+    min-height: 48px;
+    padding: 0 6px;
+}
+
+.people-page[data-people-active-view] .people-tab {
+    border-bottom-width: 3px;
+    font-size: 13.5px;
+    font-weight: 800;
+    min-height: 48px;
+    padding: 0 16px;
+    transition:
+        color 140ms ease,
+        background 140ms ease,
+        border-color 140ms ease;
+}
+
+.people-page[data-people-active-view] .people-tab:hover {
+    background: rgba(20, 72, 104, 0.12);
+}
+
+.people-page[data-people-active-view] .people-tab.is-active {
+    border-bottom-color: #41d2ff;
+    color: #82e7ff;
+    text-shadow: 0 0 18px rgba(65, 210, 255, 0.18);
+}
+
+.people-page[data-people-active-view] .people-view {
+    padding-top: 16px;
+}
+
+.people-page[data-people-active-view] .people-view-heading {
+    margin-bottom: 14px;
+}
+
+.people-page[data-people-active-view] .people-view-heading--compact {
+    margin-bottom: 16px;
+}
+
+.people-page[data-people-active-view] .people-view-heading h2 {
+    font-size: 20px;
+    font-weight: 860;
+    letter-spacing: -0.018em;
+}
+
+.people-page[data-people-active-view] .people-view-heading p,
+.people-page[data-people-active-view] .people-detail-title-copy p {
+    color: rgba(174, 197, 222, 0.78);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.people-page[data-people-active-view] .people-primary-action,
+.people-page[data-people-active-view] .people-action,
+.people-page[data-people-active-view] .people-danger {
+    border-radius: 10px;
+    min-height: 42px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.people-page[data-people-active-view] .people-primary-action {
+    background: linear-gradient(180deg, #138ee8 0%, #0872d6 58%, #065fbc 100%);
+    border: 1px solid rgba(116, 213, 255, 0.46);
+    box-shadow:
+        0 10px 24px rgba(0, 103, 214, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-weight: 820;
+}
+
+.people-page[data-people-active-view] .people-primary-action:hover {
+    background: linear-gradient(180deg, #1a9af3 0%, #0b7be1 58%, #0767c7 100%);
+    border-color: rgba(137, 223, 255, 0.66);
+    box-shadow:
+        0 12px 28px rgba(0, 117, 230, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.people-page[data-people-active-view] .people-toolbar-row {
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.people-page[data-people-active-view] .people-search-field {
+    background: linear-gradient(180deg, rgba(4, 15, 29, 0.84), rgba(2, 10, 20, 0.76));
+    border-color: rgba(104, 151, 198, 0.30);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
+    max-width: 390px;
+    min-height: 42px;
+    padding: 0 13px;
+}
+
+.people-page[data-people-active-view] .people-search-field:focus-within {
+    border-color: rgba(65, 210, 255, 0.52);
+    box-shadow:
+        0 0 0 2px rgba(65, 210, 255, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.028);
+}
+
+.people-page[data-people-active-view] .people-search-field input {
+    font-size: 13px;
+}
+
+.people-page[data-people-active-view] .people-filter-select,
+.people-page[data-people-active-view] .people-inline-role-select {
+    background: linear-gradient(180deg, rgba(4, 15, 29, 0.86), rgba(2, 10, 20, 0.78));
+    border-color: rgba(104, 151, 198, 0.30);
+    border-radius: 10px;
+    font-size: 12.5px;
+    min-height: 42px;
+}
+
+.people-page[data-people-active-view] .people-groups-layout {
+    gap: 20px;
+    grid-template-columns: minmax(520px, 1.04fr) minmax(430px, 0.96fr);
+    min-height: 548px;
+}
+
+.people-page[data-people-active-view] .people-groups-directory {
+    border-right: 1px solid rgba(104, 151, 198, 0.18);
+    padding: 4px 20px 0 4px;
+}
+
+.people-page[data-people-active-view] .people-group-detail {
+    background:
+        radial-gradient(circle at 8% 0%, rgba(28, 150, 203, 0.075), transparent 34%),
+        linear-gradient(180deg, rgba(7, 19, 34, 0.78), rgba(3, 11, 22, 0.58));
+    border: 1px solid rgba(104, 151, 198, 0.22);
+    border-radius: 14px;
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.018);
+    min-height: 520px;
+    padding: 20px 20px 22px;
+}
+
+.people-page[data-people-active-view] .people-table-shell {
+    background: linear-gradient(180deg, rgba(5, 16, 30, 0.68), rgba(3, 11, 22, 0.54));
+    border-color: rgba(104, 151, 198, 0.24);
+    border-radius: 12px;
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+.people-page[data-people-active-view] .people-table-head {
+    background: linear-gradient(180deg, rgba(11, 28, 48, 0.76), rgba(6, 19, 34, 0.72));
+    border-bottom-color: rgba(104, 151, 198, 0.24);
+    color: rgba(164, 195, 224, 0.84);
+    font-size: 10.5px;
+    letter-spacing: 0.075em;
+    min-height: 42px;
+}
+
+.people-page[data-people-active-view] .people-table-row {
+    background: rgba(3, 11, 22, 0.30);
+    border-bottom-color: rgba(104, 151, 198, 0.13);
+    min-height: 64px;
+    transition:
+        background 130ms ease,
+        box-shadow 130ms ease;
+}
+
+.people-page[data-people-active-view] button.people-table-row:hover {
+    background: linear-gradient(90deg, rgba(10, 47, 75, 0.60), rgba(5, 22, 38, 0.52));
+}
+
+.people-page[data-people-active-view] .people-group-row.is-selected {
+    background: linear-gradient(90deg, rgba(0, 112, 190, 0.30), rgba(5, 24, 42, 0.58));
+    box-shadow:
+        inset 3px 0 0 #22baff,
+        inset 0 0 0 1px rgba(65, 210, 255, 0.16);
+}
+
+.people-page[data-people-active-view] .people-group-icon,
+.people-page[data-people-active-view] .people-avatar {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+    height: 34px;
+    width: 34px;
+}
+
+.people-page[data-people-active-view] .people-group-icon {
+    background: linear-gradient(145deg, rgba(13, 139, 190, 0.90), rgba(5, 91, 132, 0.90));
+    border-color: rgba(83, 220, 255, 0.30);
+    font-size: 18px;
+}
+
+.people-page[data-people-active-view] .people-identity-copy strong,
+.people-page[data-people-active-view] .people-group-identity strong {
+    font-size: 13px;
+    font-weight: 820;
+}
+
+.people-page[data-people-active-view] .people-count-cell,
+.people-page[data-people-active-view] .people-muted-cell {
+    font-size: 12.5px;
+}
+
+.people-page[data-people-active-view] .people-status-pill,
+.people-page[data-people-active-view] .people-role-pill {
+    min-height: 24px;
+    padding: 4px 9px;
+}
+
+.people-page[data-people-active-view] .people-result-count {
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+.people-page[data-people-active-view] .people-empty {
+    background: rgba(3, 12, 24, 0.34);
+    border-color: rgba(113, 158, 202, 0.18);
+    color: rgba(169, 192, 219, 0.76);
+    font-size: 12.5px;
+}
+
+.people-page[data-people-active-view] .people-table [data-people-groups-list] > .people-empty,
+.people-page[data-people-active-view] .people-table [data-people-directory-list] > .people-empty,
+.people-page[data-people-active-view] .people-table [data-people-invitations-list] > .people-empty {
+    align-items: center;
+    border: 0;
+    border-radius: 0;
+    display: flex;
+    min-height: 82px;
+    padding: 18px 20px;
+}
+
+.people-page[data-people-active-view] .people-empty--detail {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 360px;
+    padding: 36px 28px;
+    text-align: center;
+}
+
+.people-page[data-people-active-view] .people-empty--detail::before {
+    align-items: center;
+    background: linear-gradient(145deg, rgba(12, 135, 184, 0.56), rgba(6, 74, 111, 0.56));
+    border: 1px solid rgba(65, 210, 255, 0.24);
+    border-radius: 50%;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    color: rgba(219, 248, 255, 0.92);
+    content: "groups";
+    display: inline-flex;
+    font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+    font-size: 28px;
+    height: 58px;
+    justify-content: center;
+    margin-bottom: 16px;
+    width: 58px;
+}
+
+.people-page[data-people-active-view] .people-detail-header {
+    padding-bottom: 18px;
+}
+
+.people-page[data-people-active-view] .people-detail-group-icon {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.20);
+    height: 60px;
+    width: 60px;
+}
+
+.people-page[data-people-active-view] .people-detail-title-line h2 {
+    font-size: 20px;
+    letter-spacing: -0.018em;
+}
+
+.people-page[data-people-active-view] .people-detail-stat strong {
+    font-size: 15px;
+}
+
+.people-page[data-people-active-view] .people-member-list {
+    background: rgba(3, 11, 22, 0.34);
+    border-color: rgba(104, 151, 198, 0.20);
+    border-radius: 11px;
+}
+
+.people-page[data-people-active-view] .people-member-row {
+    min-height: 62px;
+}
+
+.people-page[data-people-active-view] .people-dialog-card {
+    border-color: rgba(104, 166, 218, 0.34);
+    box-shadow:
+        0 28px 84px rgba(0, 0, 0, 0.56),
+        inset 0 1px 0 rgba(255, 255, 255, 0.026);
+}
+
+@media (max-width: 1180px) {
+    .people-command-app .people-page-scroll {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .people-page[data-people-active-view] .people-groups-directory {
+        border-right: 0;
+        padding: 0;
+    }
+
+    .people-page[data-people-active-view] .people-group-detail {
+        border-top: 1px solid rgba(104, 151, 198, 0.22);
+        margin-top: 2px;
+        padding: 20px;
+    }
+}
+
+
+/* People invitation/action completion */
+.people-page[data-people-active-view] .people-table-actions {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.people-page[data-people-active-view] .people-dialog-note {
+    background: rgba(5, 20, 33, 0.58);
+    border: 1px solid rgba(65, 210, 255, 0.14);
+    border-radius: 9px;
+    color: var(--people-muted);
+    font-size: 11px;
+    line-height: 1.5;
+    margin: 2px 0 14px;
+    padding: 10px 11px;
+}
+
+.people-page[data-people-active-view] .people-invite-result {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.people-page[data-people-active-view] .people-inline-copy-action {
+    background: rgba(11, 45, 70, 0.72);
+    border: 1px solid rgba(65, 210, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(225, 245, 255, 0.94);
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 750;
+    min-height: 30px;
+    padding: 0 10px;
+}
+
+.people-page[data-people-active-view] .people-inline-copy-action:hover {
+    background: rgba(13, 65, 100, 0.84);
+    border-color: rgba(65, 210, 255, 0.40);
+}
+
+/* Contextual Group membership onboarding */
+.people-page[data-people-active-view] .people-member-section {
+    display: grid;
+    gap: 10px;
+}
+
+.people-page[data-people-active-view] .people-member-section-heading {
+    display: grid;
+    gap: 3px;
+}
+
+.people-page[data-people-active-view] .people-member-section-heading strong {
+    color: var(--people-text);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.people-page[data-people-active-view] .people-member-section-heading span {
+    color: var(--people-muted);
+    font-size: 10px;
+    line-height: 1.45;
+}
+
+.people-page[data-people-active-view] .people-member-divider {
+    align-items: center;
+    color: rgba(135, 169, 204, 0.68);
+    display: grid;
+    font-size: 10px;
+    font-weight: 800;
+    gap: 10px;
+    grid-template-columns: 1fr auto 1fr;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.people-page[data-people-active-view] .people-member-divider::before,
+.people-page[data-people-active-view] .people-member-divider::after {
+    background: rgba(104, 151, 198, 0.18);
+    content: "";
+    height: 1px;
+}
+
+.people-page[data-people-active-view] .people-detail-pending {
+    margin-top: 14px;
+}
+
+.people-page[data-people-active-view] .people-member-row--pending {
+    background: rgba(8, 23, 38, 0.34);
+}
+
+.people-page[data-people-active-view] .people-member-row--pending .people-avatar {
+    opacity: 0.78;
+}
+
+.people-page[data-people-active-view] .people-member-row--pending .people-person-copy small {
+    color: rgba(142, 176, 210, 0.74);
+}
+
+.people-page[data-people-active-view] [data-people-member-invite-result] {
+    margin-top: 2px;
+}
+

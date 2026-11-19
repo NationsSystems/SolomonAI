@@ -1,0 +1,59 @@
+<!-- ==========================================================================
+ FILE: webui/templates/web_sports.html
+ Solomon Web Lane Template — Sports
+ ========================================================================== -->
+
+<div class="web-card web-card-sports">
+
+  <div class="web-card-header">
+    <div class="web-card-kicker">Sports</div>
+    <h3 class="web-card-title">Game Scores & Updates</h3>
+  </div>
+
+  <div class="web-card-body">
+
+    <!-- Summary -->
+    <div class="web-summary">
+      <p>{{ content }}</p>
+    </div>
+
+    <!-- Highlights -->
+    {% if points %}
+    <div class="web-section web-section-highlights">
+      <ul>
+        {% for p in points %}
+        <li>{{ p }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Structured Sections -->
+    {% if sections %}
+      {% for section in sections %}
+      <div class="web-section">
+        <h4>{{ section.title }}</h4>
+        <ul>
+          {% for item in section["items"] %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Sources -->
+    {% if sources %}
+    <div class="web-section web-section-sources">
+      <h4>Sources</h4>
+      <ul>
+        {% for s in sources %}
+        <li>{{ s }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+  </div>
+
+</div>

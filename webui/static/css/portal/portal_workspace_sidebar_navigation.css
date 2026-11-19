@@ -1,0 +1,139 @@
+/* ==========================================================================
+   FILE: portal_workspace_sidebar_navigation.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+
+.command-sidebar-nav {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0;
+    scrollbar-width: none;
+}
+
+.command-sidebar-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.command-nav-item,
+.command-sidebar-footer {
+    align-items: center;
+    border-radius: 10px;
+    color: rgba(190, 202, 222, 0.74);
+    display: grid;
+    flex: 0 0 auto;
+    font-family: var(--font-ui, inherit);
+    font-size: 11px;
+    font-weight: 740;
+    gap: 5px;
+    justify-items: center;
+    letter-spacing: 0.01em;
+    min-height: 48px;
+    padding: 7px 6px;
+    text-decoration: none;
+    text-transform: none;
+    transition:
+        background-color 0.12s ease,
+        box-shadow 0.12s ease,
+        color 0.12s ease;
+}
+
+.command-sidebar-footer {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    flex: 0 0 auto;
+    margin-top: 0;
+    width: 100%;
+}
+
+.command-nav-item:hover,
+.command-nav-item:focus-visible,
+.command-sidebar-footer:hover,
+.command-sidebar-footer:focus-visible {
+    background: rgba(255, 255, 255, 0.035);
+    color: rgba(248, 250, 252, 0.94);
+    outline: none;
+}
+
+.command-nav-item.is-active {
+    background:
+        linear-gradient(135deg, rgba(76, 124, 225, 0.20), rgba(76, 124, 225, 0.08));
+    box-shadow:
+        inset 3px 0 0 var(--brand-blue-hover),
+        inset 0 0 0 1px rgba(108, 157, 245, 0.08);
+    color: #ffffff;
+}
+
+.command-nav-item .icon,
+.command-sidebar-footer .icon {
+    color: currentColor;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.command-nav-label,
+.command-sidebar-toggle-label {
+    line-height: 1.05;
+}
+
+.command-nav-item[data-command-module="logout"] {
+    margin-top: 3px;
+}
+
+.command-nav-item[data-command-module="logout"]:hover,
+.command-nav-item[data-command-module="logout"]:focus-visible {
+    background: rgba(223, 100, 107, 0.10);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   COLLAPSED STATE SAFETY
+   ========================================================================== */
+
+.command-sidebar[data-sidebar-state="collapsed"] {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-logo {
+    height: 44px;
+    min-height: 44px;
+    padding: 7px;
+    width: 44px;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-logo img {
+    max-height: 30px;
+    max-width: 30px;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-nav {
+    gap: 5px;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-nav-item,
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-footer {
+    min-height: 40px;
+    padding: 8px 4px;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-nav-label,
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-toggle-label {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    width: 0;
+}
+
+.command-sidebar[data-sidebar-state="collapsed"] .command-sidebar-toggle-icon {
+    transform: rotate(180deg);
+}

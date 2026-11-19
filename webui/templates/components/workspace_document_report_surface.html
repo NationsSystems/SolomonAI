@@ -1,0 +1,244 @@
+<!-- -------------------------------------------------------------------
+     FILE: workspace_document_report_surface.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set report_mode = report_surface_mode|default('result') %}
+{% set safe_operation_label = operation_label|default('Document Review') %}
+{% set safe_document_name = document_name|default('Selected file') %}
+{% set safe_back_url = back_url|default('/docs') %}
+
+<section class="workspace-report-page workspace-report-shell-surface"
+         data-report-surface="{{ report_mode }}"
+         aria-label="{{ safe_operation_label }}">
+
+    {% if report_mode == 'start' %}
+    <div class="workspace-report-document workspace-report-document--start">
+        <nav class="workspace-document-inspector-navigation workspace-document-breadcrumb" aria-label="Report location">
+            <a class="workspace-document-breadcrumb-link" href="{{ safe_back_url }}">My Files</a>
+            <span class="workspace-document-breadcrumb-separator">/</span>
+            <span class="workspace-document-breadcrumb-current">Start Report</span>
+        </nav>
+
+        <section class="workspace-document-inspector-body workspace-document-inspector-body--operation">
+            <header class="workspace-document-panel-heading workspace-document-panel-heading--operation">
+                <p class="workspace-document-panel-eyebrow">SolomonAI Document Report</p>
+                <h1 class="workspace-document-panel-title">Start {{ safe_operation_label }}</h1>
+                <p class="workspace-document-panel-subtitle">{{ safe_document_name }}</p>
+            </header>
+
+            <aside class="workspace-document-panel-notice workspace-document-panel-notice--info">
+                <span class="icon">rule_settings</span>
+                <p>SolomonAI will create a background report job, show preparation inside the app shell, and open the completed report artifact when ready.</p>
+            </aside>
+
+            <form method="post" action="{{ create_url }}" class="workspace-document-inspector-actions">
+                <input type="hidden" name="operation" value="{{ operation_key|default('bid_scope_review') }}">
+                {% for document_id in document_ids|default([]) %}
+                <input type="hidden" name="document_ids" value="{{ document_id }}">
+                {% endfor %}
+
+                <button type="submit" class="workspace-document-command workspace-document-command-primary">
+                    <span class="icon">rule_settings</span>
+                    <span>Start Report</span>
+                </button>
+
+                <a class="workspace-document-command workspace-document-command-neutral" href="{{ safe_back_url }}">
+                    <span class="icon">folder_open</span>
+                    <span>Back to My Files</span>
+                </a>
+            </form>
+        </section>
+    </div>
+    {% elif report_mode == 'preparing' %}
+    <div class="workspace-report-preparation">
+        <nav class="workspace-document-inspector-navigation workspace-document-breadcrumb" aria-label="Report location">
+            <a class="workspace-document-breadcrumb-link" href="{{ safe_back_url }}">My Files</a>
+            <span class="workspace-document-breadcrumb-separator">/</span>
+            <span class="workspace-document-breadcrumb-current">Preparing {{ safe_operation_label }}</span>
+        </nav>
+
+        <section class="workspace-report-preparation-card"
+                 data-report-preparation
+                 data-status-url="{{ status_url }}"
+                 data-result-url="{{ result_url }}">
+            <header class="workspace-report-preparation-header">
+                <p class="workspace-document-panel-eyebrow">SolomonAI Document Report</p>
+                <h1>Preparing {{ safe_operation_label }}</h1>
+                <p>{{ safe_document_name }}</p>
+            </header>
+
+            <div class="workspace-report-preparation-loader" role="status" aria-live="polite">
+                <div class="workspace-report-preparation-orbit" aria-hidden="true">
+                    <span class="workspace-report-preparation-ring workspace-report-preparation-ring--outer"></span>
+                    <span class="workspace-report-preparation-ring workspace-report-preparation-ring--middle"></span>
+                    <span class="workspace-report-preparation-ring workspace-report-preparation-ring--inner"></span>
+                    <span class="workspace-report-preparation-core">SolomonAI</span>
+                </div>
+
+                <div class="workspace-report-preparation-copy">
+                    <strong id="reportStatusCopy">Running background report job</strong>
+                    <span>Building the document report artifact without blocking the browser.</span>
+                </div>
+            </div>
+
+            <aside class="workspace-document-panel-notice workspace-document-panel-notice--info">
+                <span class="icon">sync</span>
+                <p>Reviewing document evidence, key details, assumptions, relevant terms, and coordination signals.</p>
+            </aside>
+
+            <div class="workspace-document-inspector-actions">
+                {% if reader_url %}
+                <a class="workspace-document-command" href="{{ reader_url }}">
+                    <span class="icon">open_in_new</span>
+                    <span>Open Source Document</span>
+                </a>
+                {% endif %}
+
+                <a class="workspace-document-command workspace-document-command-neutral" href="{{ safe_back_url }}">
+                    <span class="icon">folder_open</span>
+                    <span>Back to My Files</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+    (function () {
+        "use strict";
+
+        var root = document.querySelector("[data-report-preparation]");
+        var statusCopy = document.getElementById("reportStatusCopy");
+        var statusUrl = root ? root.getAttribute("data-status-url") : "";
+        var resultUrl = root ? root.getAttribute("data-result-url") : "";
+        var delayMs = 1800;
+
+        function setStatus(message) {
+            if (statusCopy && message) {
+                statusCopy.textContent = message;
+            }
+        }
+
+        function openReport(url) {
+            window.location.href = url || resultUrl;
+        }
+
+        function schedule() {
+            window.setTimeout(checkStatus, delayMs);
+        }
+
+        function checkStatus() {
+            if (!statusUrl) {
+                setStatus("Report status is unavailable.");
+                return;
+            }
+
+            window.fetch(statusUrl, {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (payload) {
+                if (payload && payload.ready && payload.report_url) {
+                    setStatus("Report complete. Opening artifact.");
+                    openReport(payload.report_url);
+                    return;
+                }
+
+                if (payload && payload.failed && payload.report_url) {
+                    setStatus("Report finished with an issue. Opening details.");
+                    openReport(payload.report_url);
+                    return;
+                }
+
+                setStatus(
+                    payload && payload.status_label
+                        ? payload.status_label
+                        : "SolomonAI is preparing the report."
+                );
+                schedule();
+            }).catch(function () {
+                setStatus("SolomonAI is still preparing the report.");
+                schedule();
+            });
+        }
+
+        schedule();
+    }());
+    </script>
+    {% else %}
+    <div class="workspace-report-document workspace-report-document--artifact">
+        <nav class="workspace-document-inspector-navigation workspace-document-breadcrumb" aria-label="Report location">
+            <a class="workspace-document-breadcrumb-link" href="{{ safe_back_url }}">My Files</a>
+            <span class="workspace-document-breadcrumb-separator">/</span>
+            <span class="workspace-document-breadcrumb-current">{{ safe_operation_label }}</span>
+        </nav>
+
+        <article class="workspace-document-inspector-body workspace-document-inspector-body--report">
+            <header class="workspace-document-report-masthead">
+                <div class="workspace-document-report-title-block">
+                    <p class="workspace-document-report-eyebrow">SolomonAI Document Report</p>
+                    <h1 class="workspace-document-report-title">{{ result_title|default(safe_operation_label) }}</h1>
+                    <p class="workspace-document-report-subtitle">Source Document: {{ safe_document_name }}</p>
+                </div>
+
+                <div class="workspace-document-report-meta-grid">
+                    <div class="workspace-document-report-meta-item">
+                        <span>Report</span>
+                        <strong>{{ safe_operation_label }}</strong>
+                    </div>
+                    <div class="workspace-document-report-meta-item">
+                        <span>Status</span>
+                        <strong>{{ status_label|default('Complete') }}</strong>
+                    </div>
+                    <div class="workspace-document-report-meta-item">
+                        <span>Saved Review</span>
+                        <strong>{{ saved_review_label|default('Current session') }}</strong>
+                    </div>
+                </div>
+            </header>
+
+            <div class="workspace-document-report-actions" aria-label="Report actions">
+                <a class="workspace-document-command workspace-document-command-neutral" href="{{ safe_back_url }}">
+                    <span class="icon">arrow_back</span>
+                    <span>Back to My Files</span>
+                </a>
+
+                {% if reader_url %}
+                <a class="workspace-document-command" href="{{ reader_url }}">
+                    <span class="icon">open_in_new</span>
+                    <span>Open Source Document</span>
+                </a>
+                {% endif %}
+            </div>
+
+            <aside class="workspace-document-report-advisory">
+                <span class="icon">verified</span>
+                <p>Document review output. Validate against the source document before external distribution or operational reliance.</p>
+            </aside>
+
+            <div class="workspace-document-report-shell workspace-document-report-shell--server">
+                {% for section in sections|default([]) %}
+                <section class="workspace-document-report-section{% if loop.first %} workspace-document-report-section--lead{% endif %}">
+                    {% if section.title %}
+                    <h2>{{ section.title }}</h2>
+                    {% endif %}
+
+                    {% for paragraph in section.paragraphs %}
+                    {% if paragraph.startswith("• ") %}
+                    <p class="workspace-document-report-bullet">{{ paragraph }}</p>
+                    {% else %}
+                    <p class="workspace-document-report-paragraph">{{ paragraph }}</p>
+                    {% endif %}
+                    {% endfor %}
+                </section>
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+    {% endif %}
+</section>

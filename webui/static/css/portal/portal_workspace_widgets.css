@@ -1,0 +1,279 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_widgets.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   WIDGET TOOLBAR
+   ========================================================================== */
+
+.operations-console-toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: -4px 0 12px;
+    min-height: 0;
+}
+
+.operations-console-toolbar:has([hidden]) {
+    margin-bottom: 0;
+}
+
+.command-header {
+    position: relative;
+}
+
+.command-global-status {
+    align-items: center;
+    bottom: 18px;
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    right: 18px;
+    z-index: 24;
+}
+
+.operations-console-restore {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.065);
+    border-color: rgba(22, 191, 216, 0.18);
+    color: var(--brand-text);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.72rem;
+    gap: 8px;
+    min-height: 34px;
+    padding: 7px 11px;
+}
+
+.operations-console-restore:hover,
+.operations-console-restore:focus-visible {
+    background: rgba(22, 191, 216, 0.12);
+    border-color: rgba(22, 191, 216, 0.38);
+    color: #ffffff;
+    outline: none;
+}
+
+.operations-console-restore .icon {
+    color: var(--brand-cyan);
+    font-size: 16px;
+}
+
+.operations-console-restore[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================================
+   DISMISSIBLE WIDGET BASE
+   ========================================================================== */
+
+.console-widget {
+    position: relative;
+}
+
+.console-widget[hidden],
+.console-widget.is-console-widget-hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   CLOSE CONTROL
+   ========================================================================== */
+
+.console-widget-close {
+    align-items: center;
+    background: rgba(5, 9, 20, 0.72);
+    border: 1px solid rgba(105, 128, 157, 0.20);
+    border-radius: 6px;
+    color: rgba(199, 209, 223, 0.62);
+    cursor: pointer;
+    display: inline-flex;
+    height: 24px;
+    justify-content: center;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 9px;
+    top: 9px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease;
+    width: 24px;
+    z-index: 4;
+}
+
+.console-widget:hover .console-widget-close,
+.console-widget:focus-within .console-widget-close {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.console-widget-close:hover,
+.console-widget-close:focus-visible {
+    background: rgba(223, 100, 107, 0.14);
+    border-color: rgba(223, 100, 107, 0.38);
+    color: #ffffff;
+    outline: none;
+}
+
+.console-widget-close .icon {
+    color: currentColor;
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   PANEL-SPECIFIC CLOSE POSITIONING
+   ========================================================================== */
+
+.command-attention-queue.console-widget {
+    padding-right: 46px;
+}
+
+.workspace-status-card.console-widget {
+    padding-right: 42px;
+}
+
+.workspace-output-panel.console-widget {
+    padding-right: 44px;
+}
+
+.command-solomon-home-card.workspace-output-panel.console-widget {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.command-solomon-home-card.workspace-output-panel.console-widget .solomon-assistant-panel {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+.command-recent-activity.console-widget .console-widget-close,
+.command-render-surface.console-widget .console-widget-close,
+.command-active-workspace.console-widget .console-widget-close {
+    right: 12px;
+    top: 12px;
+}
+
+/* ==========================================================================
+   DESKTOP-LIKE INTERACTION FEEDBACK
+   ========================================================================== */
+
+.console-widget {
+    transition:
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        opacity 0.14s ease;
+}
+
+.console-widget:hover {
+    border-color: rgba(105, 128, 157, 0.24);
+}
+
+.workspace-status-card.console-widget:hover,
+.command-attention-queue.console-widget:hover,
+.workspace-output-panel.console-widget:hover {
+    box-shadow:
+        var(--shadow-card),
+        0 0 0 1px rgba(22, 191, 216, 0.025);
+}
+
+/* ==========================================================================
+   HOVER STABILITY GUARD
+   --------------------------------------------------------------------------
+   Do not include .solomon-guide-suggestion here.
+
+   Workspace follow-up prompt chips are owned by:
+
+       portal_workspace_document_viewer_chat.css
+
+   Keeping suggestion chips out of this broad guard prevents global widget
+   styling from making chat follow-up prompts look like product links.
+   ========================================================================== */
+
+.app-nav :is(a, button, [role="button"]):hover,
+.app-nav :is(a, button, [role="button"]):focus-visible,
+.command-center-layout :is(a, button, [role="button"]):hover,
+.command-center-layout :is(a, button, [role="button"]):focus-visible,
+.command-center-layout :is(
+    .console-widget,
+    .workspace-status-card,
+    .workspace-output-panel,
+    .command-starter-card,
+    .command-function-card,
+    .command-document-file-card,
+    .command-nav-item,
+    .command-sidebar-footer,
+    .command-taskbar-solomon,
+    .command-taskbar-solomon-send,
+    .command-taskbar-solomon-response-dismiss,
+    .command-taskbar-solomon-response-action,
+    .command-secondary-button,
+    .command-starter-link,
+    .command-documents-nav button,
+    .command-documents-toolbar-actions button,
+    .command-documents-view-toggle button,
+    .command-documents-quick-actions button,
+    .workspace-document-collection,
+    .workspace-document-file,
+    .workspace-document-command,
+    .document-reader-command,
+    .document-reader-control-pill,
+    .document-reader-rail-page,
+    .precon-work-widget,
+    .solomon-structured-card-action,
+    .solomon-guide-send-button,
+    .solomon-guide-clear-button,
+    .command-solomon-widget-dismiss,
+    .command-solomon-widget-back,
+    .command-solomon-floating-card
+):hover,
+.command-center-layout :is(
+    .console-widget,
+    .workspace-status-card,
+    .workspace-output-panel,
+    .command-starter-card,
+    .command-function-card,
+    .command-document-file-card,
+    .command-nav-item,
+    .command-sidebar-footer,
+    .command-taskbar-solomon,
+    .command-taskbar-solomon-send,
+    .command-taskbar-solomon-response-dismiss,
+    .command-taskbar-solomon-response-action,
+    .command-secondary-button,
+    .command-starter-link,
+    .command-documents-nav button,
+    .command-documents-toolbar-actions button,
+    .command-documents-view-toggle button,
+    .command-documents-quick-actions button,
+    .workspace-document-collection,
+    .workspace-document-file,
+    .workspace-document-command,
+    .document-reader-command,
+    .document-reader-control-pill,
+    .document-reader-rail-page,
+    .precon-work-widget,
+    .solomon-structured-card-action,
+    .solomon-guide-send-button,
+    .solomon-guide-clear-button,
+    .command-solomon-widget-dismiss,
+    .command-solomon-widget-back,
+    .command-solomon-floating-card
+):focus-visible {
+    transform: none !important;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.console-widget-close:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+}

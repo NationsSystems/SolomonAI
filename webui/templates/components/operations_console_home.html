@@ -1,0 +1,20 @@
+<!-- -------------------------------------------------------------------
+     FILE: operations_console_home.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set command_department = {
+    'key': 'documents',
+    'label': 'Documents',
+    'description': 'Stored workspace files, explicit handoffs, previews, and governed document actions.'
+} %}
+
+{% set command_module = {
+    'path': '/',
+    'description': 'Stored workspace files, explicit handoffs, previews, and governed document actions.',
+    'status': 'storage only'
+} %}
+
+{% set module_label = 'Documents' %}
+
+{% include "components/document_workspace.html" %}

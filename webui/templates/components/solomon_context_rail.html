@@ -1,0 +1,183 @@
+<!-- -------------------------------------------------------------------
+     FILE: solomon_context_rail.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+<aside id="solomonContextRail"
+       class="solomon-context-rail workspace-document-inspector-rail"
+       data-solomon-context-rail
+       data-document-inspector-rail
+       data-solomon-rail-state="collapsed"
+       data-solomon-source-state="empty"
+       data-document-inspector-state="empty"
+       aria-label="File details"
+       aria-hidden="true"
+       hidden>
+    <header class="solomon-context-rail__header workspace-document-inspector-rail__header">
+        <div class="solomon-context-rail__identity workspace-document-inspector-rail__identity">
+            <span class="workspace-document-inspector-rail__header-icon icon"
+                  aria-hidden="true">
+                info
+            </span>
+
+            <div class="solomon-context-rail__heading workspace-document-inspector-rail__heading">
+                <h2 class="solomon-context-rail__title workspace-document-inspector-rail__title"
+                    data-document-inspector-title>
+                    File details
+                </h2>
+            </div>
+        </div>
+
+        <div class="solomon-context-rail__controls workspace-document-inspector-rail__controls"
+             aria-label="File details panel controls">
+            <button type="button"
+                    class="solomon-context-rail__close workspace-document-inspector-rail__close workspace-document-command"
+                    data-document-inspector-close
+                    aria-label="Close file details"
+                    title="Close file details">
+                <span class="icon"
+                      aria-hidden="true">
+                    close
+                </span>
+
+                <span class="visually-hidden">
+                    Close file details
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <div class="solomon-context-rail__body workspace-document-inspector-rail__body">
+        <section class="workspace-document-inspector-rail__empty"
+                 data-document-inspector-empty
+                 aria-live="polite">
+            <span class="workspace-document-inspector-rail__empty-icon icon"
+                  aria-hidden="true">
+                draft
+            </span>
+
+            <div class="workspace-document-inspector-rail__empty-copy">
+                <strong>No file selected</strong>
+                <p>Select a file to view its properties.</p>
+            </div>
+        </section>
+
+        <div class="workspace-document-inspector-rail__selection"
+             data-document-inspector-selection
+             hidden
+             aria-hidden="true">
+            <section class="workspace-document-inspector-rail__file"
+                     aria-labelledby="document-inspector-file-name">
+                <span class="workspace-document-inspector-rail__file-icon icon"
+                      data-document-inspector-file-icon
+                      aria-hidden="true">
+                    draft
+                </span>
+
+                <div class="workspace-document-inspector-rail__file-copy">
+                    <h3 id="document-inspector-file-name"
+                        class="workspace-document-inspector-rail__file-name"
+                        data-document-inspector-file-name>
+                        Selected file
+                    </h3>
+
+                    <p class="workspace-document-inspector-rail__file-meta"
+                       data-document-inspector-file-meta>
+                        Workspace File
+                    </p>
+                </div>
+            </section>
+
+            <section id="documentInspectorDetailsPanel"
+                     class="workspace-document-inspector-rail__panel workspace-document-inspector-rail__panel--details"
+                     data-document-inspector-panel="details"
+                     aria-labelledby="document-inspector-file-name">
+                <dl class="workspace-document-inspector-rail__properties">
+                    <div class="workspace-document-inspector-rail__property">
+                        <dt>Type</dt>
+                        <dd data-document-inspector-property="type">Workspace File</dd>
+                    </div>
+
+                    <div class="workspace-document-inspector-rail__property">
+                        <dt>Size</dt>
+                        <dd data-document-inspector-property="size">Not available</dd>
+                    </div>
+
+                    <div class="workspace-document-inspector-rail__property">
+                        <dt>Uploaded</dt>
+                        <dd data-document-inspector-property="uploaded">Not available</dd>
+                    </div>
+
+                    <div class="workspace-document-inspector-rail__property">
+                        <dt>Location</dt>
+                        <dd data-document-inspector-property="location">My Files</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section id="documentInspectorSummaryPanel"
+                     class="workspace-document-inspector-rail__panel workspace-document-inspector-rail__panel--summary"
+                     data-document-inspector-panel="summary"
+                     aria-labelledby="document-inspector-file-name"
+                     hidden
+                     aria-hidden="true">
+                <p class="workspace-document-inspector-rail__file-meta"
+                   data-document-inspector-summary-status
+                   hidden
+                   aria-hidden="true"></p>
+
+                <div data-document-inspector-summary-copy></div>
+
+                <p class="workspace-document-inspector-rail__file-meta"
+                   data-document-inspector-summary-generated
+                   hidden
+                   aria-hidden="true"></p>
+            </section>
+
+            <section id="documentInspectorActionPanel"
+                     class="workspace-document-inspector-rail__panel workspace-document-inspector-rail__panel--action"
+                     data-document-inspector-panel="action"
+                     aria-labelledby="document-inspector-file-name"
+                     hidden
+                     aria-hidden="true">
+                <div class="workspace-document-inspector-rail__action-status"
+                     data-document-inspector-action-status
+                     role="status"
+                     aria-live="polite"
+                     hidden
+                     aria-hidden="true"></div>
+
+                <progress class="workspace-document-inspector-rail__action-progress"
+                          data-document-inspector-action-progress
+                          max="100"
+                          value="0"
+                          hidden
+                          aria-hidden="true"></progress>
+
+                <div class="workspace-document-inspector-rail__action-copy"
+                     data-document-inspector-action-copy></div>
+
+                <p class="workspace-document-inspector-rail__file-meta"
+                   data-document-inspector-action-generated
+                   hidden
+                   aria-hidden="true"></p>
+            </section>
+        </div>
+    </div>
+
+    <footer class="workspace-document-inspector-rail__footer"
+            data-document-inspector-footer
+            hidden
+            aria-hidden="true">
+        <button type="button"
+                class="workspace-document-inspector-rail__solomon-action"
+                data-document-inspector-view-full-summary
+                aria-label="View full summary in Reader"
+                hidden
+                aria-hidden="true">
+            <span class="icon" aria-hidden="true">summarize</span>
+            <span>View Full Summary</span>
+            <span class="icon" aria-hidden="true">arrow_forward</span>
+        </button>
+    </footer>
+</aside>

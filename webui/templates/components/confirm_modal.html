@@ -1,0 +1,49 @@
+<!-- -------------------------------------------------------------------
+     FILE: webui/templates/components/confirm_modal.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+<div
+    id="app-confirm-modal"
+    class="app-modal-backdrop"
+    aria-hidden="true"
+    data-confirm-modal
+>
+    <div
+        class="app-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="app-confirm-title"
+        aria-describedby="app-confirm-message"
+    >
+        <div class="app-modal-header">
+            <h2 id="app-confirm-title" class="app-modal-title">
+                Confirm action
+            </h2>
+        </div>
+
+        <div class="app-modal-body">
+            <p id="app-confirm-message" class="app-modal-message">
+                Are you sure you want to continue?
+            </p>
+        </div>
+
+        <div class="app-modal-actions">
+            <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-confirm-cancel
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-danger"
+                data-confirm-accept
+            >
+                Confirm
+            </button>
+        </div>
+    </div>
+</div>

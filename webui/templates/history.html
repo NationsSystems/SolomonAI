@@ -1,0 +1,170 @@
+<!-- ==========================================================================
+     FILE: history.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+{% extends "portal_base.html" %}
+
+{% block title %}Review History | Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_history.css') }}?v=nations-history-restore-20260515a">
+{% endblock %}
+
+{% block content %}
+<section class="history-page">
+    <div class="history-shell">
+
+        {% if request.args.get("notice") == "review-deleted" %}
+            <div class="history-toast-region"
+                 role="status"
+                 aria-live="polite"
+                 aria-atomic="true">
+                <div class="history-toast">
+                    Review record deleted
+                </div>
+            </div>
+        {% endif %}
+
+        <header class="history-hero">
+            <div class="history-hero-copy">
+                <p class="history-eyebrow">Saved Review Records</p>
+                <h1 class="history-title">Review History</h1>
+                <p class="history-description">
+                    Reopen completed review records exactly as generated, preserving a consistent decision record for prior workspace outputs.
+                </p>
+            </div>
+
+            <div class="history-hero-actions">
+                <a href="{{ url_for('index') }}" class="history-primary-action">
+                    New Review
+                </a>
+            </div>
+        </header>
+
+        {% if reviews %}
+            <section class="history-card" aria-label="Saved review records">
+                <div class="history-card-header">
+                    <div>
+                        <h2 class="history-card-title">Saved review records</h2>
+                        <p class="history-card-subtitle">
+                            {{ reviews | length }} saved review{% if reviews | length != 1 %}s{% endif %} available for decision support.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="history-table-wrap">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Review</th>
+                                <th scope="col">Mode</th>
+                                <th scope="col">Documents</th>
+                                <th scope="col">Risk</th>
+                                <th scope="col">Scope</th>
+                                <th scope="col">Created</th>
+                                <th scope="col" class="history-actions-col">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for review in reviews %}
+                                <tr>
+                                    <td class="history-review-cell">
+                                        <strong>{{ review.review_title }}</strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="history-pill">
+                                            {{ review.review_mode }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if review.document_names %}
+                                            <span class="history-document-count"
+                                                  title="{{ review.document_names }}">
+                                                Documents recorded
+                                            </span>
+                                        {% else %}
+                                            <span class="history-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if review.risk_level %}
+                                            <span class="history-risk history-risk-{{ review.risk_level | lower | replace(' ', '-') }}">
+                                                {{ review.risk_level }}
+                                            </span>
+                                        {% else %}
+                                            <span class="history-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if review.scope_completeness %}
+                                            <span class="history-scope">
+                                                {{ review.scope_completeness }}
+                                            </span>
+                                        {% else %}
+                                            <span class="history-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if review.created_at %}
+                                            <time datetime="{{ review.created_at.isoformat() }}">
+                                                {{ review.created_at.strftime("%Y-%m-%d %I:%M %p") }}
+                                            </time>
+                                        {% else %}
+                                            <span class="history-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="history-actions-col">
+                                        <div class="history-row-actions">
+                                            <a href="{{ url_for('history_bp.history_detail', review_id=review.id) }}"
+                                               class="history-secondary-action">
+                                                Open
+                                            </a>
+
+                                            <form method="post"
+                                                  action="{{ url_for('history_bp.delete_history_review', review_id=review.id) }}"
+                                                  data-confirm-form
+                                                  data-confirm-title="Delete saved review?"
+                                                  data-confirm-message="This saved review record will be removed from Review History. The original analysis will not be rerun."
+                                                  data-confirm-action="Delete">
+                                                <button type="submit" class="history-danger-action">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        {% else %}
+            <section class="history-empty-card" aria-label="No saved reviews">
+                <div class="history-empty-icon" aria-hidden="true">
+                    <span class="material-symbols-outlined">history</span>
+                </div>
+
+                <h2>No saved reviews yet</h2>
+
+                <p>
+                    Completed review outputs will appear here after analysis. Each saved record preserves the structured findings exactly as originally generated.
+                </p>
+
+                <a href="{{ url_for('index') }}" class="history-primary-action">
+                    Start a Review
+                </a>
+            </section>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

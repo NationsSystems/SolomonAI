@@ -1,0 +1,220 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_base.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   FONTS
+   ========================================================================== */
+
+@font-face {
+    font-family: "Material Symbols Outlined";
+    src: url("/static/fonts/material-symbols-outlined-v309-latin-regular.woff2")
+         format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+/* ==========================================================================
+   VARIABLES
+   ========================================================================== */
+
+:root {
+    --font-ui: "Segoe UI Variable", "Segoe UI", "Inter", "Aptos", "Roboto",
+               system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    --font-display: var(--font-ui);
+
+    --brand-bg: #050914;
+    --brand-bg-deep: #02050d;
+    --brand-bg-soft: #080d18;
+    --brand-nav: #050914;
+    --brand-card: #080d18;
+    --brand-panel: #0a1020;
+    --brand-panel-hover: #0d1528;
+
+    --brand-border: rgba(62, 91, 124, 0.42);
+    --brand-border-soft: rgba(105, 128, 157, 0.20);
+    --brand-border-strong: rgba(76, 124, 225, 0.48);
+
+    --brand-blue: #4d7bd8;
+    --brand-blue-hover: #6f92d8;
+    --brand-blue-soft: rgba(77, 123, 216, 0.10);
+    --brand-blue-muted: rgba(120, 148, 232, 0.76);
+
+    --brand-cyan: #16bfd8;
+    --brand-cyan-soft: rgba(22, 191, 216, 0.08);
+    --brand-indigo: #7894e8;
+
+    --brand-text: #f3f6fb;
+    --brand-text-soft: #c7d1df;
+    --brand-text-muted: #8c98aa;
+    --brand-text-dim: #5e6a7c;
+
+    --accentColor: var(--brand-blue);
+    --accent-dark: #2d63d8;
+    --accent-light: #9bb8ff;
+
+    --sec: var(--brand-indigo);
+
+    --success: #54c98d;
+    --warning: #d8b45a;
+    --danger: #df646b;
+
+    --bg: var(--brand-bg);
+    --bg-nav: var(--brand-nav);
+    --bg-card: var(--brand-card);
+    --bg-panel: var(--brand-panel);
+    --bg-panel-hover: var(--brand-panel-hover);
+
+    --border: var(--brand-border);
+
+    --mainTextColor: var(--brand-text);
+    --text: var(--brand-text);
+    --text-soft: var(--brand-text-soft);
+    --text-muted: var(--brand-text-muted);
+    --text-dim: var(--brand-text-dim);
+
+    --buttonSpacing: 10px;
+
+    --accent-bluegray: #758397;
+
+    --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.36);
+    --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.30);
+    --radius-card: 6px;
+    --radius-control: 4px;
+}
+
+/* ==========================================================================
+   GLOBAL RESET + FOUNDATION
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: var(--font-ui);
+}
+
+body {
+    align-items: stretch;
+    background:
+        radial-gradient(circle at 72% 28%, rgba(45, 75, 140, 0.16), transparent 34%),
+        linear-gradient(135deg, var(--brand-bg-deep) 0%, var(--brand-bg) 50%, #07101d 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--mainTextColor);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 0;
+}
+
+body.nations-app-theme,
+body.nations-business-theme {
+    background:
+        radial-gradient(circle at 72% 28%, rgba(45, 75, 140, 0.14), transparent 34%),
+        linear-gradient(135deg, #02050d 0%, #050914 52%, #07101d 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* ==========================================================================
+   WORKSPACE BACKGROUND ISOLATION
+   ========================================================================== */
+
+html:has(.workspace-deck) {
+    background: #030812;
+    max-width: 100vw;
+    min-height: 100%;
+    overflow-x: clip;
+    width: 100%;
+}
+
+body:has(.workspace-deck),
+body.nations-app-theme:has(.workspace-deck),
+body.nations-business-theme:has(.workspace-deck) {
+    background: transparent !important;
+    background-attachment: initial;
+    background-image: none !important;
+    display: block;
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow-x: clip;
+    width: 100%;
+}
+
+body:has(.workspace-deck)::after {
+    content: none !important;
+}
+
+/* ==========================================================================
+   ELEMENT DEFAULTS
+   ========================================================================== */
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select,
+pre,
+code {
+    font-family: var(--font-ui);
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+input,
+textarea,
+select {
+    font-size: inherit;
+    outline: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+ul,
+ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   ICONS
+   ========================================================================== */
+
+.icon,
+.material-symbols-outlined {
+    align-items: center;
+    color: var(--mainTextColor);
+    display: inline-flex;
+    font-family: "Material Symbols Outlined";
+    font-size: 24px;
+    justify-content: center;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+}

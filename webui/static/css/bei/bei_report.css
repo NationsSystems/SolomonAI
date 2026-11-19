@@ -1,0 +1,42 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+@import url("./bei_report.tokens.css");
+@import url("./bei_report.shell.css");
+@import url("./bei_report.actions.css");
+@import url("./bei_report.sections.css");
+@import url("./bei_report.items.css");
+@import url("./bei_report.completion.css");
+@import url("./bei_report.print.css");
+@import url("./bei_report.responsive.css");
+
+.bei-reviewed-documents {
+    align-items: center;
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(125, 211, 252, 0.16);
+    border-radius: 6px;
+    color: rgba(219, 234, 254, 0.86);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    gap: 6px;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    margin: -10px 0 28px;
+    padding: 9px 12px;
+}
+
+.bei-reviewed-documents-label {
+    color: rgba(147, 197, 253, 0.9);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.bei-reviewed-document-name {
+    color: rgba(248, 250, 252, 0.94);
+    font-weight: 700;
+}

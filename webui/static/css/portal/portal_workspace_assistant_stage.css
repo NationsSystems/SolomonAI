@@ -1,0 +1,1152 @@
+/* ==========================================================================
+   FILE: portal_workspace_assistant_stage.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant Stage, Identity, and Panel Actions
+   ========================================================================== */
+
+.solomon-assistant-panel {
+    align-items: stretch;
+    background: transparent !important;
+    border: 0;
+    border-radius: inherit;
+    box-shadow: none;
+    box-sizing: border-box;
+    contain: none;
+    display: flex;
+    isolation: isolate;
+    justify-content: center;
+    min-height: inherit;
+    min-width: 0;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: 100%;
+}
+
+.command-center-layout.solomon-assistant-is-minimized .solomon-assistant-panel,
+.solomon-assistant-panel[data-assistant-dock-state="minimized"] {
+    display: none;
+}
+
+.solomon-assistant-resize-handle {
+    display: none;
+}
+
+.solomon-stage-shell {
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    display: grid;
+    flex: 1 1 auto;
+    gap: 20px;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    margin-inline: auto;
+    max-width: 100%;
+    min-height: inherit;
+    min-width: 0;
+    overflow: visible;
+    padding: clamp(34px, 5vw, 66px) clamp(22px, 5vw, 74px) clamp(72px, 9vh, 116px);
+    position: relative;
+    transition:
+        gap 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%;
+}
+
+.command-module-solomon-ambient {
+    box-sizing: border-box;
+    margin-top: 14px;
+    min-width: 0;
+    width: 100%;
+}
+
+.command-module-solomon-column {
+    min-height: 0;
+    width: 100%;
+}
+
+.command-solomon-ambient-card {
+    background:
+        linear-gradient(135deg, rgba(8, 13, 24, 0.88), rgba(3, 8, 18, 0.74));
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 14px;
+    box-shadow:
+        0 16px 42px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(22, 191, 216, 0.025) inset;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.command-module-solomon-column .solomon-assistant-panel {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.command-module-solomon-column .solomon-stage-shell {
+    align-content: stretch;
+    align-items: stretch;
+    flex: 1 1 100%;
+    gap: 10px;
+    grid-template-areas:
+        "thread"
+        "input";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    justify-items: stretch;
+    margin-inline: 0;
+    max-width: none;
+    min-height: 0;
+    overflow: hidden;
+    padding: 14px 16px;
+    width: 100%;
+}
+
+.command-module-solomon-column .solomon-stage-identity,
+.command-module-solomon-column .solomon-guide-empty-state,
+.command-module-solomon-column .command-solomon-response-canvas,
+.command-module-solomon-column .solomon-guide-command-hints,
+.command-module-solomon-column .solomon-guide-security,
+.command-module-solomon-column .solomon-home-footer {
+    display: none !important;
+}
+
+.command-module-solomon-column .solomon-guide-thread {
+    grid-area: thread;
+    justify-self: stretch;
+    max-height: 148px;
+    min-height: 0;
+    overflow: auto;
+    width: 100%;
+}
+
+.command-module-solomon-column .solomon-guide-thread:empty {
+    display: none;
+}
+
+.command-module-solomon-column .solomon-guide-input {
+    align-self: stretch;
+    grid-area: input;
+    justify-self: stretch;
+    margin: 0;
+    max-width: none;
+    min-height: 42px;
+    position: relative;
+    width: 100%;
+    z-index: 7;
+}
+
+.command-module-solomon-column .solomon-guide-panel-actions {
+    right: 10px;
+    top: 10px;
+}
+
+.command-module-solomon-column .solomon-guide-clear-button {
+    background: rgba(8, 13, 24, 0.58);
+    color: rgba(201, 212, 229, 0.50);
+}
+
+.command-home-main-column--solomon-centered .solomon-stage-shell {
+    --solomon-command-surface-max-width: min(1060px, 100%);
+    --solomon-command-hints-max-width: min(1060px, 100%);
+    --solomon-chat-history-max-width: min(1120px, 100%);
+    flex: 0 1 min(1120px, 100%);
+    justify-self: center;
+    margin-inline: auto;
+    max-width: min(1120px, calc(100vw - 56px));
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-stage-shell {
+    gap: clamp(1.05rem, 2.45vh, 2.1rem);
+    padding-top: clamp(1rem, 2vh, 2rem);
+    padding-bottom: clamp(6rem, 10.5vh, 8.5rem);
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-stage-identity {
+    transform: translateY(clamp(-6.6rem, -7.7vh, -4.15rem));
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-guide-input {
+    margin-top: clamp(0.7rem, 2.1vh, 1.6rem);
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-guide-command-hints {
+    gap: clamp(0.38rem, 0.8vw, 0.55rem);
+    margin-top: 0.1rem;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-guide-hint-chip {
+    background: rgba(8, 13, 24, 0.34);
+    border-color: rgba(105, 128, 157, 0.18);
+    color: rgba(226, 237, 248, 0.78);
+    font-weight: 650;
+}
+
+.command-home-main-column--solomon-centered .solomon-guide-input {
+    max-width: var(--solomon-command-surface-max-width);
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered .solomon-guide-command-hints {
+    max-width: var(--solomon-command-hints-max-width);
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-stage-identity {
+    max-width: 880px;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-guide-copy {
+    max-width: 880px;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] .solomon-guide-copy p {
+    max-width: 700px;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-stage-shell {
+    --solomon-active-input-height: 46px;
+    --solomon-active-widget-height: 292px;
+    --solomon-active-bottom-padding: 28px;
+    --solomon-active-gap: 16px;
+    align-content: stretch;
+    align-items: stretch;
+    gap: var(--solomon-active-gap);
+    grid-template-areas:
+        "identity"
+        "."
+        "widget-band"
+        "input";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(190px, 1fr) auto auto;
+    justify-items: center;
+    min-height: inherit;
+    overflow: hidden;
+    padding: 24px clamp(18px, 4vw, 48px) var(--solomon-active-bottom-padding);
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-stage-shell {
+    --solomon-active-input-height: 42px;
+    --solomon-active-widget-height: minmax(0, 1fr);
+    --solomon-active-bottom-padding: 18px;
+    --solomon-active-gap: 12px;
+    align-content: stretch;
+    align-items: stretch;
+    flex: 1 1 100%;
+    gap: var(--solomon-active-gap);
+    grid-template-areas:
+        "widget-band"
+        "input";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    justify-items: stretch;
+    margin-inline: 0;
+    max-width: none;
+    min-height: inherit;
+    overflow: hidden;
+    padding: 18px clamp(14px, 2.6vw, 32px) var(--solomon-active-bottom-padding);
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-stage-shell,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-stage-shell {
+    --solomon-active-input-height: 46px;
+    --solomon-active-widget-height: 292px;
+    --solomon-active-bottom-padding: 22px;
+    --solomon-active-gap: 16px;
+    --solomon-home-bottom-padding: clamp(18px, 2.8vh, 30px);
+    --solomon-home-gap: clamp(16px, 2.4vh, 24px);
+    --solomon-message-history-height: 100%;
+    align-content: stretch;
+    align-items: stretch;
+    flex: 0 1 min(1120px, 100%);
+    gap: var(--solomon-home-gap);
+    grid-template-areas:
+        "thread"
+        "input"
+        "hints";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    justify-items: center;
+    margin-inline: auto;
+    max-width: min(1120px, calc(100vw - 56px));
+    min-height: inherit;
+    overflow: hidden;
+    padding: clamp(10px, 1.8vh, 20px) clamp(10px, 2vw, 24px) var(--solomon-home-bottom-padding);
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered:is(
+    [data-active-command-category="docs_upload"],
+    [data-active-command-category="docs_queue"],
+    [data-active-command-category="docs_evidence"],
+    [data-active-command-category="bid_upload"],
+    [data-active-command-category="bid_scope_text"],
+    [data-active-command-category="bid_review_run"]
+) .solomon-stage-shell {
+    --solomon-active-widget-height: 292px;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="document_focus"] .solomon-stage-shell {
+    --solomon-active-widget-height: minmax(0, 1fr);
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread {
+    align-self: stretch;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    grid-area: thread;
+    height: auto !important;
+    justify-content: flex-start;
+    justify-self: center;
+    max-height: none !important;
+    max-width: var(--solomon-chat-history-max-width);
+    min-height: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 8px 4px 16px;
+    position: relative;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    width: 100%;
+    z-index: 2;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread:not(:empty),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread:not(:empty),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread:not(:empty),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread:not(:empty) {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread:empty,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread:empty,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread:empty,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread:empty {
+    display: none !important;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread > *,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread > *,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread > *,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread > * {
+    flex: 0 0 auto;
+    max-height: none !important;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread > :first-child,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread > :first-child,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread > :first-child,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread > :first-child {
+    margin-top: 0;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread :is(.solomon-guide-message, .solomon-guide-message-row, .solomon-guide-transmission, .solomon-guide-response, .solomon-guide-user-message, .solomon-guide-assistant-message, .solomon-message, .solomon-message-body, .assistant-message, .assistant-message-body),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread :is(.solomon-guide-message, .solomon-guide-message-row, .solomon-guide-transmission, .solomon-guide-response, .solomon-guide-user-message, .solomon-guide-assistant-message, .solomon-message, .solomon-message-body, .assistant-message, .assistant-message-body),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread :is(.solomon-guide-message, .solomon-guide-message-row, .solomon-guide-transmission, .solomon-guide-response, .solomon-guide-user-message, .solomon-guide-assistant-message, .solomon-message, .solomon-message-body, .assistant-message, .assistant-message-body),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread :is(.solomon-guide-message, .solomon-guide-message-row, .solomon-guide-transmission, .solomon-guide-response, .solomon-guide-user-message, .solomon-guide-assistant-message, .solomon-message, .solomon-message-body, .assistant-message, .assistant-message-body) {
+    max-height: none !important;
+    overflow: visible;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-input,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-input,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-input,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-input {
+    align-self: end;
+    grid-area: input;
+    justify-self: center;
+    margin-top: 0;
+    min-height: var(--solomon-active-input-height);
+    position: relative;
+    z-index: 10;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-guide-input {
+    align-self: end;
+    grid-area: input;
+    justify-self: center;
+    margin-top: 0;
+    max-width: min(820px, 100%);
+    min-height: var(--solomon-active-input-height);
+    opacity: 0.94;
+    position: relative;
+    z-index: 7;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-command-hints,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-command-hints,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-command-hints,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-command-hints {
+    align-self: start;
+    grid-area: hints;
+    justify-self: center;
+    margin-top: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-security,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-security,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-security,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-security,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-home-footer,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-home-footer,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-home-footer,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-home-footer {
+    display: none !important;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-guide-command-hints,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-guide-security,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-home-footer {
+    display: none;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-stage-identity {
+    display: none !important;
+}
+
+.solomon-guide-panel-actions {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 12;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-guide-panel-actions {
+    right: 10px;
+    top: 10px;
+}
+
+.solomon-guide-panel-actions .console-widget-close {
+    position: static;
+}
+
+.solomon-guide-clear-button {
+    align-items: center;
+    background: rgba(105, 128, 157, 0.045);
+    border: 1px solid rgba(105, 128, 157, 0.14);
+    border-radius: 8px;
+    color: rgba(201, 212, 229, 0.62);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.6rem;
+    font-weight: 760;
+    gap: 5px;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    min-height: 25px;
+    padding: 5px 7px;
+    text-transform: uppercase;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-guide-clear-button {
+    background: rgba(8, 13, 24, 0.58);
+    color: rgba(201, 212, 229, 0.52);
+}
+
+.solomon-guide-clear-button .icon {
+    color: currentColor;
+    font-size: 13px;
+}
+
+.solomon-guide-clear-button:hover,
+.solomon-guide-clear-button:focus-visible {
+    background: rgba(105, 128, 157, 0.085);
+    border-color: rgba(105, 128, 157, 0.25);
+    color: rgba(248, 250, 252, 0.88);
+    outline: none;
+}
+
+.solomon-guide-security {
+    align-items: center;
+    color: rgba(161, 176, 204, 0.76);
+    display: inline-flex;
+    flex-wrap: wrap;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.74rem;
+    font-weight: 520;
+    gap: 0.52rem;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    line-height: 1.4;
+    margin: 0;
+    text-align: center;
+}
+
+.solomon-guide-security span,
+.solomon-guide-security a,
+.solomon-guide-security a:visited {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    font: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    text-decoration: none;
+}
+
+.solomon-guide-security a:hover,
+.solomon-guide-security a:focus-visible {
+    color: rgba(203, 214, 235, 0.90);
+    outline: none;
+    text-decoration: none;
+}
+
+.solomon-stage-shell .solomon-home-footer {
+    align-items: center;
+    color: rgba(160, 174, 202, 0.72);
+    display: inline-flex;
+    flex-wrap: wrap;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 520;
+    gap: 0.48rem;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    line-height: 1.35;
+    margin: 0.35rem 0 0;
+    text-align: center;
+    text-rendering: geometricPrecision;
+}
+
+.solomon-stage-shell .solomon-home-footer-copy,
+.solomon-stage-shell .solomon-home-footer-link,
+.solomon-stage-shell .solomon-home-footer-link:visited {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit !important;
+    cursor: default;
+    display: inline-flex;
+    font: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-style: inherit !important;
+    font-weight: inherit !important;
+    letter-spacing: inherit !important;
+    line-height: inherit !important;
+    margin: 0;
+    padding: 0;
+    text-decoration: none !important;
+    text-transform: none !important;
+}
+
+.solomon-stage-shell .solomon-home-footer-link {
+    cursor: pointer;
+}
+
+.solomon-stage-shell .solomon-home-footer-link:hover,
+.solomon-stage-shell .solomon-home-footer-link:focus-visible {
+    color: rgba(196, 209, 235, 0.90) !important;
+    outline: none;
+    text-decoration: none !important;
+}
+
+.operations-console-footer {
+    align-items: center;
+    box-sizing: border-box;
+    color: rgba(160, 174, 202, 0.64);
+    display: flex;
+    flex-wrap: wrap;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 520;
+    gap: 0.48rem;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    line-height: 1.35;
+    margin: clamp(14px, 2vh, 22px) auto 0;
+    max-width: min(1120px, calc(100vw - 48px));
+    min-height: 20px;
+    padding: 0 0 clamp(12px, 2vh, 22px);
+    text-align: center;
+    text-rendering: geometricPrecision;
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-active-command-category="home"] ~ .operations-console-footer {
+    display: none;
+}
+
+.operations-console-footer__copyright,
+.operations-console-footer__link,
+.operations-console-footer__link:visited {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    display: inline-flex;
+    font: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    text-transform: none;
+}
+
+.operations-console-footer__link {
+    cursor: pointer;
+}
+
+.operations-console-footer__link:hover,
+.operations-console-footer__link:focus-visible {
+    color: rgba(196, 209, 235, 0.90);
+    outline: none;
+    text-decoration: none;
+}
+
+.solomon-assistant-header,
+.solomon-assistant-restore-toggle,
+.solomon-assistant-dock-label,
+.solomon-assistant-dock-toggle {
+    display: none !important;
+}
+
+.solomon-stage-identity {
+    align-items: center;
+    display: grid;
+    gap: 0.72rem;
+    justify-items: center;
+    max-width: 760px;
+    text-align: center;
+    transition:
+        gap 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.28s ease,
+        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"] .solomon-stage-identity,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"] .solomon-stage-identity {
+    align-self: start;
+    gap: 10px;
+    grid-area: identity;
+    justify-self: center;
+    max-width: 680px;
+    position: relative;
+    z-index: 9;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-stage-identity {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translateY(-12px) scale(0.96);
+}
+
+.solomon-guide-avatar {
+    align-items: center;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(22, 191, 216, 0.20), transparent 66%),
+        rgba(8, 13, 24, 0.58);
+    border: 1px solid rgba(22, 191, 216, 0.20);
+    border-radius: 999px;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset,
+        0 16px 42px rgba(0, 0, 0, 0.30),
+        0 0 34px rgba(22, 191, 216, 0.08);
+    display: flex;
+    height: 5.25rem;
+    justify-content: center;
+    overflow: visible;
+    transition:
+        height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 5.25rem;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-guide-avatar,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-guide-avatar,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-guide-avatar,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-guide-avatar {
+    height: 58px;
+    width: 58px;
+}
+
+.solomon-guide-logo {
+    display: block;
+    filter:
+        drop-shadow(0 0 18px rgba(22, 191, 216, 0.28))
+        drop-shadow(0 12px 24px rgba(0, 0, 0, 0.34));
+    height: 3.35rem;
+    object-fit: contain;
+    transition:
+        height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 3.35rem;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-guide-logo,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-guide-logo,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-guide-logo,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-guide-logo {
+    height: 37px;
+    width: 37px;
+}
+
+.solomon-guide-copy {
+    max-width: 760px;
+    min-width: 0;
+}
+
+.solomon-stage-kicker {
+    color: rgba(22, 191, 216, 0.76) !important;
+    font-size: 0.66rem !important;
+    font-weight: 820;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+    margin: 0 0 0.32rem !important;
+    text-transform: uppercase;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-stage-kicker,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-stage-kicker,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-stage-kicker,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-stage-kicker {
+    display: none;
+}
+
+.solomon-guide-copy h2 {
+    color: rgba(248, 250, 252, 0.98);
+    display: grid;
+    font-family: var(--font-ui, inherit);
+    font-size: clamp(2.55rem, 4.1vw, 3.95rem);
+    font-weight: 780;
+    gap: 0.04em;
+    justify-items: center;
+    letter-spacing: -0.058em;
+    line-height: 0.88;
+    margin: 0 0 clamp(0.72rem, 1.45vh, 1rem);
+    max-width: min(880px, 100%);
+    text-shadow:
+        0 22px 46px rgba(0, 0, 0, 0.34),
+        0 0 32px rgba(22, 191, 216, 0.08);
+    text-wrap: balance;
+    transition:
+        font-size 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.solomon-guide-copy h2 span {
+    display: block;
+}
+
+.solomon-guide-copy h2 span:last-child {
+    font-size: 0.92em;
+    letter-spacing: -0.052em;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-guide-copy h2,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-guide-copy h2,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-guide-copy h2,
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-guide-copy h2 {
+    font-size: 1.45rem;
+    margin-bottom: 5px;
+}
+
+.solomon-guide-copy p {
+    color: rgba(201, 212, 229, 0.68) !important;
+    font-size: 0.92rem;
+    line-height: 1.46;
+    margin: 0 auto;
+    max-width: 680px;
+    transition:
+        color 0.28s ease,
+        font-size 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.solomon-guide-copy .solomon-stage-summary {
+    color: rgba(215, 225, 241, 0.82) !important;
+    font-size: clamp(0.82rem, 1.05vw, 0.95rem);
+    font-weight: 560;
+    letter-spacing: -0.006em;
+    line-height: 1.46;
+    max-width: 720px;
+    text-wrap: balance;
+}
+
+.solomon-guide-copy .solomon-stage-powered {
+    color: rgba(22, 191, 216, 0.78) !important;
+    font-size: 0.72rem;
+    font-weight: 760;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    margin-top: 0.48rem;
+    max-width: none;
+}
+
+.command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-guide-copy > p:not(.solomon-stage-kicker),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-guide-copy > p:not(.solomon-stage-kicker),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-copy > p:not(.solomon-stage-kicker),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-copy > p:not(.solomon-stage-kicker),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"] .solomon-guide-copy > p:not(.solomon-stage-kicker),
+.command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"] .solomon-guide-copy > p:not(.solomon-stage-kicker) {
+    display: none;
+}
+
+.solomon-guide-empty-state {
+    color: rgba(239, 245, 255, 0.88);
+    font-size: 0.92rem;
+    font-weight: 520;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 680px;
+    text-align: center;
+}
+
+.solomon-assistant-panel[data-solomon-panel-state="home_with_comms"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="workspace_card_deck"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="focused_widget"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="document_focus"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="thinking_or_executing"] .solomon-guide-empty-state,
+.solomon-assistant-panel[data-solomon-panel-state="error_or_unavailable"] .solomon-guide-empty-state {
+    display: none;
+}
+
+.solomon-document-focus-workspace {
+    background:
+        linear-gradient(180deg, rgba(12, 19, 33, 0.92), rgba(7, 11, 20, 0.96)),
+        rgba(7, 11, 20, 0.94);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    border-radius: 14px;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.36),
+        0 0 0 1px rgba(22, 191, 216, 0.035) inset;
+    box-sizing: border-box;
+    display: grid;
+    gap: 12px;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 14px;
+    width: 100%;
+}
+
+.solomon-document-focus-header {
+    align-items: center;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.12);
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 0 0 12px;
+}
+
+.solomon-document-focus-header > div:first-child {
+    min-width: 0;
+}
+
+.solomon-document-focus-header h3 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.05rem;
+    font-weight: 760;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 5px;
+}
+
+.solomon-document-focus-header p:not(.command-solomon-focused-kicker) {
+    color: rgba(201, 212, 229, 0.64);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 720px;
+}
+
+.solomon-document-focus-controls {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+.solomon-document-focus-controls button,
+.solomon-document-guide-actions button {
+    align-items: center;
+    background: rgba(105, 128, 157, 0.07);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 9px;
+    color: rgba(239, 245, 255, 0.78);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.7rem;
+    font-weight: 760;
+    gap: 6px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 32px;
+    padding: 8px 10px;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        transform 0.14s ease;
+}
+
+.solomon-document-focus-controls button:hover,
+.solomon-document-focus-controls button:focus-visible,
+.solomon-document-guide-actions button:hover,
+.solomon-document-guide-actions button:focus-visible {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(22, 191, 216, 0.26);
+    color: rgba(248, 250, 252, 0.94);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.solomon-document-focus-controls .icon {
+    font-size: 16px;
+}
+
+.solomon-document-focus-layout {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    min-height: 0;
+    min-width: 0;
+}
+
+.solomon-document-viewer-surface {
+    background:
+        linear-gradient(180deg, rgba(245, 247, 250, 0.965), rgba(226, 231, 239, 0.985)),
+        rgba(7, 11, 20, 0.94);
+    border: 1px solid rgba(8, 13, 24, 0.22);
+    border-radius: 12px;
+    box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.22) inset;
+    color: rgba(15, 23, 42, 0.92);
+    display: grid;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.solomon-document-viewer-placeholder {
+    align-content: center;
+    display: grid;
+    gap: 9px;
+    justify-items: center;
+    min-height: 420px;
+    padding: 38px;
+    text-align: center;
+}
+
+.solomon-document-viewer-placeholder .icon {
+    color: rgba(15, 23, 42, 0.42);
+    font-size: 52px;
+}
+
+.solomon-document-viewer-placeholder strong {
+    color: rgba(15, 23, 42, 0.88);
+    font-size: 1rem;
+    font-weight: 780;
+}
+
+.solomon-document-viewer-placeholder em {
+    color: rgba(51, 65, 85, 0.70);
+    font-size: 0.82rem;
+    font-style: normal;
+    line-height: 1.45;
+    max-width: 420px;
+}
+
+.solomon-document-guide-rail {
+    align-content: start;
+    background: rgba(8, 13, 24, 0.66);
+    border: 1px solid rgba(105, 128, 157, 0.15);
+    border-radius: 12px;
+    display: grid;
+    gap: 12px;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    padding: 14px;
+}
+
+.solomon-document-guide-rail h4 {
+    color: rgba(248, 250, 252, 0.94);
+    font-size: 0.98rem;
+    font-weight: 760;
+    letter-spacing: -0.015em;
+    margin: -5px 0 0;
+}
+
+.solomon-document-guide-rail p:not(.solomon-stage-kicker) {
+    color: rgba(201, 212, 229, 0.66);
+    font-size: 0.76rem;
+    line-height: 1.48;
+    margin: 0;
+}
+
+.solomon-document-context-card {
+    align-items: flex-start;
+    background: rgba(22, 191, 216, 0.055);
+    border: 1px solid rgba(22, 191, 216, 0.13);
+    border-radius: 10px;
+    display: grid;
+    gap: 9px;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 10px;
+}
+
+.solomon-document-context-card .icon {
+    color: rgba(22, 191, 216, 0.76);
+    font-size: 16px;
+    margin-top: 1px;
+}
+
+.solomon-document-context-card strong {
+    color: rgba(248, 250, 252, 0.88);
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 780;
+    line-height: 1.25;
+    margin-bottom: 3px;
+}
+
+.solomon-document-context-card em {
+    color: rgba(201, 212, 229, 0.58);
+    display: block;
+    font-size: 0.7rem;
+    font-style: normal;
+    line-height: 1.35;
+}
+
+.solomon-document-guide-actions {
+    display: grid;
+    gap: 8px;
+}
+
+.solomon-document-guide-actions button {
+    justify-content: flex-start;
+    min-height: 34px;
+    text-align: left;
+    width: 100%;
+}
+
+@media (max-width: 1120px) {
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-stage-shell {
+        --solomon-home-bottom-padding: clamp(16px, 2.4vh, 26px);
+        --solomon-home-gap: clamp(14px, 2.1vh, 20px);
+        --solomon-message-history-height: 100%;
+        grid-template-rows: minmax(0, 1fr) auto auto;
+        max-width: min(1000px, calc(100vw - 40px));
+        padding-left: clamp(12px, 2.4vw, 24px);
+        padding-right: clamp(12px, 2.4vw, 24px);
+    }
+
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread {
+        height: auto !important;
+        max-height: none !important;
+        max-width: min(960px, 100%);
+        min-height: 0 !important;
+        padding-bottom: 14px;
+    }
+
+    .solomon-document-focus-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(190px, 240px);
+    }
+}
+
+@media (max-width: 860px) {
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="document_focus"] .solomon-stage-shell {
+        padding: 14px 12px 16px;
+    }
+
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-stage-shell {
+        --solomon-home-bottom-padding: 16px;
+        --solomon-home-gap: 12px;
+        --solomon-message-history-height: 100%;
+        grid-template-rows: minmax(0, 1fr) auto auto;
+        max-width: min(100%, calc(100vw - 24px));
+        overflow: hidden;
+        padding: 12px;
+    }
+
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="home_with_comms"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="widget_dismissed_return"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"][data-active-command-category="home"] .solomon-guide-thread,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"][data-active-command-category="home"] .solomon-guide-thread {
+        height: auto !important;
+        max-height: none !important;
+        max-width: min(100%, 760px);
+        min-height: 0 !important;
+        padding-bottom: 12px;
+    }
+
+    .solomon-document-focus-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .solomon-document-guide-rail {
+        max-height: 190px;
+    }
+
+    .solomon-document-focus-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .solomon-document-focus-controls {
+        width: 100%;
+    }
+
+    .solomon-document-focus-controls button {
+        flex: 1 1 0;
+    }
+}

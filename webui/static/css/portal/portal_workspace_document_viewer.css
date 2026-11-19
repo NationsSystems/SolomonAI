@@ -1,0 +1,38 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_viewer.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   WORKSPACE DOCUMENT VIEWER CSS ENTRYPOINT
+   --------------------------------------------------------------------------
+   Imports focused document workspace styles. Home-level rail sizing remains
+   owned by portal_workspace_shell.css and portal_workspace_home.css.
+   ========================================================================== */
+
+@import url("./portal_workspace_document_viewer_shell.css?v=nations-recent-semantic-list-alignment-20260806a");
+@import url("./portal_workspace_document_viewer_library.css?v=nations-document-left-navigation-filled-folders-labels-20260807a");
+@import url("./portal_workspace_document_viewer_files.css?v=nations-document-canonical-file-manager-list-cell-readability-20260807a");
+@import url("./portal_workspace_document_viewer_preview.css?v=nations-drive-parity-item3-file-details-20260628a");
+@import url("./portal_workspace_document_viewer_chat.css");
+@import url("./portal_workspace_document_viewer_responsive.css");
+
+/* ==========================================================================
+   CANONICAL FOLDER ACCENT
+   --------------------------------------------------------------------------
+   Folder outlines use one restrained cyan family across normal, hover,
+   focus, active, and selected states.
+   ========================================================================== */
+
+:root {
+    --workspace-folder-outline: rgb(96, 223, 255);
+    --workspace-folder-outline-hover: rgb(132, 233, 255);
+    --workspace-folder-outline-active: rgb(168, 241, 255);
+    --workspace-folder-surface: rgba(96, 223, 255, 0.10);
+    --workspace-folder-surface-hover: rgba(96, 223, 255, 0.16);
+    --workspace-folder-border: rgba(96, 223, 255, 0.24);
+    --workspace-folder-border-hover: rgba(132, 233, 255, 0.40);
+    --workspace-folder-shadow: drop-shadow(0 0 10px rgba(96, 223, 255, 0.10));
+    --workspace-folder-shadow-hover: drop-shadow(0 0 12px rgba(96, 223, 255, 0.18));
+    --workspace-folder-shadow-active: drop-shadow(0 0 14px rgba(132, 233, 255, 0.24));
+}

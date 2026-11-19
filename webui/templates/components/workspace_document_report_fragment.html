@@ -1,0 +1,128 @@
+<!-- -------------------------------------------------------------------
+     FILE: workspace_document_report_fragment.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set report_label = operation_label|default('Document Review') %}
+{% set report_title = result_title|default(report_label ~ ' Complete') %}
+{% set source_label = document_name|default('Selected file') %}
+{% set review_label = saved_review_label|default('Current session') %}
+{% set report_status = status_label|default('Complete') %}
+{% set report_sections = sections|default([]) %}
+
+<nav class="workspace-document-inspector-navigation workspace-document-breadcrumb"
+     aria-label="Content panel location">
+    <button type="button"
+            class="workspace-document-breadcrumb-link workspace-document-view-button"
+            data-workspace-view="files"
+            aria-label="Open My Files"
+            title="Open My Files">
+        <span>My Files</span>
+    </button>
+    <span class="workspace-document-breadcrumb-separator">/</span>
+    <span class="workspace-document-breadcrumb-current">{{ report_label }}</span>
+</nav>
+
+<article class="workspace-document-inspector-body workspace-document-inspector-body--properties workspace-document-inspector-body--report"
+         data-document-report-fragment
+         data-document-artifact-type="commercial-report"
+         aria-label="{{ report_label }}">
+    <section class="workspace-document-file-properties workspace-document-report-properties"
+             aria-label="Report record">
+        <header class="workspace-document-file-identity workspace-document-file-identity--plain workspace-document-report-identity">
+            <div class="workspace-document-summary-copy">
+                <p class="workspace-kicker">SolomonAI Document Report</p>
+                <strong>{{ report_title }}</strong>
+                <span>Source Document: {{ source_label }}</span>
+            </div>
+        </header>
+
+        <div class="workspace-document-file-property-list workspace-document-report-property-list">
+            <div class="workspace-document-file-property">
+                <span>Report</span>
+                <strong>{{ report_label }}</strong>
+            </div>
+
+            <div class="workspace-document-file-property">
+                <span>Status</span>
+                <strong>{{ report_status }}</strong>
+            </div>
+
+            <div class="workspace-document-file-property">
+                <span>Saved Review</span>
+                <strong>{{ review_label }}</strong>
+            </div>
+
+            <div class="workspace-document-file-property">
+                <span>Source Document</span>
+                <strong>{{ source_label }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <aside class="workspace-document-panel-notice workspace-document-panel-notice--info workspace-document-report-advisory"
+           aria-label="Document report notice">
+        <span class="icon" aria-hidden="true">verified</span>
+        <p>Document review output. Validate this artifact against the source document before external distribution or operational reliance.</p>
+    </aside>
+
+    <section class="workspace-document-report-shell workspace-document-report-shell--server"
+             aria-label="Report contents">
+        <header class="workspace-document-report-shell-header">
+            <p class="workspace-kicker">Report</p>
+        </header>
+
+        {% if report_sections %}
+        <div class="workspace-document-report-section-list">
+            {% for section in report_sections %}
+            <section class="workspace-document-report-section{% if loop.first %} workspace-document-report-section--lead{% endif %}">
+                {% if section.title %}
+                <h2>{{ section.title }}</h2>
+                {% endif %}
+
+                {% for paragraph in section.paragraphs|default([]) %}
+                {% set paragraph_text = paragraph|string|trim %}
+                {% if paragraph_text %}
+                {% if paragraph_text.startswith("• ") %}
+                <p class="workspace-document-report-bullet">{{ paragraph_text }}</p>
+                {% else %}
+                <p class="workspace-document-report-paragraph">{{ paragraph_text }}</p>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </section>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="workspace-document-report-empty">
+            <p>No report body was returned for this saved review.</p>
+        </div>
+        {% endif %}
+    </section>
+</article>
+
+<div class="workspace-document-inspector-actions workspace-document-inspector-actions--with-close workspace-document-report-actions"
+     aria-label="Report actions">
+    <button type="button"
+            class="workspace-document-command workspace-document-command-neutral"
+            data-document-report-back>
+        <span class="icon" aria-hidden="true">arrow_back</span>
+        <span>Back to File Details</span>
+    </button>
+
+    {% if reader_url %}
+    <a class="workspace-document-command"
+       href="{{ reader_url }}"
+       aria-label="Open source document for {{ source_label }}">
+        <span class="icon" aria-hidden="true">open_in_new</span>
+        <span>Open Source Document</span>
+    </a>
+    {% endif %}
+
+    <button type="button"
+            class="workspace-document-command workspace-document-command-close workspace-document-view-button"
+            data-workspace-view="files">
+        <span class="icon" aria-hidden="true">close</span>
+        <span>Close</span>
+    </button>
+</div>

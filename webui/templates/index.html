@@ -1,0 +1,176 @@
+<!-- -------------------------------------------------------------------
+     FILE: index.html
+     DIRECTORY: webui/templates/
+------------------------------------------------------------------- -->
+
+{% extends "portal_base.html" %}
+
+{% set current_module = active_module|default('documents') %}
+{% set current_path = request.path if request is defined else '/' %}
+{% set workspace_window_closeable = workspace_window_closeable|default(current_path not in ['', '/']) %}
+
+{% if request is defined and (request.path == '/ai' or request.path.startswith('/ai/')) %}
+    {% set current_module = 'solomon_ai' %}
+{% endif %}
+
+{% if request is defined and (request.path == '/people' or request.path.startswith('/people/')) %}
+    {% set current_module = 'people' %}
+{% endif %}
+
+{% set is_documents_workspace = current_module == 'documents' %}
+{% set is_solomon_ai_workspace = current_module == 'solomon_ai' %}
+{% set is_people_workspace = current_module == 'people' %}
+{% set is_preconstruction_review = current_module == 'preconstruction_review' %}
+
+{% block title %}
+    {% if is_solomon_ai_workspace %}
+        Nations Systems | Your Company. Your AI.
+    {% else %}
+        Nations Systems | Your Company. Your AI.
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace.css') }}?v=nations-universal-shell-consistency-20260825a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_document_viewer_shell.css') }}?v=nations-document-unified-control-row-20260805a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_document_reader.css') }}?v=nations-drive-parity-pass-a1-reader-behavior-20260628a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_ui_confirm.css') }}?v=nations-ui-confirm-20260630a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_solomon_ai.css') }}?v=nations-solomon-ai-source-picker-20260714a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_document_drag_drop.css') }}?v=nations-document-drag-drop-20260816a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/portal/portal_workspace_document_share.css') }}?v=nations-document-share-20260816a">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/people.css') }}?v=nations-people-groups-canonical-20260727a">
+{% endblock %}
+
+{% block content %}
+{% set taskbar_position = 'top' %}
+
+<section id="portal-root"
+         class="workspace-deck command-center-deck"
+         data-gui-state="IDLE"
+         data-workspace-mode="command_center"
+         data-active-module="{{ current_module }}"
+         data-active-workflow="{% if is_preconstruction_review %}pre_award_risk_review{% endif %}"
+         data-taskbar-position="{{ taskbar_position }}"
+         data-command-navbar-mode="assistant_launcher"
+         data-solomon-rail-state="{% if is_documents_workspace %}collapsed{% else %}unavailable{% endif %}">
+
+    <div class="command-center-layout"
+         data-taskbar-position="{{ taskbar_position }}"
+         data-command-navbar-mode="assistant_launcher"
+         data-solomon-rail-state="{% if is_documents_workspace %}collapsed{% else %}unavailable{% endif %}">
+
+        <div class="command-content-layer"
+             data-command-content-layer>
+            {% include "components/command_sidebar.html" %}
+
+            <main id="commandWorkspaceMount"
+                  class="command-main"
+                  aria-labelledby="workspace-title"
+                  data-workspace-mount
+                  data-workspace-closeable="{{ 'true' if workspace_window_closeable else 'false' }}"
+                  data-active-module="{{ current_module }}"
+                  data-active-workflow="{% if is_preconstruction_review %}pre_award_risk_review{% endif %}"
+                  data-taskbar-position="{{ taskbar_position }}">
+                {% if workspace_surface_template %}
+                    {% include workspace_surface_template %}
+                {% else %}
+                    {% include "components/workspace_content.html" %}
+                {% endif %}
+            </main>
+
+            {% include "components/solomon_context_rail.html" ignore missing %}
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/command_center/command_sidebar.js') }}?v=nations-global-search-drive-stable-default-20260807a"></script>
+
+<script src="{{ url_for('static', filename='js/people.js') }}?v=nations-people-groups-canonical-20260727a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_records.js') }}?v=nations-file-properties-records-20260624a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_library.js') }}?v=nations-document-post-filter-sort-control-20260806a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_status.js') }}?v=nations-workspace-document-status-20260621a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_uploads.js') }}?v=nations-workspace-document-uploads-drag-isolation-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_drag_drop.js') }}?v=nations-document-drag-drop-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_share.js') }}?v=nations-document-share-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_conversation.js') }}?v=nations-reader-route-authority-20260625b"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_preview.js') }}?v=nations-drive-parity-pass-c2-explicit-workflow-20260628a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_operations.js') }}?v=nations-drive-parity-pass-c2-explicit-workflow-20260628a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_sections.js') }}?v=nations-document-sections-20260630a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_cache.js') }}?v=nations-document-cache-20260630a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_ui_confirm.js') }}?v=nations-ui-confirm-20260630a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_interactions.js') }}?v=nations-search-listing-menu-contract-20260730a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_selection.js') }}?v=nations-document-selection-20260701a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_section_navigation.js') }}?v=nations-document-folder-close-navigation-20260805b"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_reader_lifecycle.js') }}?v=nations-document-reader-lifecycle-20260701a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_trash_mutations.js') }}?v=nations-document-trash-mutations-20260701a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_view_state.js') }}?v=nations-document-post-filter-sort-control-20260806a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_solomon_context.js') }}?v=nations-document-solomon-context-20260701a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_viewer.js') }}?v=nations-document-drag-drop-refresh-20260816a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_document_search.js') }}?v=nations-document-post-filter-sort-control-20260806a"></script>
+<script src="{{ url_for('static', filename='js/command_center/operations_console_widgets.js') }}?v=nations-ops-console-widgets-20260517a"></script>
+
+<!-- SolomonAI modular workspace runtime.
+     Dependency order is intentional; the public entrypoint loads last. -->
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_contract.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_conversation_navigation.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_preview.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_preview_interactions.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_membership.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_list.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_welcome.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_state.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_transport.js') }}?v=nations-solomon-ai-source-picker-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_picker.js') }}?v=nations-solomon-ai-source-picker-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_source_controls.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_composer_layout.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_composer_state.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_text.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_markdown.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_content.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_continuation.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_timeline.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_pending.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_actions.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_feedback.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_message_renderer.js') }}?v=nations-solomon-ai-governed-progressive-reveal-20260716a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_response_packet.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_request_payload.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_stream_parser.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_execution_transport.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_request_submit.js') }}?v=nations-solomon-ai-governed-progressive-reveal-20260716a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_composer_controls.js') }}?v=nations-solomon-ai-sources-upload-20260819a"></script>
+
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai_workspace_bootstrap.js') }}?v=nations-solomon-ai-source-picker-20260714a"></script>
+<script src="{{ url_for('static', filename='js/command_center/workspace_solomon_ai.js') }}?v=nations-solomon-ai-modular-runtime-20260714a"></script>
+
+{% if is_preconstruction_review %}
+<script src="{{ url_for('static', filename='js/app.state.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.render.response.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.execute.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.core.js') }}"></script>
+{% endif %}
+{% endblock %}

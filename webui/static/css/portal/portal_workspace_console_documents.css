@@ -1,0 +1,421 @@
+/* ==========================================================================
+   FILE: portal_workspace_console_documents.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   LEGACY CONSOLE DOCUMENTS EXPLORER
+   --------------------------------------------------------------------------
+   This file owns only the older .command-documents-* console surface. The
+   active Home file explorer is owned by portal_workspace_document_viewer*.css.
+   ========================================================================== */
+
+.command-documents-explorer {
+    align-items: stretch;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(180px, 0.22fr) minmax(0, 1fr) minmax(260px, 0.32fr);
+    margin-bottom: 12px;
+    min-height: 430px;
+    min-width: 0;
+}
+
+.command-documents-sidebar,
+.command-documents-main,
+.command-documents-solomon-rail {
+    background:
+        radial-gradient(circle at 92% 8%, rgba(34, 211, 238, 0.10), transparent 30%),
+        linear-gradient(145deg, rgba(8, 13, 24, 0.90), rgba(5, 9, 20, 0.82));
+    border: 1px solid rgba(105, 128, 157, 0.17);
+    border-radius: var(--radius-card);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.014),
+        0 14px 34px rgba(0, 0, 0, 0.18);
+    box-sizing: border-box;
+    color: var(--brand-text);
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 14px;
+    position: relative;
+}
+
+.command-documents-sidebar::before,
+.command-documents-main::before,
+.command-documents-solomon-rail::before,
+.command-documents-surface::before {
+    background: linear-gradient(180deg, rgba(34, 211, 238, 0.74), transparent);
+    border-radius: 999px;
+    bottom: 12px;
+    content: "";
+    left: -1px;
+    opacity: 0.72;
+    position: absolute;
+    top: 12px;
+    width: 2px;
+}
+
+.command-documents-sidebar {
+    display: grid;
+    gap: 14px;
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+.command-documents-sidebar-header h2 {
+    color: rgba(248, 250, 252, 0.94);
+    font-size: 1.1rem;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    margin: 0;
+}
+
+.command-documents-nav {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.command-documents-nav button {
+    align-items: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: rgba(203, 213, 225, 0.70);
+    cursor: pointer;
+    display: grid;
+    font-family: var(--font-ui, inherit);
+    font-size: 0.76rem;
+    font-weight: 720;
+    gap: 9px;
+    grid-template-columns: 26px minmax(0, 1fr);
+    min-height: 36px;
+    padding: 6px 8px;
+    text-align: left;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+}
+
+.command-documents-nav button .icon {
+    align-items: center;
+    background: rgba(96, 165, 250, 0.10);
+    border: 1px solid rgba(96, 165, 250, 0.18);
+    border-radius: 8px;
+    color: rgba(125, 190, 255, 0.88);
+    display: inline-flex;
+    font-size: 16px;
+    height: 24px;
+    justify-content: center;
+    width: 24px;
+}
+
+.command-documents-nav button:hover,
+.command-documents-nav button:focus-visible,
+.command-documents-nav button.is-active {
+    background: rgba(34, 211, 238, 0.075);
+    border-color: rgba(34, 211, 238, 0.18);
+    color: rgba(248, 250, 252, 0.92);
+    outline: none;
+}
+
+.command-documents-main {
+    display: grid;
+    gap: 12px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+}
+
+.command-documents-toolbar,
+.command-documents-browser-header {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.command-documents-toolbar h2 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 1.18rem;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    margin: 0 0 4px;
+}
+
+.command-documents-toolbar p:not(.workspace-kicker) {
+    color: rgba(203, 213, 225, 0.62);
+    font-size: 0.74rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.command-documents-toolbar-actions,
+.command-documents-view-toggle {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+.command-documents-toolbar-actions button,
+.command-documents-view-toggle button,
+.command-documents-quick-actions button {
+    background:
+        linear-gradient(135deg, rgba(34, 211, 238, 0.07), rgba(255, 255, 255, 0.015)),
+        rgba(8, 13, 24, 0.62);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 10px;
+    color: rgba(239, 245, 255, 0.82);
+    cursor: pointer;
+    font-family: var(--font-ui, inherit);
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        color 0.14s ease;
+}
+
+.command-documents-toolbar-actions button {
+    align-items: center;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 760;
+    gap: 7px;
+    min-height: 34px;
+    padding: 8px 10px;
+}
+
+.command-documents-toolbar-actions button:hover,
+.command-documents-toolbar-actions button:focus-visible,
+.command-documents-view-toggle button:hover,
+.command-documents-view-toggle button:focus-visible,
+.command-documents-view-toggle button.is-active,
+.command-documents-quick-actions button:hover,
+.command-documents-quick-actions button:focus-visible {
+    background: rgba(34, 211, 238, 0.10);
+    border-color: rgba(34, 211, 238, 0.30);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    color: rgba(248, 250, 252, 0.96);
+    outline: none;
+}
+
+.command-documents-searchbar {
+    align-items: center;
+    background:
+        linear-gradient(135deg, rgba(2, 6, 23, 0.42), rgba(15, 23, 42, 0.20)),
+        rgba(3, 8, 18, 0.66);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    border-radius: 12px;
+    display: grid;
+    gap: 9px;
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 42px;
+    padding: 0 12px;
+}
+
+.command-documents-searchbar .icon {
+    color: rgba(34, 211, 238, 0.70);
+    font-size: 19px;
+}
+
+.command-documents-searchbar input {
+    background: transparent;
+    border: 0;
+    color: rgba(248, 250, 252, 0.90);
+    font-family: var(--font-ui, inherit);
+    font-size: 0.82rem;
+    min-width: 0;
+    outline: none;
+    width: 100%;
+}
+
+.command-documents-searchbar input::placeholder {
+    color: rgba(180, 198, 226, 0.42);
+}
+
+.command-documents-quick-actions {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-documents-quick-actions button {
+    align-items: flex-start;
+    display: grid;
+    gap: 7px;
+    min-height: 108px;
+    padding: 12px;
+    text-align: left;
+}
+
+.command-documents-quick-actions .icon {
+    align-items: center;
+    background: rgba(34, 211, 238, 0.10);
+    border: 1px solid rgba(34, 211, 238, 0.20);
+    border-radius: 10px;
+    color: rgba(34, 211, 238, 0.86);
+    display: inline-flex;
+    font-size: 22px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.command-documents-quick-actions strong {
+    color: rgba(248, 250, 252, 0.92);
+    font-size: 0.86rem;
+    font-weight: 780;
+    line-height: 1.16;
+}
+
+.command-documents-quick-actions em {
+    color: rgba(203, 213, 225, 0.58);
+    font-size: 0.68rem;
+    font-style: normal;
+    line-height: 1.35;
+}
+
+.command-documents-browser {
+    background: rgba(2, 6, 23, 0.24);
+    border: 1px solid rgba(105, 128, 157, 0.12);
+    border-radius: 13px;
+    display: grid;
+    gap: 12px;
+    min-height: 0;
+    overflow: hidden;
+    padding: 12px;
+}
+
+.command-documents-browser-header h3 {
+    color: rgba(248, 250, 252, 0.92);
+    font-size: 0.96rem;
+    font-weight: 760;
+    letter-spacing: -0.02em;
+    line-height: 1.16;
+    margin: 0;
+}
+
+.command-documents-view-toggle button {
+    align-items: center;
+    display: inline-flex;
+    height: 31px;
+    justify-content: center;
+    padding: 0;
+    width: 34px;
+}
+
+.command-documents-view-toggle .icon {
+    font-size: 18px;
+}
+
+.command-documents-file-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-height: 0;
+}
+
+.command-document-file-card {
+    background:
+        radial-gradient(circle at 88% 12%, rgba(96, 165, 250, 0.09), transparent 36%),
+        linear-gradient(145deg, rgba(8, 13, 24, 0.86), rgba(5, 9, 20, 0.78));
+    border: 1px solid rgba(105, 128, 157, 0.15);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.012);
+    box-sizing: border-box;
+    display: grid;
+    gap: 10px;
+    min-height: 126px;
+    overflow: hidden;
+    padding: 14px;
+    position: relative;
+}
+
+.command-document-file-card:hover {
+    border-color: rgba(34, 211, 238, 0.28);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.018),
+        0 14px 30px rgba(0, 0, 0, 0.20);
+}
+
+.command-document-file-icon {
+    align-items: center;
+    background:
+        radial-gradient(circle at 36% 28%, rgba(255, 255, 255, 0.14), transparent 42%),
+        linear-gradient(145deg, rgba(96, 165, 250, 0.14), rgba(255, 255, 255, 0.018));
+    border: 1px solid rgba(96, 165, 250, 0.24);
+    border-radius: 12px;
+    color: rgba(125, 190, 255, 0.92);
+    display: inline-flex !important;
+    font-size: 24px !important;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+}
+
+.command-document-file-card strong {
+    color: rgba(248, 250, 252, 0.93);
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 780;
+    line-height: 1.16;
+    margin-bottom: 5px;
+}
+
+.command-document-file-card em {
+    color: rgba(203, 213, 225, 0.58);
+    display: block;
+    font-size: 0.69rem;
+    font-style: normal;
+    line-height: 1.35;
+}
+
+.command-document-file-card .workspace-function-status {
+    background: rgba(96, 165, 250, 0.12);
+    border: 1px solid rgba(96, 165, 250, 0.22);
+    border-radius: 999px;
+    color: rgba(180, 214, 255, 0.86);
+    font-size: 0.55rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    padding: 5px 8px;
+    position: absolute;
+    right: 10px;
+    text-transform: uppercase;
+    top: 10px;
+}
+
+.command-document-file-card .workspace-function-status.is-in-development {
+    background: rgba(251, 146, 60, 0.13);
+    border-color: rgba(251, 146, 60, 0.24);
+    color: rgba(255, 190, 132, 0.92);
+}
+
+.command-document-file-card .workspace-function-status.is-live {
+    background: rgba(52, 211, 153, 0.13);
+    border-color: rgba(52, 211, 153, 0.24);
+    color: rgba(167, 243, 208, 0.92);
+}
+
+.command-documents-solomon-rail {
+    display: grid;
+    gap: 12px;
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+.command-documents-solomon-rail .command-guide-list {
+    align-content: start;
+    overflow: auto;
+}
+
+.command-documents-surface {
+    margin-bottom: 12px;
+    min-height: 86px;
+}
+
+.command-documents-surface .workspace-section-heading {
+    margin-bottom: 0;
+}

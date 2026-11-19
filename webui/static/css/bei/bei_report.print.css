@@ -1,0 +1,343 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.print.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+/* ============================================================
+   PRINT
+============================================================ */
+
+@media print {
+    @page {
+        size: letter;
+        margin: 0.76in 0.86in;
+    }
+
+    html,
+    body {
+        background: #ffffff !important;
+        color: #202a37 !important;
+        font-family: "Segoe UI", Arial, sans-serif !important;
+        font-size: 9.4pt !important;
+        line-height: 1.52 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bei-report-actions,
+    .bei-completion-state,
+    .bei-report-action-status,
+    .bei-report::before,
+    .bei-report::after {
+        display: none !important;
+    }
+
+    .bei-report {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #202a37 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        font-family: "Segoe UI", Arial, sans-serif !important;
+        font-size: 9.4pt !important;
+        line-height: 1.52 !important;
+    }
+
+    .bei-report *,
+    .bei-report p,
+    .bei-report div,
+    .bei-report li,
+    .bei-report td,
+    .bei-report th {
+        color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        font-family: "Segoe UI", Arial, sans-serif !important;
+    }
+
+    .bei-report-header {
+        display: block !important;
+        min-height: 0 !important;
+        margin: 0 0 13pt !important;
+        padding: 0 0 8pt !important;
+        border-bottom: 1px solid #d9dee6 !important;
+        background: transparent !important;
+        page-break-after: avoid;
+    }
+
+    .bei-title {
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #111827 !important;
+        font-size: 10.5pt !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.004em !important;
+        line-height: 1.22 !important;
+        text-align: left !important;
+    }
+
+    .bei-section {
+        margin-top: 15pt !important;
+        padding-top: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-report .bei-section:first-of-type {
+        margin-top: 0 !important;
+    }
+
+    .bei-report .bei-section > h3,
+    .bei-report .bei-section h3.bei-section-title {
+        margin: 0 0 7pt !important;
+        padding: 0 !important;
+        color: #111827 !important;
+        font-size: 10.5pt !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.004em !important;
+        line-height: 1.26 !important;
+        page-break-after: avoid;
+    }
+
+    .bei-primary-risk {
+        margin-top: 0 !important;
+        padding: 0 0 11pt !important;
+        border-bottom: 1px solid #d9dee6 !important;
+        background: transparent !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-summary {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6pt 18pt !important;
+        margin: 8pt 0 9pt !important;
+        padding: 0 0 8pt !important;
+        border-bottom: 1px solid #d9dee6 !important;
+    }
+
+    .bei-summary-item {
+        display: inline-flex !important;
+        align-items: baseline !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+    }
+
+    .bei-label {
+        color: #4b5563 !important;
+        font-size: 8.4pt !important;
+        font-weight: 600 !important;
+    }
+
+    .bei-value {
+        margin-left: 5pt !important;
+        color: #111827 !important;
+        font-size: 8.4pt !important;
+        font-weight: 600 !important;
+    }
+
+    .bei-primary-text,
+    .bei-report p,
+    .bei-report div,
+    .bei-report li,
+    .bei-report td {
+        color: #202a37 !important;
+        font-size: 9.4pt !important;
+        font-weight: 400 !important;
+        line-height: 1.52 !important;
+    }
+
+    .bei-list {
+        margin: 0 !important;
+        padding-left: 0 !important;
+        list-style: none !important;
+    }
+
+    .bei-list > li {
+        margin-bottom: 6pt !important;
+        padding-left: 11pt !important;
+        color: #202a37 !important;
+        font-size: 9.4pt !important;
+        font-weight: 400 !important;
+        line-height: 1.52 !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-list > li::before {
+        left: 1pt !important;
+        top: 0.64em !important;
+        width: 2.7pt !important;
+        height: 2.7pt !important;
+        background: #6b7280 !important;
+    }
+
+    .bei-item {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 9pt !important;
+        grid-template-areas:
+            "title severity"
+            "impact impact" !important;
+        gap: 4pt 8pt !important;
+        margin-bottom: 6pt !important;
+        padding: 7pt 8pt !important;
+        border: 1px solid #e1e6ec !important;
+        border-radius: 2pt !important;
+        background: #ffffff !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-list > .bei-item {
+        margin-bottom: 6pt !important;
+        padding-left: 8pt !important;
+    }
+
+    .bei-list > .bei-item:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .bei-item-title {
+        grid-area: title !important;
+        margin: 0 !important;
+        padding-right: 5pt !important;
+        color: #111827 !important;
+        font-size: 9.4pt !important;
+        font-weight: 600 !important;
+        line-height: 1.36 !important;
+    }
+
+    .bei-item-impact {
+        grid-area: impact !important;
+        margin: 0 !important;
+        color: #202a37 !important;
+        font-size: 9pt !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    .bei-item-severity {
+        grid-area: severity !important;
+        justify-self: end !important;
+        align-self: start !important;
+        width: 6pt !important;
+        height: 6pt !important;
+        min-width: 6pt !important;
+        margin: 3pt 0 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border: 1px solid currentColor !important;
+        border-radius: 999pt !important;
+        background: currentColor !important;
+        box-shadow: none !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        text-indent: -9999px !important;
+        white-space: nowrap !important;
+    }
+
+    .bei-item-severity::before {
+        content: none !important;
+    }
+
+    .bei-summary .bei-value.risk-high,
+    .bei-summary .bei-value.bei-severity-high,
+    .bei-summary .bei-value.status-high,
+    .bei-summary .bei-value.scope-missing,
+    .bei-summary .bei-value.status-missing,
+    .bei-severity-high,
+    .risk-high {
+        color: #9f1d26 !important;
+    }
+
+    .bei-summary .bei-value.risk-medium,
+    .bei-summary .bei-value.bei-severity-medium,
+    .bei-summary .bei-value.status-medium,
+    .bei-summary .bei-value.scope-partial,
+    .bei-summary .bei-value.status-partial,
+    .bei-severity-medium,
+    .risk-medium {
+        color: #8a5a00 !important;
+    }
+
+    .bei-summary .bei-value.risk-low,
+    .bei-summary .bei-value.bei-severity-low,
+    .bei-summary .bei-value.status-low,
+    .bei-summary .bei-value.scope-complete,
+    .bei-summary .bei-value.status-complete,
+    .bei-severity-low,
+    .risk-low {
+        color: #166534 !important;
+    }
+
+    .bei-table {
+        width: 100% !important;
+        margin-top: 8pt !important;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+        background: transparent !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-table th {
+        padding: 6pt 5pt 6pt 0 !important;
+        color: #374151 !important;
+        border-bottom: 1px solid #cfd6df !important;
+        background: transparent !important;
+        font-size: 8.5pt !important;
+        font-weight: 600 !important;
+        text-align: left !important;
+    }
+
+    .bei-table td {
+        padding: 6pt 5pt 6pt 0 !important;
+        color: #202a37 !important;
+        border-bottom: 1px solid #e1e6ec !important;
+        font-size: 9pt !important;
+        font-weight: 400 !important;
+        line-height: 1.44 !important;
+        vertical-align: top !important;
+    }
+
+    .bei-table tr:last-child td {
+        border-bottom: 0 !important;
+    }
+
+    .bei-table td:first-child {
+        color: #111827 !important;
+        font-weight: 600 !important;
+    }
+
+    .bei-doc-wrapper {
+        margin-top: 10pt !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        page-break-inside: avoid;
+    }
+
+    .bei-doc-title {
+        margin: 0 0 3pt !important;
+        color: #111827 !important;
+        font-size: 9.4pt !important;
+        font-weight: 600 !important;
+    }
+
+    .bei-doc-summary {
+        color: #374151 !important;
+        font-size: 9pt !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    .bei-empty-text {
+        color: #6b7280 !important;
+        font-style: italic !important;
+    }
+}

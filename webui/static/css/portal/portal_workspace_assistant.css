@@ -1,0 +1,13 @@
+/* ==========================================================================
+   FILE: portal_workspace_assistant.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant Workspace Styles Manifest
+   ========================================================================== */
+
+@import url("./portal_workspace_assistant_stage.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_input.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_messages.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_canvas.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_activity.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_actions.css?v=nations-gui-contract-20260614a");
+@import url("./portal_workspace_assistant_responsive.css?v=nations-gui-contract-20260614a");

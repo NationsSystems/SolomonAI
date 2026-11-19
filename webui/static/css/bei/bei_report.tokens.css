@@ -1,0 +1,34 @@
+/* -------------------------------------------------------------------
+   FILE: webui/static/css/bei/bei_report.tokens.css
+   DIRECTORY: webui/static/css/bei/
+------------------------------------------------------------------- */
+
+/* ============================================================
+   REPORT DESIGN TOKENS
+============================================================ */
+
+:root {
+    --bei-page-bg: var(--brand-bg, #050914);
+    --bei-surface: rgba(8, 13, 24, 0.90);
+    --bei-surface-soft: rgba(255, 255, 255, 0.026);
+    --bei-divider: rgba(105, 128, 157, 0.20);
+    --bei-divider-strong: rgba(105, 128, 157, 0.30);
+
+    --bei-text-primary: var(--brand-text, #f3f6fb);
+    --bei-text-body: var(--brand-text-soft, #c7d1df);
+    --bei-text-secondary: var(--brand-text-muted, #8c98aa);
+    --bei-text-muted: var(--brand-text-dim, #5e6a7c);
+    --bei-section-title: var(--brand-text, #f3f6fb);
+
+    --bei-brand: var(--brand-cyan, #16bfd8);
+    --bei-brand-soft: rgba(22, 191, 216, 0.055);
+    --bei-brand-hover: #ffffff;
+
+    --bei-risk-high: #ff7777;
+    --bei-risk-medium: #f2b45b;
+    --bei-risk-low: #42d18d;
+
+    --bei-font-report: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --bei-radius-lg: var(--radius-card, 6px);
+    --bei-radius-sm: var(--radius-control, 4px);
+}

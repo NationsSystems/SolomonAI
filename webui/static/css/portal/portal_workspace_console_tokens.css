@@ -1,0 +1,66 @@
+/* ==========================================================================
+   FILE: portal_workspace_console_tokens.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   CONSOLE ACCENT SYSTEM
+   ========================================================================== */
+
+:root {
+    --console-cyan: #22d3ee;
+    --console-blue: #60a5fa;
+    --console-violet: #a78bfa;
+    --console-amber: #fbbf24;
+    --console-orange: #fb923c;
+    --console-green: #34d399;
+    --console-red: #fb7185;
+    --console-slate: #94a3b8;
+    --console-panel: rgba(8, 13, 24, 0.88);
+    --console-panel-deep: rgba(5, 9, 20, 0.86);
+}
+
+.console-widget {
+    --widget-accent: var(--console-cyan);
+    --widget-accent-soft: rgba(34, 211, 238, 0.14);
+    --widget-accent-border: rgba(34, 211, 238, 0.30);
+}
+
+.console-widget[data-console-widget="attention-queue"] {
+    --widget-accent: var(--console-orange);
+    --widget-accent-soft: rgba(251, 146, 60, 0.15);
+    --widget-accent-border: rgba(251, 146, 60, 0.35);
+}
+
+.console-widget[data-console-widget="active-reviews"],
+.console-widget[data-console-widget="construction-console"],
+.console-widget[data-console-widget="construction-module"] {
+    --widget-accent: var(--console-blue);
+    --widget-accent-soft: rgba(96, 165, 250, 0.15);
+    --widget-accent-border: rgba(96, 165, 250, 0.34);
+}
+
+.console-widget[data-console-widget="open-risks"] {
+    --widget-accent: var(--console-red);
+    --widget-accent-soft: rgba(251, 113, 133, 0.15);
+    --widget-accent-border: rgba(251, 113, 133, 0.34);
+}
+
+.console-widget[data-console-widget="handoff-ready"],
+.console-widget[data-console-widget="recent-activity"] {
+    --widget-accent: var(--console-green);
+    --widget-accent-soft: rgba(52, 211, 153, 0.14);
+    --widget-accent-border: rgba(52, 211, 153, 0.32);
+}
+
+.console-widget[data-console-widget="console-guidance"] {
+    --widget-accent: var(--console-violet);
+    --widget-accent-soft: rgba(167, 139, 250, 0.14);
+    --widget-accent-border: rgba(167, 139, 250, 0.32);
+}
+
+.console-widget[data-console-widget="preconstruction-map"] {
+    --widget-accent: var(--console-amber);
+    --widget-accent-soft: rgba(251, 191, 36, 0.14);
+    --widget-accent-border: rgba(251, 191, 36, 0.32);
+}

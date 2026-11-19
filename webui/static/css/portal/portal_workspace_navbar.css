@@ -1,0 +1,1968 @@
+/* ==========================================================================
+   FILE: portal_workspace_navbar.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   NATIONS SYSTEMS WORKSPACE APP HEADER
+   --------------------------------------------------------------------------
+   Owns the full-width workspace header, product title, brand mark, universal
+   search, and utility controls. The AI workspace opens from the dedicated
+   launcher.
+   ========================================================================== */
+
+.command-content-layer > .command-sidebar.command-taskbar,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar,
+.command-center-layout[data-taskbar-position="top"] .command-sidebar.command-taskbar,
+.command-center-layout[data-taskbar-position="bottom"] .command-sidebar.command-taskbar,
+.command-center-layout[data-taskbar-position="left"] .command-sidebar.command-taskbar {
+    align-items: center !important;
+    align-self: stretch !important;
+    background:
+        linear-gradient(180deg, rgba(3, 9, 19, 0.58), rgba(3, 9, 19, 0.18)) !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.18) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    flex: 0 0 var(--solomon-home-nav-height) !important;
+    gap: 18px !important;
+    grid-area: auto !important;
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(360px, 760px)
+        minmax(180px, 1fr) !important;
+    height: var(--solomon-home-nav-height) !important;
+    justify-self: stretch !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    max-width: none !important;
+    min-height: var(--solomon-home-nav-height) !important;
+    overflow: visible !important;
+    padding:
+        2px
+        var(--solomon-home-edge)
+        13px !important;
+    position: relative !important;
+    width: 100vw !important;
+    z-index: 50 !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar.command-workspace-header,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar {
+    border-bottom-color: rgba(105, 128, 157, 0.22) !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-taskbar-system,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-system,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-taskbar-system,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-taskbar-system {
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    grid-column: 1 !important;
+    justify-self: start !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    width: auto !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon,
+.command-center-layout[data-taskbar-position="top"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon,
+.command-center-layout[data-taskbar-position="bottom"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon,
+.command-center-layout[data-taskbar-position="left"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-solomon {
+    display: none !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-system,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-system,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar:has(.command-taskbar-solomon-focus-state:not([hidden])) .command-taskbar-system {
+    gap: 12px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-sidebar-logo,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-sidebar-logo,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-logo,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-logo {
+    align-items: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    height: 42px !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+    min-width: 42px !important;
+    padding: 0 !important;
+    width: 42px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-sidebar-logo img,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-sidebar-logo img,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-logo img,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-logo img {
+    display: block !important;
+    height: 42px !important;
+    max-height: 42px !important;
+    max-width: 42px !important;
+    object-fit: contain !important;
+    width: 42px !important;
+}
+
+.command-workspace-header-context {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
+}
+
+.command-workspace-header-title {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 1.04rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1;
+    margin: 0;
+    text-shadow: 0 1px 18px rgba(65, 210, 255, 0.06);
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   GLOBAL WORKSPACE SEARCH
+   ========================================================================== */
+
+.command-content-layer > .command-sidebar.command-taskbar .command-global-search,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-global-search,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-global-search {
+    align-self: center !important;
+    box-sizing: border-box;
+    display: grid;
+    grid-column: 2 !important;
+    grid-template-rows: 46px auto auto;
+    height: 46px;
+    justify-self: center !important;
+    margin: 0 !important;
+    max-width: 760px;
+    min-height: 46px;
+    min-width: 0;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+    z-index: 520;
+}
+
+@media (min-width: 861px) {
+    .command-content-layer > .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar {
+        grid-template-columns:
+            326px
+            minmax(360px, 760px)
+            minmax(180px, 1fr) !important;
+    }
+
+    .command-sidebar.command-taskbar .command-global-search {
+        justify-self: start !important;
+    }
+}
+
+.command-global-search[hidden],
+.command-global-search-results[hidden],
+.command-global-search-status[hidden],
+.command-global-search-clear[hidden],
+.command-global-search-see-all[hidden],
+.command-global-search-scopes[hidden] {
+    display: none !important;
+}
+
+.command-global-search-panel {
+    display: none;
+}
+
+.command-global-search:has(.command-global-search-results:not([hidden]))
+    .command-global-search-panel,
+.command-global-search:has(.command-global-search-see-all:not([hidden]))
+    .command-global-search-panel {
+    display: grid;
+}
+
+#portal-root[data-active-module="search"] .command-global-search-control,
+#portal-root:has([data-search-results-page]) .command-global-search-control,
+#portal-root[data-active-module="search"] .command-global-search-submit,
+#portal-root[data-active-module="search"] .command-global-search-clear,
+#portal-root:has([data-search-results-page]) .command-global-search-submit,
+#portal-root:has([data-search-results-page]) .command-global-search-clear,
+#portal-root[data-active-module="search"] .workspace-document-layout-toggle,
+#portal-root:has([data-search-results-page]) .workspace-document-layout-toggle,
+#portal-root[data-active-module="search"] [data-workspace-listing-layout-option],
+#portal-root:has([data-search-results-page]) [data-workspace-listing-layout-option],
+#portal-root[data-active-module="search"] .workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"],
+#portal-root:has([data-search-results-page]) .workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"] {
+    border-radius: 10px;
+}
+
+.command-global-search-control {
+    align-items: center;
+    grid-row: 1;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(12, 24, 40, 0.94),
+            rgba(7, 15, 28, 0.90)
+        );
+    border: 1px solid rgba(105, 148, 238, 0.24);
+    border-radius: 10px;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset,
+        0 14px 30px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    cursor: text;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 40px minmax(0, 1fr) 36px;
+    min-height: 46px;
+    min-width: 0;
+    padding: 0 8px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease;
+    width: 100%;
+}
+
+.command-global-search:hover .command-global-search-control {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(13, 28, 46, 0.98),
+            rgba(8, 18, 32, 0.94)
+        );
+    border-color: rgba(105, 148, 238, 0.30);
+}
+
+.command-global-search:focus-within .command-global-search-control {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(12, 31, 50, 0.98),
+            rgba(7, 20, 36, 0.96)
+        );
+    border-color: rgba(103, 232, 249, 0.46);
+    box-shadow:
+        0 0 0 3px rgba(22, 191, 216, 0.09),
+        0 0 0 1px rgba(103, 232, 249, 0.055) inset,
+        0 16px 36px rgba(0, 0, 0, 0.18);
+}
+
+.command-global-search:has(.command-global-search-input[aria-expanded="true"]) .command-global-search-control {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.command-global-search-submit,
+.command-global-search-clear {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: rgba(180, 194, 214, 0.82);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    height: 32px;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+    width: 32px;
+}
+
+.command-global-search-submit .icon,
+.command-global-search-clear .icon {
+    color: currentColor;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.command-global-search-submit:hover,
+.command-global-search-submit:focus-visible,
+.command-global-search-clear:hover,
+.command-global-search-clear:focus-visible {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(22, 191, 216, 0.20);
+    color: rgba(248, 250, 252, 0.96);
+    outline: 0;
+}
+
+.command-global-search-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgba(241, 245, 249, 0.96);
+    color-scheme: dark;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 720;
+    height: 44px;
+    line-height: 44px;
+    min-width: 0;
+    outline: 0;
+    padding: 0;
+    width: 100%;
+    -webkit-text-fill-color: rgba(241, 245, 249, 0.96);
+}
+
+.command-global-search-input::placeholder {
+    color: rgba(148, 163, 184, 0.64);
+    opacity: 1;
+    -webkit-text-fill-color: rgba(148, 163, 184, 0.64);
+}
+
+.command-global-search-input::-webkit-search-decoration,
+.command-global-search-input::-webkit-search-cancel-button,
+.command-global-search-input::-webkit-search-results-button,
+.command-global-search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+.command-global-search-status {
+    color: rgba(156, 173, 196, 0.68);
+    font-size: 0.64rem;
+    font-weight: 650;
+    left: 18px;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    margin: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 18px;
+    top: calc(100% + 9px);
+    z-index: 550;
+}
+
+.command-global-search-panel {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(22, 191, 216, 0.08), transparent 34%),
+        linear-gradient(145deg, rgba(8, 18, 32, 0.995), rgba(3, 9, 19, 0.99));
+    border: 1px solid rgba(105, 148, 238, 0.30);
+    border-radius: 0 0 10px 10px;
+    border-top: 0;
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    box-sizing: border-box;
+    animation: command-global-search-panel-in 0.14s ease-out;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    left: 0;
+    max-height: min(520px, calc(100vh - 112px));
+    min-height: min(240px, calc(100vh - 112px));
+    overflow: hidden;
+    position: absolute;
+    right: auto;
+    top: 46px;
+    width: 100%;
+    z-index: 540;
+}
+
+.command-global-search-scopes {
+    align-items: center;
+    background: rgba(4, 11, 22, 0.46);
+    border-bottom: 1px solid rgba(105, 128, 157, 0.16);
+    box-sizing: border-box;
+    display: flex;
+    gap: 7px;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 10px;
+    scrollbar-width: none;
+    width: 100%;
+}
+
+.command-global-search-scopes::-webkit-scrollbar {
+    display: none;
+}
+
+.command-global-search-scope {
+    align-items: center;
+    appearance: none;
+    background: rgba(10, 23, 39, 0.72);
+    border: 1px solid rgba(105, 148, 238, 0.22);
+    border-radius: 9px;
+    box-sizing: border-box;
+    color: rgba(198, 211, 229, 0.82);
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 720;
+    justify-content: center;
+    min-height: 32px;
+    padding: 0 12px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        box-shadow 0.14s ease;
+    white-space: nowrap;
+}
+
+.command-global-search-scope:hover,
+.command-global-search-scope:focus-visible {
+    background: rgba(16, 39, 61, 0.90);
+    border-color: rgba(65, 210, 255, 0.34);
+    color: rgba(248, 250, 252, 0.98);
+    outline: 0;
+}
+
+.command-global-search-scope.is-active,
+.command-global-search-scope[aria-pressed="true"] {
+    background: rgba(22, 191, 216, 0.14);
+    border-color: rgba(103, 232, 249, 0.44);
+    box-shadow: 0 0 0 2px rgba(22, 191, 216, 0.055);
+    color: rgba(226, 247, 255, 0.98);
+}
+
+.command-global-search-results {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgba(232, 241, 250, 0.94);
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 10px;
+    position: relative;
+    scrollbar-gutter: stable;
+    width: 100%;
+}
+
+.command-global-search-results[data-command-search-state="idle"],
+.command-global-search-results[data-command-search-state="default"],
+.command-global-search-results[data-command-search-state="ready"],
+.command-global-search-results[data-command-search-state="recent"],
+.command-global-search-results[data-command-search-state="empty"],
+.command-global-search-results[data-command-search-state="error"],
+.command-global-search-results[data-command-search-state="results"] {
+    display: block;
+}
+
+.command-global-search-results::before {
+    display: none;
+}
+
+.command-global-search-result-group {
+    display: grid;
+    gap: 4px;
+    padding: 0;
+}
+
+.command-global-search-result-group + .command-global-search-result-group {
+    margin-top: 14px;
+}
+
+.command-global-search-result-heading {
+    color: rgba(125, 211, 252, 0.72);
+    font-size: 0.61rem;
+    font-weight: 760;
+    letter-spacing: 0.075em;
+    line-height: 1;
+    margin: 0 8px 5px;
+    text-transform: uppercase;
+}
+
+.command-global-search-result-item,
+.command-global-search-result,
+.command-global-search-empty {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.90);
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    gap: 10px;
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    min-height: 54px;
+    padding: 8px 10px;
+    text-align: left;
+    text-decoration: none;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+    width: 100%;
+}
+
+.command-global-search-empty {
+    cursor: default;
+    grid-template-columns: 32px minmax(0, 1fr);
+}
+
+.command-global-search-results[data-command-search-state="default"]
+    .command-global-search-empty,
+.command-global-search-results[data-command-search-state="ready"]
+    .command-global-search-empty,
+.command-global-search-results[data-command-search-state="error"]
+    .command-global-search-empty {
+    min-height: 72px;
+}
+
+.command-global-search-results[data-command-search-state="error"]
+    [data-command-search-message="error"]
+    .command-global-search-result-icon {
+    background: rgba(248, 113, 113, 0.075);
+    border-color: rgba(248, 113, 113, 0.16);
+    color: rgba(252, 165, 165, 0.88);
+}
+
+.command-global-search-result-item:hover,
+.command-global-search-result-item:focus-visible,
+.command-global-search-result-item[aria-selected="true"],
+.command-global-search-result:hover,
+.command-global-search-result:focus-visible,
+.command-global-search-result[aria-selected="true"] {
+    background: rgba(15, 31, 50, 0.72);
+    border-color: rgba(65, 210, 255, 0.22);
+    color: rgba(248, 250, 252, 0.98);
+    outline: 0;
+}
+
+.command-global-search-result-icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.075);
+    border: 1px solid rgba(22, 191, 216, 0.14);
+    border-radius: 9px;
+    color: rgba(125, 211, 252, 0.82);
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+}
+
+.command-global-search-result-icon .icon {
+    color: currentColor;
+    font-size: 18px;
+}
+
+.command-global-search-result-copy {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.command-global-search-result-title,
+.command-global-search-result-copy strong {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 0.80rem;
+    font-weight: 760;
+    letter-spacing: -0.012em;
+    line-height: 1.22;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.command-global-search-result-meta,
+.command-global-search-result-snippet,
+.command-global-search-result-copy > span {
+    color: rgba(180, 194, 214, 0.68);
+    font-size: 0.68rem;
+    font-weight: 560;
+    line-height: 1.36;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.command-global-search-result-meta {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+    justify-content: end;
+    min-width: 0;
+}
+
+.command-global-search-result-type {
+    color: rgba(167, 183, 204, 0.68);
+    font-size: 0.60rem;
+    font-weight: 700;
+    letter-spacing: 0.055em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.command-global-search-result-badge {
+    background: rgba(15, 31, 50, 0.50);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 9px;
+    color: rgba(195, 208, 226, 0.76);
+    display: inline-flex;
+    font-size: 0.61rem;
+    font-weight: 680;
+    letter-spacing: 0;
+    line-height: 1;
+    max-width: 10rem;
+    min-height: 22px;
+    overflow: hidden;
+    padding: 0 8px;
+    text-overflow: ellipsis;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.command-global-search-see-all {
+    align-items: center;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(7, 16, 29, 0.995),
+            rgba(4, 10, 20, 0.995)
+        );
+    border: 0;
+    border-radius: 0;
+    border-top: 1px solid rgba(105, 128, 157, 0.16);
+    box-shadow: none;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 8px 10px 10px;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+.command-global-search-see-all-button {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    box-sizing: border-box;
+    color: rgba(125, 211, 252, 0.90);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 760;
+    gap: 8px;
+    justify-content: center;
+    letter-spacing: -0.004em;
+    min-height: 36px;
+    padding: 0 14px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        box-shadow 0.14s ease;
+    width: 100%;
+}
+
+.command-global-search-see-all-button .icon {
+    color: currentColor;
+    font-size: 17px;
+    line-height: 1;
+}
+
+.command-global-search-see-all-button:hover,
+.command-global-search-see-all-button:focus-visible {
+    background: rgba(22, 191, 216, 0.09);
+    border-color: rgba(22, 191, 216, 0.20);
+    box-shadow: 0 0 0 3px rgba(22, 191, 216, 0.06);
+    color: rgba(226, 247, 255, 0.98);
+    outline: 0;
+}
+
+@keyframes command-global-search-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .command-global-search-panel {
+        animation: none;
+    }
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-taskbar-solomon,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-taskbar-solomon {
+    align-items: center !important;
+    display: grid !important;
+    gap: 10px !important;
+    grid-template-columns: 28px minmax(0, 1fr) 36px !important;
+    height: 52px !important;
+    justify-items: start !important;
+    max-width: 640px !important;
+    min-height: 52px !important;
+    min-width: 0 !important;
+    padding: 8px 10px 8px 13px !important;
+    text-align: left !important;
+    width: clamp(430px, 35vw, 640px) !important;
+}
+
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-taskbar-solomon,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-taskbar-solomon {
+    display: none !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-sidebar-nav,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-sidebar-nav,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-nav,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-nav {
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    grid-column: 3 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item,
+.command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar .command-nav-item,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item {
+    align-items: center !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    color: rgba(203, 213, 225, 0.88) !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    font: inherit !important;
+    gap: 0 !important;
+    height: 44px !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 0 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    width: 44px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item .icon,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item .icon,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item .icon {
+    color: currentColor !important;
+    font-size: 1.42rem !important;
+    font-weight: 400 !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    width: 24px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-solomon-mark,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-solomon-mark,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-solomon-mark {
+    align-items: center !important;
+    display: inline-flex !important;
+    flex: 0 0 24px !important;
+    height: 24px !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    max-height: 24px !important;
+    max-width: 24px !important;
+    overflow: visible !important;
+    width: 24px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-solomon-mark img,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-solomon-mark img,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-solomon-mark img {
+    display: block !important;
+    height: 26px !important;
+    max-height: 26px !important;
+    max-width: 26px !important;
+    object-fit: contain !important;
+    width: 26px !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-label,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-label,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-label {
+    color: currentColor !important;
+    font-size: 0.68rem !important;
+    font-weight: 760 !important;
+    letter-spacing: -0.005em !important;
+    line-height: 1 !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item:hover,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item:focus-visible,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item:hover,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item:focus-visible,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item:hover,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item:focus-visible {
+    background: rgba(15, 23, 42, 0.62) !important;
+    border-color: rgba(105, 128, 157, 0.18) !important;
+    color: rgba(248, 250, 252, 0.96) !important;
+    outline: none !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon[aria-expanded="false"],
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon[aria-expanded="false"],
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon[aria-expanded="false"],
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="collapsed"],
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="collapsed"],
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="collapsed"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: rgba(203, 213, 225, 0.88) !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon:hover,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon:focus-visible,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon:hover,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon:focus-visible,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon:hover,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon:focus-visible {
+    background: rgba(15, 23, 42, 0.62) !important;
+    border-color: rgba(105, 128, 157, 0.18) !important;
+    color: rgba(248, 250, 252, 0.96) !important;
+    outline: none !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="expanded"],
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="expanded"],
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--solomon[data-solomon-toggle-state="expanded"] {
+    background:
+        linear-gradient(135deg, rgba(65, 210, 255, 0.18), rgba(49, 118, 255, 0.11)),
+        rgba(8, 18, 32, 0.80) !important;
+    border-color: rgba(65, 210, 255, 0.38) !important;
+    color: rgba(244, 250, 255, 0.98) !important;
+}
+
+/* ==========================================================================
+   SEARCH RESULTS WORKSPACE
+   ========================================================================== */
+
+.search-command-app .search-workspace-panel {
+    min-height: calc(100vh - var(--solomon-home-nav-height) - 48px);
+    overflow: visible;
+}
+
+.search-command-app .search-workspace-panel:has(.workspace-document-file-action-menu.is-open),
+.search-results-page:has(.workspace-document-file-action-menu.is-open),
+.search-explorer:has(.workspace-document-file-action-menu.is-open) {
+    overflow: visible !important;
+    position: relative;
+    z-index: 240;
+}
+
+.search-command-app .search-workspace-panel:has(.workspace-document-file-action-menu.is-open) :is(
+    .workspace-command-surface,
+    .workspace-command-body,
+    .workspace-command-files-panel,
+    .workspace-document-files-workbench,
+    .workspace-document-explorer,
+    .workspace-document-list,
+    .search-results-page,
+    .search-explorer,
+    .search-result-list
+) {
+    overflow: visible !important;
+}
+
+.search-results-page {
+    box-sizing: border-box;
+    display: grid;
+    column-gap: 6px;
+    row-gap: 10px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.search-results-toolbar {
+    align-items: center;
+    gap: 14px;
+    min-height: 42px;
+}
+
+.search-results-heading {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.search-results-heading strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: 0.96rem;
+    font-weight: 820;
+    letter-spacing: -0.018em;
+    line-height: 1.18;
+    margin: 0;
+}
+
+.search-results-summary {
+    color: rgba(180, 194, 214, 0.72);
+    font-size: 0.74rem;
+    font-weight: 680;
+    line-height: 1.35;
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-results-summary strong {
+    color: rgba(226, 247, 255, 0.96);
+    font-weight: 820;
+}
+
+.search-results-utility-row {
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.search-results-utility-row .workspace-document-default-utility {
+    margin-left: auto;
+}
+
+.search-result-list {
+    height: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+}
+
+.search-result-list:has(.workspace-document-file-action-menu.is-open) {
+    overflow: visible !important;
+    z-index: 220;
+}
+
+.search-result-list .workspace-document-file:has(.workspace-document-file-action-menu.is-open) {
+    z-index: 240;
+}
+
+.search-result-list .workspace-document-file-action-menu.is-open {
+    z-index: 280;
+}
+
+.search-result-list .workspace-document-file-action-popover {
+    z-index: 320;
+}
+
+.search-result-list-header {
+    grid-template-columns:
+        34px
+        0
+        34px
+        minmax(360px, 2.4fr)
+        minmax(124px, 0.50fr)
+        minmax(92px, 0.32fr)
+        minmax(150px, 0.58fr)
+        48px;
+}
+
+.search-result-list-header .workspace-document-file-list-header-cell--thumbnail {
+    display: none;
+}
+
+.search-result-row {
+    text-decoration: none;
+}
+
+.search-result-row[data-command-shell-navigation="true"] {
+    cursor: pointer;
+}
+
+.search-result-row .workspace-document-file-selection {
+    pointer-events: none;
+}
+
+.search-result-row .workspace-document-file-thumbnail-fallback {
+    grid-template-columns: auto minmax(0, 1fr);
+}
+
+.search-result-row .workspace-document-file-thumbnail-file {
+    --thumbnail-file-width: 58px;
+    --thumbnail-file-height: 76px;
+}
+
+.search-result-row .workspace-document-file-thumbnail-file .search-result-thumbnail-initial {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: var(--thumbnail-accent, rgba(14, 116, 144, 0.86));
+    font-family: inherit;
+    font-size: 1.08rem;
+    font-weight: 900;
+    height: 24px;
+    line-height: 1;
+    width: 24px;
+}
+
+.search-result-row--conversation .workspace-document-file-thumbnail[data-document-thumbnail-fallback-kind="conversation"] {
+    --thumbnail-accent: rgba(125, 211, 252, 0.92);
+    --thumbnail-soft: rgba(125, 211, 252, 0.11);
+    --thumbnail-border: rgba(125, 211, 252, 0.22);
+}
+
+.search-result-row--person .workspace-document-file-thumbnail[data-document-thumbnail-fallback-kind="person"] {
+    --thumbnail-accent: rgba(22, 191, 216, 0.90);
+    --thumbnail-soft: rgba(22, 191, 216, 0.10);
+    --thumbnail-border: rgba(22, 191, 216, 0.20);
+}
+
+.search-result-row--group .workspace-document-file-thumbnail[data-document-thumbnail-fallback-kind="group"] {
+    --thumbnail-accent: rgba(96, 165, 250, 0.92);
+    --thumbnail-soft: rgba(96, 165, 250, 0.12);
+    --thumbnail-border: rgba(96, 165, 250, 0.24);
+}
+
+.search-result-row--conversation .workspace-document-file-thumbnail-file,
+.search-result-row--group .workspace-document-file-thumbnail-file {
+    border-radius: 16px;
+}
+
+.search-result-row--person .workspace-document-file-thumbnail-file {
+    border-radius: 999px;
+}
+
+.search-result-row--person .workspace-document-file-thumbnail-corner {
+    display: none;
+}
+
+.search-result-row > .workspace-document-file-identity span {
+    color: rgba(201, 212, 229, 0.62);
+    display: block;
+    font-size: 0.70rem;
+    font-weight: 680;
+    line-height: 1.35;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-explorer[data-document-layout="grid"] .search-result-row > .workspace-document-file-identity span {
+    display: none;
+}
+
+.search-explorer[data-document-layout="grid"] .search-result-row {
+    grid-template-rows: 132px minmax(0, auto) auto auto auto;
+    min-height: 264px;
+}
+
+.search-explorer[data-document-layout="grid"] .search-result-row .workspace-document-file-meta--uploaded {
+    grid-row: 5;
+}
+
+.search-explorer[data-document-layout="grid"] .search-result-list-header {
+    display: none;
+}
+
+.search-explorer[data-document-layout="grid"] .search-result-list > [data-document-list-header] + .search-result-row,
+.search-explorer[data-document-layout="grid"] .search-result-list > .workspace-document-file-list-header + .search-result-row,
+.search-explorer[data-document-layout="grid"] .search-result-list > .workspace-document-list-header + .search-result-row {
+    display: grid !important;
+}
+
+.search-explorer[data-document-layout="list"] .search-result-list {
+    --workspace-document-list-grid:
+        34px
+        minmax(360px, 2.4fr)
+        minmax(124px, 0.50fr)
+        minmax(92px, 0.32fr)
+        minmax(150px, 0.58fr)
+        48px;
+}
+
+.search-explorer[data-document-layout="list"] .search-result-row .workspace-document-file-thumbnail {
+    display: none;
+}
+
+.search-explorer[data-document-layout="list"] .search-result-row > .workspace-document-file-icon,
+.search-explorer[data-document-layout="list"] .search-result-row > .icon {
+    display: inline-flex;
+}
+
+.search-explorer[data-document-layout="list"] .search-result-row > .workspace-document-file-identity span {
+    display: none;
+}
+
+.search-empty-state {
+    align-content: center;
+    align-items: center;
+    align-self: stretch;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(22, 191, 216, 0.08), transparent 36%),
+        linear-gradient(145deg, rgba(8, 15, 28, 0.72), rgba(3, 8, 18, 0.68));
+    border: 1px solid rgba(105, 128, 157, 0.14);
+    border-radius: 22px;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.86);
+    display: grid;
+    gap: 14px;
+    grid-row: 3 / -1;
+    height: auto;
+    justify-items: center;
+    margin-top: 8px;
+    min-height: 0;
+    padding: 42px 24px;
+    place-content: center;
+    text-align: center;
+}
+
+.search-empty-illustration {
+    align-items: center;
+    background:
+        linear-gradient(145deg, rgba(22, 191, 216, 0.12), rgba(49, 118, 255, 0.07));
+    border: 1px solid rgba(22, 191, 216, 0.18);
+    border-radius: 22px;
+    color: rgba(125, 211, 252, 0.88);
+    display: inline-flex;
+    height: 68px;
+    justify-content: center;
+    width: 68px;
+}
+
+.search-empty-illustration .icon {
+    color: currentColor;
+    font-size: 34px;
+    line-height: 1;
+}
+
+.search-empty-state h2 {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: clamp(1.04rem, 1vw, 1.22rem);
+    font-weight: 830;
+    letter-spacing: -0.024em;
+    line-height: 1.18;
+    margin: 0;
+}
+
+.search-empty-state p {
+    color: rgba(180, 194, 214, 0.70);
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.48;
+    margin: 0;
+    max-width: 32rem;
+}
+
+@media (max-width: 860px) {
+    .search-results-toolbar {
+        align-items: start;
+        display: grid;
+        gap: 10px;
+    }
+
+    .search-results-summary {
+        text-align: left;
+    }
+
+    .search-explorer[data-document-layout="list"] .search-result-list {
+        --workspace-document-list-grid:
+            34px
+            minmax(280px, 1.7fr)
+            minmax(112px, 0.55fr)
+            minmax(84px, 0.34fr)
+            minmax(136px, 0.70fr)
+            44px;
+    }
+}
+
+@media (max-width: 640px) {
+    .search-results-page {
+        gap: 14px;
+        padding: 0;
+    }
+
+
+    .search-result-list-header {
+        display: none;
+    }
+
+    .search-explorer[data-document-layout="list"] .search-result-list {
+        --workspace-document-list-grid:
+            34px
+            minmax(230px, 1fr)
+            minmax(104px, 0.55fr)
+            minmax(80px, 0.34fr)
+            44px;
+    }
+
+    .search-empty-state {
+        min-height: 280px;
+        padding: 32px 18px;
+    }
+}
+
+
+/* ==========================================================================
+   NAVBAR UTILITY CONTROLS
+   ========================================================================== */
+
+.command-nav-utility {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    min-width: 0;
+    position: relative;
+}
+
+.command-nav-utility > [hidden],
+.command-nav-popover[hidden] {
+    display: none !important;
+}
+
+.command-nav-item--button {
+    cursor: pointer !important;
+}
+
+.command-nav-item--utility {
+    color: rgba(203, 213, 225, 0.82) !important;
+}
+
+.command-nav-item--utility[aria-expanded="true"] {
+    background: rgba(15, 23, 42, 0.72) !important;
+    border-color: rgba(105, 148, 238, 0.24) !important;
+    color: rgba(248, 250, 252, 0.98) !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility.is-active,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"],
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"],
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"] {
+    background: rgba(15, 23, 42, 0.62) !important;
+    border-color: rgba(65, 210, 255, 0.28) !important;
+    box-shadow: none !important;
+    color: rgba(125, 211, 252, 0.96) !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility.is-active:hover,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility.is-active:focus-visible,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active:hover,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active:focus-visible,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active:hover,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility.is-active:focus-visible,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:hover,
+.command-content-layer > .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:focus-visible,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:hover,
+.command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:focus-visible,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:hover,
+.command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item--utility[aria-current="page"]:focus-visible {
+    background: rgba(15, 31, 50, 0.82) !important;
+    border-color: rgba(65, 210, 255, 0.42) !important;
+    box-shadow: none !important;
+    color: rgba(226, 247, 255, 0.98) !important;
+    outline: none !important;
+}
+
+.command-nav-popover {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border: 1px solid rgba(105, 148, 238, 0.22);
+    border-radius: 14px;
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.92);
+    min-width: 280px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 500;
+}
+
+.command-nav-popover::before {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border-left: 1px solid rgba(105, 148, 238, 0.22);
+    border-top: 1px solid rgba(105, 148, 238, 0.22);
+    content: "";
+    height: 10px;
+    position: absolute;
+    right: 18px;
+    top: -6px;
+    transform: rotate(45deg);
+    width: 10px;
+}
+
+.command-nav-popover-header {
+    align-items: center;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.14);
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    min-width: 0;
+    padding: 15px 16px 13px;
+}
+
+.command-nav-popover-header > .icon {
+    align-items: center;
+    background: rgba(22, 191, 216, 0.08);
+    border: 1px solid rgba(22, 191, 216, 0.16);
+    border-radius: 10px;
+    color: rgba(125, 211, 252, 0.88);
+    display: inline-flex;
+    font-size: 19px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.command-nav-popover-header div {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.command-nav-popover-header strong {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 0.82rem;
+    font-weight: 820;
+    line-height: 1.2;
+}
+
+.command-nav-popover-header span:not(.icon) {
+    color: rgba(180, 194, 214, 0.66);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.command-nav-popover-body {
+    padding: 14px 16px 16px;
+}
+
+.command-nav-popover-body p {
+    color: rgba(201, 212, 229, 0.72);
+    font-size: 0.74rem;
+    line-height: 1.48;
+    margin: 0;
+}
+
+.command-nav-help-menu {
+    right: -112px;
+}
+
+.command-nav-help-menu::before {
+    right: 128px;
+}
+
+/* ==========================================================================
+   ACCOUNT CONTROL
+   ========================================================================== */
+
+.command-nav-account {
+    margin-left: 4px;
+}
+
+.command-nav-account-trigger {
+    align-items: center;
+    appearance: none;
+    background: rgba(10, 22, 38, 0.96);
+    border: 1px solid rgba(105, 148, 238, 0.24);
+    border-radius: 10px;
+    box-shadow: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+    transition:
+        background-color 0.14s ease,
+        border-color 0.14s ease;
+    width: 36px;
+}
+
+.command-nav-account-trigger:hover,
+.command-nav-account-trigger[aria-expanded="true"],
+.command-nav-account-trigger.is-active {
+    background: rgba(15, 31, 50, 0.98);
+    border-color: rgba(103, 232, 249, 0.34);
+}
+
+.command-nav-account-trigger:focus-visible {
+    background: rgba(15, 31, 50, 0.98);
+    border-color: rgba(103, 232, 249, 0.44);
+    outline: 2px solid rgba(103, 232, 249, 0.20);
+    outline-offset: 2px;
+}
+
+.command-nav-account-avatar {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: inherit;
+    box-shadow: none;
+    color: rgba(236, 246, 255, 0.96);
+    display: inline-flex;
+    font-size: 1.12rem;
+    font-weight: 820;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.command-nav-account-menu {
+    min-width: 320px;
+}
+
+.command-nav-account-menu::before {
+    right: 13px;
+}
+
+.command-nav-account-summary {
+    align-items: center;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.14);
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    min-width: 0;
+    padding: 18px;
+}
+
+.command-nav-account-avatar--large {
+    background: rgba(10, 22, 38, 0.96);
+    border: 1px solid rgba(105, 148, 238, 0.26);
+    border-radius: 10px;
+    box-shadow: none;
+    font-size: 1.42rem;
+    height: 50px;
+    width: 50px;
+}
+
+.command-nav-account-copy {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.command-nav-account-copy strong {
+    color: rgba(248, 250, 252, 0.96);
+    font-size: 0.90rem;
+    font-weight: 820;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.command-nav-account-copy span {
+    color: rgba(180, 194, 214, 0.68);
+    font-size: 0.70rem;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.command-nav-account-actions {
+    display: grid;
+    gap: 2px;
+    padding: 8px;
+}
+
+.command-nav-account-action {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    color: rgba(226, 236, 248, 0.86);
+    display: grid;
+    font-size: 0.76rem;
+    font-weight: 740;
+    gap: 10px;
+    grid-template-columns: 22px minmax(0, 1fr);
+    min-height: 38px;
+    padding: 0 11px;
+    text-decoration: none;
+}
+
+.command-nav-account-action .icon {
+    color: rgba(180, 194, 214, 0.72);
+    font-size: 18px;
+}
+
+.command-nav-account-action:hover,
+.command-nav-account-action:focus-visible {
+    background: rgba(22, 191, 216, 0.09);
+    border-color: rgba(22, 191, 216, 0.18);
+    color: rgba(248, 250, 252, 0.98);
+    outline: 0;
+}
+
+.command-nav-account-action:hover .icon,
+.command-nav-account-action:focus-visible .icon {
+    color: rgba(125, 211, 252, 0.90);
+}
+
+.command-nav-account-workspace {
+    color: rgba(125, 211, 252, 0.70) !important;
+    font-size: 0.67rem !important;
+    font-weight: 700;
+}
+
+.command-nav-account-action.is-active {
+    background: rgba(22, 191, 216, 0.09);
+    border-color: rgba(22, 191, 216, 0.18);
+    color: rgba(248, 250, 252, 0.98);
+}
+
+.command-nav-account-action-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.command-nav-account-action-copy strong {
+    color: inherit;
+    font-size: 0.76rem;
+    font-weight: 760;
+    line-height: 1.25;
+}
+
+.command-nav-account-action-copy small {
+    color: rgba(180, 194, 214, 0.62);
+    font-size: 0.66rem;
+    font-weight: 620;
+    line-height: 1.3;
+}
+
+/* ==========================================================================
+   PEOPLE INVITE DIALOG
+   ========================================================================== */
+
+.command-company-invite-dialog[hidden] {
+    display: none !important;
+}
+
+.command-company-invite-dialog {
+    align-items: center;
+    bottom: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    padding: 24px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 900;
+}
+
+.command-company-invite-backdrop {
+    background:
+        radial-gradient(circle at 50% 20%, rgba(22, 191, 216, 0.10), transparent 34%),
+        rgba(2, 6, 15, 0.74);
+    backdrop-filter: blur(12px);
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.command-company-invite-panel {
+    background:
+        radial-gradient(circle at 100% 0%, rgba(22, 191, 216, 0.10), transparent 34%),
+        linear-gradient(145deg, rgba(8, 15, 28, 0.99), rgba(3, 8, 18, 0.98));
+    border: 1px solid rgba(105, 148, 238, 0.24);
+    border-radius: 18px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.54),
+        0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.92);
+    max-height: calc(100vh - 48px);
+    max-width: 520px;
+    overflow: auto;
+    padding: 22px;
+    position: relative;
+    width: min(520px, calc(100vw - 48px));
+}
+
+.command-company-invite-header {
+    align-items: start;
+    border-bottom: 1px solid rgba(105, 128, 157, 0.14);
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) 38px;
+    padding-bottom: 18px;
+}
+
+.command-company-invite-header h2 {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 1.08rem;
+    font-weight: 840;
+    letter-spacing: -0.024em;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.command-company-invite-header p {
+    color: rgba(180, 194, 214, 0.70);
+    font-size: 0.75rem;
+    font-weight: 640;
+    line-height: 1.48;
+    margin: 7px 0 0;
+}
+
+.command-company-invite-close {
+    align-items: center;
+    appearance: none;
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    border-radius: 10px;
+    color: rgba(203, 213, 225, 0.82);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    height: 38px;
+    justify-content: center;
+    padding: 0;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease;
+    width: 38px;
+}
+
+.command-company-invite-close .icon {
+    color: currentColor;
+    font-size: 20px;
+}
+
+.command-company-invite-close:hover,
+.command-company-invite-close:focus-visible {
+    background: rgba(22, 191, 216, 0.09);
+    border-color: rgba(22, 191, 216, 0.20);
+    color: rgba(248, 250, 252, 0.98);
+    outline: 0;
+}
+
+.command-company-invite-form {
+    display: grid;
+    gap: 15px;
+    padding-top: 18px;
+}
+
+.command-company-invite-field {
+    display: grid;
+    gap: 7px;
+}
+
+.command-company-invite-field label {
+    color: rgba(226, 236, 248, 0.86);
+    font-size: 0.70rem;
+    font-weight: 820;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.command-company-invite-field input,
+.command-company-invite-field select {
+    appearance: none;
+    background: rgba(10, 22, 38, 0.92);
+    border: 1px solid rgba(105, 128, 157, 0.20);
+    border-radius: 12px;
+    box-sizing: border-box;
+    color: rgba(241, 245, 249, 0.96);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
+    min-height: 44px;
+    outline: 0;
+    padding: 0 13px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease;
+    width: 100%;
+}
+
+.command-company-invite-field input:focus,
+.command-company-invite-field select:focus {
+    background: rgba(13, 27, 45, 0.98);
+    border-color: rgba(103, 232, 249, 0.44);
+    box-shadow: 0 0 0 3px rgba(22, 191, 216, 0.09);
+}
+
+.command-company-invite-field small {
+    color: rgba(148, 163, 184, 0.72);
+    font-size: 0.68rem;
+    font-weight: 620;
+    line-height: 1.4;
+}
+
+.command-company-invite-actions {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-top: 4px;
+}
+
+.command-company-invite-secondary,
+.command-company-invite-primary {
+    align-items: center;
+    appearance: none;
+    border-radius: 999px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 820;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 15px;
+    transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        color 0.14s ease,
+        opacity 0.14s ease;
+    white-space: nowrap;
+}
+
+.command-company-invite-secondary {
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(105, 128, 157, 0.18);
+    color: rgba(203, 213, 225, 0.86);
+}
+
+.command-company-invite-primary {
+    background:
+        linear-gradient(135deg, rgba(65, 210, 255, 0.24), rgba(49, 118, 255, 0.14)),
+        rgba(8, 18, 32, 0.92);
+    border: 1px solid rgba(65, 210, 255, 0.34);
+    color: rgba(226, 247, 255, 0.98);
+}
+
+.command-company-invite-secondary:hover,
+.command-company-invite-secondary:focus-visible,
+.command-company-invite-primary:hover,
+.command-company-invite-primary:focus-visible {
+    border-color: rgba(103, 232, 249, 0.42);
+    color: rgba(248, 250, 252, 0.98);
+    outline: 0;
+}
+
+.command-company-invite-primary:disabled,
+.command-company-invite-secondary:disabled {
+    cursor: default;
+    opacity: 0.54;
+}
+
+.command-company-invite-status {
+    color: rgba(180, 194, 214, 0.72);
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.45;
+    margin: 0;
+    min-height: 1em;
+}
+
+.command-company-invite-status[data-state="success"] {
+    color: rgba(125, 211, 252, 0.92);
+}
+
+.command-company-invite-status[data-state="error"] {
+    color: rgba(248, 113, 113, 0.92);
+}
+
+/* ==========================================================================
+   TASKBAR SOLMON OUTPUT
+   ========================================================================== */
+
+.command-taskbar-solomon-output {
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(105, 128, 157, 0.16);
+    border-radius: 12px;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.88);
+    font-size: 0.74rem;
+    font-weight: 650;
+    grid-column: 2;
+    justify-self: stretch;
+    line-height: 1.4;
+    margin: 0;
+    max-height: 54px;
+    max-width: 760px;
+    overflow: hidden;
+    padding: 9px 12px;
+    text-overflow: ellipsis;
+}
+
+.command-taskbar-solomon-output[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE HEADER
+   ========================================================================== */
+
+@media (max-width: 1120px) {
+    .command-content-layer > .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar {
+        grid-template-columns:
+            minmax(140px, auto)
+            minmax(220px, 1fr)
+            minmax(140px, auto) !important;
+    }
+
+    .command-workspace-header-title {
+        font-size: 0.96rem;
+    }
+}
+
+@media (max-width: 860px) {
+    .command-content-layer > .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar {
+        gap: 10px !important;
+        grid-template-columns:
+            42px
+            minmax(0, 1fr)
+            auto !important;
+        padding:
+            2px
+            max(12px, var(--solomon-home-edge))
+            13px !important;
+    }
+
+    .command-workspace-header-context {
+        display: none;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-global-search,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-global-search,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-global-search {
+        max-width: none;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-sidebar-nav,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-nav,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-nav {
+        gap: 4px !important;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-nav-item,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-nav-item,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-nav-item {
+        height: 38px !important;
+        min-height: 38px !important;
+        min-width: 38px !important;
+        width: 38px !important;
+    }
+
+    .command-nav-account-trigger {
+        height: 34px;
+        width: 34px;
+    }
+}
+
+@media (max-width: 640px) {
+    .command-content-layer > .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="static_centered"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar {
+        gap: 8px !important;
+        grid-template-columns:
+            38px
+            minmax(0, 1fr)
+            auto !important;
+        min-height: 68px !important;
+        padding:
+            2px
+            12px
+            12px !important;
+    }
+
+    .command-content-layer > .command-sidebar.command-taskbar .command-sidebar-logo,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-logo,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-logo,
+    .command-content-layer > .command-sidebar.command-taskbar .command-sidebar-logo img,
+    .command-center-layout[data-command-navbar-mode="assistant_launcher"] .command-sidebar.command-taskbar .command-sidebar-logo img,
+    .command-center-layout[data-command-navbar-layout="app_header"] .command-sidebar.command-taskbar .command-sidebar-logo img {
+        height: 38px !important;
+        max-height: 38px !important;
+        max-width: 38px !important;
+        min-height: 38px !important;
+        min-width: 38px !important;
+        width: 38px !important;
+    }
+
+    .command-global-search-input::placeholder {
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .command-global-search-panel {
+        left: calc(50% - 50vw + 12px);
+        max-height: min(560px, calc(100vh - 92px));
+        right: auto;
+        width: calc(100vw - 24px);
+    }
+}

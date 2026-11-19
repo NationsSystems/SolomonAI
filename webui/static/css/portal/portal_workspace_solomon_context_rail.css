@@ -1,0 +1,682 @@
+/* ==========================================================================
+   FILE: portal_workspace_solomon_context_rail.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   DOCUMENT INSPECTOR RAIL
+   --------------------------------------------------------------------------
+   Conventional file properties rail for the Documents workspace. SolomonAI
+   conversation UI lives on the dedicated /ai workspace instead of this rail.
+   ========================================================================== */
+
+:root {
+    --solomon-context-rail-standard-width: 342px;
+    --solomon-context-rail-expanded-width: 342px;
+    --solomon-context-rail-width: var(--solomon-context-rail-standard-width);
+    --solomon-context-rail-gap: 12px;
+    --solomon-context-rail-top: 150px;
+    --solomon-context-rail-bottom: 18px;
+    --solomon-context-rail-standard-space: var(--solomon-context-rail-standard-width);
+    --solomon-context-rail-expanded-space: var(--solomon-context-rail-standard-width);
+}
+
+.command-nav-item--button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    text-align: inherit;
+}
+
+.command-nav-item--button:disabled {
+    cursor: not-allowed;
+    opacity: 0.56;
+}
+
+.command-nav-item--solomon,
+.command-nav-item--solomon.is-active,
+.command-nav-item--solomon[aria-expanded="true"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: rgba(203, 213, 225, 0.78) !important;
+}
+
+.command-nav-item--solomon:hover,
+.command-nav-item--solomon:focus-visible {
+    background: rgba(65, 210, 255, 0.07) !important;
+    border-color: rgba(65, 210, 255, 0.16) !important;
+    color: rgba(244, 250, 255, 0.98) !important;
+    outline: none;
+}
+
+.command-nav-item--solomon .command-nav-icon,
+.command-nav-item--solomon .command-nav-item-icon,
+.command-nav-item--solomon svg {
+    color: currentColor !important;
+}
+
+#portal-root[data-solomon-rail-state="standard"] .command-main,
+#portal-root[data-solomon-rail-state="expanded"] .command-main,
+.command-center-layout[data-solomon-rail-state="standard"] .command-main,
+.command-center-layout[data-solomon-rail-state="expanded"] .command-main,
+.command-content-layer[data-solomon-rail-state="standard"] .command-main,
+.command-content-layer[data-solomon-rail-state="expanded"] .command-main {
+    margin-right: var(--solomon-context-rail-standard-space);
+}
+
+.solomon-context-rail[hidden],
+.workspace-document-inspector-rail [hidden] {
+    display: none !important;
+}
+
+.solomon-context-rail {
+    background:
+        radial-gradient(circle at 0% 0%, rgba(65, 210, 255, 0.032), transparent 34%),
+        linear-gradient(180deg, rgba(6, 14, 26, 0.995), rgba(3, 9, 18, 0.995)),
+        #06101e;
+    border: 1px solid rgba(122, 145, 176, 0.24);
+    border-radius: 14px;
+    bottom: var(--solomon-context-rail-bottom);
+    box-shadow:
+        -8px 0 28px rgba(0, 0, 0, 0.22),
+        0 16px 40px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.016) inset;
+    color: rgba(241, 245, 249, 0.96);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: fixed;
+    right: var(--solomon-context-rail-gap);
+    top: var(--solomon-context-rail-top);
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.16s ease;
+    width: var(--solomon-context-rail-standard-width);
+    z-index: 42;
+}
+
+.solomon-context-rail__header {
+    align-items: center;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8, 18, 32, 0.98),
+            rgba(6, 14, 26, 0.96)
+        );
+    border-bottom: 1px solid rgba(122, 145, 176, 0.16);
+    display: flex;
+    flex: 0 0 auto;
+    gap: 12px;
+    justify-content: space-between;
+    min-height: 50px;
+    padding: 9px 12px;
+}
+
+.solomon-context-rail__identity,
+.workspace-document-inspector-rail__identity {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+    min-width: 0;
+}
+
+.workspace-document-inspector-rail__header-icon {
+    align-items: center;
+    background: rgba(65, 210, 255, 0.08);
+    border: 1px solid rgba(125, 229, 255, 0.16);
+    border-radius: 8px;
+    color: rgba(180, 235, 255, 0.94);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 17px;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.solomon-context-rail__heading {
+    min-width: 0;
+}
+
+.solomon-context-rail__title {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 0.94rem;
+    font-weight: 760;
+    letter-spacing: -0.005em;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.solomon-context-rail__controls {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+
+[data-document-inspector-close] {
+    align-items: center;
+    appearance: none;
+    background: rgba(15, 23, 42, 0.84);
+    border: 1px solid rgba(122, 145, 176, 0.24);
+    border-radius: 10px;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(255, 255, 255, 0.014) inset;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.90);
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 34px;
+    font: inherit;
+    height: 34px;
+    justify-content: center;
+    left: auto;
+    line-height: 1;
+    margin: 0;
+    max-height: 34px;
+    max-width: 34px;
+    min-height: 34px;
+    min-width: 34px;
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease,
+        box-shadow 140ms ease;
+    width: 34px;
+}
+
+[data-document-inspector-close] > .icon {
+    align-items: center;
+    color: currentColor;
+    display: inline-flex;
+    font-size: 20px;
+    height: 20px;
+    justify-content: center;
+    line-height: 1;
+    width: 20px;
+}
+
+[data-document-inspector-close]:hover,
+[data-document-inspector-close]:focus-visible {
+    background: rgba(30, 41, 59, 0.96);
+    border-color: rgba(65, 210, 255, 0.38);
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.26),
+        0 0 0 3px rgba(22, 191, 216, 0.08);
+    color: rgba(248, 250, 252, 0.99);
+    outline: none;
+    text-decoration: none;
+}
+
+.solomon-context-rail__body,
+.workspace-document-inspector-rail__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.workspace-document-inspector-rail__body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.workspace-document-inspector-rail__body::-webkit-scrollbar-thumb {
+    background: rgba(122, 145, 176, 0.22);
+    border-radius: 999px;
+}
+
+.workspace-document-inspector-rail__empty {
+    align-items: center;
+    color: rgba(148, 163, 184, 0.76);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+    min-height: 220px;
+    padding: 30px 24px;
+    text-align: center;
+}
+
+.workspace-document-inspector-rail__empty-icon {
+    align-items: center;
+    background: rgba(15, 28, 45, 0.76);
+    border: 1px solid rgba(122, 145, 176, 0.16);
+    border-radius: 16px;
+    color: rgba(170, 188, 210, 0.82);
+    display: inline-flex;
+    font-size: 28px;
+    height: 64px;
+    justify-content: center;
+    width: 64px;
+}
+
+.workspace-document-inspector-rail__empty-copy strong {
+    color: rgba(235, 241, 248, 0.94);
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 730;
+}
+
+.workspace-document-inspector-rail__empty-copy p {
+    color: rgba(148, 163, 184, 0.72);
+    font-size: 0.82rem;
+    line-height: 1.48;
+    margin: 7px 0 0;
+}
+
+.workspace-document-inspector-rail__selection {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.workspace-document-inspector-rail__file {
+    align-items: center;
+    border-bottom: 1px solid rgba(122, 145, 176, 0.12);
+    display: flex;
+    gap: 12px;
+    padding: 18px 16px 16px;
+}
+
+.workspace-document-inspector-rail__file-icon {
+    align-items: center;
+    background: rgba(65, 210, 255, 0.08);
+    border: 1px solid rgba(125, 229, 255, 0.16);
+    border-radius: 11px;
+    color: rgba(180, 235, 255, 0.94);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 23px;
+    height: 44px;
+    justify-content: center;
+    width: 44px;
+}
+
+.workspace-document-inspector-rail__file-copy {
+    min-width: 0;
+}
+
+.workspace-document-inspector-rail__file-name {
+    color: rgba(248, 250, 252, 0.98);
+    font-size: 0.96rem;
+    font-weight: 750;
+    line-height: 1.28;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-inspector-rail__file-meta {
+    color: rgba(148, 163, 184, 0.78);
+    font-size: 0.76rem;
+    line-height: 1.35;
+    margin: 4px 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-inspector-rail__panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 16px;
+}
+
+.workspace-document-inspector-rail__panel--action {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.workspace-document-inspector-rail__action-status {
+    align-items: center;
+    background: rgba(65, 210, 255, 0.06);
+    border: 1px solid rgba(65, 210, 255, 0.14);
+    border-radius: 10px;
+    color: rgba(196, 226, 240, 0.9);
+    display: flex;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    padding: 10px 12px;
+}
+
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="loading"]::before,
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="processing"]::before,
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="pending"]::before,
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="running"]::before {
+    animation: solomon-action-status-spin 0.9s linear infinite;
+    border: 2px solid rgba(125, 229, 255, 0.2);
+    border-radius: 999px;
+    border-top-color: rgba(125, 229, 255, 0.9);
+    content: "";
+    flex: 0 0 auto;
+    height: 13px;
+    margin-right: 9px;
+    width: 13px;
+}
+
+@keyframes solomon-action-status-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="error"],
+.workspace-document-inspector-rail__action-status[data-document-inspector-action-state="failed"] {
+    background: rgba(248, 113, 113, 0.07);
+    border-color: rgba(248, 113, 113, 0.18);
+    color: rgba(254, 202, 202, 0.94);
+}
+
+.workspace-document-inspector-rail__action-progress {
+    appearance: none;
+    height: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.workspace-document-inspector-rail__action-progress::-webkit-progress-bar {
+    background: rgba(122, 145, 176, 0.12);
+    border-radius: 999px;
+}
+
+.workspace-document-inspector-rail__action-progress::-webkit-progress-value {
+    background: rgba(65, 210, 255, 0.72);
+    border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   SOLOMON INTELLIGENCE TYPOGRAPHY
+   --------------------------------------------------------------------------
+   Action results and saved summaries share one governed presentation system.
+   The model supplies bounded semantic structure; Solomon owns typography,
+   spacing, hierarchy, markers, wrapping, and visual emphasis.
+   -------------------------------------------------------------------------- */
+
+.workspace-document-inspector-rail__action-copy,
+[data-document-inspector-summary-copy] {
+    color: rgba(226, 232, 240, 0.94);
+    font-family: var(--font-ui);
+    font-size: 0.84rem;
+    letter-spacing: 0.002em;
+    line-height: 1.62;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+}
+
+.workspace-document-inspector-rail__action-copy p,
+[data-document-inspector-summary-copy] p {
+    margin: 0 0 0.78rem;
+}
+
+.workspace-document-inspector-rail__action-copy p:last-child,
+[data-document-inspector-summary-copy] p:last-child {
+    margin-bottom: 0;
+}
+
+.workspace-document-inspector-rail__action-copy h2,
+[data-document-inspector-summary-copy] h2 {
+    color: rgba(248, 250, 252, 0.98);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 780;
+    letter-spacing: -0.008em;
+    line-height: 1.35;
+    margin: 1.08rem 0 0.46rem;
+}
+
+.workspace-document-inspector-rail__action-copy h2:first-child,
+[data-document-inspector-summary-copy] h2:first-child {
+    margin-top: 0;
+}
+
+.workspace-document-inspector-rail__action-copy h3,
+[data-document-inspector-summary-copy] h3 {
+    color: rgba(238, 244, 250, 0.96);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 740;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin: 0.92rem 0 0.38rem;
+}
+
+.workspace-document-inspector-rail__action-copy ul,
+.workspace-document-inspector-rail__action-copy ol,
+[data-document-inspector-summary-copy] ul,
+[data-document-inspector-summary-copy] ol {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.14rem 0 0.84rem;
+    padding-left: 1.12rem;
+}
+
+.workspace-document-inspector-rail__action-copy ul,
+[data-document-inspector-summary-copy] ul {
+    list-style: disc;
+}
+
+.workspace-document-inspector-rail__action-copy ol,
+[data-document-inspector-summary-copy] ol {
+    list-style: decimal;
+}
+
+.workspace-document-inspector-rail__action-copy li,
+[data-document-inspector-summary-copy] li {
+    color: rgba(226, 232, 240, 0.94);
+    line-height: 1.58;
+    padding-left: 0.08rem;
+}
+
+.workspace-document-inspector-rail__action-copy li::marker,
+[data-document-inspector-summary-copy] li::marker {
+    color: rgba(103, 232, 249, 0.78);
+    font-weight: 760;
+}
+
+.workspace-document-inspector-rail__action-copy li > ul,
+.workspace-document-inspector-rail__action-copy li > ol,
+[data-document-inspector-summary-copy] li > ul,
+[data-document-inspector-summary-copy] li > ol {
+    gap: 0.34rem;
+    margin: 0.4rem 0 0.08rem;
+    padding-left: 1rem;
+}
+
+.workspace-document-inspector-rail__action-copy li > ul,
+[data-document-inspector-summary-copy] li > ul {
+    list-style: circle;
+}
+
+.workspace-document-inspector-rail__action-copy strong,
+[data-document-inspector-summary-copy] strong {
+    color: rgba(248, 250, 252, 0.99);
+    font-weight: 760;
+}
+
+.workspace-document-inspector-rail__action-copy em,
+[data-document-inspector-summary-copy] em {
+    color: rgba(205, 216, 232, 0.94);
+    font-style: italic;
+}
+
+.workspace-document-inspector-rail__action-copy code,
+[data-document-inspector-summary-copy] code {
+    background: rgba(122, 145, 176, 0.10);
+    border: 1px solid rgba(122, 145, 176, 0.12);
+    border-radius: 5px;
+    color: rgba(224, 251, 255, 0.96);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    padding: 0.05rem 0.3rem;
+}
+
+.workspace-document-inspector-rail__action-copy > :last-child,
+[data-document-inspector-summary-copy] > :last-child {
+    margin-bottom: 0;
+}
+
+.workspace-document-inspector-rail__properties {
+    display: grid;
+    gap: 0;
+    margin: 0;
+}
+
+.workspace-document-inspector-rail__property {
+    align-items: start;
+    border-bottom: 1px solid rgba(122, 145, 176, 0.10);
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 84px minmax(0, 1fr);
+    padding: 12px 0;
+}
+
+.workspace-document-inspector-rail__property:first-child {
+    padding-top: 2px;
+}
+
+.workspace-document-inspector-rail__property:last-child {
+    border-bottom: 0;
+}
+
+.workspace-document-inspector-rail__property dt {
+    color: rgba(148, 163, 184, 0.72);
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.workspace-document-inspector-rail__property dd {
+    color: rgba(226, 232, 240, 0.92);
+    font-size: 0.79rem;
+    font-weight: 650;
+    line-height: 1.4;
+    margin: 0;
+    overflow-wrap: anywhere;
+    text-align: right;
+}
+
+.workspace-document-inspector-rail__footer {
+    background: rgba(5, 12, 23, 0.96);
+    border-top: 1px solid rgba(122, 145, 176, 0.14);
+    flex: 0 0 auto;
+    padding: 12px;
+}
+
+.workspace-document-inspector-rail__solomon-action {
+    align-items: center;
+    appearance: none;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.12),
+            rgba(49, 118, 255, 0.06)
+        ),
+        rgba(9, 20, 35, 0.92);
+    border: 1px solid rgba(65, 210, 255, 0.24);
+    border-radius: 11px;
+    color: rgba(235, 249, 255, 0.96);
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    font-size: 0.79rem;
+    font-weight: 720;
+    gap: 9px;
+    grid-template-columns: 27px minmax(0, 1fr) 18px;
+    min-height: 44px;
+    padding: 8px 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.workspace-document-inspector-rail__solomon-action:hover,
+.workspace-document-inspector-rail__solomon-action:focus-visible {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(65, 210, 255, 0.18),
+            rgba(49, 118, 255, 0.09)
+        ),
+        rgba(11, 24, 41, 0.96);
+    border-color: rgba(65, 210, 255, 0.38);
+    outline: none;
+}
+
+.workspace-document-inspector-rail__solomon-action:disabled {
+    /* Busy state stays inside the rail; never present an OS/browser wait cursor. */
+    cursor: default;
+    opacity: 0.68;
+}
+
+.workspace-document-inspector-rail__solomon-mark {
+    align-items: center;
+    background: rgba(5, 14, 26, 0.58);
+    border: 1px solid rgba(125, 229, 255, 0.14);
+    border-radius: 8px;
+    display: inline-flex;
+    height: 27px;
+    justify-content: center;
+    width: 27px;
+}
+
+.workspace-document-inspector-rail__solomon-mark-image {
+    display: block;
+    height: 19px;
+    object-fit: contain;
+    width: 19px;
+}
+
+.workspace-document-inspector-rail__solomon-action > .icon {
+    color: rgba(125, 229, 255, 0.88);
+    font-size: 17px;
+}
+
+@media (max-width: 1180px) {
+    #portal-root[data-solomon-rail-state="standard"] .command-main,
+    #portal-root[data-solomon-rail-state="expanded"] .command-main,
+    .command-center-layout[data-solomon-rail-state="standard"] .command-main,
+    .command-center-layout[data-solomon-rail-state="expanded"] .command-main,
+    .command-content-layer[data-solomon-rail-state="standard"] .command-main,
+    .command-content-layer[data-solomon-rail-state="expanded"] .command-main {
+        margin-right: 0;
+    }
+
+    .solomon-context-rail {
+        bottom: 12px;
+        box-shadow: -18px 0 54px rgba(0, 0, 0, 0.46);
+        max-width: calc(100vw - 24px);
+        right: 12px;
+        top: 62px;
+        width: min(342px, calc(100vw - 24px));
+    }
+}
+
+@media (max-width: 720px) {
+    :root {
+        --solomon-context-rail-standard-width: calc(100vw - 24px);
+        --solomon-context-rail-expanded-width: calc(100vw - 24px);
+    }
+
+    .solomon-context-rail {
+        border-radius: 14px;
+        right: 12px;
+        width: calc(100vw - 24px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .solomon-context-rail {
+        transition: none;
+    }
+}

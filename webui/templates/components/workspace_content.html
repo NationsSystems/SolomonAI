@@ -1,0 +1,44 @@
+<!-- -------------------------------------------------------------------
+     FILE: workspace_content.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set current_module = active_module|default('documents') %}
+{% set is_workspace = current_module == 'documents' %}
+{% set is_solomon_ai_workspace = current_module == 'solomon_ai' %}
+{% set is_search_workspace = current_module == 'search' %}
+{% set module_label = command_module.label if command_module is defined else 'Workspace' %}
+{% set display_module_label = 'Workspace' if is_workspace else module_label %}
+{% set module_description = command_module.description if command_module is defined else 'Default workspace entry for files, records, reports, and contextual SolomonAI support.' %}
+{% set requested_workspace_surface_template = workspace_surface_template|default('') %}
+{% set should_include_workspace_surface_template = requested_workspace_surface_template and requested_workspace_surface_template != 'components/workspace_content.html' %}
+
+{% if not is_workspace and not is_solomon_ai_workspace and not is_search_workspace %}
+    {% include "components/operations_console_header.html" %}
+{% endif %}
+
+{% if is_solomon_ai_workspace %}
+    {% if should_include_workspace_surface_template %}
+        {% include requested_workspace_surface_template %}
+    {% else %}
+        {% include "components/workspace_solomon_ai.html" %}
+    {% endif %}
+{% elif is_search_workspace %}
+    {% include "components/workspace_global_search.html" %}
+{% elif should_include_workspace_surface_template %}
+    {% include requested_workspace_surface_template %}
+{% else %}
+    {% include "components/document_workspace.html" %}
+{% endif %}
+
+{% include "components/operations_console_footer.html" %}
+
+<div id="interactionBlock"
+     class="portal-interaction-block d-none"
+     data-interaction-state="none"
+     aria-live="polite"
+     aria-atomic="true"></div>
+
+<div id="system-message-anchor"
+     aria-live="polite"
+     aria-atomic="true"></div>

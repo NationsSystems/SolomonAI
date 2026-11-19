@@ -1,0 +1,1161 @@
+/* ==========================================================================
+   FILE: portal_workspace_document_viewer_shell.css
+   DIRECTORY: webui/static/css/portal/
+   ========================================================================== */
+
+/* ==========================================================================
+   WORKSPACE DOCUMENT VIEWER SHELL
+   ========================================================================== */
+
+.workspace-command-app,
+.workspace-command-shell,
+.workspace-command-canvas {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.workspace-command-app {
+    width: 100%;
+}
+
+.workspace-command-shell,
+.workspace-command-canvas,
+.precon-command-desk--documents.workspace-command-canvas,
+.precon-mode-deck.workspace-command-canvas {
+    max-width: none;
+    width: 100%;
+}
+
+.workspace-command-shell {
+    justify-self: stretch;
+    margin-inline: 0;
+}
+
+.workspace-command-canvas {
+    display: grid;
+    gap: 0;
+    min-height: 0;
+}
+
+.command-main[data-workspace-mount] {
+    --workspace-window-close-size: 34px;
+    --workspace-window-close-offset: 14px;
+    --workspace-window-close-gutter: calc(
+        var(--workspace-window-close-size) +
+        (var(--workspace-window-close-offset) * 2)
+    );
+
+    position: relative;
+}
+
+.workspace-document-explorer {
+    --workspace-document-radius-panel: 12px;
+    --workspace-document-radius-control: 10px;
+    --workspace-document-radius-control-tight: 9px;
+
+    align-items: stretch;
+    display: grid;
+    gap: 14px;
+    grid-template-areas: "collections browser";
+    grid-template-columns: clamp(270px, 17vw, 320px) minmax(0, 1fr);
+    height: calc(100vh - 168px);
+    justify-self: stretch;
+    max-height: none;
+    max-width: none;
+    min-height: 620px;
+    min-width: 0;
+    width: 100%;
+}
+
+.precon-app-page--documents .workspace-document-explorer.workspace-command-explorer,
+.precon-command-desk--documents .workspace-document-explorer.workspace-command-explorer {
+    max-width: none;
+    width: 100%;
+}
+
+.workspace-command-explorer {
+    border-radius: var(--workspace-document-radius-panel);
+}
+
+.workspace-document-collections,
+.workspace-document-browser,
+.workspace-document-inspector {
+    background:
+        radial-gradient(circle at 0% 0%, rgba(22, 191, 216, 0.07), transparent 34%),
+        linear-gradient(135deg, rgba(8, 13, 24, 0.86), rgba(3, 8, 18, 0.72));
+    border: 1px solid rgba(105, 148, 238, 0.16);
+    border-radius: var(--workspace-document-radius-panel);
+    box-shadow:
+        0 22px 58px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.012) inset;
+    box-sizing: border-box;
+    color: var(--brand-text);
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.workspace-document-browser {
+    display: grid;
+    gap: 0;
+    grid-area: browser;
+    grid-template-rows: minmax(0, 1fr);
+    padding: 0;
+    position: relative;
+}
+
+.workspace-command-main {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(22, 191, 216, 0.09), transparent 38%),
+        linear-gradient(180deg, rgba(8, 13, 24, 0.88), rgba(3, 8, 18, 0.72));
+}
+
+.workspace-command-main--closeable {
+    position: relative;
+}
+
+.workspace-command-view-panel {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.workspace-command-view-panel[hidden] {
+    display: none !important;
+}
+
+.workspace-command-view-panel:not([hidden]) {
+    display: grid;
+}
+
+.workspace-command-chat-panel {
+    grid-template-rows: minmax(0, 1fr);
+}
+
+.workspace-command-files-panel {
+    gap: 8px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    padding: 14px 16px 16px;
+    position: relative;
+}
+
+[data-workspace-mount][data-workspace-closeable="true"] .workspace-command-files-panel,
+.workspace-command-main--closeable .workspace-command-files-panel {
+    padding-right: var(--workspace-window-close-gutter, 62px);
+}
+
+[data-workspace-mount][data-workspace-closeable="true"] .workspace-document-browser-toolbar,
+.workspace-command-main--closeable .workspace-document-browser-toolbar {
+    padding-right: var(--workspace-window-close-gutter, 62px);
+}
+
+[data-workspace-mount][data-workspace-closeable="true"] .search-results-toolbar {
+    box-sizing: border-box;
+    padding-right: 0;
+}
+
+.search-results-toolbar-actions {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-inline-start: auto;
+    min-width: 0;
+}
+
+.command-main[data-workspace-mount][data-workspace-closeable="true"] .search-results-toolbar-actions {
+    margin-inline-end: calc(
+        var(--workspace-window-close-gutter, 62px) + 6px
+    );
+}
+
+.command-main[data-workspace-mount][data-workspace-closeable="true"] .search-workspace-panel > .workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"] {
+    right: var(--workspace-window-close-offset, 14px);
+    top: 24px;
+}
+
+/* ==========================================================================
+   WORKSPACE WINDOW CHROME
+   --------------------------------------------------------------------------
+   The workspace shell owns one close control and mounts it inside the active
+   right-side workspace panel. Feature pages render content only.
+   ========================================================================== */
+
+.command-main[data-workspace-mount],
+.solomon-ai-workspace,
+.workspace-document-browser,
+.people-browser {
+    position: relative;
+}
+
+.workspace-command-page-close,
+.workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"] {
+    align-items: center;
+    appearance: none;
+    background: rgba(15, 23, 42, 0.84);
+    border: 1px solid rgba(122, 145, 176, 0.24);
+    border-radius: 9px;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(255, 255, 255, 0.014) inset;
+    box-sizing: border-box;
+    color: rgba(226, 236, 248, 0.90);
+    cursor: pointer;
+    display: none;
+    flex: 0 0 var(--workspace-window-close-size, 34px);
+    height: var(--workspace-window-close-size, 34px);
+    justify-content: center;
+    left: auto;
+    line-height: 1;
+    margin: 0;
+    max-height: var(--workspace-window-close-size, 34px);
+    max-width: var(--workspace-window-close-size, 34px);
+    min-height: var(--workspace-window-close-size, 34px);
+    min-width: var(--workspace-window-close-size, 34px);
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    right: var(--workspace-window-close-offset, 14px);
+    text-decoration: none;
+    top: var(--workspace-window-close-offset, 14px);
+    transform: none;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease,
+        box-shadow 140ms ease,
+        opacity 120ms ease;
+    visibility: hidden;
+    width: var(--workspace-window-close-size, 34px);
+    z-index: 90;
+}
+
+.command-main[data-workspace-mount][data-workspace-closeable="true"] .workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"] {
+    display: inline-flex;
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.command-main[data-workspace-mount][data-workspace-closeable="false"] .workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"],
+.workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"][hidden] {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"]:hover,
+.workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"]:focus-visible {
+    background: rgba(30, 41, 59, 0.96);
+    border-color: rgba(65, 210, 255, 0.38);
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.26),
+        0 0 0 3px rgba(22, 191, 216, 0.08);
+    color: rgba(248, 250, 252, 0.99);
+    outline: none;
+    text-decoration: none;
+}
+
+.workspace-shell-window-close.workspace-command-page-close[data-command-window-close="true"] > .icon {
+    color: currentColor;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.workspace-command-files-panel > .workspace-document-selection-row {
+    transform: translateY(-4px);
+    z-index: 2;
+}
+
+.workspace-command-preview-panel {
+    padding: 16px;
+}
+
+.workspace-document-browser-toolbar {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.workspace-document-browser-actions,
+.workspace-document-inspector-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.workspace-document-command {
+    align-items: center;
+    appearance: none;
+    background: rgba(8, 18, 34, 0.76);
+    border: 1px solid rgba(105, 148, 238, 0.18);
+    border-radius: var(--workspace-document-radius-control-tight, 10px);
+    color: rgba(226, 236, 248, 0.88);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 780;
+    gap: 7px;
+    justify-content: center;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    min-height: 34px;
+    padding: 0 12px;
+    text-decoration: none;
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        color 0.18s ease;
+}
+
+.workspace-document-command:hover,
+.workspace-document-command:focus-visible {
+    background: rgba(22, 191, 216, 0.10);
+    border-color: rgba(22, 191, 216, 0.28);
+    color: rgba(248, 250, 252, 0.96);
+    outline: 0;
+    text-decoration: none;
+}
+
+.workspace-document-command:disabled {
+    cursor: not-allowed;
+    opacity: 0.52;
+}
+
+.workspace-document-command-neutral {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: rgba(148, 163, 184, 0.20);
+    color: rgba(226, 232, 240, 0.86);
+}
+
+.workspace-document-command-neutral:hover,
+.workspace-document-command-neutral:focus-visible {
+    background: rgba(30, 41, 59, 0.82);
+    border-color: rgba(203, 213, 225, 0.30);
+    color: rgba(248, 250, 252, 0.96);
+}
+
+.workspace-document-command .icon {
+    font-size: 18px;
+}
+
+.workspace-document-collections-header strong,
+.workspace-document-browser-toolbar strong,
+.workspace-document-inspector-header strong {
+    color: rgba(248, 250, 252, 0.96);
+    display: block;
+    font-size: 1.02rem;
+    font-weight: 780;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+/* ==========================================================================
+   DOCUMENT RADIUS NORMALIZATION
+   --------------------------------------------------------------------------
+   Keeps document controls on one shared soft-rectangle radius instead of mixing
+   pill controls with rounded panels.
+   ========================================================================== */
+
+.workspace-document-explorer.workspace-command-explorer .workspace-document-new-button,
+.workspace-document-explorer.workspace-command-explorer .workspace-document-collection,
+.workspace-document-explorer.workspace-command-explorer .workspace-document-static-link,
+.workspace-document-explorer.workspace-command-explorer .workspace-document-layout-toggle,
+.workspace-document-explorer.workspace-command-explorer .workspace-document-command {
+    border-radius: var(--workspace-document-radius-control);
+}
+
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row.workspace-document-selection-action-bar .workspace-document-selection-rail-content {
+    border-radius: var(--workspace-document-radius-control);
+}
+
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-selection-file-icon,
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command,
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-details summary {
+    border-radius: var(--workspace-document-radius-control-tight);
+}
+
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command[aria-label*="SolomonAI"],
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command[title*="SolomonAI"],
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command[data-document-action*="solomon"],
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command[data-document-operation*="solomon"],
+.workspace-document-explorer.workspace-command-explorer .workspace-command-files-panel .workspace-document-selection-row--drive-utility .workspace-document-selection-action-bar--drive-row .workspace-document-command[data-document-operation*="ai"] {
+    border-radius: var(--workspace-document-radius-control);
+}
+
+@media (max-height: 760px) {
+    .workspace-document-explorer {
+        height: calc(100vh - 150px);
+        min-height: 520px;
+    }
+}
+/* ==========================================================================
+   RECENT ACTIVITY PRESENTATION
+   --------------------------------------------------------------------------
+   Recent uses the My Files visual language while preserving server-owned
+   activity grouping, filters, capabilities, and durable file identity.
+   ========================================================================== */
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-command-files-panel {
+    gap: 10px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    padding: 14px 16px 16px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-browser-toolbar--recent {
+    min-height: 54px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-browser-heading--recent {
+    min-width: 0;
+}
+
+/* Universal document filters and authorized actions share one stable row below
+   the page title. Individual surfaces may omit unsupported controls, but they do
+   not create alternate toolbar geometry or lifecycle contracts. */
+.workspace-document-recent-utility {
+    min-width: 0;
+    width: 100%;
+}
+
+.workspace-document-recent-utility-controls,
+.workspace-document-control-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    justify-content: space-between;
+    min-height: 42px;
+    min-width: 0;
+    width: 100%;
+}
+
+.workspace-document-recent-filters,
+.workspace-document-control-row-primary {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.workspace-document-control-row-actions {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-end;
+    min-width: max-content;
+    position: relative;
+    z-index: 7;
+}
+
+.workspace-document-control-row-actions > [hidden] {
+    display: none;
+}
+
+.workspace-document-recent-filter {
+    display: inline-flex;
+    flex: 0 0 128px;
+    min-width: 128px;
+    position: relative;
+    width: 128px;
+}
+
+.workspace-document-recent-filter-native {
+    height: 1px;
+    left: 0;
+    margin: -1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 1px;
+}
+
+.workspace-document-recent-filter-trigger {
+    align-items: center;
+    appearance: none;
+    background: linear-gradient(180deg, rgba(11, 26, 44, 0.96), rgba(7, 18, 32, 0.96));
+    border: 1px solid rgba(105, 148, 238, 0.22);
+    border-radius: var(--workspace-document-radius-control-tight, 9px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    color: rgba(234, 242, 252, 0.94);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.73rem;
+    font-weight: 700;
+    gap: 12px;
+    height: 36px;
+    justify-content: space-between;
+    line-height: 1;
+    min-width: 112px;
+    padding: 0 10px 0 12px;
+    text-align: left;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        box-shadow 140ms ease,
+        color 140ms ease;
+    width: 100%;
+}
+
+.workspace-document-recent-filter-trigger [data-document-recent-filter-label] {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-recent-filter-trigger:hover {
+    background: linear-gradient(180deg, rgba(14, 36, 56, 0.98), rgba(8, 24, 39, 0.98));
+    border-color: rgba(65, 210, 255, 0.34);
+    color: rgba(248, 252, 255, 0.98);
+}
+
+.workspace-document-recent-filter-trigger:focus-visible {
+    border-color: rgba(65, 210, 255, 0.58);
+    box-shadow:
+        0 0 0 3px rgba(22, 191, 216, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    outline: none;
+}
+
+.workspace-document-recent-filter-trigger:disabled {
+    color: rgba(145, 160, 180, 0.48);
+    cursor: not-allowed;
+    opacity: 0.62;
+}
+
+.workspace-document-recent-filter[data-document-recent-filter-open="true"] .workspace-document-recent-filter-trigger,
+.workspace-document-recent-filter[data-document-recent-filter-active="true"] .workspace-document-recent-filter-trigger {
+    background: linear-gradient(180deg, rgba(11, 48, 64, 0.98), rgba(8, 34, 48, 0.98));
+    border-color: rgba(65, 210, 255, 0.46);
+    color: rgba(245, 252, 255, 0.98);
+}
+
+.workspace-document-recent-filter-chevron {
+    color: rgba(180, 197, 219, 0.82);
+    flex: 0 0 auto;
+    font-size: 17px;
+    pointer-events: none;
+    transition: color 140ms ease, transform 140ms ease;
+}
+
+.workspace-document-recent-filter[data-document-recent-filter-open="true"] .workspace-document-recent-filter-chevron {
+    color: rgba(95, 224, 255, 0.96);
+    transform: rotate(180deg);
+}
+
+.workspace-document-recent-filter-menu {
+    background: var(--solomon-menu-surface, rgb(5, 11, 22));
+    border: 1px solid rgba(105, 148, 238, 0.24);
+    border-radius: 10px;
+    box-shadow:
+        0 18px 46px rgba(0, 0, 0, 0.46),
+        0 0 0 1px rgba(15, 208, 235, 0.035) inset;
+    box-sizing: border-box;
+    display: grid;
+    gap: 3px;
+    left: 0;
+    max-height: min(320px, 52vh);
+    min-width: max(100%, 180px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 6px;
+    position: absolute;
+    top: calc(100% + 7px);
+    width: max-content;
+    z-index: 80;
+}
+
+.workspace-document-recent-filter-menu[hidden] {
+    display: none;
+}
+
+.workspace-document-recent-filter-option {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: rgba(213, 225, 240, 0.90);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 0.73rem;
+    font-weight: 650;
+    gap: 9px;
+    justify-content: space-between;
+    line-height: 1.25;
+    min-height: 34px;
+    min-width: 100%;
+    padding: 8px 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.workspace-document-recent-filter-option:hover,
+.workspace-document-recent-filter-option:focus-visible {
+    background: rgba(65, 210, 255, 0.09);
+    border-color: rgba(65, 210, 255, 0.18);
+    color: rgba(247, 252, 255, 0.98);
+    outline: none;
+}
+
+.workspace-document-recent-filter-option[aria-selected="true"] {
+    background: rgba(18, 158, 190, 0.16);
+    border-color: rgba(65, 210, 255, 0.28);
+    color: rgba(245, 252, 255, 0.98);
+}
+
+.workspace-document-recent-filter-option-check {
+    color: rgba(78, 220, 255, 0.96);
+    font-size: 16px;
+    opacity: 0;
+}
+
+.workspace-document-recent-filter-option[aria-selected="true"] .workspace-document-recent-filter-option-check {
+    opacity: 1;
+}
+
+.workspace-document-recent-filter-option:disabled {
+    color: rgba(126, 143, 164, 0.48);
+    cursor: default;
+}
+
+.workspace-document-recent-filter-clear {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--workspace-document-radius-control-tight, 9px);
+    color: rgba(177, 196, 220, 0.82);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 0.71rem;
+    font-weight: 700;
+    gap: 5px;
+    height: 36px;
+    padding: 0 10px;
+}
+
+.workspace-document-recent-filter-clear:hover,
+.workspace-document-recent-filter-clear:focus-visible {
+    background: rgba(65, 210, 255, 0.08);
+    border-color: rgba(65, 210, 255, 0.20);
+    color: rgba(239, 248, 255, 0.96);
+    outline: none;
+}
+
+.workspace-document-recent-filter-clear .icon {
+    font-size: 17px;
+}
+
+.workspace-document-recent-filter-status {
+    color: rgba(148, 163, 184, 0.78);
+    font-size: 0.69rem;
+    min-height: 1em;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle {
+    align-items: center;
+    background: rgba(8, 18, 34, 0.76);
+    border: 1px solid rgba(105, 148, 238, 0.18);
+    border-radius: var(--workspace-document-radius-control, 10px);
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 2px;
+    min-height: 36px;
+    padding: 2px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .workspace-document-layout-button.workspace-document-command {
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+    box-shadow: none;
+    color: rgba(184, 199, 219, 0.82);
+    height: 30px;
+    min-height: 30px;
+    min-width: 38px;
+    padding: 0 9px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .workspace-document-layout-button.workspace-document-command:hover,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .workspace-document-layout-button.workspace-document-command:focus-visible {
+    background: rgba(65, 210, 255, 0.08);
+    color: rgba(238, 247, 255, 0.96);
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .workspace-document-layout-button.workspace-document-command.is-active,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .workspace-document-layout-button.workspace-document-command[aria-pressed="true"] {
+    background: rgba(65, 210, 255, 0.16);
+    box-shadow: 0 0 0 1px rgba(65, 210, 255, 0.30) inset;
+    color: rgba(226, 248, 255, 0.98);
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle .icon {
+    font-size: 18px;
+}
+
+/* The selected-action rail replaces the default utility row only after selection. */
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-selection-row--recent {
+    margin: 0;
+    min-height: 0;
+    padding: 0;
+    position: relative;
+    z-index: 5;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-selection-row--recent[data-document-selection-state="empty"] {
+    border: 0;
+    height: 0;
+    overflow: visible;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-selection-row--recent[data-document-selection-state="empty"] .workspace-document-default-utility {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-selection-row--recent:not([data-document-selection-state="empty"]) {
+    margin-bottom: 2px;
+    min-height: 46px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-selection-action-bar--drive-row .workspace-document-selection-rail-content {
+    background: rgba(9, 24, 40, 0.96);
+    border-color: rgba(65, 210, 255, 0.28);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+}
+
+/* Shared Recent list surface and time-group structure. */
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-list {
+    align-content: start;
+    background: rgba(4, 10, 20, 0.36);
+    border: 1px solid rgba(105, 148, 238, 0.12);
+    border-radius: var(--workspace-document-radius-control, 10px);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.008) inset;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    padding: 8px;
+    scrollbar-gutter: stable;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-group {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-group + .workspace-document-recent-group {
+    margin-top: 10px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-group-heading {
+    color: rgba(222, 232, 244, 0.90);
+    font-size: 0.75rem;
+    font-weight: 740;
+    letter-spacing: 0.004em;
+    line-height: 1.35;
+    margin: 0;
+    padding: 11px 12px 8px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-file-list-header--recent + .workspace-document-recent-group .workspace-document-recent-group-heading {
+    padding-top: 9px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-group-items {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+/* Recent list view now inherits the canonical semantic-table contract from
+   portal_workspace_document_viewer_files.css. Recent-specific presentation
+   below is limited to activity metadata and grid-card details. */
+
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-icon {
+    color: rgba(65, 210, 255, 0.90);
+    font-size: 18px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-identity {
+    justify-self: stretch;
+    min-width: 0;
+    text-align: left;
+    width: 100%;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-identity strong {
+    color: rgba(239, 245, 253, 0.96);
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 690;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-secondary {
+    color: rgba(148, 166, 191, 0.78);
+    display: block;
+    font-size: 0.67rem;
+    line-height: 1.3;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-file-meta {
+    color: rgba(170, 187, 209, 0.82);
+    font-size: 0.69rem;
+    min-width: 0;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-file-meta--activity {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: center;
+    min-width: 0;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-activity-date {
+    color: rgba(218, 229, 242, 0.92);
+    display: block;
+    font-size: 0.70rem;
+    font-weight: 650;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-activity-reason {
+    color: rgba(151, 171, 198, 0.82);
+    display: block;
+    font-size: 0.67rem;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-file-meta--owner,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-file-meta--location {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-owner-icon,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-location-icon {
+    color: rgba(134, 164, 194, 0.84);
+    flex: 0 0 auto;
+    font-size: 16px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-owner-label,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-location-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-action-button {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(191, 205, 224, 0.82);
+    height: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    width: 30px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-action-button:hover,
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-action-button:focus-visible,
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-action-button[aria-expanded="true"] {
+    background: rgba(65, 210, 255, 0.09);
+    border-color: rgba(65, 210, 255, 0.20);
+    color: rgba(240, 248, 255, 0.98);
+}
+
+/* Grid view keeps the same time sections and renders ordinary wrapping cards. */
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-list {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 0;
+    padding: 0 2px 16px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-list-header--recent {
+    display: none;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-group {
+    min-width: 0;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-group + .workspace-document-recent-group {
+    margin-top: 14px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-group-heading {
+    padding: 10px 2px 8px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-group-items {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 250px));
+    justify-content: start;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent {
+    background: rgba(8, 18, 33, 0.76);
+    border: 1px solid rgba(105, 148, 238, 0.12);
+    border-radius: 10px;
+    box-shadow: none;
+    box-sizing: border-box;
+    display: grid;
+    gap: 0;
+    grid-template-areas:
+        "icon spacer actions"
+        "thumbnail thumbnail thumbnail"
+        "name name name"
+        "activity activity activity"
+        "location location size";
+    grid-template-columns: 38px minmax(0, 1fr) max-content;
+    grid-template-rows: 38px 132px 46px 38px 30px;
+    height: 286px;
+    max-width: 250px;
+    min-height: 286px;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    transition:
+        background 130ms ease,
+        border-color 130ms ease,
+        box-shadow 130ms ease,
+        transform 130ms ease;
+    width: 100%;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent:hover,
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent:focus-visible {
+    background: rgba(12, 29, 48, 0.92);
+    border-color: rgba(65, 210, 255, 0.26);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.20);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent[data-document-selected="true"],
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent[aria-selected="true"] {
+    background: rgba(12, 52, 68, 0.86);
+    border-color: rgba(65, 210, 255, 0.48);
+    box-shadow: 0 0 0 1px rgba(65, 210, 255, 0.18) inset;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell] {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="selection"] {
+    left: 10px;
+    opacity: 0;
+    position: absolute;
+    top: 48px;
+    transition: opacity 120ms ease;
+    z-index: 3;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent:hover > [data-document-list-cell="selection"],
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent:focus-within > [data-document-list-cell="selection"],
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent[data-document-selected="true"] > [data-document-list-cell="selection"],
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent[aria-selected="true"] > [data-document-list-cell="selection"] {
+    opacity: 1;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="icon"] {
+    align-self: center;
+    background: rgba(7, 28, 43, 0.86);
+    border: 1px solid rgba(65, 210, 255, 0.14);
+    border-radius: 6px;
+    display: inline-flex;
+    grid-area: icon !important;
+    height: 24px;
+    justify-content: center;
+    justify-self: center;
+    width: 24px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="thumbnail"] {
+    align-self: stretch;
+    background: rgba(4, 9, 18, 0.86);
+    border: 1px solid rgba(105, 148, 238, 0.08);
+    border-radius: 7px;
+    display: block;
+    grid-area: thumbnail !important;
+    height: 126px;
+    margin: 0 7px 6px;
+    min-height: 126px;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent .workspace-document-file-thumbnail-image {
+    display: block;
+    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent .workspace-document-file-thumbnail-fallback {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="name"] {
+    align-self: center;
+    grid-area: name !important;
+    padding: 5px 10px 4px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file-secondary--size {
+    display: none;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="activity"] {
+    align-self: center;
+    grid-area: activity !important;
+    padding: 3px 10px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="owner"] {
+    display: none !important;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="location"] {
+    align-self: center;
+    gap: 0;
+    grid-area: location !important;
+    padding-left: 10px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-location-icon {
+    display: none;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="size"] {
+    align-self: center;
+    grid-area: size !important;
+    justify-self: end;
+    padding-right: 10px;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent > [data-document-list-cell="actions"] {
+    align-self: center;
+    grid-area: actions !important;
+    justify-self: center;
+}
+
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-section-empty,
+.workspace-document-explorer[data-workspace-section="recent"] .workspace-document-empty-state {
+    width: 100%;
+}
+
+@media (max-width: 1060px) {
+    .workspace-document-recent-utility-controls,
+    .workspace-document-control-row {
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .workspace-document-recent-filters,
+    .workspace-document-control-row-primary {
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .workspace-document-control-row-actions {
+        margin-left: auto;
+    }
+
+    .workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle {
+        align-self: center;
+    }
+}
+
+@media (max-width: 760px) {
+    .workspace-document-explorer[data-workspace-section="recent"] .workspace-command-files-panel {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .workspace-document-recent-filter-status {
+        flex-basis: 100%;
+    }
+
+    .workspace-document-explorer[data-workspace-section="recent"] .workspace-document-recent-layout-toggle {
+        align-self: flex-start;
+    }
+
+    .workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-recent-group-items {
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    }
+
+    .workspace-document-explorer[data-workspace-section="recent"][data-document-layout="grid"] .workspace-document-file.workspace-document-file--recent {
+        max-width: none;
+    }
+}

@@ -1,0 +1,544 @@
+<!-- -------------------------------------------------------------------
+     FILE: people_workspace.html
+     DIRECTORY: webui/templates/components/
+------------------------------------------------------------------- -->
+
+{% set workspace_module = 'people' %}
+{% set workspace_section = 'people' %}
+{% set workspace_navigation_contract = 'workspace_module_section_route' %}
+{% set people_asset_version = 'nations-people-directory-20260815d' %}
+{% set workspace_home_url = url_for('index') %}
+{% set workspace_chat_url = '/ai' %}
+{% set workspace_people_url = '/people' %}
+{% set workspace_shared_url = '/shared' %}
+{% set workspace_recent_url = '/recent' %}
+{% set workspace_trash_url = '/trash' %}
+{% set workspace_active_route = workspace_people_url %}
+{% set workspace_folders_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_create_endpoint = '/uploads/me/folders' %}
+{% set workspace_folder_contract = 'workspace_folder_v1' %}
+{% set workspace_folder_create_contract = 'workspace_folder_create_v1' %}
+{% set workspace_folder_creation_authority = 'server_owned_location_required' %}
+{% set workspace_folder_create_mode = 'location_required' %}
+{% set workspace_folder_location_required = true %}
+{% set workspace_enable_new_folder_control = false %}
+{% set workspace_current_folder_id = '' %}
+{% set workspace_new_folder_summary = 'Open My Files to choose a destination.' %}
+
+{% set people_account_context = account_context if account_context is defined and account_context is mapping else {} %}
+{% set people_membership = people_account_context.get('membership') if people_account_context is mapping else none %}
+{% set people_membership_role = (
+    people_membership.get('role', '') if people_membership is mapping else ''
+) | lower %}
+{% set active_group = {} %}
+{% if people_account_context.get('group') is mapping %}
+    {% set active_group = people_account_context.get('group') %}
+{% elif people_account_context.get('organization') is mapping %}
+    {% set active_group = people_account_context.get('organization') %}
+{% endif %}
+{% set active_group_id = active_group.get('group_id') or active_group.get('id') or active_group.get('organization_id') or active_group.get('slug') or '' %}
+{% set workspace_group_files_url = '/people/groups/' ~ active_group_id ~ '/files' if active_group_id else workspace_people_url %}
+{% set can_manage_group_files = active_group_id %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/people.css') }}?v={{ people_asset_version }}">
+
+<section class="precon-app-page precon-app-page--documents workspace-command-app people-command-app"
+         data-workspace-module="{{ workspace_module }}"
+         data-workspace-section="{{ workspace_section }}"
+         data-workspace-route="{{ workspace_active_route }}"
+         data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+         aria-label="People and groups workspace">
+
+    <section class="precon-workspace-shell precon-workspace-shell--documents workspace-command-shell people-workspace-shell"
+             aria-label="People and groups shell">
+
+        <section class="precon-mode-deck precon-command-desk precon-command-desk--documents workspace-command-canvas"
+                 aria-label="People and groups command workspace">
+
+            <section class="workspace-document-explorer workspace-command-explorer people-explorer"
+                     data-document-explorer
+                     data-workspace-explorer
+                     data-workspace-view="files"
+                     data-workspace-initial-view="files"
+                     data-workspace-reader-state="idle"
+                     data-workspace-module="{{ workspace_module }}"
+                     data-workspace-label="People"
+                     data-workspace-section="{{ workspace_section }}"
+                     data-workspace-route="{{ workspace_active_route }}"
+                     data-workspace-navigation-contract="{{ workspace_navigation_contract }}"
+                     data-workspace-folders-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-tree-personal-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-tree-shared-endpoint="{{ workspace_folders_endpoint }}"
+                     data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                     data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                     data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                     data-workspace-folder-creation-authority="{{ workspace_folder_creation_authority }}"
+                     data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                     data-workspace-folder-create-enabled="{{ 'true' if workspace_enable_new_folder_control else 'false' }}"
+                     data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                     data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                     aria-label="People and groups workspace">
+
+                <aside class="workspace-document-collections"
+                       aria-label="Workspace navigation">
+                    <div class="workspace-document-primary-actions"
+                         aria-label="Workspace primary actions">
+                        <div class="workspace-document-new-menu-shell"
+                             data-document-new-menu
+                             data-document-new-menu-contract="server_rendered_actions_transport_only"
+                             data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                             data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}">
+                            <button type="button"
+                                    id="workspaceDocumentNewMenuTrigger"
+                                    class="workspace-document-command workspace-document-command-primary workspace-document-new-button"
+                                    data-document-section-control="all"
+                                    data-document-new-menu-trigger
+                                    aria-haspopup="menu"
+                                    aria-expanded="false"
+                                    aria-controls="workspaceDocumentNewMenu"
+                                    aria-hidden="false">
+                                <span class="icon" aria-hidden="true">add</span>
+                                <span>New</span>
+                                <span class="icon workspace-document-new-button-chevron"
+                                      aria-hidden="true">expand_more</span>
+                            </button>
+
+                            <section id="workspaceDocumentNewMenu"
+                                     class="workspace-document-new-menu"
+                                     data-document-new-menu-panel
+                                     role="menu"
+                                     aria-label="Create, upload, manage group files, or ask SolomonAI"
+                                     hidden>
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">Add</p>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-document-upload-placeholder
+                                            data-document-upload-trigger
+                                            data-document-new-menu-close
+                                            role="menuitem">
+                                        <span class="icon" aria-hidden="true">upload_file</span>
+
+                                        <span>
+                                            <strong>Upload file</strong>
+                                            <small>Store files in My Files.</small>
+                                        </span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="workspace-document-new-menu-action"
+                                            data-workspace-new-action="new_folder"
+                                            data-workspace-new-authority="server"
+                                            data-workspace-folder-contract="{{ workspace_folder_contract }}"
+                                            data-workspace-folder-create-contract="{{ workspace_folder_create_contract }}"
+                                            data-workspace-folder-create-endpoint="{{ workspace_folder_create_endpoint }}"
+                                            data-workspace-folder-create-mode="{{ workspace_folder_create_mode }}"
+                                            data-workspace-folder-location-required="{{ 'true' if workspace_folder_location_required else 'false' }}"
+                                            data-workspace-current-folder-id="{{ workspace_current_folder_id }}"
+                                            data-document-new-menu-close
+                                            role="menuitem"
+                                            disabled
+                                            aria-disabled="true"
+                                            aria-hidden="false">
+                                        <span class="icon" aria-hidden="true">create_new_folder</span>
+
+                                        <span>
+                                            <strong>New folder</strong>
+                                            <small>{{ workspace_new_folder_summary }}</small>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                {% if can_manage_group_files %}
+                                    <div class="workspace-document-new-menu-group"
+                                         role="none">
+                                        <p class="workspace-document-new-menu-label"
+                                           role="presentation">Group</p>
+
+                                        <a href="{{ workspace_group_files_url }}"
+                                           class="workspace-document-new-menu-action"
+                                           data-command-shell-navigation="true"
+                                           data-command-route="{{ workspace_group_files_url }}"
+                                           data-command-module="people"
+                                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                           data-workspace-new-action="manage_group_files"
+                                           data-workspace-new-authority="server"
+                                           role="menuitem">
+                                            <span class="icon" aria-hidden="true">folder_shared</span>
+
+                                            <span>
+                                                <strong>Share files</strong>
+                                                <small>Share files you own with this Group.</small>
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                <div class="workspace-document-new-menu-group"
+                                     role="none">
+                                    <p class="workspace-document-new-menu-label"
+                                       role="presentation">AI</p>
+
+                                    <a href="{{ workspace_chat_url }}"
+                                       class="workspace-document-new-menu-action"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_chat_url }}"
+                                       data-command-module="solomon_ai"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                                       data-workspace-new-action="ask_solomon_ai"
+                                       data-workspace-new-authority="server"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">auto_awesome</span>
+
+                                        <span>
+                                            <strong>Ask SolomonAI</strong>
+                                            <small>Start a workspace conversation.</small>
+                                        </span>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <nav class="workspace-document-collection-list workspace-document-static-navigation"
+                         data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                         aria-label="Workspace navigation">
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_home_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_home_url }}"
+                           data-command-module="documents"
+                           data-command-section="files"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">home</span>
+                            <span>Home</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_chat_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_chat_url }}"
+                           data-command-module="solomon_ai"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">auto_awesome</span>
+                            <span>Chat</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link is-active"
+                           href="{{ workspace_people_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_people_url }}"
+                           data-command-module="people"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}"
+                           aria-current="page">
+                            <span class="icon" aria-hidden="true">groups</span>
+                            <span>People</span>
+                        </a>
+
+                        <div class="workspace-folder-tree"
+                             data-workspace-folder-tree
+                             role="tree"
+                             aria-label="Files and folders">
+                            <div class="workspace-folder-tree-node is-expanded"
+                                 data-workspace-folder-tree-node
+                                 data-workspace-folder-tree-scope="personal"
+                                 data-workspace-folder-id=""
+                                 data-workspace-folder-depth="0">
+                                <div class="workspace-folder-tree-row">
+                                    <button type="button"
+                                            class="workspace-folder-tree-toggle"
+                                            data-workspace-folder-tree-toggle
+                                            aria-expanded="true"
+                                            aria-label="Collapse My Files">
+                                        <span class="icon" aria-hidden="true">expand_more</span>
+                                    </button>
+                                    <a class="workspace-folder-tree-link"
+                                       href="{{ workspace_home_url }}"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_home_url }}"
+                                       data-command-module="documents"
+                                       data-document-section="files"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                                        <span class="icon" aria-hidden="true">folder</span>
+                                        <span>My Files</span>
+                                    </a>
+                                </div>
+                                <div class="workspace-folder-tree-children"
+                                     data-workspace-folder-tree-children
+                                     data-workspace-folder-tree-scope="personal"
+                                     data-workspace-folder-tree-parent-id=""
+                                     data-workspace-folder-tree-loaded="false"
+                                     role="group"></div>
+                            </div>
+
+                            <div class="workspace-folder-tree-node"
+                                 data-workspace-folder-tree-node
+                                 data-workspace-folder-tree-scope="shared"
+                                 data-workspace-folder-id=""
+                                 data-workspace-folder-depth="0">
+                                <div class="workspace-folder-tree-row">
+                                    <button type="button"
+                                            class="workspace-folder-tree-toggle"
+                                            data-workspace-folder-tree-toggle
+                                            aria-expanded="false"
+                                            aria-label="Expand Shared Files">
+                                        <span class="icon" aria-hidden="true">chevron_right</span>
+                                    </button>
+                                    <a class="workspace-folder-tree-link"
+                                       href="{{ workspace_shared_url }}"
+                                       data-command-shell-navigation="true"
+                                       data-command-route="{{ workspace_shared_url }}"
+                                       data-command-module="documents"
+                                       data-document-section="shared"
+                                       data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                                        <span class="icon" aria-hidden="true">folder</span>
+                                        <span>Shared Files</span>
+                                    </a>
+                                </div>
+                                <div class="workspace-folder-tree-children"
+                                     data-workspace-folder-tree-children
+                                     data-workspace-folder-tree-scope="shared"
+                                     data-workspace-folder-tree-parent-id=""
+                                     data-workspace-folder-tree-loaded="false"
+                                     role="group"
+                                     hidden></div>
+                            </div>
+                        </div>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_recent_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_recent_url }}"
+                           data-command-module="documents"
+                           data-command-section="recent"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">schedule</span>
+                            <span>Recent</span>
+                        </a>
+
+                        <a class="workspace-document-collection workspace-document-static-link"
+                           href="{{ workspace_trash_url }}"
+                           data-command-shell-navigation="true"
+                           data-command-route="{{ workspace_trash_url }}"
+                           data-command-module="documents"
+                           data-command-section="trash"
+                           data-command-navigation-contract="{{ workspace_navigation_contract }}">
+                            <span class="icon" aria-hidden="true">delete_outline</span>
+                            <span>Trash</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <section class="workspace-document-browser workspace-command-main people-browser"
+                         aria-label="People and groups management">
+                    <section class="workspace-command-view-panel workspace-command-files-panel people-workspace-panel"
+                             data-workspace-view-panel="files"
+                             aria-label="People and groups">
+
+                        <div class="workspace-document-browser-toolbar people-toolbar">
+                            <div class="workspace-document-browser-heading">
+                                <strong id="peopleGroupsPageTitle">People &amp; Groups</strong>
+                            </div>
+                        </div>
+
+                        <div class="people-page-scroll" data-people-page-scroll>
+                            <div class="people-page"
+                                 data-people-page
+                                 data-people-active-view="people">
+                                <section class="people-shell">
+                                    <nav class="people-tabs" aria-label="People workspace views">
+                                        <button type="button"
+                                                class="people-tab is-active"
+                                                data-people-view="people"
+                                                aria-current="page">
+                                            People
+                                        </button>
+                                        <button type="button"
+                                                class="people-tab"
+                                                data-people-view="groups">
+                                            Groups
+                                        </button>
+                                    </nav>
+
+                                    <div class="people-status"
+                                         data-people-status
+                                         role="status"
+                                         aria-live="polite"></div>
+
+                                    <section class="people-view"
+                                             data-people-view-panel="people"
+                                             hidden>
+                                        <div class="people-view-heading">
+                                            <div>
+                                                <h2>People</h2>
+                                                <p>People who currently have access to this Solomon workspace.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="people-toolbar-row">
+                                            <label class="people-search-field">
+                                                <span class="icon" aria-hidden="true">search</span>
+                                                <input type="search"
+                                                       placeholder="Search people"
+                                                       autocomplete="off"
+                                                       data-people-search="people">
+                                            </label>
+                                        </div>
+
+                                        <div class="people-table-shell">
+                                            <div class="people-table people-table--people" role="table" aria-label="People with Solomon access">
+                                                <div class="people-table-head" role="row">
+                                                    <span role="columnheader">Name</span>
+                                                    <span role="columnheader">Email</span>
+                                                    <span role="columnheader">Groups</span>
+                                                    <span role="columnheader">Status</span>
+                                                </div>
+                                                <div data-people-directory-list aria-live="polite"></div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section class="people-view is-active"
+                                             data-people-view-panel="groups">
+                                        <div class="people-groups-layout">
+                                            <div class="people-groups-directory">
+                                                <div class="people-view-heading people-view-heading--compact">
+                                                    <div>
+                                                        <h2 data-people-groups-heading>Groups</h2>
+                                                        <p>Create groups and manage who belongs to them.</p>
+                                                    </div>
+                                                    <button type="button"
+                                                            class="people-primary-action"
+                                                            data-people-create-group
+                                                            hidden>
+                                                        <span class="icon" aria-hidden="true">add</span>
+                                                        Create Group
+                                                    </button>
+                                                </div>
+
+                                                <div class="people-toolbar-row">
+                                                    <label class="people-search-field">
+                                                        <span class="icon" aria-hidden="true">search</span>
+                                                        <input type="search"
+                                                               placeholder="Search groups"
+                                                               autocomplete="off"
+                                                               data-people-search="groups">
+                                                    </label>
+                                                    <select class="people-filter-select" data-people-group-status-filter>
+                                                        <option value="all">All status</option>
+                                                        <option value="active">Active</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="people-table-shell">
+                                                    <div class="people-table people-table--groups" role="table" aria-label="Groups">
+                                                        <div class="people-table-head" role="row">
+                                                            <span role="columnheader">Group</span>
+                                                            <span role="columnheader">Members</span>
+                                                            <span role="columnheader">Description</span>
+                                                            <span role="columnheader">Status</span>
+                                                        </div>
+                                                        <div data-people-groups-list aria-live="polite"></div>
+                                                    </div>
+                                                </div>
+                                                <p class="people-result-count" data-people-groups-count></p>
+                                            </div>
+
+                                            <aside class="people-group-detail"
+                                                   data-people-group-detail
+                                                   aria-label="Selected group details">
+                                                <div class="people-empty people-empty--detail">
+                                                    Select a group to view its members and details.
+                                                </div>
+                                            </aside>
+                                        </div>
+                                    </section>
+
+                                </section>
+
+                                <dialog class="people-dialog" data-people-group-dialog>
+                                    <form method="dialog" class="people-dialog-card" data-people-group-form>
+                                        <div class="people-dialog-header">
+                                            <div>
+                                                <p class="people-kicker">People &amp; Groups</p>
+                                                <h2 data-people-group-dialog-title>Create group</h2>
+                                            </div>
+                                            <button type="button" class="people-dialog-close" data-people-dialog-close aria-label="Close">
+                                                <span class="icon" aria-hidden="true">close</span>
+                                            </button>
+                                        </div>
+                                        <label class="people-field">
+                                            <span>Group name</span>
+                                            <input type="text" name="name" maxlength="255" required data-people-group-name>
+                                        </label>
+                                        <label class="people-field">
+                                            <span>Description</span>
+                                            <textarea name="description" maxlength="1024" rows="4" data-people-group-description></textarea>
+                                        </label>
+                                        <div class="people-dialog-actions">
+                                            <button type="button" class="people-action" data-people-dialog-close>Cancel</button>
+                                            <button type="submit" class="people-primary-action" data-people-group-save>Create</button>
+                                        </div>
+                                    </form>
+                                </dialog>
+
+                                <dialog class="people-dialog people-dialog--wide" data-people-members-dialog>
+                                    <form method="dialog" class="people-dialog-card people-dialog-card--wide" data-people-members-form>
+                                        <div class="people-dialog-header">
+                                            <div>
+                                                <h2 data-people-members-dialog-title>Add people</h2>
+                                            </div>
+                                            <button type="button" class="people-dialog-close" data-people-dialog-close aria-label="Close">
+                                                <span class="icon" aria-hidden="true">close</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="people-member-section">
+                                            <div class="people-member-section-heading">
+                                                <strong>People in Solomon</strong>
+                                            </div>
+                                            <label class="people-search-field people-search-field--dialog">
+                                                <span class="icon" aria-hidden="true">search</span>
+                                                <input type="search" placeholder="Search people" autocomplete="off" data-people-member-search>
+                                            </label>
+                                            <div class="people-member-picker" data-people-member-picker></div>
+                                        </div>
+
+                                        <div class="people-member-divider" aria-hidden="true">
+                                            <span>or</span>
+                                        </div>
+
+                                        <div class="people-member-section">
+                                            <div class="people-member-section-heading">
+                                                <strong>Invite someone</strong>
+                                                <span>We'll email them a link to join this group.</span>
+                                            </div>
+                                            <label class="people-field">
+                                                <span>Email address</span>
+                                                <input type="email"
+                                                       name="email"
+                                                       autocomplete="email"
+                                                       placeholder="name@company.com"
+                                                       data-people-member-email>
+                                            </label>
+                                            <div class="people-invite-result" data-people-member-invite-result hidden></div>
+                                        </div>
+
+                                        <div class="people-dialog-actions">
+                                            <button type="button" class="people-action" data-people-dialog-close>Cancel</button>
+                                            <button type="submit" class="people-primary-action" data-people-add-members-submit>Add</button>
+                                        </div>
+                                    </form>
+                                </dialog>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>

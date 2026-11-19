@@ -1,0 +1,35 @@
+{% extends "portal_base.html" %}
+
+{% block title %}Error · Solomon{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="error-container portal-section">
+
+    <h1 class="portal-title">⚠️ An Error Occurred</h1>
+
+    <h2 class="error-code">
+        {{ error_code or "500" }}
+    </h2>
+
+    <p class="error-message">
+        {{ error_message or "An unexpected issue occurred while processing your request." }}
+    </p>
+
+    {% if details %}
+    <div class="error-details">
+        <pre>{{ details }}</pre>
+    </div>
+    {% endif %}
+
+    <div class="error-return">
+        <a href="/" class="portal-link">← Return Home</a>
+    </div>
+
+</div>
+
+{% endblock %}

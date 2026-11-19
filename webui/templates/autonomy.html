@@ -1,0 +1,120 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Autonomy Dashboard · SolomonAI{% endblock %}
+
+{% block page_header %}
+Autonomy Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <!-- ============================
+         TODAY'S AUTONOMY ACTIVITY
+         ============================ -->
+    <div class="card">
+        <h2>Today's Autonomy Activity</h2>
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <tbody>
+                    <tr>
+                        <th>New Skills</th>
+                        <td><span id="new_skills">…</span></td>
+                    </tr>
+                    <tr>
+                        <th>Upgrades</th>
+                        <td><span id="upgrades">…</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================
+         LAST AUTONOMY RUN
+         ============================ -->
+    <div class="card">
+        <h2>Last Autonomy Run</h2>
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <tbody>
+                    <tr>
+                        <th>Timestamp</th>
+                        <td><span id="last_run_ts">…</span></td>
+                    </tr>
+                    <tr>
+                        <th>Success</th>
+                        <td><span id="last_run_success">…</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================
+         STABILITY & AUTOPAUSE
+         ============================ -->
+    <div class="card">
+        <h2>Stability & Autopause</h2>
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <tbody>
+                    <tr>
+                        <th>Autopause</th>
+                        <td><span id="autopause">…</span></td>
+                    </tr>
+                    <tr>
+                        <th>Reason</th>
+                        <td><span id="autopause_reason">…</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadAutonomyStatus() {
+
+    try {
+        const res = await fetch("/admin/autonomy/status");
+        const data = await res.json();
+
+        // Today's activity
+        document.getElementById("new_skills").textContent =
+            data.today?.new_skills ?? "0";
+
+        document.getElementById("upgrades").textContent =
+            data.today?.upgrades ?? "0";
+
+        // Last run
+        document.getElementById("last_run_ts").textContent =
+            data.last_run?.timestamp ?? "None";
+
+        document.getElementById("last_run_success").textContent =
+            data.last_run?.success ?? "N/A";
+
+        // Stability
+        document.getElementById("autopause").textContent =
+            data.stability?.autopause ? "YES" : "NO";
+
+        document.getElementById("autopause_reason").textContent =
+            data.stability?.reason ?? "None";
+
+    } catch (err) {
+        console.error("Failed to load autonomy:", err);
+    }
+}
+
+loadAutonomyStatus();
+setInterval(loadAutonomyStatus, 15000);
+</script>
+{% endblock %}

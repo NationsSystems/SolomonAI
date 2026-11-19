@@ -1,0 +1,58 @@
+<!-- -------------------------------------------------------------------
+     FILE: feedback_layer.html
+     DIRECTORY: webui/templates/components/
+     Nations Systems site-wide feedback layer
+------------------------------------------------------------------- -->
+
+<aside id="nations-feedback-region"
+       class="nations-feedback-region"
+       aria-label="Notifications"
+       aria-live="polite"
+       aria-atomic="false"
+       data-feedback-region>
+</aside>
+
+<div id="nations-feedback-confirm"
+     class="nations-feedback-modal-backdrop"
+     aria-hidden="true"
+     data-feedback-confirm>
+    <div class="nations-feedback-modal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="nations-feedback-confirm-title"
+         aria-describedby="nations-feedback-confirm-message">
+        <div class="nations-feedback-modal-header">
+            <span class="icon nations-feedback-modal-icon"
+                  aria-hidden="true"
+                  data-feedback-confirm-icon>warning</span>
+
+            <h2 id="nations-feedback-confirm-title"
+                class="nations-feedback-modal-title"
+                data-feedback-confirm-title>
+                Confirm action
+            </h2>
+        </div>
+
+        <div class="nations-feedback-modal-body">
+            <p id="nations-feedback-confirm-message"
+               class="nations-feedback-modal-message"
+               data-feedback-confirm-message>
+                Are you sure you want to continue?
+            </p>
+        </div>
+
+        <div class="nations-feedback-modal-actions">
+            <button type="button"
+                    class="nations-feedback-modal-button nations-feedback-modal-button--secondary"
+                    data-feedback-confirm-cancel>
+                Cancel
+            </button>
+
+            <button type="button"
+                    class="nations-feedback-modal-button nations-feedback-modal-button--primary"
+                    data-feedback-confirm-accept>
+                Confirm
+            </button>
+        </div>
+    </div>
+</div>

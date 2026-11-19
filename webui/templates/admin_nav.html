@@ -1,0 +1,80 @@
+<!-- ==========================================================================
+     FILE: admin_nav.html
+     DIRECTORY: SolomonV3/webui/templates/
+     ========================================================================== -->
+
+<nav class="admin-nav" aria-label="Admin navigation">
+    <div class="admin-nav-inner">
+        <div class="admin-nav-left nav-left">
+            <a href="/" class="admin-brand nav-logo" aria-label="Return to Nations Systems portal">
+                <img
+                    src="{{ url_for('static', filename='img/OfficialNavLogo.png') }}"
+                    alt="Nations Systems"
+                    class="admin-brand-icon nav-logo-icon"
+                />
+                <span class="admin-brand-text nav-logo-text">Nations Systems Admin</span>
+            </a>
+        </div>
+
+        <div class="admin-nav-right nav-right">
+
+            <a href="/admin"
+               class="admin-nav-item nav-item {% if request.path == '/admin' %}active{% endif %}"
+               {% if request.path == '/admin' %}aria-current="page"{% endif %}>
+                Dashboard
+            </a>
+
+            <a href="/"
+               class="admin-nav-item nav-item">
+                Portal
+            </a>
+
+            <a href="/admin/skills"
+               class="admin-nav-item nav-item nav-item-badge {% if request.path.startswith('/admin/skills') %}active{% endif %}"
+               {% if request.path.startswith('/admin/skills') %}aria-current="page"{% endif %}>
+                Skills
+                {% if hflo_pending_count and hflo_pending_count > 0 %}
+                    <span class="pending-badge">{{ hflo_pending_count }}</span>
+                {% else %}
+                    <span class="pending-badge zero">0</span>
+                {% endif %}
+            </a>
+
+            <a href="/admin/hflo_pending"
+               class="admin-nav-item nav-item nav-item-badge {% if request.path.startswith('/admin/hflo_pending') %}active{% endif %}"
+               {% if request.path.startswith('/admin/hflo_pending') %}aria-current="page"{% endif %}>
+                HFLO
+                {% if hflo_pending_count and hflo_pending_count > 0 %}
+                    <span class="pending-badge">{{ hflo_pending_count }}</span>
+                {% else %}
+                    <span class="pending-badge zero">0</span>
+                {% endif %}
+            </a>
+
+            <a href="/admin/users"
+               class="admin-nav-item nav-item {% if request.path.startswith('/admin/users') %}active{% endif %}"
+               {% if request.path.startswith('/admin/users') %}aria-current="page"{% endif %}>
+                Users
+            </a>
+
+            <a href="/admin/logs"
+               class="admin-nav-item nav-item {% if request.path.startswith('/admin/logs') %}active{% endif %}"
+               {% if request.path.startswith('/admin/logs') %}aria-current="page"{% endif %}>
+                Logs
+            </a>
+
+            <a href="/admin/errors"
+               class="admin-nav-item nav-item nav-item-badge {% if request.path.startswith('/admin/errors') %}active{% endif %}"
+               {% if request.path.startswith('/admin/errors') %}aria-current="page"{% endif %}>
+                Errors
+                <span id="errorSummaryBadge" class="pending-badge zero">—</span>
+            </a>
+
+            <a href="/auth/logout"
+               class="admin-nav-item nav-item logout">
+                Logout
+            </a>
+
+        </div>
+    </div>
+</nav>

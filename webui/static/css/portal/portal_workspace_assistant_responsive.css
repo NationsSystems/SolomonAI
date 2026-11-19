@@ -1,0 +1,128 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_assistant_responsive.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant Responsive and Reduced Motion Rules
+   ========================================================================== */
+
+@media (max-width: 980px) {
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-stage-shell {
+        --solomon-active-widget-height: 460px;
+        grid-template-areas:
+            "identity"
+            "."
+            "widget-band"
+            "input";
+        grid-template-rows: auto minmax(120px, 1fr) auto auto;
+    }
+
+    .solomon-assistant-panel .solomon-guide-message--assistant:not(.solomon-guide-message--structured),
+    .solomon-guide-message--user .solomon-guide-message-body {
+        max-width: min(620px, 92%);
+    }
+
+    .solomon-structured-card-grid,
+    .command-solomon-floating-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .command-solomon-focused-widget-header {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .command-solomon-focused-widget {
+        padding-right: 18px;
+        padding-top: 52px;
+    }
+}
+
+@media (max-width: 760px) {
+    .solomon-stage-shell {
+        padding: 28px 16px;
+    }
+
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .solomon-stage-shell,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .solomon-stage-shell {
+        padding: 22px 16px 24px;
+    }
+
+    .solomon-guide-avatar {
+        height: 86px;
+        width: 86px;
+    }
+
+    .solomon-guide-logo {
+        height: 54px;
+        width: 54px;
+    }
+
+    .solomon-guide-copy h2 {
+        font-size: 2.25rem;
+    }
+
+    .solomon-assistant-panel .solomon-guide-message--assistant:not(.solomon-guide-message--structured),
+    .solomon-assistant-panel .solomon-guide-message--thinking {
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .solomon-stage-shell,
+    .solomon-stage-identity,
+    .solomon-guide-avatar,
+    .solomon-guide-logo,
+    .solomon-guide-copy h2,
+    .solomon-guide-copy p,
+    .solomon-assistant-panel .solomon-guide-input,
+    .solomon-guide-question-input,
+    .solomon-guide-send-button,
+    .solomon-assistant-panel .solomon-guide-message--assistant:not(.solomon-guide-message--structured),
+    .solomon-assistant-panel .solomon-guide-message--thinking,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="workspace_card_deck"] .command-solomon-response-canvas,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="focused_widget"] .command-solomon-response-canvas,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="thinking_or_executing"]:not([data-active-command-category="home"]) .command-solomon-response-canvas,
+    .command-home-main-column--solomon-centered[data-solomon-panel-state="error_or_unavailable"]:not([data-active-command-category="home"]) .command-solomon-response-canvas,
+    .command-solomon-floating-card,
+    .command-solomon-widget-back,
+    .command-solomon-widget-dismiss,
+    .solomon-ui-action-highlight,
+    .solomon-ui-action-pulse,
+    .solomon-ui-action-focus,
+    .solomon-ui-action-glide,
+    .solomon-ui-action-glide::after,
+    .solomon-ui-action-glide-clone {
+        animation: none;
+        transition: none;
+    }
+
+    .solomon-ui-guidance-active :where(
+        [data-solomon-ui-target],
+        [data-solomon-ui-region],
+        [data-panel],
+        [data-region],
+        .operations-console-card,
+        .operations-console-panel,
+        .command-center-card,
+        .command-center-panel,
+        .precon-card,
+        .precon-panel,
+        .precon-workspace-card,
+        .precon-workspace-panel,
+        .solomon-assistant-panel
+    ) {
+        transition: none;
+    }
+
+    .solomon-ui-action-focus,
+    .solomon-ui-action-dimmed,
+    .command-solomon-floating-card:hover,
+    .command-solomon-floating-card:focus-visible,
+    .command-solomon-widget-dismiss:hover,
+    .command-solomon-widget-dismiss:focus-visible {
+        transform: none;
+    }
+}

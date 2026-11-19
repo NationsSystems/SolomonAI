@@ -1,0 +1,226 @@
+/* ==========================================================================
+   FILE: webui/static/css/portal/portal_workspace_assistant_actions.css
+   DIRECTORY: webui/static/css/portal/
+   Solomon Assistant UI Action Bridge Effects
+   ========================================================================== */
+
+.solomon-ui-guidance-active :where(
+    [data-solomon-ui-target],
+    [data-solomon-ui-region],
+    [data-panel],
+    [data-region],
+    .operations-console-card,
+    .operations-console-panel,
+    .command-center-card,
+    .command-center-panel,
+    .precon-card,
+    .precon-panel,
+    .precon-workspace-card,
+    .precon-workspace-panel,
+    .solomon-assistant-panel
+) {
+    transition:
+        border-color 0.28s ease,
+        box-shadow 0.28s ease,
+        filter 0.34s ease,
+        opacity 0.34s ease,
+        transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: filter, opacity, transform;
+}
+
+.solomon-ui-action-highlight {
+    animation: solomonUiActionGlow 1.45s ease-in-out infinite;
+    border-color: rgba(22, 191, 216, 0.62) !important;
+    box-shadow:
+        0 0 0 1px rgba(22, 191, 216, 0.36) inset,
+        0 0 0 1px rgba(22, 191, 216, 0.16),
+        0 0 26px rgba(22, 191, 216, 0.20),
+        0 20px 52px rgba(0, 0, 0, 0.34) !important;
+    position: relative;
+    z-index: 7;
+}
+
+.solomon-ui-action-highlight::after {
+    border: 1px solid rgba(22, 191, 216, 0.28);
+    border-radius: inherit;
+    content: "";
+    inset: 7px;
+    pointer-events: none;
+    position: absolute;
+}
+
+.solomon-ui-action-focus {
+    border-color: rgba(22, 191, 216, 0.58) !important;
+    box-shadow:
+        0 0 0 1px rgba(22, 191, 216, 0.34) inset,
+        0 0 0 1px rgba(22, 191, 216, 0.16),
+        0 26px 70px rgba(0, 0, 0, 0.44),
+        0 0 42px rgba(22, 191, 216, 0.20) !important;
+    filter: saturate(1.08) brightness(1.04);
+    opacity: 1 !important;
+    position: relative;
+    transform: translate3d(0, -2px, 0) scale(1.008);
+    z-index: 8;
+}
+
+.solomon-ui-action-focus::before {
+    background:
+        radial-gradient(circle at 20% 0%, rgba(22, 191, 216, 0.20), transparent 36%),
+        linear-gradient(135deg, rgba(22, 191, 216, 0.10), transparent 54%);
+    border-radius: inherit;
+    content: "";
+    inset: 0;
+    opacity: 0.72;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+}
+
+.solomon-ui-action-pulse {
+    animation: solomonUiActionPulse 0.9s ease-in-out 2;
+}
+
+.solomon-ui-action-glide {
+    animation: solomonUiActionSettle 0.86s cubic-bezier(0.22, 1, 0.36, 1) 1;
+    border-color: rgba(22, 191, 216, 0.64) !important;
+    position: relative;
+    z-index: 9;
+}
+
+.solomon-ui-action-glide::after {
+    animation: solomonUiActionGuideRing 0.86s cubic-bezier(0.22, 1, 0.36, 1) 1;
+    border: 1px solid rgba(22, 191, 216, 0.34);
+    border-radius: inherit;
+    box-shadow:
+        0 0 24px rgba(22, 191, 216, 0.18),
+        0 0 54px rgba(22, 191, 216, 0.08);
+    content: "";
+    inset: -5px;
+    pointer-events: none;
+    position: absolute;
+}
+
+.solomon-ui-action-dimmed {
+    filter: grayscale(0.18) brightness(0.68) saturate(0.82);
+    opacity: 0.42;
+    transform: scale(0.992);
+}
+
+.solomon-ui-action-glide-clone {
+    animation: solomonUiActionCloneAura 0.86s cubic-bezier(0.22, 1, 0.36, 1) 1;
+    background: rgba(8, 13, 24, 0.86) !important;
+    border: 1px solid rgba(22, 191, 216, 0.32) !important;
+    border-radius: 18px !important;
+    box-shadow:
+        0 0 0 1px rgba(22, 191, 216, 0.20) inset,
+        0 26px 70px rgba(0, 0, 0, 0.42),
+        0 0 48px rgba(22, 191, 216, 0.20) !important;
+    filter: saturate(1.06) brightness(1.04);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.solomon-ui-action-glide-clone::after {
+    background:
+        linear-gradient(
+            105deg,
+            transparent 0%,
+            rgba(22, 191, 216, 0.00) 26%,
+            rgba(22, 191, 216, 0.20) 46%,
+            rgba(255, 255, 255, 0.16) 50%,
+            rgba(22, 191, 216, 0.14) 55%,
+            transparent 78%
+        );
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(-110%);
+}
+
+@keyframes solomonUiActionGlow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 1px rgba(22, 191, 216, 0.30) inset,
+            0 0 0 1px rgba(22, 191, 216, 0.12),
+            0 0 20px rgba(22, 191, 216, 0.14),
+            0 20px 52px rgba(0, 0, 0, 0.30);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 1px rgba(22, 191, 216, 0.52) inset,
+            0 0 0 1px rgba(22, 191, 216, 0.22),
+            0 0 34px rgba(22, 191, 216, 0.28),
+            0 20px 52px rgba(0, 0, 0, 0.36);
+    }
+}
+
+@keyframes solomonUiActionPulse {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    45% {
+        transform: translateY(-1px) scale(1.01);
+    }
+}
+
+@keyframes solomonUiActionSettle {
+    0% {
+        filter: saturate(1) brightness(0.94);
+        transform: translate3d(0, 8px, 0) scale(0.986);
+    }
+
+    58% {
+        filter: saturate(1.08) brightness(1.06);
+        transform: translate3d(0, -2px, 0) scale(1.01);
+    }
+
+    100% {
+        filter: saturate(1.04) brightness(1);
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes solomonUiActionGuideRing {
+    0% {
+        opacity: 0;
+        transform: scale(0.965);
+    }
+
+    38% {
+        opacity: 0.88;
+        transform: scale(1.008);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.035);
+    }
+}
+
+@keyframes solomonUiActionCloneAura {
+    0% {
+        box-shadow:
+            0 0 0 1px rgba(22, 191, 216, 0.12) inset,
+            0 18px 48px rgba(0, 0, 0, 0.36),
+            0 0 28px rgba(22, 191, 216, 0.12);
+    }
+
+    48% {
+        box-shadow:
+            0 0 0 1px rgba(22, 191, 216, 0.30) inset,
+            0 30px 78px rgba(0, 0, 0, 0.48),
+            0 0 66px rgba(22, 191, 216, 0.26);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 1px rgba(22, 191, 216, 0.18) inset,
+            0 22px 54px rgba(0, 0, 0, 0.34),
+            0 0 36px rgba(22, 191, 216, 0.12);
+    }
+}

@@ -1,0 +1,102 @@
+{# -------------------------------------------------------------------
+   FILE: people_group_setup.html
+   DIRECTORY: webui/templates/
+   -------------------------------------------------------------------
+   Group setup screen for commercial accounts.
+
+   Commercial signup creates the user account first. This page collects
+   the first group identity after sign-in and submits it through the
+   canonical People and Groups setup flow.
+   ------------------------------------------------------------------- #}
+
+{% extends "portal_base.html" %}
+
+{% block title %}Group Setup · Nations Systems{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal/portal_auth.css') }}?v=nations-people-group-setup-20260727a">
+{% endblock %}
+
+{% block content %}
+
+<div class="portal-auth-page">
+    <div class="auth-container">
+
+        <h1 class="auth-title">Set Up Group</h1>
+
+        <p class="auth-subtitle">
+            Create your first group workspace. You can manage people, files, and access controls after setup.
+        </p>
+
+        <form id="peopleGroupSetupForm"
+              class="auth-form"
+              data-people-group-setup-form
+              data-people-group-setup-endpoint="/people/groups"
+              novalidate>
+
+            <label for="groupName">Group Name</label>
+            <input
+                type="text"
+                id="groupName"
+                name="group_name"
+                placeholder="Enter group name"
+                autocomplete="organization"
+                required
+            >
+            <div id="error-groupName"
+                 class="error-text"
+                 hidden></div>
+
+            <label for="groupSlug">Group ID</label>
+            <div class="auth-subdomain-row">
+                <input
+                    type="text"
+                    id="groupSlug"
+                    name="group_slug"
+                    placeholder="group-name"
+                    autocomplete="off"
+                    aria-describedby="groupWorkspaceIdHelp"
+                    required
+                >
+            </div>
+            <div id="error-groupSlug"
+                 class="error-text"
+                 hidden></div>
+
+            <div id="groupWorkspaceIdHelp"
+                 class="auth-subdomain-preview">
+                Use a short internal identifier for this group workspace.
+            </div>
+
+            <div id="groupSlugPreview"
+                 class="auth-subdomain-preview"
+                 data-people-group-slug-preview></div>
+
+            <button id="peopleGroupSetupBtn"
+                    class="auth-btn"
+                    type="submit"
+                    data-people-group-setup-submit
+                    disabled>
+                Create Group Workspace
+            </button>
+
+        </form>
+
+        <p class="auth-switch">
+            Need to use a different account? <a href="/auth/logout">Sign out</a>
+        </p>
+
+        <pre id="peopleGroupSetupOutput"
+             class="auth-output"
+             data-people-group-setup-output
+             hidden></pre>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/people_group_setup.js') }}?v=nations-people-group-setup-20260727a"></script>
+{% endblock %}

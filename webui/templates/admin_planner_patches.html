@@ -1,0 +1,91 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Planner Patches · Solomon Admin{% endblock %}
+
+{% block page_header %}
+Planner Patch History
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-section">
+
+    <div class="card">
+        <h2>Applied Patches</h2>
+
+        {% if patches|length == 0 %}
+            <p>No planner patches have been applied yet.</p>
+
+        {% else %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Applied At</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                    <th>Summary</th>
+                    <th>Backup File</th>
+                    <th>Patch Code</th>
+                    <th>Rollback</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in patches %}
+                <tr>
+                    <td>{{ p.applied_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+
+                    <td>
+                        {% if p.success %}
+                            <span class="pending-badge" style="background:var(--success); color:#000;">
+                                Success
+                            </span>
+                        {% else %}
+                            <span class="pending-badge" style="background:var(--danger); color:#fff;">
+                                Failed
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ p.reason or "No reason provided" }}</td>
+                    <td>{{ p.summary or "No summary" }}</td>
+
+                    <td>
+                        {% if p.backup_path %}
+                            <code>{{ p.backup_path }}</code>
+                        {% else %}
+                            <em>No backup</em>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <details>
+                            <summary style="cursor:pointer;">View Patch</summary>
+                            <pre class="diagnostic-pre">{{ p.patch_code }}</pre>
+                        </details>
+                    </td>
+
+                    <!-- Inline Rollback Button -->
+                    <td>
+                        <form method="POST" action="/admin/planner_patches/rollback"
+                              onsubmit="return confirm('Rollback patch {{ p.id }}? This will restore planner.py from backup.');">
+                            <input type="hidden" name="patch_id" value="{{ p.id }}">
+                            <button class="actionBtn" style="
+                                padding:6px 12px;
+                                background:var(--danger);
+                                border:none;
+                                border-radius:8px;
+                                font-size:0.8rem;
+                            ">Rollback</button>
+                        </form>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
