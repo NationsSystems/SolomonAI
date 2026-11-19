@@ -1,7 +1,7 @@
 # SolomonAI
 
 **SolomonAI Release 1.0 — open-source community release**  
-Developed by **Nations Systems**.
+Developed by **Bryan Nations** and published under the **Nations Systems** name.
 
 SolomonAI is an existing, locally runnable AI application combining a browser workspace, user accounts, document/file workflows, and local language-model inference. This repository is intended for technically capable developers who want to study, adapt, or contribute to the application.
 
@@ -74,7 +74,9 @@ Existing accepted pilots with `local_config/setup.json` pointing to `solomon_ai_
 
 ## License and support
 
-Nations Systems-controlled SolomonAI **software source code** is distributed under the [Apache License, Version 2.0](LICENSE). **The official SolomonAI name, Nations Systems identity, logo, and favicon are proprietary**, with the two bundled brand image assets expressly excluded from the Apache-2.0 copyright grant. See [BRANDING.md](BRANDING.md) for exact files, the limited permission for unchanged official distributions, and rebranding guidance for forks. This branding policy does not restrict the Apache-2.0-licensed source code.
+**Copyright © 2026 Bryan Nations** for the original SolomonAI software and documentation he owns. Bryan Nations publishes the project under the **Nations Systems** name. Nations Systems is a publishing/brand name here; no separate LLC or other registered entity is claimed.
+
+The SolomonAI **software source code** covered by this release is distributed under the [Apache License, Version 2.0](LICENSE). **The official SolomonAI name, Nations Systems identity, logo, and favicon remain proprietary**, with the two bundled brand image assets expressly excluded from the Apache-2.0 copyright grant. See [BRANDING.md](BRANDING.md) for exact files, the limited permission for unchanged official distributions, and rebranding guidance for forks. This branding policy does not restrict the Apache-2.0-licensed source code.
 
 Third-party components, models, libraries, and assets remain subject to their respective licenses. See [third-party notices](THIRD_PARTY_NOTICES.md) and the bundled attribution/license texts in `third_party_licenses/`. Python dependencies are installed from their upstream distributions rather than bundled.
 

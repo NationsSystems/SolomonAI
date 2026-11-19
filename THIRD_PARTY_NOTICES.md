@@ -1,6 +1,6 @@
 # Bundled third-party components
 
-The root `LICENSE` is the Apache License 2.0 for Nations Systems-controlled SolomonAI source. It does **not** override licenses for third-party components or assets. The files below are distributed under their respective upstream terms. Keep attribution/license files when redistributing these assets.
+The root `LICENSE` provides the Apache License 2.0 terms for original SolomonAI software code released by Bryan Nations, publishing under the Nations Systems name. It does **not** override licenses for third-party components or assets. The files below are distributed under their respective upstream terms. Keep attribution/license files when redistributing these assets.
 
 | Asset | Distributed file(s) | License and attribution |
 | --- | --- | --- |
