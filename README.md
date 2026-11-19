@@ -1,5 +1,9 @@
 # SolomonAI
 
+![SolomonAI group files search demonstration](Enterprise%20Group%20Files%20Search%20Dashboard.png)
+
+*Illustrative interface preview featuring fictional users, files, and conversations.*
+
 **SolomonAI Release 1.0 — open-source community release**  
 Developed by **Bryan Nations** and published under the **Nations Systems** name.
 
