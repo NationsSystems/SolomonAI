@@ -1,6 +1,6 @@
 # SolomonAI
 
-![SolomonAI group files search demonstration](Enterprise%20Group%20Files%20Search%20Dashboard.png)
+![SolomonAI group files search demonstration](ns_hero.png)
 
 *Illustrative interface preview featuring fictional users, files, and conversations.*
 
